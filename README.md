@@ -5,7 +5,7 @@ Deploy your node.js application to Amazon Lambda.
 ## Usage
 
 ```
-node-lambda
+npm run deploy
 ```
 
 ## Install

@@ -1,6 +1,6 @@
 {
   "name": "node-lambda",
-  "version": "0.0.1",
+  "version": "0.0.14",
   "description": "Deploy your node.js application to Amazon Lambda",
   "main": "lib/main.js",
   "directories": {
@@ -8,6 +8,9 @@
   },
   "scripts": {
     "test": "mocha test/*.js"
+  },
+  "bin": {
+    "node-lambda": "./bin/node-lambda"
   },
   "repository": {
     "type": "git",
@@ -31,6 +34,8 @@
     "should": ""
   },
   "dependencies": {
+    "aws-sdk": "^2.0.28",
+    "commander": "^2.5.0",
     "dotenv": "^0.4.0"
   }
 }
