@@ -1,0 +1,36 @@
+{
+  "name": "node-lambda",
+  "version": "0.0.1",
+  "description": "Deploy your node.js application to Amazon Lambda",
+  "main": "lib/main.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "mocha test/*.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/rebelmail/node-lambda.git"
+  },
+  "keywords": [
+    "lambda",
+    "aws",
+    "amazon",
+    "amazon-lambda",
+    "aws-lambda",
+    "lambda-node",
+    "deploy",
+    "deployment"
+  ],
+  "readmeFilename": "README.md",
+  "author": "motdotla",
+  "license": "BSD",
+  "devDependencies": {
+    "mocha": "",
+    "should": ""
+  },
+  "dependencies": {
+    "dotenv": "^0.4.0"
+  }
+}
