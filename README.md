@@ -2,7 +2,7 @@
 
 ![node-lambda](../master/node-lambda.png?raw=true)
 
-Deploy your node.js application to Amazon Lambda.
+Command line tool to locally run and deploy your node.js application to Amazon Lambda.
 
 [![BuildStatus](https://travis-ci.org/RebelMail/node-lambda.png?branch=master)](https://travis-ci.org/motdotla/node-lambda)
 [![NPM version](https://badge.fury.io/js/node-lambda.png)](http://badge.fury.io/js/node-lambda)
@@ -27,6 +27,12 @@ When ready to deploy for the first time, run the following.
 node-lambda setup
 echo ".env\nevent.json" >> .gitignore
 node-lambda deploy -e staging
+```
+
+It's a good idea to gitignore the generated `event.json` and `.env` file. You can do that with the following command:
+
+```
+echo ".env\nevent.json" >> .gitignore
 ```
 
 You can subsequenetly, just call the following.
