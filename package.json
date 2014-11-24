@@ -1,6 +1,6 @@
 {
   "name": "node-lambda",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Deploy your node.js application to Amazon Lambda",
   "main": "lib/main.js",
   "directories": {
