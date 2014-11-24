@@ -19,10 +19,17 @@ Run your Amazon Lambda app locally.
 node-lambda run
 ```
 
-When ready to deploy, run the following.
+When ready to deploy for the first time, run the following.
 
 ```
 node-lambda setup
+echo ".env\nevent.json" >> .gitignore
+node-lambda deploy -e staging
+```
+
+You can subsequenetly, just call the following.
+
+```
 node-lambda deploy -e staging
 ```
 

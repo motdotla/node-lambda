@@ -30,5 +30,6 @@ node_modules
 
 # Users Environment Variables
 .lock-wscript
-.env*
 !.env.example
+.env
+event.json
