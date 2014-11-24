@@ -1,5 +1,7 @@
 # node-lambda
 
+![node-lambda](../master/node-lambda.png?raw=true)
+
 Deploy your node.js application to Amazon Lambda.
 
 [![BuildStatus](https://travis-ci.org/RebelMail/node-lambda.png?branch=master)](https://travis-ci.org/motdotla/node-lambda)
