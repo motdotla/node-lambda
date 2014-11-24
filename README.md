@@ -2,10 +2,14 @@
 
 ![node-lambda](../master/node-lambda.png?raw=true)
 
-Command line tool to locally run and deploy your node.js application to Amazon Lambda.
+Command line tool to locally run and deploy your node.js application to [Amazon Lambda](http://aws.amazon.com/lambda/).
 
 [![BuildStatus](https://travis-ci.org/RebelMail/node-lambda.png?branch=master)](https://travis-ci.org/motdotla/node-lambda)
 [![NPM version](https://badge.fury.io/js/node-lambda.png)](http://badge.fury.io/js/node-lambda)
+
+```
+node-lambda run
+```
 
 ## Installation
 
@@ -13,47 +17,30 @@ Command line tool to locally run and deploy your node.js application to Amazon L
 npm install -g node-lambda
 ```
 
+## Example App
+
+The [node-lambda-template](https://github.com/RebelMail/node-lambda-template) example app makes it easy to get up and running.
+
 ## Usage
 
-Run your Amazon Lambda app locally.
-
-```
-node-lambda run
-```
-
-When ready to deploy for the first time, run the following.
+There are 3 available commands.
 
 ```
 node-lambda setup
+node-lambda run
+node-lambda deploy
+```
+
+It's a good idea to gitignore the generated `event.json` and `.env` file. Ro that with the following command:
+
+```
 echo ".env\nevent.json" >> .gitignore
-node-lambda deploy -e staging
 ```
 
-It's a good idea to gitignore the generated `event.json` and `.env` file. You can do that with the following command:
+### node-lambda run
 
 ```
-echo ".env\nevent.json" >> .gitignore
-```
-
-You can subsequenetly, just call the following.
-
-```
-node-lambda deploy -e staging
-```
-
-### Command line flags
-
-You can opt to use command line flags instead of a `.env.` file.
-
-#### run [flags]
-```
-node-lambda run [flags]
-```
-
-##### Example
-
-```
-./node_modules/.bin/node-lambda run --help
+$ node-lambda run --help
 
   Usage: run [options]
 
@@ -63,16 +50,10 @@ node-lambda run [flags]
     -h, --handler [index.handler]  Lambda Handler {index.handler}
 ```
 
-#### deploy [flags]
+### node-lambda deploy
 
 ```
-node-lambda deploy [flags]
-```
-
-##### Example
-
-```
-./node_modules/.bin/node-lambda deploy --help
+$ node-lambda deploy --help
 
   Usage: deploy [options]
 
