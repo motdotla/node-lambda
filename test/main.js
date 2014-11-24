@@ -28,7 +28,7 @@ describe( "dotenv", function( ) {
   } );
 
   it( "version should be set", function( ) {
-    result.version.should.eql( "0.0.15" ); 
+    result.version.should.eql( "0.0.16" ); 
   } );
 
   describe( "_zipfileTmpPath", function( ) {
