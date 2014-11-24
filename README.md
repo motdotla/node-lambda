@@ -33,7 +33,7 @@ node-lambda deploy
 
 ### Commands
 
-#### node-lambda setup
+#### setup
 
 Initializes the `event.json` and `.env` files. `event.json` is where you mock your event. `.env.` is where you place your deployment configuration.
 
@@ -53,7 +53,7 @@ After running setup, it's a good idea to gitignore the generated `event.json` an
 echo ".env\nevent.json" >> .gitignore
 ```
 
-#### node-lambda run
+#### run
 
 Runs your Amazon Lambda index.js file locally. Passes `event.json` data to the Amazon Lambda event object.
 
@@ -68,7 +68,7 @@ $ node-lambda run --help
     -h, --handler [index.handler]  Lambda Handler {index.handler}
 ```
 
-#### node-lambda deploy
+#### deploy
 
 Bundles and deploys your application up to Amazon Lambda.
 
