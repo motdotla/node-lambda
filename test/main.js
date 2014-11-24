@@ -12,7 +12,7 @@ var program = {
   accessKey: "key",
   secretKey: "secret",
   region: "us-east-1",
-  functionName: "node-lambda-development",
+  functionName: "node-lambda",
   handler: "index.handler",
   mode: "event",
   role: "some:arn:aws:iam::role",
@@ -28,13 +28,21 @@ describe( "dotenv", function( ) {
   } );
 
   it( "version should be set", function( ) {
-    result.version.should.eql( "0.0.14" ); 
+    result.version.should.eql( "0.0.15" ); 
   } );
 
-  describe( "zipfileTmpPath", function( ) {
+  describe( "_zipfileTmpPath", function( ) {
     it( "generates a tmp file path", function( ) {
-      var zipfile = result.zipfileTmpPath( program );
+      var zipfile = result._zipfileTmpPath( program );
       zipfile.indexOf( program.functionName ).should.not.eql( -1 );
+    } );
+   
+  } );
+
+  describe( "_params", function( ) {
+    it( "appropriately appends the environment to functionName", function( ) {
+      var params = result._params( program );
+      params.FunctionName.indexOf( program.environment ).should.not.eql( -1 );
     } );
    
   } );
