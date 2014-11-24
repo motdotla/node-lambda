@@ -31,13 +31,31 @@ node-lambda run
 node-lambda deploy
 ```
 
-It's a good idea to gitignore the generated `event.json` and `.env` file. Ro that with the following command:
+### Commands
+
+#### setup
+
+Initializes the `event.json` and `.env` files. `event.json` is where you mock your event. `.env.` is where you place your deployment configuration.
+
+```
+$ node-lambda setup --help
+
+  Usage: run [options]
+
+  Options:
+
+    -h, --help                     output usage information
+```
+
+After running setup, it's a good idea to gitignore the generated `event.json` and `.env` file.
 
 ```
 echo ".env\nevent.json" >> .gitignore
 ```
 
-### node-lambda run
+#### run
+
+Runs your Amazon Lambda index.js file locally. Passes `event.json` data to the Amazon Lambda event object.
 
 ```
 $ node-lambda run --help
@@ -50,7 +68,9 @@ $ node-lambda run --help
     -h, --handler [index.handler]  Lambda Handler {index.handler}
 ```
 
-### node-lambda deploy
+#### deploy
+
+Bundles and deploys your application up to Amazon Lambda.
 
 ```
 $ node-lambda deploy --help
@@ -72,4 +92,19 @@ $ node-lambda deploy --help
     -t, --timeout [3]                 Lambda Timeout
     -d, --description [missing]       Lambda Description
     -u, --runtime [nodejs]            Lambda Runtime
+```
+
+## Contributing
+
+1. Fork it
+2. Create your feature branch (`git checkout -b my-new-feature`)
+3. Commit your changes (`git commit -am 'Added some feature'`)
+4. Push to the branch (`git push origin my-new-feature`)
+5. Create new Pull Request
+
+## Running tests
+
+```
+npm install
+npm test
 ```
