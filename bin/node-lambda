@@ -9,7 +9,7 @@ packageJson = require( process.cwd() + "/package.json" );
 dotenv.load( );
 
 var
-AWS_ENVIRONMENT = process.env.AWS_ENVIRONMENT || "staging",
+AWS_ENVIRONMENT = process.env.AWS_ENVIRONMENT || "development",
 AWS_ACCESS_KEY_ID = process.env.AWS_ACCESS_KEY_ID || "missing",
 AWS_SECRET_ACCESS_KEY = process.env.AWS_SECRET_ACCESS_KEY || "missing",
 AWS_REGION = process.env.AWS_REGION || "us-east-1",
