@@ -4,6 +4,7 @@ var
 dotenv = require( "dotenv" ),
 lambda = require( "../lib/main.js" ),
 program = require( "commander" );
+packageJson = require( process.cwd() + "/package.json" );
 
 dotenv.load( );
 
@@ -12,17 +13,19 @@ AWS_ENVIRONMENT = process.env.AWS_ENVIRONMENT || "staging",
 AWS_ACCESS_KEY_ID = process.env.AWS_ACCESS_KEY_ID || "missing",
 AWS_SECRET_ACCESS_KEY = process.env.AWS_SECRET_ACCESS_KEY || "missing",
 AWS_REGION = process.env.AWS_REGION || "us-east-1",
-AWS_FUNCTION_NAME = process.env.AWS_FUNCTION_NAME,
+AWS_FUNCTION_NAME = process.env.AWS_FUNCTION_NAME || packageJson.name,
 AWS_HANDLER = process.env.AWS_HANDLER || "index.handler",
 AWS_MODE = "event",
 AWS_ROLE = process.env.AWS_ROLE || "missing",
 AWS_MEMORY_SIZE = process.env.AWS_MEMORY_SIZE || 128,
 AWS_TIMEOUT = process.env.AWS_TIMEOUT || 3,
-AWS_DESCRIPTION = process.env.AWS_DESCRIPTION || "missing",
+AWS_DESCRIPTION = process.env.AWS_DESCRIPTION || "",
 AWS_RUNTIME = process.env.AWS_RUNTIME || "nodejs";
 
 program
   .version( lambda.version )
+  .command( "deploy" )
+  .description( "Deploy your application to Amazon Lambda" )
   .option( "-e, --environment [" + AWS_ENVIRONMENT + "]", "Choose environment {development, stating, production}", AWS_ENVIRONMENT )
   .option( "-a, --accessKey [" + AWS_ACCESS_KEY_ID + "]", "AWS Access Key", AWS_ACCESS_KEY_ID )
   .option( "-s, --secretKey [" + AWS_SECRET_ACCESS_KEY + "]", "AWS Secret Key", AWS_SECRET_ACCESS_KEY )
@@ -35,7 +38,27 @@ program
   .option( "-t, --timeout [" + AWS_TIMEOUT + "]", "Lambda Timeout", AWS_TIMEOUT )
   .option( "-d, --description [" + AWS_DESCRIPTION + "]", "Lambda Description", AWS_DESCRIPTION )
   .option( "-u, --runtime [" + AWS_RUNTIME + "]", "Lambda Runtime", AWS_RUNTIME )
-  .parse(process.argv);
+  .action( function( prg ) {
+    lambda.deploy( prg );
+  } );
 
-lambda.run( program );
+program
+  .version( lambda.version )
+  .command( "run" )
+  .description( "Run your Amazon Lambda application locally" )
+  .option( "-h, --handler [" + AWS_HANDLER + "]", "Lambda Handler {index.handler}", AWS_HANDLER )
+  .action( function( prg ) {
+    lambda.run( prg );
+  } );
 
+program
+  .version( lambda.version )
+  .command( "setup" )
+  .description( "Sets up the .env file." )
+  .action( function( prg ) {
+    lambda.setup( );
+  } )
+
+
+
+program.parse( process.argv );
