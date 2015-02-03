@@ -23,38 +23,38 @@ var AWS_FUNCTION_VERSION = process.env.AWS_FUNCTION_VERSION || packageJson.versi
 
 program
   .version( lambda.version )
-  .command( "deploy" )
-  .description( "Deploy your application to Amazon Lambda" )
-  .option( "-e, --environment [" + AWS_ENVIRONMENT + "]", "Choose environment {development, stating, production}", AWS_ENVIRONMENT )
-  .option( "-a, --accessKey [" + AWS_ACCESS_KEY_ID + "]", "AWS Access Key", AWS_ACCESS_KEY_ID )
-  .option( "-s, --secretKey [" + AWS_SECRET_ACCESS_KEY + "]", "AWS Secret Key", AWS_SECRET_ACCESS_KEY )
-  .option( "-r, --region [" + AWS_REGION + "]", "AWS Region", AWS_REGION )
-  .option( "-n, --functionName [" + AWS_FUNCTION_NAME + "]", "Lambda FunctionName", AWS_FUNCTION_NAME )
-  .option( "-h, --handler [" + AWS_HANDLER + "]", "Lambda Handler {index.handler}", AWS_HANDLER )
-  .option( "-m, --mode [" + AWS_MODE + "]", "Lambda Mode", AWS_MODE )
-  .option( "-o, --role [" + AWS_ROLE + "]", "Amazon role", AWS_ROLE )
-  .option( "-m, --memorySize [" + AWS_MEMORY_SIZE + "]", "Lambda Memory Size", AWS_MEMORY_SIZE )
-  .option( "-t, --timeout [" + AWS_TIMEOUT + "]", "Lambda Timeout", AWS_TIMEOUT )
-  .option( "-d, --description [" + AWS_DESCRIPTION + "]", "Lambda Description", AWS_DESCRIPTION )
-  .option( "-u, --runtime [" + AWS_RUNTIME + "]", "Lambda Runtime", AWS_RUNTIME )
-  .option( "-v, --version [" + AWS_FUNCTION_VERSION + "]", "Lambda Function Version", AWS_FUNCTION_VERSION )
+  .command( 'deploy' )
+  .description( 'Deploy your application to Amazon Lambda' )
+  .option( '-e, --environment [' + AWS_ENVIRONMENT + ']', 'Choose environment {development, stating, production}', AWS_ENVIRONMENT )
+  .option( '-a, --accessKey [' + AWS_ACCESS_KEY_ID + ']', 'AWS Access Key', AWS_ACCESS_KEY_ID )
+  .option( '-s, --secretKey [' + AWS_SECRET_ACCESS_KEY + ']', 'AWS Secret Key', AWS_SECRET_ACCESS_KEY )
+  .option( '-r, --region [' + AWS_REGION + ']', 'AWS Region', AWS_REGION )
+  .option( '-n, --functionName [' + AWS_FUNCTION_NAME + ']', 'Lambda FunctionName', AWS_FUNCTION_NAME )
+  .option( '-h, --handler [' + AWS_HANDLER + ']', 'Lambda Handler {index.handler}', AWS_HANDLER )
+  .option( '-m, --mode [' + AWS_MODE + ']', 'Lambda Mode', AWS_MODE )
+  .option( '-o, --role [' + AWS_ROLE + ']', 'Amazon role', AWS_ROLE )
+  .option( '-m, --memorySize [' + AWS_MEMORY_SIZE + ']', 'Lambda Memory Size', AWS_MEMORY_SIZE )
+  .option( '-t, --timeout [' + AWS_TIMEOUT + ']', 'Lambda Timeout', AWS_TIMEOUT )
+  .option( '-d, --description [' + AWS_DESCRIPTION + ']', 'Lambda Description', AWS_DESCRIPTION )
+  .option( '-u, --runtime [' + AWS_RUNTIME + ']', 'Lambda Runtime', AWS_RUNTIME )
+  .option( '-v, --version [' + AWS_FUNCTION_VERSION + ']', 'Lambda Function Version', AWS_FUNCTION_VERSION )
   .action( function( prg ) {
     lambda.deploy( prg );
   } );
 
 program
   .version( lambda.version )
-  .command( "run" )
-  .description( "Run your Amazon Lambda application locally" )
-  .option( "-h, --handler [" + AWS_HANDLER + "]", "Lambda Handler {index.handler}", AWS_HANDLER )
+  .command( 'run' )
+  .description( 'Run your Amazon Lambda application locally' )
+  .option( '-h, --handler [' + AWS_HANDLER + ']', 'Lambda Handler {index.handler}', AWS_HANDLER )
   .action( function( prg ) {
     lambda.run( prg );
   } );
 
 program
   .version( lambda.version )
-  .command( "setup" )
-  .description( "Sets up the .env file." )
+  .command( 'setup' )
+  .description( 'Sets up the .env file.' )
   .action( function( prg ) {
     lambda.setup( );
   } )
