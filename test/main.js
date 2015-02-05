@@ -30,15 +30,7 @@ describe( "dotenv", function( ) {
   it( "version should be set", function( ) {
     result.version.should.eql( "0.2.6" ); 
   } );
-
-  describe( "_zipfileTmpPath", function( ) {
-    it( "generates a tmp file path", function( ) {
-      var zipfile = result._zipfileTmpPath( program );
-      zipfile.indexOf( program.functionName ).should.not.eql( -1 );
-    } );
-   
-  } );
-
+  
   describe( "_params", function( ) {
     it( "appropriately appends the environment to functionName", function( ) {
       var params = result._params( program );
