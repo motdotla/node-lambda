@@ -6,4 +6,4 @@ exports.handler = function( event, context ) {
   console.log( "==================================");
   console.log( "Stopping index.handler" );
   context.done( );
-}
+};
