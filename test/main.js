@@ -20,7 +20,7 @@ var program = {
   timeout: 3,
   description: "",
   runtime: "nodejs"
-}
+};
 
 describe( "dotenv", function( ) {
   before( function( ) {
@@ -28,7 +28,7 @@ describe( "dotenv", function( ) {
   } );
 
   it( "version should be set", function( ) {
-    result.version.should.eql( "0.2.6" ); 
+    result.version.should.eql( "0.3.0" ); 
   } );
   
   describe( "_params", function( ) {
