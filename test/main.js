@@ -28,7 +28,7 @@ describe( "dotenv", function( ) {
   } );
 
   it( "version should be set", function( ) {
-    result.version.should.eql( "0.3.3" ); 
+    result.version.should.eql( "0.3.4" ); 
   } );
   
   describe( "_params", function( ) {
