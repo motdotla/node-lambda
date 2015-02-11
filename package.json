@@ -1,6 +1,6 @@
 {
   "name": "node-lambda",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "Command line tool for locally running and remotely deploying your node.js applications to Amazon Lambda.",
   "main": "lib/main.js",
   "directories": {
@@ -38,6 +38,7 @@
     "aws-sdk": "^2.0.28",
     "commander": "^2.5.0",
     "dotenv": "^0.4.0",
-    "node-uuid": "^1.4.2"
+    "node-uuid": "^1.4.2",
+    "rimraf": "^2.2.8"
   }
 }
