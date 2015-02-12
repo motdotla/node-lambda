@@ -82,7 +82,7 @@ describe('node-lambda', function() {
 
   describe('_zip', function() {
     beforeEach(function(done) {
-      this.timeout(5000); // give it time to build the node modules
+      this.timeout(30000); // give it time to build the node modules
       lambda._rsync(program, codeDirectory, function(err, result) {
 
         lambda._npmInstall(program, codeDirectory, function(err, result) {
@@ -92,7 +92,7 @@ describe('node-lambda', function() {
     });
 
     it('zips the file and has an index.js file', function(done) {
-      this.timeout(5000); // give it time to zip
+      this.timeout(30000); // give it time to zip
 
       lambda._zip(program, codeDirectory, function(err, zipfilePath) {
         var zip = new admzip(zipfilePath);
