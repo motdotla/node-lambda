@@ -84,6 +84,7 @@ $ node-lambda deploy --help
     -a, --accessKey [your_key]        AWS Access Key
     -s, --secretKey [your_secret]     AWS Secret Key
     -r, --region [us-east-1]          AWS Region(s)
+    -v, --version [custom-version]    Lambda Version
     -n, --functionName [node-lambda]  Lambda FunctionName
     -h, --handler [index.handler]     Lambda Handler {index.handler}
     -m, --mode [event]                Lambda Mode
