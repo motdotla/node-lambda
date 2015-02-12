@@ -1,41 +1,32 @@
-var 
-assert = require( "assert" ),
-program = require( "commander" ),
-fs = require("fs"),
-lambda = require( "../lib/main" ),
-should = require( "should" );
-
-var result;
+var assert = require('assert');
+var program = require('commander');
+var fs = require('fs');
+var lambda = require('../lib/main');
+var should = require('should');
 
 var program = {
-  environment: "development",
-  accessKey: "key",
-  secretKey: "secret",
-  region: "us-east-1",
-  functionName: "node-lambda",
-  handler: "index.handler",
-  mode: "event",
-  role: "some:arn:aws:iam::role",
+  environment: 'development',
+  accessKey: 'key',
+  secretKey: 'secret',
+  functionName: 'node-lambda',
+  handler: 'index.handler',
+  mode: 'event',
+  role: 'some:arn:aws:iam::role',
   memorySize: 128,
   timeout: 3,
-  description: "",
-  runtime: "nodejs"
+  description: '',
+  runtime: 'nodejs'
 };
 
-describe( "dotenv", function( ) {
-  before( function( ) {
-    result = lambda;
-  } );
-
-  it( "version should be set", function( ) {
-    result.version.should.eql( "0.3.4" ); 
-  } );
+describe('node-lambda', function() {
+  it('version should be set', function() {
+    lambda.version.should.eql('0.3.5'); 
+  });
   
-  describe( "_params", function( ) {
-    it( "appropriately appends the environment to functionName", function( ) {
-      var params = result._params( program );
-      params.FunctionName.indexOf( program.environment ).should.not.eql( -1 );
-    } );
-   
-  } );
-} );
+  describe('_params', function() {
+    it( 'appends environment to original functionName', function() {
+      var params = lambda._params(program);
+      params.FunctionName.should.eql('node-lambda-development');
+    });
+  });
+});

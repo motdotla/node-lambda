@@ -10,7 +10,7 @@ dotenv.load();
 var AWS_ENVIRONMENT = process.env.AWS_ENVIRONMENT || 'development';
 var AWS_ACCESS_KEY_ID = process.env.AWS_ACCESS_KEY_ID || 'missing';
 var AWS_SECRET_ACCESS_KEY = process.env.AWS_SECRET_ACCESS_KEY || 'missing';
-var AWS_REGION = process.env.AWS_REGION || 'us-east-1';
+var AWS_REGION = process.env.AWS_REGION || 'us-east-1,us-west-2,eu-west-1';
 var AWS_FUNCTION_NAME = process.env.AWS_FUNCTION_NAME || packageJson.name;
 var AWS_HANDLER = process.env.AWS_HANDLER || 'index.handler';
 var AWS_MODE = 'event';
