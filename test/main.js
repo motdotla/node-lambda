@@ -28,7 +28,7 @@ var codeDirectory = lambda._codeDirectory(program);
 
 describe('node-lambda', function() {
   it('version should be set', function() {
-    assert.equal(lambda.version, '0.3.8');
+    assert.equal(lambda.version, '0.3.9');
   });
 
   describe('_params', function() {
