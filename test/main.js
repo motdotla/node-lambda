@@ -20,9 +20,9 @@ var program = {
 
 describe('node-lambda', function() {
   it('version should be set', function() {
-    lambda.version.should.eql('0.3.5'); 
+    lambda.version.should.eql('0.3.6');
   });
-  
+
   describe('_params', function() {
     it( 'appends environment to original functionName', function() {
       var params = lambda._params(program);
