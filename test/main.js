@@ -9,7 +9,11 @@ var admzip = require('adm-zip');
 
 var assert = chai.assert;
 
-var program = {
+function clone(payload) {    
+  return JSON.parse(JSON.stringify(payload))
+}
+
+var originalProgram = {
   environment: 'development',
   accessKey: 'key',
   secretKey: 'secret',
@@ -27,14 +31,30 @@ var program = {
 var codeDirectory = lambda._codeDirectory(program);
 
 describe('node-lambda', function() {
+  beforeEach(function() {
+    program = clone(originalProgram);
+  });
+
   it('version should be set', function() {
-    assert.equal(lambda.version, '0.3.10');
+    assert.equal(lambda.version, '0.3.11');
   });
 
   describe('_params', function() {
     it( 'appends environment to original functionName', function() {
       var params = lambda._params(program);
       assert.equal(params.FunctionName, 'node-lambda-development');
+    });
+
+    it( 'appends environment to original functionName (production)', function() {
+      program.environment = 'production';
+      var params = lambda._params(program);
+      assert.equal(params.FunctionName, 'node-lambda-production');
+    });
+
+    it( 'appends version to original functionName', function() {
+      program.version = '2015-02-01';
+      var params = lambda._params(program);
+      assert.equal(params.FunctionName, 'node-lambda-development-2015-02-01');
     });
   });
 
