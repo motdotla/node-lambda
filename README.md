@@ -95,6 +95,11 @@ $ node-lambda deploy --help
     -u, --runtime [nodejs]            Lambda Runtime
 ```
 
+## Other AWS Lambda Tools Projects
+
++ [lambdaws](https://github.com/mentum/lambdaws)
++ [lambdaws-instant-api](https://github.com/mentum/lambdaws-instant-api)
+
 ## Contributing
 
 1. Fork it
