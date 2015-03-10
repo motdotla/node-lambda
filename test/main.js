@@ -1,6 +1,7 @@
 var chai = require('chai');
 var program = require('commander');
 var fs = require('fs');
+var Hoek = require('hoek');
 var lambda = require('../lib/main');
 var os = require('os');
 var fs = require('fs');
@@ -8,10 +9,6 @@ var _ = require('lodash');
 var admzip = require('adm-zip');
 
 var assert = chai.assert;
-
-function clone(payload) {    
-  return JSON.parse(JSON.stringify(payload))
-}
 
 var originalProgram = {
   environment: 'development',
@@ -32,11 +29,11 @@ var codeDirectory = lambda._codeDirectory(program);
 
 describe('node-lambda', function() {
   beforeEach(function() {
-    program = clone(originalProgram);
+    program = Hoek.clone(originalProgram);
   });
 
   it('version should be set', function() {
-    assert.equal(lambda.version, '0.3.14');
+    assert.equal(lambda.version, '0.3.15');
   });
 
   describe('_params', function() {
