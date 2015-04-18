@@ -84,7 +84,7 @@ describe('node-lambda', function() {
     });
 
     it('_npm adds node_modules', function(done) {
-      this.timeout(10000); // give it time to build the node modules
+      this.timeout(30000); // give it time to build the node modules
 
       lambda._npmInstall(program, codeDirectory, function(err, result) {
         var contents = fs.readdirSync(codeDirectory);
