@@ -33,3 +33,4 @@ node_modules
 !.env.example
 .env
 event.json
+npm-debug.log*
