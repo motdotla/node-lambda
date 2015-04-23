@@ -1,15 +1,24 @@
 #!/usr/bin/env node
 
+var fs = require('fs');
+var ini = require('ini');
 var dotenv = require('dotenv');
 var lambda = require('../lib/main.js');
 var program = require('commander');
 var packageJson = require(process.cwd() + '/package.json');
 
+var aws_conf = {};
+try {
+  var file_path = process.env.HOME+'/.aws/credentials';
+  var ini_raw = fs.readFileSync(file_path, 'utf-8');
+  aws_conf = ini.parse(ini_raw).default;
+} catch (err) {/* intentionally blank */}
+
 dotenv.load();
 
 var AWS_ENVIRONMENT = process.env.AWS_ENVIRONMENT || 'development';
-var AWS_ACCESS_KEY_ID = process.env.AWS_ACCESS_KEY_ID || 'missing';
-var AWS_SECRET_ACCESS_KEY = process.env.AWS_SECRET_ACCESS_KEY || 'missing';
+var AWS_ACCESS_KEY_ID = process.env.AWS_ACCESS_KEY_ID || aws_conf.aws_access_key_id || 'missing';
+var AWS_SECRET_ACCESS_KEY = process.env.AWS_SECRET_ACCESS_KEY || aws_conf.aws_secret_access_key || 'missing';
 var AWS_REGION = process.env.AWS_REGION || 'us-east-1,us-west-2,eu-west-1';
 var AWS_FUNCTION_NAME = process.env.AWS_FUNCTION_NAME || packageJson.name;
 var AWS_HANDLER = process.env.AWS_HANDLER || 'index.handler';
