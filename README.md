@@ -87,7 +87,7 @@ $ node-lambda deploy --help
     -v, --version [custom-version]    Lambda Version
     -n, --functionName [node-lambda]  Lambda FunctionName
     -h, --handler [index.handler]     Lambda Handler {index.handler}
-    -m, --mode [event]                Lambda Mode
+    -c, --mode [event]                Lambda Mode
     -o, --role [your_role]            Amazon Role ARN
     -m, --memorySize [128]            Lambda Memory Size
     -t, --timeout [3]                 Lambda Timeout
