@@ -6,7 +6,7 @@ var lambda = require('../lib/main');
 var os = require('os');
 var fs = require('fs');
 var _ = require('lodash');
-var admzip = require('adm-zip');
+var zip = require('node-zip');
 
 var assert = chai.assert;
 
@@ -111,10 +111,9 @@ describe('node-lambda', function() {
     it('zips the file and has an index.js file', function(done) {
       this.timeout(30000); // give it time to zip
 
-      lambda._zip(program, codeDirectory, function(err, zipfilePath) {
-        var zip = new admzip(zipfilePath);
-        var zipEntries = zip.getEntries();
-        var contents = _.map(zipEntries, function(entry) { return entry.entryName.toString() });
+      lambda._zip(program, codeDirectory, function(err, data) {
+        var archive = new zip(data);
+        var contents = _.map(archive.files, function(f) { return f.name.toString() });
         var result = _.includes(contents, 'index.js');
         assert.equal(result, true);
 
