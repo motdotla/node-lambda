@@ -35,7 +35,7 @@ node-lambda deploy
 
 #### setup
 
-Initializes the `event.json` and `.env` files. `event.json` is where you mock your event. `.env.` is where you place your deployment configuration.
+Initializes the `event.json`, `.env` files, and `deploy.env` files. `event.json` is where you mock your event. `.env.` is where you place your deployment configuration. `deploy.env` has the same format as `.env`, but is used for holding any environment/config variables that you need to be deployed with your code to Lambda but you don't want in version control (e.g. DB connection info).
 
 ```
 $ node-lambda setup --help
@@ -47,10 +47,10 @@ $ node-lambda setup --help
     -h, --help                     output usage information
 ```
 
-After running setup, it's a good idea to gitignore the generated `event.json` and `.env` file.
+After running setup, it's a good idea to gitignore the generated `event.json` and `.env` files.
 
 ```
-echo ".env\nevent.json" >> .gitignore
+echo ".env\ndeploy.env\nevent.json" >> .gitignore
 ```
 
 #### run
@@ -80,7 +80,7 @@ $ node-lambda deploy --help
   Options:
 
     -h, --help                        output usage information
-    -e, --environment [staging]       Choose environment {development, stating, production}
+    -e, --environment [staging]       Choose environment {development, staging, production}
     -a, --accessKey [your_key]        AWS Access Key
     -s, --secretKey [your_secret]     AWS Secret Key
     -r, --region [us-east-1]          AWS Region(s)
@@ -93,7 +93,11 @@ $ node-lambda deploy --help
     -t, --timeout [3]                 Lambda Timeout
     -d, --description [missing]       Lambda Description
     -u, --runtime [nodejs]            Lambda Runtime
+    -f, --configFile []               Path to file holding secret environment variables (e.g. "deploy.env")`
 ```
+
+## Custom Environment Variables
+AWS Lambda doesn't let you set environment variables for your function, but in many cases you will need to configure your function with secure values that you don't want to check into version control. Use the sample `deploy.env` file to set environment variables that will be prepended to your compiled Lambda function before it gets uploaded to S3. For example, a DB connection string or encryption key.
 
 ## Other AWS Lambda Tools Projects
 
