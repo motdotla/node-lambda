@@ -32,7 +32,7 @@ describe('node-lambda', function () {
   });
 
   it('version should be set', function () {
-    assert.equal(lambda.version, '0.6.1');
+    assert.equal(lambda.version, '0.6.2');
   });
 
   describe('_params', function () {
