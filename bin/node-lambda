@@ -28,7 +28,7 @@ program
   .command('deploy')
   .description('Deploy your application to Amazon Lambda')
   .option('-e, --environment [' + AWS_ENVIRONMENT + ']', 'Choose environment {dev, staging, production}',
-  AWS_ENVIRONMENT)
+    AWS_ENVIRONMENT)
   .option('-a, --accessKey [' + AWS_ACCESS_KEY_ID + ']', 'AWS Access Key', AWS_ACCESS_KEY_ID)
   .option('-s, --secretKey [' + AWS_SECRET_ACCESS_KEY + ']', 'AWS Secret Key', AWS_SECRET_ACCESS_KEY)
   .option('-e, --sessionToken [' + AWS_SESSION_TOKEN + ']', 'AWS Session Token', AWS_SESSION_TOKEN)
@@ -43,7 +43,7 @@ program
   .option('-u, --runtime [' + AWS_RUNTIME + ']', 'Lambda Runtime', AWS_RUNTIME)
   .option('-v, --version [' + AWS_FUNCTION_VERSION + ']', 'Lambda Function Version', AWS_FUNCTION_VERSION)
   .option('-f, --configFile [' + CONFIG_FILE + ']',
-  'Path to file holding secret environment variables (e.g. "deploy.env")', CONFIG_FILE)
+    'Path to file holding secret environment variables (e.g. "deploy.env")', CONFIG_FILE)
   .action(function (prg) {
     lambda.deploy(prg);
   });
