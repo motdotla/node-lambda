@@ -83,8 +83,8 @@ $ node-lambda deploy --help
     -e, --environment [staging]       Choose environment {development, staging, production}
     -a, --accessKey [your_key]        AWS Access Key
     -s, --secretKey [your_secret]     AWS Secret Key
+    -k, --sessionToken [your_token]   AWS Session Token
     -r, --region [us-east-1]          AWS Region(s)
-    -v, --version [custom-version]    Lambda Version
     -n, --functionName [node-lambda]  Lambda FunctionName
     -h, --handler [index.handler]     Lambda Handler {index.handler}
     -c, --mode [event]                Lambda Mode
@@ -93,6 +93,7 @@ $ node-lambda deploy --help
     -t, --timeout [3]                 Lambda Timeout
     -d, --description [missing]       Lambda Description
     -u, --runtime [nodejs]            Lambda Runtime
+    -v, --version [custom-version]    Lambda Version
     -f, --configFile []               Path to file holding secret environment variables (e.g. "deploy.env")`
 ```
 
