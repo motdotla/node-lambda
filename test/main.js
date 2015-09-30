@@ -13,6 +13,7 @@ var originalProgram = {
   environment: 'development',
   accessKey: 'key',
   secretKey: 'secret',
+  sessionToken: 'token',
   functionName: 'node-lambda',
   handler: 'index.handler',
   mode: 'event',
