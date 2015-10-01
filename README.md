@@ -66,6 +66,7 @@ $ node-lambda run --help
 
     -h, --help                     output usage information
     -h, --handler [index.handler]  Lambda Handler {index.handler}
+    -j, --eventFile [event.json]   Event JSON File
 ```
 
 #### deploy
