@@ -23,6 +23,7 @@ var AWS_DESCRIPTION = process.env.AWS_DESCRIPTION || '';
 var AWS_RUNTIME = process.env.AWS_RUNTIME || 'nodejs';
 var AWS_FUNCTION_VERSION = process.env.AWS_FUNCTION_VERSION || '';
 var EVENT_FILE = process.env.EVENT_FILE || 'event.json';
+var CONTEXT_FILE = process.env.CONTEXT_FILE || 'context.json';
 
 program
   .version(lambda.version)
@@ -55,6 +56,7 @@ program
   .description('Run your Amazon Lambda application locally')
   .option('-h, --handler [' + AWS_HANDLER + ']', 'Lambda Handler {index.handler}', AWS_HANDLER)
   .option('-j, --eventFile [' + EVENT_FILE + ']', 'Event JSON File', EVENT_FILE)
+  .option('-x, --contextFile [' + CONTEXT_FILE + ']', 'Context JSON File', CONTEXT_FILE)
   .action(function (prg) {
     lambda.run(prg);
   });
