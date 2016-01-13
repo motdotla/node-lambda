@@ -64,25 +64,67 @@ describe('node-lambda', function () {
   });
 
   describe('_rsync', function () {
+    beforeEach(function (done) {
+      lambda._cleanDirectory(codeDirectory, done);
+    });
+
     it('rsync an index.js as well as other files', function (done) {
       lambda._rsync(program, codeDirectory, function (err, result) {
         var contents = fs.readdirSync(codeDirectory);
 
-        result = _.includes(contents, 'index.js');
+        result = _.includes(contents, 'index.js') ||
+                 _.includes(contents, 'package.json');
         assert.equal(result, true);
 
         done();
+      });
+    });
+
+    describe("when there are excluded files", function (done) {
+      beforeEach(function (done) {
+        program.excludeGlobs="*.png test"
+        done();
+      });
+
+      it('rsync an index.js as well as other files', function (done) {
+        lambda._rsync(program, codeDirectory, function (err, result) {
+          var contents = fs.readdirSync(codeDirectory);
+
+          result = _.includes(contents, 'index.js') ||
+                   _.includes(contents, 'package.json');
+          assert.equal(result, true);
+
+          done();
+        });
+      });
+
+      it('rsync excludes files matching excludeGlobs', function (done) {
+        lambda._rsync(program, codeDirectory, function (err, result) {
+          var contents = fs.readdirSync(codeDirectory);
+
+          result = _.includes(contents, 'node-lambda.png') ||
+                   _.includes(contents, 'test');
+          assert.equal(result, false);
+
+          done();
+        });
       });
     });
   });
 
   describe('_npmInstall', function () {
     beforeEach(function (done) {
-      lambda._rsync(program, codeDirectory, function (err) {
+      lambda._cleanDirectory(codeDirectory, function (err) {
         if (err) {
-          return done(err);
+          throw err;
         }
-        done();
+
+        lambda._rsync(program, codeDirectory, function (err) {
+          if (err) {
+            return done(err);
+          }
+          done();
+        });
       });
     });
 
@@ -92,7 +134,7 @@ describe('node-lambda', function () {
       lambda._npmInstall(program, codeDirectory, function (err, result) {
         var contents = fs.readdirSync(codeDirectory);
 
-        result = _.includes(contents, 'index.js');
+        result = _.includes(contents, 'node_modules');
         assert.equal(result, true);
 
         done();
@@ -103,15 +145,21 @@ describe('node-lambda', function () {
   describe('_zip', function () {
     beforeEach(function (done) {
       this.timeout(30000); // give it time to build the node modules
-      lambda._rsync(program, codeDirectory, function (err) {
+      lambda._cleanDirectory(codeDirectory, function (err) {
         if (err) {
-          return done(err);
+          throw err;
         }
-        lambda._npmInstall(program, codeDirectory, function (err) {
+
+        lambda._rsync(program, codeDirectory, function (err) {
           if (err) {
             return done(err);
           }
-          done();
+          lambda._npmInstall(program, codeDirectory, function (err) {
+            if (err) {
+              return done(err);
+            }
+            done();
+          });
         });
       });
     });
