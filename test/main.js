@@ -116,7 +116,7 @@ describe('node-lambda', function () {
     beforeEach(function (done) {
       lambda._cleanDirectory(codeDirectory, function (err) {
         if (err) {
-          throw err;
+          return done(err);
         }
 
         lambda._rsync(program, codeDirectory, function (err) {
@@ -147,7 +147,7 @@ describe('node-lambda', function () {
       this.timeout(30000); // give it time to build the node modules
       lambda._cleanDirectory(codeDirectory, function (err) {
         if (err) {
-          throw err;
+          return done(err);
         }
 
         lambda._rsync(program, codeDirectory, function (err) {
