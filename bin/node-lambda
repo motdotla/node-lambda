@@ -47,7 +47,7 @@ program
   .option('-f, --configFile [' + CONFIG_FILE + ']',
     'Path to file holding secret environment variables (e.g. "deploy.env")', CONFIG_FILE)
   .option('-x, --excludeGlobs [' + EXCLUDE_GLOBS + ']',
-    'Space-separated glob pattern(s) for additional exclude files (e.g. ".env deploy.env")', EXCLUDE_GLOBS)
+    'Space-separated glob pattern(s) for additional exclude files (e.g. "event.json dotenv.sample")', EXCLUDE_GLOBS)
   .action(function (prg) {
     lambda.deploy(prg);
   });
