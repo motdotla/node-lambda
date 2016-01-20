@@ -1,6 +1,6 @@
 {
   "name": "node-lambda",
-  "version": "0.7.1",
+  "version": "0.8.0",
   "description": "Command line tool for locally running and remotely deploying your node.js applications to Amazon Lambda.",
   "main": "lib/main.js",
   "directories": {
@@ -28,7 +28,7 @@
   ],
   "readmeFilename": "README.md",
   "author": "motdotla",
-  "license": "BSD",
+  "license": "BSD-2-Clause",
   "devDependencies": {
     "chai": "^2.0.0",
     "hoek": "^2.11.1",
