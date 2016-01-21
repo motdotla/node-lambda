@@ -25,7 +25,7 @@ var originalProgram = {
   region: 'us-east-1,us-west-2,eu-west-1'
 };
 
-var codeDirectory = lambda._codeDirectory(program);
+var codeDirectory = lambda._codeDirectory;
 
 describe('node-lambda', function () {
   beforeEach(function () {
