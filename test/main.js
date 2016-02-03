@@ -132,6 +132,24 @@ describe('node-lambda', function () {
     });
   });
 
+  describe('_archive', function () {
+    it('installs and zips with an index.js file and node_modules/async', function (done) {
+      this.timeout(30000); // give it time to zip
+
+      lambda._archive(program, function (err, data) {
+        var archive = new zip(data);
+        var contents = _.map(archive.files, function (f) {
+          return f.name.toString();
+        });
+        var result = _.includes(contents, 'index.js');
+        assert.equal(result, true);
+        result = _.includes(contents, 'node_modules/async/lib/async.js');
+        assert.equal(result, true);
+        done();
+      })
+    })
+  });
+
   describe('environment variable injection', function () {
     beforeEach(function () {
       // Prep...
