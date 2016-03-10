@@ -35,7 +35,7 @@ node-lambda deploy
 
 #### setup
 
-Initializes the `event.json`, `.env` files, and `deploy.env` files. `event.json` is where you mock your event. `.env.` is where you place your deployment configuration. `deploy.env` has the same format as `.env`, but is used for holding any environment/config variables that you need to be deployed with your code to Lambda but you don't want in version control (e.g. DB connection info).
+Initializes the `event.json`, `.env` files, and `deploy.env` files. `event.json` is where you mock your event. `.env` is where you place your deployment configuration. `deploy.env` has the same format as `.env`, but is used for holding any environment/config variables that you need to be deployed with your code to Lambda but you don't want in version control (e.g. DB connection info).
 
 ```
 $ node-lambda setup --help
