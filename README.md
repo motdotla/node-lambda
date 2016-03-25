@@ -96,6 +96,8 @@ $ node-lambda deploy --help
     -u, --runtime [nodejs]            Lambda Runtime
     -v, --version [custom-version]    Lambda Version
     -f, --configFile []               Path to file holding secret environment variables (e.g. "deploy.env")`
+    -b, --vpcSubnets []               VPC Subnet(s) you want your Lambda Function to deploy in to (comma separated list), when using this, the below param is also required
+    -g, --vpcSecurityGroups []        VPC Security Group(s) you want your Lambda Function to deploy in to (comma separated list), when using this, the above param is also required
 ```
 
 ## Custom Environment Variables
