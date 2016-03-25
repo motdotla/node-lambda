@@ -94,10 +94,11 @@ $ node-lambda deploy --help
     -t, --timeout [3]                 Lambda Timeout
     -d, --description [missing]       Lambda Description
     -u, --runtime [nodejs]            Lambda Runtime
+    -p, --publish [false]             This boolean parameter can be used to request AWS Lambda to create the Lambda function and publish a version as an atomic operation
     -v, --version [custom-version]    Lambda Version
     -f, --configFile []               Path to file holding secret environment variables (e.g. "deploy.env")`
-    -b, --vpcSubnets []               VPC Subnet(s) you want your Lambda Function to deploy in to (comma separated list), when using this, the below param is also required
-    -g, --vpcSecurityGroups []        VPC Security Group(s) you want your Lambda Function to deploy in to (comma separated list), when using this, the above param is also required
+    -b, --vpcSubnets []               VPC Subnet ID(s, comma separated list) for your Lambda Function, when using this, the below param is also required
+    -g, --vpcSecurityGroups []        VPC Security Group ID(s, comma separated list) for your Lambda Function, when using this, the above param is also required
 ```
 
 ## Custom Environment Variables

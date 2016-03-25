@@ -15,12 +15,12 @@ var AWS_SESSION_TOKEN = process.env.AWS_SESSION_TOKEN || '';
 var AWS_REGION = process.env.AWS_REGION || 'us-east-1,us-west-2,eu-west-1';
 var AWS_FUNCTION_NAME = process.env.AWS_FUNCTION_NAME || packageJson.name;
 var AWS_HANDLER = process.env.AWS_HANDLER || 'index.handler';
-var AWS_MODE = 'event';
 var AWS_ROLE = process.env.AWS_ROLE_ARN || process.env.AWS_ROLE || 'missing';
 var AWS_MEMORY_SIZE = process.env.AWS_MEMORY_SIZE || 128;
 var AWS_TIMEOUT = process.env.AWS_TIMEOUT || 60;
 var AWS_DESCRIPTION = process.env.AWS_DESCRIPTION || '';
 var AWS_RUNTIME = process.env.AWS_RUNTIME || 'nodejs';
+var AWS_PUBLISH = process.env.AWS_PUBLIS || false;
 var AWS_FUNCTION_VERSION = process.env.AWS_FUNCTION_VERSION || '';
 var AWS_VPC_SUBNETS = process.env.AWS_VPC_SUBNETS || '';
 var AWS_VPC_SECURITY_GROUPS = process.env.AWS_VPC_SECURITY_GROUPS || '';
@@ -38,12 +38,12 @@ program
   .option('-r, --region [' + AWS_REGION + ']', 'AWS Region', AWS_REGION)
   .option('-n, --functionName [' + AWS_FUNCTION_NAME + ']', 'Lambda FunctionName', AWS_FUNCTION_NAME)
   .option('-h, --handler [' + AWS_HANDLER + ']', 'Lambda Handler {index.handler}', AWS_HANDLER)
-  .option('-c, --mode [' + AWS_MODE + ']', 'Lambda Mode', AWS_MODE)
   .option('-o, --role [' + AWS_ROLE + ']', 'Amazon Role ARN', AWS_ROLE)
   .option('-m, --memorySize [' + AWS_MEMORY_SIZE + ']', 'Lambda Memory Size', AWS_MEMORY_SIZE)
   .option('-t, --timeout [' + AWS_TIMEOUT + ']', 'Lambda Timeout', AWS_TIMEOUT)
   .option('-d, --description [' + AWS_DESCRIPTION + ']', 'Lambda Description', AWS_DESCRIPTION)
   .option('-u, --runtime [' + AWS_RUNTIME + ']', 'Lambda Runtime', AWS_RUNTIME)
+  .option('-p, --publish [' + AWS_PUBLISH + ']', 'Lambda Publish', AWS_PUBLISH)
   .option('-v, --version [' + AWS_FUNCTION_VERSION + ']', 'Lambda Function Version', AWS_FUNCTION_VERSION)
   .option('-b, --vpcSubnets [' + AWS_VPC_SUBNETS + ']', 'Lambda Function VPC Subnets', AWS_VPC_SUBNETS)
   .option('-g, --vpcSecurityGroups [' + AWS_VPC_SECURITY_GROUPS + ']', 'Lambda VPC Security Group',

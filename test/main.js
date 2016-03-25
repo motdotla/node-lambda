@@ -16,7 +16,6 @@ var originalProgram = {
   sessionToken: 'token',
   functionName: 'node-lambda',
   handler: 'index.handler',
-  mode: 'event',
   role: 'some:arn:aws:iam::role',
   memorySize: 128,
   timeout: 3,
@@ -59,12 +58,16 @@ describe('node-lambda', function () {
       program.vpcSecurityGroups = 'sg-00000000,sg-00000001,sg-00000002';
       var params = lambda._params(program);
       assert.equal(params.VpcConfig.SubnetIds[0], program.vpcSubnets.split(',')[0]);
+      assert.equal(params.VpcConfig.SubnetIds[1], program.vpcSubnets.split(',')[1]);
+      assert.equal(params.VpcConfig.SubnetIds[2], program.vpcSubnets.split(',')[2]);
       assert.equal(params.VpcConfig.SecurityGroupIds[0], program.vpcSecurityGroups.split(',')[0]);
+      assert.equal(params.VpcConfig.SecurityGroupIds[1], program.vpcSecurityGroups.split(',')[1]);
+      assert.equal(params.VpcConfig.SecurityGroupIds[2], program.vpcSecurityGroups.split(',')[2]);
     });
 
     it('does not append VpcConfig when params are not set', function() {
       var params = lambda._params(program);
-      assert.equal('VpcConfig' in params, false);
+      assert.equal(Object.keys(params.VpcConfig).length, 0);
     });
   });
 
