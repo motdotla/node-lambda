@@ -53,6 +53,19 @@ describe('node-lambda', function () {
       var params = lambda._params(program);
       assert.equal(params.FunctionName, 'node-lambda-development-2015-02-01');
     });
+
+    it('appends VpcConfig to params when vpc params set', function() {
+      program.vpcSubnets = 'subnet-00000000,subnet-00000001,subnet-00000002';
+      program.vpcSecurityGroups = 'sg-00000000,sg-00000001,sg-00000002';
+      var params = lambda._params(program);
+      assert.equal(params.VpcConfig.SubnetIds[0], program.vpcSubnets.split(',')[0]);
+      assert.equal(params.VpcConfig.SecurityGroupIds[0], program.vpcSecurityGroups.split(',')[0]);
+    });
+
+    it('does not append VpcConfig when params are not set', function() {
+      var params = lambda._params(program);
+      assert.equal('VpcConfig' in params, false);
+    });
   });
 
   describe('_zipfileTmpPath', function () {
