@@ -1,5 +1,10 @@
 # node-lambda
 
+
+## !!! Modification of (node-lambda)[https://www.npmjs.com/package/node-lambda]
+Which allows you to run `post_install.sh` script (if exists) after `npm install --production` and before creating a .zip file and deploying to lambda
+
+
 ![node-lambda](../master/node-lambda.png?raw=true)
 
 Command line tool to locally run and deploy your node.js application to [Amazon Lambda](http://aws.amazon.com/lambda/).
