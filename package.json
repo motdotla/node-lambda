@@ -1,6 +1,6 @@
 {
-  "name": "node-lambda",
-  "version": "0.7.1",
+  "name": "node-lambda-postinstall",
+  "version": "0.7.1a",
   "description": "Command line tool for locally running and remotely deploying your node.js applications to Amazon Lambda.",
   "main": "lib/main.js",
   "directories": {
@@ -14,7 +14,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/rebelmail/node-lambda.git"
+    "url": "git://github.com/navihtot/node-lambda.git"
   },
   "keywords": [
     "lambda",
