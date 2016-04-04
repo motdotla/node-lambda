@@ -1,7 +1,7 @@
 # node-lambda
 
 
-## !!! Modification of (node-lambda)[https://www.npmjs.com/package/node-lambda]
+## !!! Modification of [node-lambda](https://www.npmjs.com/package/node-lambda)
 Which allows you to run `post_install.sh` script (if exists) after `npm install --production` and before creating a .zip file and deploying to lambda
 
 
