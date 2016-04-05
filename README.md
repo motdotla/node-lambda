@@ -19,7 +19,7 @@ node-lambda run
 ## Installation
 
 ```
-npm install -g node-lambda
+npm install -g node-lambda-postinstall
 ```
 
 ## Example App
