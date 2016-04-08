@@ -50,7 +50,7 @@ $ node-lambda setup --help
 After running setup, it's a good idea to gitignore the generated `event.json` and `.env` files.
 
 ```
-echo ".env\ndeploy.env\nevent.json" >> .gitignore
+echo -e ".env\ndeploy.env\nevent.json" >> .gitignore
 ```
 
 #### run
