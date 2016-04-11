@@ -107,7 +107,6 @@ $ node-lambda deploy --help
     -r, --region [us-east-1]          AWS Region(s)
     -n, --functionName [node-lambda]  Lambda FunctionName
     -h, --handler [index.handler]     Lambda Handler {index.handler}
-    -c, --mode [event]                Lambda Mode
     -o, --role [your_role]            Amazon Role ARN
     -m, --memorySize [128]            Lambda Memory Size
     -t, --timeout [3]                 Lambda Timeout
