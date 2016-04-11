@@ -26,6 +26,7 @@ var AWS_FUNCTION_VERSION = process.env.AWS_FUNCTION_VERSION || '';
 var AWS_VPC_SUBNETS = process.env.AWS_VPC_SUBNETS || '';
 var AWS_VPC_SECURITY_GROUPS = process.env.AWS_VPC_SECURITY_GROUPS || '';
 var EVENT_FILE = process.env.EVENT_FILE || 'event.json';
+var PACKAGE_DIRECTORY = process.env.PACKAGE_DIRECTORY;
 
 program
   .version(lambda.version)
@@ -49,12 +50,27 @@ program
   .option('-b, --vpcSubnets [' + AWS_VPC_SUBNETS + ']', 'Lambda Function VPC Subnets', AWS_VPC_SUBNETS)
   .option('-g, --vpcSecurityGroups [' + AWS_VPC_SECURITY_GROUPS + ']', 'Lambda VPC Security Group',
     AWS_VPC_SECURITY_GROUPS)
+  .option('-p, --packageDirectory [' + PACKAGE_DIRECTORY + ']', 'Local Package Directory', PACKAGE_DIRECTORY)
   .option('-f, --configFile [' + CONFIG_FILE + ']',
     'Path to file holding secret environment variables (e.g. "deploy.env")', CONFIG_FILE)
   .option('-x, --excludeGlobs [' + EXCLUDE_GLOBS + ']',
     'Space-separated glob pattern(s) for additional exclude files (e.g. "event.json dotenv.sample")', EXCLUDE_GLOBS)
   .action(function (prg) {
     lambda.deploy(prg);
+  });
+
+program
+  .version(lambda.version)
+  .command('package')
+  .description('Create zipped package for Amazon Lambda deployment')
+  .option('-p, --packageDirectory [' + PACKAGE_DIRECTORY + ']', 'Local Package Directory', PACKAGE_DIRECTORY)
+  .option('-n, --functionName [' + AWS_FUNCTION_NAME + ']', 'Lambda FunctionName', AWS_FUNCTION_NAME)
+  .option('-e, --environment [' + AWS_ENVIRONMENT + ']', 'Choose environment {dev, staging, production}',
+    AWS_ENVIRONMENT)
+  .option('-f, --configFile [' + CONFIG_FILE + ']',
+    'Path to file holding secret environment variables (e.g. "deploy.env")', CONFIG_FILE)
+  .action(function (prg) {
+    lambda.package(prg);
   });
 
 program

@@ -28,6 +28,7 @@ There are 3 available commands.
 ```
 node-lambda setup
 node-lambda run
+node-lambda package
 node-lambda deploy
 ```
 
@@ -69,6 +70,24 @@ $ node-lambda run --help
     -j, --eventFile [event.json]   Event JSON File
 ```
 
+#### package
+
+Bundles your application into a local zip file.
+
+```
+$ node-lambda package --help
+
+  Usage: package [options]
+
+  Options:
+
+    -h, --help                          output usage information
+    -p, --packageDirectory [build]      Local Package Directory
+    -n, --functionName [node-lambda]    Lambda FunctionName
+    -e, --environment [staging]         Choose environment {development, staging, production}
+    -f, --configFile []                 Path to file holding secret environment variables (e.g. "deploy.env")
+```
+
 #### deploy
 
 Bundles and deploys your application up to Amazon Lambda.
@@ -88,7 +107,6 @@ $ node-lambda deploy --help
     -r, --region [us-east-1]          AWS Region(s)
     -n, --functionName [node-lambda]  Lambda FunctionName
     -h, --handler [index.handler]     Lambda Handler {index.handler}
-    -c, --mode [event]                Lambda Mode
     -o, --role [your_role]            Amazon Role ARN
     -m, --memorySize [128]            Lambda Memory Size
     -t, --timeout [3]                 Lambda Timeout
