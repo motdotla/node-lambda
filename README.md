@@ -104,7 +104,7 @@ AWS Lambda doesn't let you set environment variables for your function, but in m
 
 ## Post install script
 
-When running `node-lambda deploy` if you need to do some action after `npm install --production` and before deploying to AWS Lambda (i.e. replace some modules with precompiled ones or download some libraries) you can create `post_install.sh` script. If the file exists the script will be runned (and output shown after execution) if not it is skipped. Make sure that the script is executable.
+When running `node-lambda deploy` if you need to do some action after `npm install --production` and before deploying to AWS Lambda (i.e. replace some modules with precompiled ones or download some libraries) you can create `post_install.sh` script. If the file exists the script will be executed (and output shown after execution) if not it is skipped. Make sure that the script is executable.
 
 
 ## Other AWS Lambda Tools Projects
