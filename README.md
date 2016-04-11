@@ -68,7 +68,7 @@ $ node-lambda run --help
     -h, --help                     output usage information
     -h, --handler [index.handler]  Lambda Handler {index.handler}
     -j, --eventFile [event.json]   Event JSON File
-    -u, --runtime [nodejs4.3]      Lambda Runtime {nodejs4.3, nodejs} - `nodejs4.3` is the current standard, `nodejs` is v0.10.36 
+    -u, --runtime [nodejs4.3]      Lambda Runtime {nodejs4.3, nodejs} - "nodejs4.3" is the current standard, "nodejs" is v0.10.36 
 ```
 
 #### package
@@ -113,7 +113,7 @@ $ node-lambda deploy --help
     -m, --memorySize [128]            Lambda Memory Size
     -t, --timeout [3]                 Lambda Timeout
     -d, --description [missing]       Lambda Description
-    -u, --runtime [nodejs4.3]         Lambda Runtime {nodejs4.3, nodejs} - `nodejs4.3` is the current standard, `nodejs` is v0.10.36 
+    -u, --runtime [nodejs4.3]         Lambda Runtime {nodejs4.3, nodejs} - "nodejs4.3" is the current standard, "nodejs" is v0.10.36 
     -p, --publish [false]             This boolean parameter can be used to request AWS Lambda to create the Lambda function and publish a version as an atomic operation
     -v, --version [custom-version]    Lambda Version
     -f, --configFile []               Path to file holding secret environment variables (e.g. "deploy.env")`
