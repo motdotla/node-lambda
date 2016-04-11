@@ -131,6 +131,8 @@ AWS Lambda now supports Node.js v4.3.2, and there have been some [API changes](h
 `context.done()`, `context.succeed()`, and `context.fail()` are deprecated in favor of the Node convention of passing in
 a callback function.  These will still work for now for backward compatibility, but are no longer recommended.
 
+v0.10.36 is still supported, and can be targeted by changing the `AWS_RUNTIME` value to `nodejs` in the `.env` file.
+
 
 ## Other AWS Lambda Tools Projects
 
