@@ -123,6 +123,11 @@ $ node-lambda deploy --help
 
 AWS Lambda doesn't let you set environment variables for your function, but in many cases you will need to configure your function with secure values that you don't want to check into version control, for example a DB connection string or encryption key. Use the sample `deploy.env` file in combination with the `--configFile` flag to set values which will be prepended to your compiled Lambda function as `process.env` environment variables before it gets uploaded to S3. 
 
+## Post install script
+
+When running `node-lambda deploy` if you need to do some action after `npm install --production` and before deploying to AWS Lambda (i.e. replace some modules with precompiled ones or download some libraries) you can create `post_install.sh` script. If the file exists the script will be executed (and output shown after execution) if not it is skipped. Make sure that the script is executable.
+
+
 ## Other AWS Lambda Tools Projects
 
 + [lambdaws](https://github.com/mentum/lambdaws)
