@@ -125,6 +125,13 @@ $ node-lambda deploy --help
 
 AWS Lambda doesn't let you set environment variables for your function, but in many cases you will need to configure your function with secure values that you don't want to check into version control, for example a DB connection string or encryption key. Use the sample `deploy.env` file in combination with the `--configFile` flag to set values which will be prepended to your compiled Lambda function as `process.env` environment variables before it gets uploaded to S3. 
 
+## Node.js Runtime Configuration
+
+AWS Lambda now supports Node.js v4.3.2, and there have been some [API changes](http://docs.aws.amazon.com/lambda/latest/dg/nodejs-prog-model-using-old-runtime.html) for the new version.  Most notably, 
+`context.done()`, `context.succeed()`, and `context.fail()` are deprecated in favor of the Node convention of passing in
+a callback function.  These will still work for now for backward compatibility, but are no longer recommended.
+
+
 ## Other AWS Lambda Tools Projects
 
 + [lambdaws](https://github.com/mentum/lambdaws)
