@@ -68,6 +68,7 @@ $ node-lambda run --help
     -h, --help                     output usage information
     -h, --handler [index.handler]  Lambda Handler {index.handler}
     -j, --eventFile [event.json]   Event JSON File
+    -u, --runtime [nodejs4.3]      Lambda Runtime {nodejs4.3, nodejs} - "nodejs4.3" is the current standard, "nodejs" is v0.10.36 
 ```
 
 #### package
@@ -111,7 +112,7 @@ $ node-lambda deploy --help
     -m, --memorySize [128]            Lambda Memory Size
     -t, --timeout [3]                 Lambda Timeout
     -d, --description [missing]       Lambda Description
-    -u, --runtime [nodejs]            Lambda Runtime
+    -u, --runtime [nodejs4.3]         Lambda Runtime {nodejs4.3, nodejs} - "nodejs4.3" is the current standard, "nodejs" is v0.10.36 
     -p, --publish [false]             This boolean parameter can be used to request AWS Lambda to create the Lambda function and publish a version as an atomic operation
     -v, --version [custom-version]    Lambda Version
     -f, --configFile []               Path to file holding secret environment variables (e.g. "deploy.env")`
@@ -122,6 +123,15 @@ $ node-lambda deploy --help
 ## Custom Environment Variables
 
 AWS Lambda doesn't let you set environment variables for your function, but in many cases you will need to configure your function with secure values that you don't want to check into version control, for example a DB connection string or encryption key. Use the sample `deploy.env` file in combination with the `--configFile` flag to set values which will be prepended to your compiled Lambda function as `process.env` environment variables before it gets uploaded to S3. 
+
+## Node.js Runtime Configuration
+
+AWS Lambda now supports Node.js v4.3.2, and there have been some [API changes](http://docs.aws.amazon.com/lambda/latest/dg/nodejs-prog-model-using-old-runtime.html) for the new version.  Most notably, 
+`context.done()`, `context.succeed()`, and `context.fail()` are deprecated in favor of the Node convention of passing in
+a callback function.  These will still work for now for backward compatibility, but are no longer recommended.
+
+v0.10.36 is still supported, and can be targeted by changing the `AWS_RUNTIME` value to `nodejs` in the `.env` file.
+
 
 ## Other AWS Lambda Tools Projects
 
