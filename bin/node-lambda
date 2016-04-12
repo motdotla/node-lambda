@@ -19,7 +19,7 @@ var AWS_ROLE = process.env.AWS_ROLE_ARN || process.env.AWS_ROLE || 'missing';
 var AWS_MEMORY_SIZE = process.env.AWS_MEMORY_SIZE || 128;
 var AWS_TIMEOUT = process.env.AWS_TIMEOUT || 60;
 var AWS_DESCRIPTION = process.env.AWS_DESCRIPTION || '';
-var AWS_RUNTIME = process.env.AWS_RUNTIME || 'nodejs';
+var AWS_RUNTIME = process.env.AWS_RUNTIME || 'nodejs4.3';
 var AWS_PUBLISH = process.env.AWS_PUBLIS || false;
 var AWS_FUNCTION_VERSION = process.env.AWS_FUNCTION_VERSION || '';
 var AWS_VPC_SUBNETS = process.env.AWS_VPC_SUBNETS || '';
@@ -76,6 +76,7 @@ program
   .description('Run your Amazon Lambda application locally')
   .option('-h, --handler [' + AWS_HANDLER + ']', 'Lambda Handler {index.handler}', AWS_HANDLER)
   .option('-j, --eventFile [' + EVENT_FILE + ']', 'Event JSON File', EVENT_FILE)
+  .option('-u, --runtime [' + AWS_RUNTIME + ']', 'Lambda Runtime', AWS_RUNTIME)
   .action(function (prg) {
     lambda.run(prg);
   });
