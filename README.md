@@ -132,6 +132,8 @@ a callback function.  These will still work for now for backward compatibility, 
 
 v0.10.36 is still supported, and can be targeted by changing the `AWS_RUNTIME` value to `nodejs` in the `.env` file.
 
+## Post install script
+When running `node-lambda deploy` if you need to do some action after `npm install --production` and before deploying to AWS Lambda (i.e. replace some modules with precompiled ones or download some libraries) you can create `post_install.sh` script. If the file exists the script will be executed (and output shown after execution) if not it is skipped. Make sure that the script is executable.
 
 ## Other AWS Lambda Tools Projects
 

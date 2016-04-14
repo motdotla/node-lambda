@@ -1,6 +1,6 @@
 {
-  "name": "node-lambda-test",
-  "version": "0.7.1f",
+  "name": "node-lambda",
+  "version": "0.7.1",
   "description": "Command line tool for locally running and remotely deploying your node.js applications to Amazon Lambda.",
   "main": "lib/main.js",
   "directories": {
