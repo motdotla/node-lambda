@@ -66,7 +66,7 @@ $ node-lambda run --help
   Options:
 
     -h, --help                          Output usage information
-    --handler [index.handler]       Lambda Handler {index.handler}
+    --handler [index.handler]           Lambda Handler {index.handler}
     -j, --eventFile [event.json]        Event JSON File
     -u, --runtime [nodejs4.3]           Lambda Runtime {nodejs4.3, nodejs} - "nodejs4.3" is the current standard, "nodejs" is v0.10.36 
     -x, --contextFile [context.json]    Context JSON file
@@ -108,7 +108,7 @@ $ node-lambda deploy --help
     -k, --sessionToken [your_token]   AWS Session Token
     -r, --region [us-east-1]          AWS Region(s)
     -n, --functionName [node-lambda]  Lambda FunctionName
-    --handler [index.handler]     Lambda Handler {index.handler}
+    --handler [index.handler]         Lambda Handler {index.handler}
     -o, --role [your_role]            Amazon Role ARN
     -m, --memorySize [128]            Lambda Memory Size
     -t, --timeout [3]                 Lambda Timeout
