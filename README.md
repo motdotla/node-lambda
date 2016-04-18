@@ -36,7 +36,7 @@ node-lambda deploy
 
 #### setup
 
-Initializes the `event.json`, `.env` files, and `deploy.env` files. `event.json` is where you mock your event. `.env` is where you place your deployment configuration. `deploy.env` has the same format as `.env`, but is used for holding any environment/config variables that you need to be deployed with your code to Lambda but you don't want in version control (e.g. DB connection info).
+Initializes the `event.json`, `context.json`, `.env` files, and `deploy.env` files. `event.json` is where you mock your event. `context.json` is where you can add additional mock data to the context passed to your lambda function. `.env` is where you place your deployment configuration. `deploy.env` has the same format as `.env`, but is used for holding any environment/config variables that you need to be deployed with your code to Lambda but you don't want in version control (e.g. DB connection info).
 
 ```
 $ node-lambda setup --help
@@ -65,10 +65,11 @@ $ node-lambda run --help
 
   Options:
 
-    -h, --help                     output usage information
-    -h, --handler [index.handler]  Lambda Handler {index.handler}
-    -j, --eventFile [event.json]   Event JSON File
-    -u, --runtime [nodejs4.3]      Lambda Runtime {nodejs4.3, nodejs} - "nodejs4.3" is the current standard, "nodejs" is v0.10.36 
+    -h, --help                          Output usage information
+    --handler [index.handler]           Lambda Handler {index.handler}
+    -j, --eventFile [event.json]        Event JSON File
+    -u, --runtime [nodejs4.3]           Lambda Runtime {nodejs4.3, nodejs} - "nodejs4.3" is the current standard, "nodejs" is v0.10.36 
+    -x, --contextFile [context.json]    Context JSON file
 ```
 
 #### package
@@ -107,7 +108,7 @@ $ node-lambda deploy --help
     -k, --sessionToken [your_token]   AWS Session Token
     -r, --region [us-east-1]          AWS Region(s)
     -n, --functionName [node-lambda]  Lambda FunctionName
-    -h, --handler [index.handler]     Lambda Handler {index.handler}
+    --handler [index.handler]         Lambda Handler {index.handler}
     -o, --role [your_role]            Amazon Role ARN
     -m, --memorySize [128]            Lambda Memory Size
     -t, --timeout [3]                 Lambda Timeout
