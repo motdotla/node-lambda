@@ -9,6 +9,7 @@ dotenv.load();
 
 var AWS_ENVIRONMENT = process.env.AWS_ENVIRONMENT || '';
 var CONFIG_FILE = process.env.CONFIG_FILE || '';
+var EXCLUDE_GLOBS = process.env.EXCLUDE_GLOBS || '';
 var AWS_ACCESS_KEY_ID = process.env.AWS_ACCESS_KEY_ID;
 var AWS_SECRET_ACCESS_KEY = process.env.AWS_SECRET_ACCESS_KEY;
 var AWS_SESSION_TOKEN = process.env.AWS_SESSION_TOKEN || '';
@@ -52,6 +53,8 @@ program
   .option('-p, --packageDirectory [' + PACKAGE_DIRECTORY + ']', 'Local Package Directory', PACKAGE_DIRECTORY)
   .option('-f, --configFile [' + CONFIG_FILE + ']',
     'Path to file holding secret environment variables (e.g. "deploy.env")', CONFIG_FILE)
+  .option('-x, --excludeGlobs [' + EXCLUDE_GLOBS + ']',
+    'Space-separated glob pattern(s) for additional exclude files (e.g. "event.json dotenv.sample")', EXCLUDE_GLOBS)
   .action(function (prg) {
     lambda.deploy(prg);
   });
