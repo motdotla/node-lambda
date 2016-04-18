@@ -16,7 +16,6 @@ var originalProgram = {
   sessionToken: 'token',
   functionName: 'node-lambda',
   handler: 'index.handler',
-  mode: 'event',
   role: 'some:arn:aws:iam::role',
   memorySize: 128,
   timeout: 3,
@@ -53,6 +52,23 @@ describe('node-lambda', function () {
       var params = lambda._params(program);
       assert.equal(params.FunctionName, 'node-lambda-development-2015-02-01');
     });
+
+    it('appends VpcConfig to params when vpc params set', function() {
+      program.vpcSubnets = 'subnet-00000000,subnet-00000001,subnet-00000002';
+      program.vpcSecurityGroups = 'sg-00000000,sg-00000001,sg-00000002';
+      var params = lambda._params(program);
+      assert.equal(params.VpcConfig.SubnetIds[0], program.vpcSubnets.split(',')[0]);
+      assert.equal(params.VpcConfig.SubnetIds[1], program.vpcSubnets.split(',')[1]);
+      assert.equal(params.VpcConfig.SubnetIds[2], program.vpcSubnets.split(',')[2]);
+      assert.equal(params.VpcConfig.SecurityGroupIds[0], program.vpcSecurityGroups.split(',')[0]);
+      assert.equal(params.VpcConfig.SecurityGroupIds[1], program.vpcSecurityGroups.split(',')[1]);
+      assert.equal(params.VpcConfig.SecurityGroupIds[2], program.vpcSecurityGroups.split(',')[2]);
+    });
+
+    it('does not append VpcConfig when params are not set', function() {
+      var params = lambda._params(program);
+      assert.equal(Object.keys(params.VpcConfig).length, 0);
+    });
   });
 
   describe('_zipfileTmpPath', function () {
@@ -64,25 +80,67 @@ describe('node-lambda', function () {
   });
 
   describe('_rsync', function () {
+    beforeEach(function (done) {
+      lambda._cleanDirectory(codeDirectory, done);
+    });
+
     it('rsync an index.js as well as other files', function (done) {
       lambda._rsync(program, codeDirectory, function (err, result) {
         var contents = fs.readdirSync(codeDirectory);
 
-        result = _.includes(contents, 'index.js');
+        result = _.includes(contents, 'index.js') ||
+                 _.includes(contents, 'package.json');
         assert.equal(result, true);
 
         done();
+      });
+    });
+
+    describe("when there are excluded files", function (done) {
+      beforeEach(function (done) {
+        program.excludeGlobs="*.png test"
+        done();
+      });
+
+      it('rsync an index.js as well as other files', function (done) {
+        lambda._rsync(program, codeDirectory, function (err, result) {
+          var contents = fs.readdirSync(codeDirectory);
+
+          result = _.includes(contents, 'index.js') ||
+                   _.includes(contents, 'package.json');
+          assert.equal(result, true);
+
+          done();
+        });
+      });
+
+      it('rsync excludes files matching excludeGlobs', function (done) {
+        lambda._rsync(program, codeDirectory, function (err, result) {
+          var contents = fs.readdirSync(codeDirectory);
+
+          result = _.includes(contents, 'node-lambda.png') ||
+                   _.includes(contents, 'test');
+          assert.equal(result, false);
+
+          done();
+        });
       });
     });
   });
 
   describe('_npmInstall', function () {
     beforeEach(function (done) {
-      lambda._rsync(program, codeDirectory, function (err) {
+      lambda._cleanDirectory(codeDirectory, function (err) {
         if (err) {
           return done(err);
         }
-        done();
+
+        lambda._rsync(program, codeDirectory, function (err) {
+          if (err) {
+            return done(err);
+          }
+          done();
+        });
       });
     });
 
@@ -92,7 +150,7 @@ describe('node-lambda', function () {
       lambda._npmInstall(program, codeDirectory, function (err, result) {
         var contents = fs.readdirSync(codeDirectory);
 
-        result = _.includes(contents, 'index.js');
+        result = _.includes(contents, 'node_modules');
         assert.equal(result, true);
 
         done();
@@ -103,15 +161,21 @@ describe('node-lambda', function () {
   describe('_zip', function () {
     beforeEach(function (done) {
       this.timeout(30000); // give it time to build the node modules
-      lambda._rsync(program, codeDirectory, function (err) {
+      lambda._cleanDirectory(codeDirectory, function (err) {
         if (err) {
           return done(err);
         }
-        lambda._npmInstall(program, codeDirectory, function (err) {
+
+        lambda._rsync(program, codeDirectory, function (err) {
           if (err) {
             return done(err);
           }
-          done();
+          lambda._npmInstall(program, codeDirectory, function (err) {
+            if (err) {
+              return done(err);
+            }
+            done();
+          });
         });
       });
     });
@@ -130,6 +194,24 @@ describe('node-lambda', function () {
         done();
       });
     });
+  });
+
+  describe('_archive', function () {
+    it('installs and zips with an index.js file and node_modules/async', function (done) {
+      this.timeout(30000); // give it time to zip
+
+      lambda._archive(program, function (err, data) {
+        var archive = new zip(data);
+        var contents = _.map(archive.files, function (f) {
+          return f.name.toString();
+        });
+        var result = _.includes(contents, 'index.js');
+        assert.equal(result, true);
+        result = _.includes(contents, 'node_modules/async/lib/async.js');
+        assert.equal(result, true);
+        done();
+      })
+    })
   });
 
   describe('environment variable injection', function () {
