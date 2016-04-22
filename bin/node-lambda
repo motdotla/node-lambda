@@ -66,6 +66,7 @@ program
   .description('Create zipped package for Amazon Lambda deployment')
   .option('-p, --packageDirectory [' + PACKAGE_DIRECTORY + ']', 'Local Package Directory', PACKAGE_DIRECTORY)
   .option('-n, --functionName [' + AWS_FUNCTION_NAME + ']', 'Lambda FunctionName', AWS_FUNCTION_NAME)
+  .option('--handler [' + AWS_HANDLER + ']', 'Lambda Handler {index.handler}', AWS_HANDLER)
   .option('-e, --environment [' + AWS_ENVIRONMENT + ']', 'Choose environment {dev, staging, production}',
     AWS_ENVIRONMENT)
   .option('-f, --configFile [' + CONFIG_FILE + ']',
