@@ -32,7 +32,7 @@ describe('node-lambda', function () {
   });
 
   it('version should be set', function () {
-    assert.equal(lambda.version, '0.7.1');
+    assert.equal(lambda.version, '0.8.0');
   });
 
   describe('_params', function () {
@@ -235,6 +235,33 @@ describe('node-lambda', function () {
       }, process.cwd());
 
       assert.equal(fs.readFileSync('test.js').toString(), '////////////////////////////////////\n' +
+        '// "Environment Variables"\nprocess.env["FOO"]="bar";\n' +
+        'process.env["BAZ"]="bing";\n////////////////////////////////////\n\n');
+    });
+
+  });
+
+  describe('environment variable injection - "use strict" allowance', function () {
+    beforeEach(function () {
+      // Prep...
+      fs.writeFileSync('tmp.env', 'FOO=bar\nBAZ=bing\n');
+      fs.writeFileSync('test.js', '\'use strict\';');
+    });
+
+    afterEach(function () {
+      fs.unlinkSync('tmp.env');
+      fs.unlinkSync('test.js');
+    });
+
+    it('should inject environment variables at the top of the entry point file', function () {
+
+      // Run it...
+      lambda._setEnvironmentVars({
+        configFile: 'tmp.env',
+        handler: 'test.handler',
+      }, process.cwd());
+
+      assert.equal(fs.readFileSync('test.js').toString(), '\'use strict\';\n////////////////////////////////////\n' +
         '// "Environment Variables"\nprocess.env["FOO"]="bar";\n' +
         'process.env["BAZ"]="bing";\n////////////////////////////////////\n\n');
     });
