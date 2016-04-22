@@ -19,3 +19,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Added support for `post install scripts`, this `post_install.sh` file will be triggered after `npm install --production` in case you want to run any code on your application before zipping
 - Added `-x` / `--excludeGlobs` to allow custom file exclusion
 - Excluding `*.swp`, `deploy.env` by default now
+
+## [0.8.1] - 2016-04-22
+### Bugfixes
+- Resolved a problem with excludes not being set [#91](https://github.com/motdotla/node-lambda/pull/91)
+- Resolved a problem with the package command and a custom config file [#90](https://github.com/motdotla/node-lambda/pull/90)
+- Allow `use strict` [#86](https://github.com/motdotla/node-lambda/pull/86)
+- Updated the `env.example` file to set the default (and by AWS recommended) runtime to `nodejs4.3` [#84](https://github.com/motdotla/node-lambda/pull/84)
