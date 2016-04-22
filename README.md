@@ -23,7 +23,7 @@ The [node-lambda-template](https://github.com/RebelMail/node-lambda-template) ex
 
 ## Usage
 
-There are 3 available commands.
+There are 4 available commands.
 
 ```
 node-lambda setup
