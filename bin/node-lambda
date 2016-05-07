@@ -91,8 +91,10 @@ program
   .version(lambda.version)
   .command('setup')
   .description('Sets up the .env file.')
-  .action(function () {
-    lambda.setup();
+  .option('-j, --eventFile [' + EVENT_FILE + ']', 'Event JSON File', EVENT_FILE)
+  .option('-x, --contextFile [' + CONTEXT_FILE + ']', 'Context JSON File', CONTEXT_FILE)
+  .action(function (prg) {
+    lambda.setup(prg);
   });
 
 program.parse(process.argv);
