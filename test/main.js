@@ -21,7 +21,9 @@ var originalProgram = {
   timeout: 3,
   description: '',
   runtime: 'nodejs',
-  region: 'us-east-1,us-west-2,eu-west-1'
+  region: 'us-east-1,us-west-2,eu-west-1',
+  eventFile: 'event.json',
+  contextFile: 'context.json'
 };
 
 var codeDirectory = lambda._codeDirectory(program);
@@ -264,6 +266,61 @@ describe('node-lambda', function () {
       assert.equal(fs.readFileSync('test.js').toString(), '\'use strict\';\n////////////////////////////////////\n' +
         '// "Environment Variables"\nprocess.env["FOO"]="bar";\n' +
         'process.env["BAZ"]="bing";\n////////////////////////////////////\n\n');
+    });
+
+  });
+
+  describe('create sample files', function () {
+
+    afterEach(function () {
+      fs.unlinkSync('.env');
+      fs.unlinkSync('context.json');
+      fs.unlinkSync('event.json');
+      fs.unlinkSync('deploy.env');
+    });
+
+    it('should create sample files', function () {
+      lambda.setup(program);
+
+      var envBoilerplateFile = __dirname + '/../lib/.env.example';
+      var contextBoilerplateFile = __dirname + '/../lib/context.json.example';
+      var eventBoilerplateFile = __dirname + '/../lib/event.json.example';
+      var deployBoilerplateFile = __dirname + '/../lib/deploy.env.example';
+
+      assert.equal(fs.readFileSync('.env').toString(), fs.readFileSync(envBoilerplateFile).toString());
+      assert.equal(fs.readFileSync('context.json').toString(), fs.readFileSync(contextBoilerplateFile).toString());
+      assert.equal(fs.readFileSync('event.json').toString(), fs.readFileSync(eventBoilerplateFile).toString());
+      assert.equal(fs.readFileSync('deploy.env').toString(), fs.readFileSync(deployBoilerplateFile).toString());
+    });
+  });
+
+  describe('check env vars before create sample files', function () {
+
+    beforeEach(function () {
+      fs.writeFileSync('newContext.json', '{"FOO"="bar"\n"BAZ"="bing"\n}');
+      fs.writeFileSync('newEvent.json', '{"FOO"="bar"}');
+    });
+
+    afterEach(function () {
+      fs.unlinkSync('.env');
+      fs.unlinkSync('newContext.json');
+      fs.unlinkSync('newEvent.json');
+      fs.unlinkSync('deploy.env');
+    });
+
+    it('should use existing sample files', function () {
+      program.eventFile = 'newEvent.json';
+      program.contextFile = 'newContext.json';
+
+      lambda.setup(program);
+
+      var envBoilerplateFile = __dirname + '/../lib/.env.example';
+      var deployBoilerplateFile = __dirname + '/../lib/deploy.env.example';
+
+      assert.equal(fs.readFileSync('.env').toString(), fs.readFileSync(envBoilerplateFile).toString());
+      assert.equal(fs.readFileSync('newContext.json').toString(), '{"FOO"="bar"\n"BAZ"="bing"\n}');
+      assert.equal(fs.readFileSync('newEvent.json').toString(), '{"FOO"="bar"}');
+      assert.equal(fs.readFileSync('deploy.env').toString(), fs.readFileSync(deployBoilerplateFile).toString());
     });
 
   });
