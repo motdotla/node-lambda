@@ -26,3 +26,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Resolved a problem with the package command and a custom config file [#90](https://github.com/motdotla/node-lambda/pull/90)
 - Allow `use strict` [#86](https://github.com/motdotla/node-lambda/pull/86)
 - Updated the `env.example` file to set the default (and by AWS recommended) runtime to `nodejs4.3` [#84](https://github.com/motdotla/node-lambda/pull/84)
+
+## [0.8.2] - 2016-05-12
+### Bugfixes
+- Verify env vars before creating sample files [#99](https://github.com/motdotla/node-lambda/pull/99)
+- Fix `AWS_PUBLIS` type [#102](https://github.com/motdotla/node-lambda/pull/102)
+### Added
+- Allow checking on `process.env.environment` to context switch [#95](https://github.com/motdotla/node-lambda/pull/95)
