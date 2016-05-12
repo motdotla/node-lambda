@@ -30,6 +30,6 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [0.8.2] - 2016-05-12
 ### Bugfixes
 - Verify env vars before creating sample files [#99](https://github.com/motdotla/node-lambda/pull/99)
-- Fix `AWS_PUBLIS` type [#102](https://github.com/motdotla/node-lambda/pull/102)
+- Fix `AWS_PUBLIS` typo [#102](https://github.com/motdotla/node-lambda/pull/102)
 ### Added
 - Allow checking on `process.env.environment` to context switch [#95](https://github.com/motdotla/node-lambda/pull/95)
