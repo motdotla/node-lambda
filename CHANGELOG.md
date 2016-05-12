@@ -33,3 +33,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Fix `AWS_PUBLIS` typo [#102](https://github.com/motdotla/node-lambda/pull/102)
 ### Added
 - Allow checking on `process.env.environment` to context switch [#95](https://github.com/motdotla/node-lambda/pull/95)
+
+## [0.8.3] - 2016-05-12
+### Bugfixes
+- Added `EXCLUDE_GLOBS` to `package`, so your local ZIPs are the same as the ZIPs uploaded to AWS Lambda [#104](https://github.com/motdotla/node-lambda/pull/104)

@@ -88,6 +88,7 @@ $ node-lambda package --help
     -n, --functionName [node-lambda]    Lambda FunctionName
     -e, --environment [staging]         Choose environment {development, staging, production}
     -f, --configFile []                 Path to file holding secret environment variables (e.g. "deploy.env")
+    -x, --excludeGlobs []               Add a comma separated list of file(type)s to ignore (e.g. "*.json")
 ```
 
 #### deploy
@@ -116,9 +117,10 @@ $ node-lambda deploy --help
     -u, --runtime [nodejs4.3]         Lambda Runtime {nodejs4.3, nodejs} - "nodejs4.3" is the current standard, "nodejs" is v0.10.36 
     -p, --publish [false]             This boolean parameter can be used to request AWS Lambda to create the Lambda function and publish a version as an atomic operation
     -v, --version [custom-version]    Lambda Version
-    -f, --configFile []               Path to file holding secret environment variables (e.g. "deploy.env")`
+    -f, --configFile []               Path to file holding secret environment variables (e.g. "deploy.env")
     -b, --vpcSubnets []               VPC Subnet ID(s, comma separated list) for your Lambda Function, when using this, the below param is also required
     -g, --vpcSecurityGroups []        VPC Security Group ID(s, comma separated list) for your Lambda Function, when using this, the above param is also required
+    -x, --excludeGlobs []             Add a comma separated list of file(type)s to ignore (e.g. "*.json")
 ```
 
 ## Custom Environment Variables
