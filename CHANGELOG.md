@@ -37,3 +37,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [0.8.3] - 2016-05-12
 ### Bugfixes
 - Added `EXCLUDE_GLOBS` to `package`, so your local ZIPs are the same as the ZIPs uploaded to AWS Lambda [#104](https://github.com/motdotla/node-lambda/pull/104)
+
+## [0.8.4] - 2016-05-20
+### Bugfixes
+- Added extra quotes around the parsed environment [#106](https://github.com/motdotla/node-lambda/pull/106)
