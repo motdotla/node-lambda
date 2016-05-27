@@ -41,3 +41,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [0.8.4] - 2016-05-20
 ### Bugfixes
 - Added extra quotes around the parsed environment [#106](https://github.com/motdotla/node-lambda/pull/106)
+
+## [0.8.5] - 2016-05-27
+### Adjustment
+- Extremely verbose NPM installs could crash node-lambda's buffer [#108](https://github.com/motdotla/node-lambda/pull/108)
