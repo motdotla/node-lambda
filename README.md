@@ -88,7 +88,7 @@ $ node-lambda package --help
     -n, --functionName [node-lambda]    Lambda FunctionName
     -e, --environment [staging]         Choose environment {development, staging, production}
     -f, --configFile []                 Path to file holding secret environment variables (e.g. "deploy.env")
-    -x, --excludeGlobs []               Add a comma separated list of file(type)s to ignore (e.g. "*.json")
+    -x, --excludeGlobs []               Add a space separated list of file(type)s to ignore (e.g. "*.json .env")
 ```
 
 #### deploy
@@ -120,7 +120,7 @@ $ node-lambda deploy --help
     -f, --configFile []               Path to file holding secret environment variables (e.g. "deploy.env")
     -b, --vpcSubnets []               VPC Subnet ID(s, comma separated list) for your Lambda Function, when using this, the below param is also required
     -g, --vpcSecurityGroups []        VPC Security Group ID(s, comma separated list) for your Lambda Function, when using this, the above param is also required
-    -x, --excludeGlobs []             Add a comma separated list of file(type)s to ignore (e.g. "*.json")
+    -x, --excludeGlobs []             Add a space separated list of file(type)s to ignore (e.g. "*.json .env")
 ```
 
 ## Custom Environment Variables
