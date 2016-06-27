@@ -89,7 +89,7 @@ describe('node-lambda', function () {
     });
 
     it('rsync an index.js as well as other files', function (done) {
-      lambda._rsync(program, codeDirectory, function (err, result) {
+      lambda._rsync(program, '.', codeDirectory, function (err, result) {
         var contents = fs.readdirSync(codeDirectory);
 
         result = _.includes(contents, 'index.js') ||
@@ -107,7 +107,7 @@ describe('node-lambda', function () {
       });
 
       it('rsync an index.js as well as other files', function (done) {
-        lambda._rsync(program, codeDirectory, function (err, result) {
+        lambda._rsync(program, '.', codeDirectory, function (err, result) {
           var contents = fs.readdirSync(codeDirectory);
 
           result = _.includes(contents, 'index.js') ||
@@ -119,7 +119,7 @@ describe('node-lambda', function () {
       });
 
       it('rsync excludes files matching excludeGlobs', function (done) {
-        lambda._rsync(program, codeDirectory, function (err, result) {
+        lambda._rsync(program, '.', codeDirectory, function (err, result) {
           var contents = fs.readdirSync(codeDirectory);
 
           result = _.includes(contents, 'node-lambda.png') ||
@@ -139,7 +139,7 @@ describe('node-lambda', function () {
           return done(err);
         }
 
-        lambda._rsync(program, codeDirectory, function (err) {
+        lambda._rsync(program, '.', codeDirectory, function (err) {
           if (err) {
             return done(err);
           }
@@ -170,7 +170,7 @@ describe('node-lambda', function () {
           return done(err);
         }
 
-        lambda._rsync(program, codeDirectory, function (err) {
+        lambda._rsync(program, '.', codeDirectory, function (err) {
           if (err) {
             return done(err);
           }
