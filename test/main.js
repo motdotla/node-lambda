@@ -6,6 +6,7 @@ var lambda = require('../lib/main');
 var fs = require('fs');
 var _ = require('lodash');
 var zip = require('node-zip');
+var rimraf = require('rimraf');
 
 var assert = chai.assert;
 
@@ -23,7 +24,8 @@ var originalProgram = {
   runtime: 'nodejs',
   region: 'us-east-1,us-west-2,eu-west-1',
   eventFile: 'event.json',
-  contextFile: 'context.json'
+  contextFile: 'context.json',
+  prebuiltDirectory: '',
 };
 
 var codeDirectory = lambda._codeDirectory(program);
@@ -87,7 +89,7 @@ describe('node-lambda', function () {
     });
 
     it('rsync an index.js as well as other files', function (done) {
-      lambda._rsync(program, codeDirectory, function (err, result) {
+      lambda._rsync(program, '.', codeDirectory, function (err, result) {
         var contents = fs.readdirSync(codeDirectory);
 
         result = _.includes(contents, 'index.js') ||
@@ -105,7 +107,7 @@ describe('node-lambda', function () {
       });
 
       it('rsync an index.js as well as other files', function (done) {
-        lambda._rsync(program, codeDirectory, function (err, result) {
+        lambda._rsync(program, '.', codeDirectory, function (err, result) {
           var contents = fs.readdirSync(codeDirectory);
 
           result = _.includes(contents, 'index.js') ||
@@ -117,7 +119,7 @@ describe('node-lambda', function () {
       });
 
       it('rsync excludes files matching excludeGlobs', function (done) {
-        lambda._rsync(program, codeDirectory, function (err, result) {
+        lambda._rsync(program, '.', codeDirectory, function (err, result) {
           var contents = fs.readdirSync(codeDirectory);
 
           result = _.includes(contents, 'node-lambda.png') ||
@@ -137,7 +139,7 @@ describe('node-lambda', function () {
           return done(err);
         }
 
-        lambda._rsync(program, codeDirectory, function (err) {
+        lambda._rsync(program, '.', codeDirectory, function (err) {
           if (err) {
             return done(err);
           }
@@ -168,7 +170,7 @@ describe('node-lambda', function () {
           return done(err);
         }
 
-        lambda._rsync(program, codeDirectory, function (err) {
+        lambda._rsync(program, '.', codeDirectory, function (err) {
           if (err) {
             return done(err);
           }
@@ -213,7 +215,33 @@ describe('node-lambda', function () {
         assert.equal(result, true);
         done();
       })
-    })
+    });
+
+    it('packages a prebuilt module without installing', function (done) {
+      var path = '.build_' + Date.now();
+      after(function() {
+        rimraf.sync(path, fs);
+      });
+
+      fs.mkdirSync(path);
+      fs.mkdirSync(path + '/d');
+      fs.writeFileSync(path + '/testa', 'a');
+      fs.writeFileSync(path + '/d/testb', 'b');
+
+      program.prebuiltDirectory = path;
+      lambda._archive(program, function (err, data) {
+        var archive = new zip(data);
+        var contents = _.map(archive.files, function (f) {
+          return f.name.toString();
+        });
+        var result = _.includes(contents, 'testa');
+        assert.equal(result, true);
+        result = _.includes(contents, 'd/testb');
+        assert.equal(result, true);
+        done();
+
+      })
+    });
   });
 
   describe('environment variable injection', function () {
