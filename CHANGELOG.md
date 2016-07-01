@@ -45,3 +45,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [0.8.5] - 2016-05-27
 ### Adjustment
 - Extremely verbose NPM installs could crash node-lambda's buffer [#108](https://github.com/motdotla/node-lambda/pull/108)
+
+## [0.8.6] - 2016-06-28
+### Feature
+- Added `prebuiltDirectory` flag for users that want to use an already generated directory [#116](https://github.com/motdotla/node-lambda/pull/116)
+
+### Bugfixes
+- README was lying about how to use `excludeGlobs` [#111](https://github.com/motdotla/node-lambda/pull/111)

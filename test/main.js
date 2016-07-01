@@ -36,7 +36,7 @@ describe('node-lambda', function () {
   });
 
   it('version should be set', function () {
-    assert.equal(lambda.version, '0.8.5');
+    assert.equal(lambda.version, '0.8.6');
   });
 
   describe('_params', function () {
@@ -89,7 +89,11 @@ describe('node-lambda', function () {
     });
 
     it('rsync an index.js as well as other files', function (done) {
+<<<<<<< HEAD
       lambda._rsync(program, '.', codeDirectory, true, function (err, result) {
+=======
+      lambda._rsync(program, '.', codeDirectory, function (err, result) {
+>>>>>>> master
         var contents = fs.readdirSync(codeDirectory);
 
         console.log('contents: ', contents);
@@ -109,7 +113,11 @@ describe('node-lambda', function () {
       });
 
       it('rsync an index.js as well as other files', function (done) {
+<<<<<<< HEAD
         lambda._rsync(program, '.', codeDirectory, true, function (err, result) {
+=======
+        lambda._rsync(program, '.', codeDirectory, function (err, result) {
+>>>>>>> master
           var contents = fs.readdirSync(codeDirectory);
 
           result = _.includes(contents, 'index.js') &&
@@ -121,7 +129,11 @@ describe('node-lambda', function () {
       });
 
       it('rsync excludes files matching excludeGlobs', function (done) {
+<<<<<<< HEAD
         lambda._rsync(program, '.', codeDirectory, true, function (err, result) {
+=======
+        lambda._rsync(program, '.', codeDirectory, function (err, result) {
+>>>>>>> master
           var contents = fs.readdirSync(codeDirectory);
 
           result = _.includes(contents, 'node-lambda.png') &&
@@ -141,7 +153,11 @@ describe('node-lambda', function () {
           return done(err);
         }
 
+<<<<<<< HEAD
         lambda._rsync(program, '.', codeDirectory, true, function (err) {
+=======
+        lambda._rsync(program, '.', codeDirectory, function (err) {
+>>>>>>> master
           if (err) {
             return done(err);
           }
@@ -172,7 +188,11 @@ describe('node-lambda', function () {
           return done(err);
         }
 
+<<<<<<< HEAD
         lambda._rsync(program, '.', codeDirectory, true, function (err) {
+=======
+        lambda._rsync(program, '.', codeDirectory, function (err) {
+>>>>>>> master
           if (err) {
             return done(err);
           }
@@ -227,10 +247,15 @@ describe('node-lambda', function () {
 
       fs.mkdirSync(path);
       fs.mkdirSync(path + '/d');
+<<<<<<< HEAD
       fs.mkdirSync(path + '/node_modules');
       fs.writeFileSync(path + '/node_modules/a', '...');
       fs.writeFileSync(path + '/testa', '...');
       fs.writeFileSync(path + '/d/testb', '...');
+=======
+      fs.writeFileSync(path + '/testa', 'a');
+      fs.writeFileSync(path + '/d/testb', 'b');
+>>>>>>> master
 
       program.prebuiltDirectory = path;
       lambda._archive(program, function (err, data) {
@@ -238,10 +263,16 @@ describe('node-lambda', function () {
         var contents = _.map(archive.files, function (f) {
           return f.name.toString();
         });
+<<<<<<< HEAD
         console.log('contents: ', contents);
         var result = _.includes(contents, 'testa') &&
                      _.includes(contents, 'd/testb') &&
                      _.includes(contents, 'node_modules/a');
+=======
+        var result = _.includes(contents, 'testa');
+        assert.equal(result, true);
+        result = _.includes(contents, 'd/testb');
+>>>>>>> master
         assert.equal(result, true);
         done();
 
