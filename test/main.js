@@ -276,6 +276,29 @@ describe('node-lambda', function () {
 
   });
 
+  describe('environment variable injection at runtime', function () {
+    beforeEach(function () {
+      // Prep...
+      fs.writeFileSync('tmp.env', 'FOO=bar\nBAZ=bing\n');
+    });
+
+    afterEach(function () {
+      fs.unlinkSync('tmp.env');
+    });
+
+    it('should inject environment variables at runtime', function () {
+
+      // Run it...
+      lambda._setRunTimeEnvironmentVars({
+        configFile: 'tmp.env'
+      }, process.cwd());
+
+      assert.equal(process.env["FOO"], 'bar');
+      assert.equal(process.env["BAZ"], 'bing');
+    });
+
+  });
+
   describe('environment variable injection - "use strict" allowance', function () {
     beforeEach(function () {
       // Prep...
