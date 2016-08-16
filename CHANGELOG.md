@@ -52,3 +52,15 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Bugfixes
 - README was lying about how to use `excludeGlobs` [#111](https://github.com/motdotla/node-lambda/pull/111)
+
+## [0.8.7] - 2016-08-16
+### Features
+- Added `-L` to rsync to allow copying of symlinks [#126](https://github.com/motdotla/node-lambda/pull/126)
+- Added travisci support for node 6 [#129](https://github.com/motdotla/node-lambda/pull/129)
+- Support to use package.json description for AWS description [#133](https://github.com/motdotla/node-lambda/pull/133)
+- Inject environment variables via config file for the `run` command [#136](https://github.com/motdotla/node-lambda/pull/136)
+
+### Bugfixes
+- rsync should not exclude node_modules when using --prebuiltDirectory. [#122](https://github.com/motdotla/node-lambda/pull/122)
+- Set environment variables _before_ requiring module [#137](https://github.com/motdotla/node-lambda/pull/137)
+- Typo fix publish when updating existing function [#138](https://github.com/motdotla/node-lambda/pull/138)
