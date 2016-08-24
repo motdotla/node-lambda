@@ -131,6 +131,17 @@ describe('node-lambda', function () {
           done();
         });
       });
+
+      it('rsync should not exclude package.json, even when excluded by excludeGlobs', function (done) {
+        program.excludeGlobs="*.json"
+        lambda._rsync(program, '.', codeDirectory, true, function(err, result) {
+          var contents = fs.readdirSync(codeDirectory);
+          result = _.includes(contents, 'package.json');
+          assert.equal(result, true);
+
+          done();
+        });
+      });
     });
   });
 
