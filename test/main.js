@@ -14,6 +14,7 @@ var originalProgram = {
   environment: 'development',
   accessKey: 'key',
   secretKey: 'secret',
+  profile: 'profile',
   sessionToken: 'token',
   functionName: 'node-lambda',
   handler: 'index.handler',
