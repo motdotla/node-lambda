@@ -92,7 +92,6 @@ describe('node-lambda', function () {
       lambda._rsync(program, '.', codeDirectory, true, function (err, result) {
         var contents = fs.readdirSync(codeDirectory);
 
-        console.log('contents: ', contents);
         result = _.includes(contents, 'index.js') &&
                  _.includes(contents, 'package.json') &&
                  !_.includes(contents, 'node_modules');
@@ -102,9 +101,9 @@ describe('node-lambda', function () {
       });
     });
 
-    describe("when there are excluded files", function (done) {
+    describe("when there are excluded files", function () {
       beforeEach(function (done) {
-        program.excludeGlobs="*.png test"
+        program.excludeGlobs="*.png test";
         done();
       });
 
@@ -216,7 +215,7 @@ describe('node-lambda', function () {
         result = _.includes(contents, 'node_modules/async/lib/async.js');
         assert.equal(result, true);
         done();
-      })
+      });
     });
 
     it('packages a prebuilt module without installing', function (done) {
@@ -238,14 +237,13 @@ describe('node-lambda', function () {
         var contents = _.map(archive.files, function (f) {
           return f.name.toString();
         });
-        console.log('contents: ', contents);
         var result = _.includes(contents, 'testa') &&
                      _.includes(contents, 'd/testb') &&
                      _.includes(contents, 'node_modules/a');
         assert.equal(result, true);
         done();
 
-      })
+      });
     });
   });
 

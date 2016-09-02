@@ -41,9 +41,9 @@
     "aws-sdk": "^2.1.24",
     "commander": "^2.5.0",
     "dotenv": "^0.4.0",
+    "fs-extra": "^0.30.0",
     "node-uuid": "^1.4.2",
     "node-zip": "^1.1.0",
-    "rimraf": "^2.2.8",
-    "wrench": "^1.5.8"
+    "rimraf": "^2.2.8"
   }
 }
