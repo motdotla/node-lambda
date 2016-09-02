@@ -34,11 +34,9 @@ var PACKAGE_DIRECTORY = process.env.PACKAGE_DIRECTORY;
 var CONTEXT_FILE = process.env.CONTEXT_FILE || 'context.json';
 var PREBUILT_DIRECTORY = process.env.PREBUILT_DIRECTORY || '';
 
-
-
 program
   .version(lambda.version)
-  .command('deploy')
+  .alias('deploy')
   .description('Deploy your application to Amazon Lambda')
   .option('-e, --environment [' + AWS_ENVIRONMENT + ']', 'Choose environment {dev, staging, production}',
     AWS_ENVIRONMENT)
@@ -70,8 +68,8 @@ program
   });
 
 program
-  .version(lambda.version)
   .command('package')
+  .alias('zip')
   .description('Create zipped package for Amazon Lambda deployment')
   .option('-A, --packageDirectory [' + PACKAGE_DIRECTORY + ']', 'Local Package Directory', PACKAGE_DIRECTORY)
   .option('-n, --functionName [' + AWS_FUNCTION_NAME + ']', 'Lambda FunctionName', AWS_FUNCTION_NAME)
@@ -88,8 +86,8 @@ program
   });
 
 program
-  .version(lambda.version)
   .command('run')
+  .alias('execute')
   .description('Run your Amazon Lambda application locally')
   .option('-H, --handler [' + AWS_HANDLER + ']', 'Lambda Handler {index.handler}', AWS_HANDLER)
   .option('-j, --eventFile [' + EVENT_FILE + ']', 'Event JSON File', EVENT_FILE)
@@ -102,7 +100,6 @@ program
   });
 
 program
-  .version(lambda.version)
   .command('setup')
   .description('Sets up the .env file.')
   .option('-j, --eventFile [' + EVENT_FILE + ']', 'Event JSON File', EVENT_FILE)
