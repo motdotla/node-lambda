@@ -4,8 +4,8 @@ var dotenv = require('dotenv');
 var lambda = require('../lib/main.js');
 var program = require('commander');
 var fs = require('fs');
-var packageJson = fs.existsSync(process.cwd() + '/package.json')
-    ? require(process.cwd() + '/package.json') : {};
+var packageJson = fs.existsSync(process.cwd() + '/package.json') ?
+      require(process.cwd() + '/package.json') : {};
 var packageJsonName = packageJson.name || 'UnnamedFunction';
 
 dotenv.load();
@@ -15,6 +15,7 @@ var CONFIG_FILE = process.env.CONFIG_FILE || '';
 var EXCLUDE_GLOBS = process.env.EXCLUDE_GLOBS || '';
 var AWS_ACCESS_KEY_ID = process.env.AWS_ACCESS_KEY_ID;
 var AWS_SECRET_ACCESS_KEY = process.env.AWS_SECRET_ACCESS_KEY;
+var AWS_PROFILE = process.env.AWS_PROFILE || '';
 var AWS_SESSION_TOKEN = process.env.AWS_SESSION_TOKEN || '';
 var AWS_REGION = process.env.AWS_REGION || 'us-east-1,us-west-2,eu-west-1';
 var AWS_FUNCTION_NAME = process.env.AWS_FUNCTION_NAME || packageJsonName;
@@ -43,10 +44,11 @@ program
     AWS_ENVIRONMENT)
   .option('-a, --accessKey [' + AWS_ACCESS_KEY_ID + ']', 'AWS Access Key', AWS_ACCESS_KEY_ID)
   .option('-s, --secretKey [' + AWS_SECRET_ACCESS_KEY + ']', 'AWS Secret Key', AWS_SECRET_ACCESS_KEY)
+  .option('-P, --profile [' + AWS_PROFILE + ']', 'AWS Profile', AWS_PROFILE)
   .option('-k, --sessionToken [' + AWS_SESSION_TOKEN + ']', 'AWS Session Token', AWS_SESSION_TOKEN)
   .option('-r, --region [' + AWS_REGION + ']', 'AWS Region', AWS_REGION)
   .option('-n, --functionName [' + AWS_FUNCTION_NAME + ']', 'Lambda FunctionName', AWS_FUNCTION_NAME)
-  .option('--handler [' + AWS_HANDLER + ']', 'Lambda Handler {index.handler}', AWS_HANDLER)
+  .option('-H, --handler [' + AWS_HANDLER + ']', 'Lambda Handler {index.handler}', AWS_HANDLER)
   .option('-o, --role [' + AWS_ROLE + ']', 'Amazon Role ARN', AWS_ROLE)
   .option('-m, --memorySize [' + AWS_MEMORY_SIZE + ']', 'Lambda Memory Size', AWS_MEMORY_SIZE)
   .option('-t, --timeout [' + AWS_TIMEOUT + ']', 'Lambda Timeout', AWS_TIMEOUT)
@@ -57,12 +59,12 @@ program
   .option('-b, --vpcSubnets [' + AWS_VPC_SUBNETS + ']', 'Lambda Function VPC Subnets', AWS_VPC_SUBNETS)
   .option('-g, --vpcSecurityGroups [' + AWS_VPC_SECURITY_GROUPS + ']', 'Lambda VPC Security Group',
     AWS_VPC_SECURITY_GROUPS)
-  .option('-p, --packageDirectory [' + PACKAGE_DIRECTORY + ']', 'Local Package Directory', PACKAGE_DIRECTORY)
+  .option('-A, --packageDirectory [' + PACKAGE_DIRECTORY + ']', 'Local Package Directory', PACKAGE_DIRECTORY)
   .option('-f, --configFile [' + CONFIG_FILE + ']',
     'Path to file holding secret environment variables (e.g. "deploy.env")', CONFIG_FILE)
   .option('-x, --excludeGlobs [' + EXCLUDE_GLOBS + ']',
     'Space-separated glob pattern(s) for additional exclude files (e.g. "event.json dotenv.sample")', EXCLUDE_GLOBS)
-  .option('-P, --prebuiltDirectory [' + PREBUILT_DIRECTORY + ']', 'Prebuilt directory', PREBUILT_DIRECTORY)
+  .option('-D, --prebuiltDirectory [' + PREBUILT_DIRECTORY + ']', 'Prebuilt directory', PREBUILT_DIRECTORY)
   .action(function (prg) {
     lambda.deploy(prg);
   });
@@ -71,16 +73,16 @@ program
   .version(lambda.version)
   .command('package')
   .description('Create zipped package for Amazon Lambda deployment')
-  .option('-p, --packageDirectory [' + PACKAGE_DIRECTORY + ']', 'Local Package Directory', PACKAGE_DIRECTORY)
+  .option('-A, --packageDirectory [' + PACKAGE_DIRECTORY + ']', 'Local Package Directory', PACKAGE_DIRECTORY)
   .option('-n, --functionName [' + AWS_FUNCTION_NAME + ']', 'Lambda FunctionName', AWS_FUNCTION_NAME)
-  .option('--handler [' + AWS_HANDLER + ']', 'Lambda Handler {index.handler}', AWS_HANDLER)
+  .option('-H, --handler [' + AWS_HANDLER + ']', 'Lambda Handler {index.handler}', AWS_HANDLER)
   .option('-e, --environment [' + AWS_ENVIRONMENT + ']', 'Choose environment {dev, staging, production}',
     AWS_ENVIRONMENT)
   .option('-x, --excludeGlobs [' + EXCLUDE_GLOBS + ']',
     'Space-separated glob pattern(s) for additional exclude files (e.g. "event.json dotenv.sample")', EXCLUDE_GLOBS)
   .option('-f, --configFile [' + CONFIG_FILE + ']',
     'Path to file holding secret environment variables (e.g. "deploy.env")', CONFIG_FILE)
-  .option('-P, --prebuiltDirectory [' + PREBUILT_DIRECTORY + ']', 'Prebuilt directory', PREBUILT_DIRECTORY)
+  .option('-D, --prebuiltDirectory [' + PREBUILT_DIRECTORY + ']', 'Prebuilt directory', PREBUILT_DIRECTORY)
   .action(function (prg) {
     lambda.package(prg);
   });
@@ -89,7 +91,7 @@ program
   .version(lambda.version)
   .command('run')
   .description('Run your Amazon Lambda application locally')
-  .option('--handler [' + AWS_HANDLER + ']', 'Lambda Handler {index.handler}', AWS_HANDLER)
+  .option('-H, --handler [' + AWS_HANDLER + ']', 'Lambda Handler {index.handler}', AWS_HANDLER)
   .option('-j, --eventFile [' + EVENT_FILE + ']', 'Event JSON File', EVENT_FILE)
   .option('-u, --runtime [' + AWS_RUNTIME + ']', 'Lambda Runtime', AWS_RUNTIME)
   .option('-f, --configFile [' + CONFIG_FILE + ']',

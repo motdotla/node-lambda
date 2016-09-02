@@ -66,7 +66,7 @@ $ node-lambda run --help
   Options:
 
     -h, --help                          Output usage information
-    --handler [index.handler]           Lambda Handler {index.handler}
+    -H, --handler [index.handler]       Lambda Handler {index.handler}
     -j, --eventFile [event.json]        Event JSON File
     -f, --configFile []                 Path to file holding secret environment variables (e.g. "deploy.env")
     -u, --runtime [nodejs4.3]           Lambda Runtime {nodejs4.3, nodejs} - "nodejs4.3" is the current standard, "nodejs" is v0.10.36
@@ -85,12 +85,13 @@ $ node-lambda package --help
   Options:
 
     -h, --help                          output usage information
-    -p, --packageDirectory [build]      Local Package Directory
+    -A, --packageDirectory [build]      Local Package Directory
     -n, --functionName [node-lambda]    Lambda FunctionName
+    -H, --handler [index.handler]       Lambda Handler {index.handler}
     -e, --environment [staging]         Choose environment {development, staging, production}
     -f, --configFile []                 Path to file holding secret environment variables (e.g. "deploy.env")
     -x, --excludeGlobs []               Add a space separated list of file(type)s to ignore (e.g. "*.json .env")
-    -P, --prebuiltDirectory []          Prebuilt directory
+    -D, --prebuiltDirectory []          Prebuilt directory
 
 ```
 
@@ -109,10 +110,11 @@ $ node-lambda deploy --help
     -e, --environment [staging]       Choose environment {development, staging, production}
     -a, --accessKey [your_key]        AWS Access Key
     -s, --secretKey [your_secret]     AWS Secret Key
+    -P, --profile [your_profile]      AWS Profile
     -k, --sessionToken [your_token]   AWS Session Token
     -r, --region [us-east-1]          AWS Region(s)
     -n, --functionName [node-lambda]  Lambda FunctionName
-    --handler [index.handler]         Lambda Handler {index.handler}
+    -H, --handler [index.handler]     Lambda Handler {index.handler}
     -o, --role [your_role]            Amazon Role ARN
     -m, --memorySize [128]            Lambda Memory Size
     -t, --timeout [3]                 Lambda Timeout
@@ -123,8 +125,9 @@ $ node-lambda deploy --help
     -f, --configFile []               Path to file holding secret environment variables (e.g. "deploy.env")
     -b, --vpcSubnets []               VPC Subnet ID(s, comma separated list) for your Lambda Function, when using this, the below param is also required
     -g, --vpcSecurityGroups []        VPC Security Group ID(s, comma separated list) for your Lambda Function, when using this, the above param is also required
+    -A, --packageDirectory []         Local package directory
     -x, --excludeGlobs []             Add a space separated list of file(type)s to ignore (e.g. "*.json .env")
-    -P, --prebuiltDirectory []        Prebuilt directory
+    -D, --prebuiltDirectory []        Prebuilt directory
 ```
 
 ## Custom Environment Variables
