@@ -64,3 +64,12 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - rsync should not exclude node_modules when using --prebuiltDirectory. [#122](https://github.com/motdotla/node-lambda/pull/122)
 - Set environment variables _before_ requiring module [#137](https://github.com/motdotla/node-lambda/pull/137)
 - Typo fix publish when updating existing function [#138](https://github.com/motdotla/node-lambda/pull/138)
+
+## [0.8.8] - 2016-09-02
+### Features
+- Support AWS_PROFILE and de-duped a few CLI options [#144](https://github.com/motdotla/node-lambda/pull/144)
+- `wrench` was deprecated and has been replaced by `fs-extra` [#146](https://github.com/motdotla/node-lambda/pull/146)
+
+### Bugs
+- Displaying `node-lambda -h` returned an error [#127](https://github.com/motdotla/node-lambda/issues/127)
+- NPM overwrites `$TMPDIR` [#134](https://github.com/motdotla/node-lambda/issues/134)
