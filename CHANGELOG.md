@@ -76,5 +76,5 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [0.8.9] - 2016-09-06
 ### Bugs
-- The above mentioned fix for issue [#127](https://github.com/motdotla/node-lambda/issues/127) exposed a commander bug, reverted the change.
+- The above mentioned fix for issue [#127](https://github.com/motdotla/node-lambda/issues/127) exposed a commander bug, reverted the change
 - Do not exclude package.json, even when specified in excludeGlobs [#141](https://github.com/motdotla/node-lambda/pull/141)
