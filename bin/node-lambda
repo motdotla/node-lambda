@@ -35,8 +35,8 @@ var CONTEXT_FILE = process.env.CONTEXT_FILE || 'context.json';
 var PREBUILT_DIRECTORY = process.env.PREBUILT_DIRECTORY || '';
 
 program
+  .command('deploy')
   .version(lambda.version)
-  .alias('deploy')
   .description('Deploy your application to Amazon Lambda')
   .option('-e, --environment [' + AWS_ENVIRONMENT + ']', 'Choose environment {dev, staging, production}',
     AWS_ENVIRONMENT)
