@@ -78,3 +78,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Bugs
 - The above mentioned fix for issue [#127](https://github.com/motdotla/node-lambda/issues/127) exposed a commander bug, reverted the change
 - Do not exclude package.json, even when specified in excludeGlobs [#141](https://github.com/motdotla/node-lambda/pull/141)
+
+## [0.8.10] - 2016-09-20
+### Features
+- We are now passing the environment string to the post install script [#154](https://github.com/motdotla/node-lambda/pull/154)
