@@ -143,7 +143,19 @@ a callback function.  These will still work for now for backward compatibility, 
 v0.10.36 is still supported, and can be targeted by changing the `AWS_RUNTIME` value to `nodejs` in the `.env` file.
 
 ## Post install script
-When running `node-lambda deploy` if you need to do some action after `npm install --production` and before deploying to AWS Lambda (i.e. replace some modules with precompiled ones or download some libraries) you can create `post_install.sh` script. If the file exists the script will be executed (and output shown after execution) if not it is skipped. Make sure that the script is executable.
+When running `node-lambda deploy` if you need to do some action after `npm install --production` and before deploying to AWS Lambda (e.g. replace some modules with precompiled ones or download some libraries, replace some config file depending on environment) you can create `post_install.sh` script. If the file exists the script will be executed (and output shown after execution) if not it is skipped. Environment string is passed to script as first parameter so you can use it if needed. Make sure that the script is executable.
+
+Example `post_install.sh`:
+```
+printf "\n\n######  Post install script  ###### \n"
+ENV="production";
+if [ ! -z $1 ]
+  then
+    ENV=$1;
+fi
+cp -v "config_$ENV.js" "config.js" \
+&& printf "######  DONE!  ###### \n\n"
+```
 
 ## Prebuilt packages
 The `--prebuiltDirectory` flag is useful for working with Webpack for example. It skips `npm install --production` and `post_install.sh` and simply packages the specified directory.
