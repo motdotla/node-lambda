@@ -196,6 +196,55 @@ describe('node-lambda', function () {
     });
   });
 
+  describe('_postInstallScript', function () {
+    var hook;
+    /**
+     * Capture console output
+     */
+    function captureStream(stream){
+      var oldWrite = stream.write;
+      var buf = '';
+      stream.write = function(chunk, encoding, callback){
+        buf += chunk.toString(); // chunk is a String or Buffer
+        oldWrite.apply(stream, arguments);
+      }
+
+      return {
+        unhook: function unhook(){
+         stream.write = oldWrite;
+        },
+        captured: function(){
+          return buf;
+        }
+      };
+    }
+    beforeEach(function(){
+      hook = captureStream(process.stdout);
+    });
+    afterEach(function(){
+      hook.unhook();
+    });
+
+
+    it('should not throw any errors if no script', function (done) {
+      lambda._postInstallScript(program, codeDirectory, function (err) {
+        assert.equal(err, null);
+        done();
+      });
+    });
+
+    it('running script gives expected output', function (done) {
+      fs.writeFileSync(codeDirectory + '/post_install.sh', fs.readFileSync('test/post_install.sh'));
+      fs.chmodSync(codeDirectory + '/post_install.sh', '755');
+      lambda._postInstallScript(program, codeDirectory, function (err) {
+        assert.equal(err, null);
+        assert.equal("=> Running post install script post_install.sh\n\t\tYour environment is "+program.environment+"\n", hook.captured());
+        fs.unlinkSync(codeDirectory + '/post_install.sh');
+        done();
+      });
+    });
+  });
+
   describe('_zip', function () {
     beforeEach(function (done) {
       this.timeout(30000); // give it time to build the node modules
