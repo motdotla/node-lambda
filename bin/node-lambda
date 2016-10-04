@@ -33,6 +33,7 @@ var EVENT_FILE = process.env.EVENT_FILE || 'event.json';
 var PACKAGE_DIRECTORY = process.env.PACKAGE_DIRECTORY;
 var CONTEXT_FILE = process.env.CONTEXT_FILE || 'context.json';
 var PREBUILT_DIRECTORY = process.env.PREBUILT_DIRECTORY || '';
+var SRC_DIRECTORY = process.env.SRC_DIRECTORY || '';
 
 program
   .command('deploy')
@@ -58,6 +59,7 @@ program
   .option('-g, --vpcSecurityGroups [' + AWS_VPC_SECURITY_GROUPS + ']', 'Lambda VPC Security Group',
     AWS_VPC_SECURITY_GROUPS)
   .option('-A, --packageDirectory [' + PACKAGE_DIRECTORY + ']', 'Local Package Directory', PACKAGE_DIRECTORY)
+  .option('-S, --sourceDirectory [' + SRC_DIRECTORY + ']', 'Path to lambda source Directory (e.g. "./some-lambda")', SRC_DIRECTORY)
   .option('-f, --configFile [' + CONFIG_FILE + ']',
     'Path to file holding secret environment variables (e.g. "deploy.env")', CONFIG_FILE)
   .option('-x, --excludeGlobs [' + EXCLUDE_GLOBS + ']',

@@ -126,6 +126,7 @@ $ node-lambda deploy --help
     -b, --vpcSubnets []               VPC Subnet ID(s, comma separated list) for your Lambda Function, when using this, the below param is also required
     -g, --vpcSecurityGroups []        VPC Security Group ID(s, comma separated list) for your Lambda Function, when using this, the above param is also required
     -A, --packageDirectory []         Local package directory
+    -S, --sourceDirectory [.]         Path to lambda source Directory (e.g. "./some-lambda")
     -x, --excludeGlobs []             Add a space separated list of file(type)s to ignore (e.g. "*.json .env")
     -D, --prebuiltDirectory []        Prebuilt directory
 ```
