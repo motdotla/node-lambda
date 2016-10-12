@@ -25,6 +25,7 @@ var originalProgram = {
   region: 'us-east-1,us-west-2,eu-west-1',
   eventFile: 'event.json',
   contextFile: 'context.json',
+  deployTimeout: 120000,
   prebuiltDirectory: '',
 };
 
