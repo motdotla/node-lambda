@@ -106,28 +106,28 @@ $ node-lambda deploy --help
 
   Options:
 
-    -h, --help                        output usage information
-    -e, --environment [staging]       Choose environment {development, staging, production}
-    -a, --accessKey [your_key]        AWS Access Key
-    -s, --secretKey [your_secret]     AWS Secret Key
-    -P, --profile [your_profile]      AWS Profile
-    -k, --sessionToken [your_token]   AWS Session Token
-    -r, --region [us-east-1]          AWS Region(s)
-    -n, --functionName [node-lambda]  Lambda FunctionName
-    -H, --handler [index.handler]     Lambda Handler {index.handler}
-    -o, --role [your_role]            Amazon Role ARN
-    -m, --memorySize [128]            Lambda Memory Size
-    -t, --timeout [3]                 Lambda Timeout
-    -d, --description [missing]       Lambda Description
-    -u, --runtime [nodejs4.3]         Lambda Runtime {nodejs4.3, nodejs} - "nodejs4.3" is the current standard, "nodejs" is v0.10.36
-    -p, --publish [false]             This boolean parameter can be used to request AWS Lambda to create the Lambda function and publish a version as an atomic operation
-    -v, --version [custom-version]    Lambda Version
-    -f, --configFile []               Path to file holding secret environment variables (e.g. "deploy.env")
-    -b, --vpcSubnets []               VPC Subnet ID(s, comma separated list) for your Lambda Function, when using this, the below param is also required
-    -g, --vpcSecurityGroups []        VPC Security Group ID(s, comma separated list) for your Lambda Function, when using this, the above param is also required
-    -A, --packageDirectory []         Local package directory
-    -x, --excludeGlobs []             Add a space separated list of file(type)s to ignore (e.g. "*.json .env")
-    -D, --prebuiltDirectory []        Prebuilt directory
+    -h, --help                           output usage information
+    -e, --environment [staging]          Choose environment {development, staging, production}
+    -a, --accessKey [your_key]           AWS Access Key
+    -s, --secretKey [your_secret]        AWS Secret Key
+    -P, --profile [your_profile]         AWS Profile
+    -k, --sessionToken [your_token]      AWS Session Token
+    -r, --region [us-east-1]             AWS Region(s)
+    -n, --functionName [node-lambda]     Lambda FunctionName
+    -H, --handler [index.handler]        Lambda Handler {index.handler}
+    -o, --role [your_role]               Amazon Role ARN
+    -m, --memorySize [128]               Lambda Memory Size
+    -t, --timeout [3]                    Lambda Timeout
+    -d, --description [missing]          Lambda Description
+    -u, --runtime [nodejs4.3]            Lambda Runtime {nodejs4.3, nodejs} - "nodejs4.3" is the current standard, "nodejs" is v0.10.36
+    -p, --publish [false]                This boolean parameter can be used to request AWS Lambda to create the Lambda function and publish a version as an atomic operation
+    -L, --lambdaVersion [custom-version] Lambda Version
+    -f, --configFile []                  Path to file holding secret environment variables (e.g. "deploy.env")
+    -b, --vpcSubnets []                  VPC Subnet ID(s, comma separated list) for your Lambda Function, when using this, the below param is also required
+    -g, --vpcSecurityGroups []           VPC Security Group ID(s, comma separated list) for your Lambda Function, when using this, the above param is also required
+    -A, --packageDirectory []            Local package directory
+    -x, --excludeGlobs []                Add a space separated list of file(type)s to ignore (e.g. "*.json .env")
+    -D, --prebuiltDirectory []           Prebuilt directory
 ```
 
 ## Custom Environment Variables

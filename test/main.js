@@ -52,7 +52,7 @@ describe('node-lambda', function () {
     });
 
     it('appends version to original functionName', function () {
-      program.version = '2015-02-01';
+      program.lambdaVersion = '2015-02-01';
       var params = lambda._params(program);
       assert.equal(params.FunctionName, 'node-lambda-development-2015-02-01');
     });
