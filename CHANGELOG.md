@@ -82,3 +82,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [0.8.10] - 2016-09-20
 ### Features
 - We are now passing the environment string to the post install script [#154](https://github.com/motdotla/node-lambda/pull/154)
+
+## [0.8.11] - 2016-10-28
+### Bugfixes
+- Restore lambda version functionality [#156](https://github.com/motdotla/node-lambda/issues/156)
+- Namespaced packages fail to deploy [#157](https://github.com/motdotla/node-lambda/issues/157)
