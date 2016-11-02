@@ -41,7 +41,7 @@ Initializes the `event.json`, `context.json`, `.env` files, and `deploy.env` fil
 ```
 $ node-lambda setup --help
 
-  Usage: run [options]
+  Usage: setup [options]
 
   Options:
 
