@@ -70,6 +70,7 @@ $ node-lambda run --help
     -j, --eventFile [event.json]        Event JSON File
     -f, --configFile []                 Path to file holding secret environment variables (e.g. "deploy.env")
     -u, --runtime [nodejs4.3]           Lambda Runtime {nodejs4.3, nodejs} - "nodejs4.3" is the current standard, "nodejs" is v0.10.36
+    -t, --timeout [3]                   Lambda Timeout in seconds (max of 300)
     -x, --contextFile [context.json]    Context JSON file
 ```
 
@@ -141,6 +142,14 @@ AWS Lambda now supports Node.js v4.3.2, and there have been some [API changes](h
 a callback function.  These will still work for now for backward compatibility, but are no longer recommended.
 
 v0.10.36 is still supported, and can be targeted by changing the `AWS_RUNTIME` value to `nodejs` in the `.env` file.
+
+Runtime context options available :
+
+- context.getRemainingTimeInMillis() 
+- context.done() ***deprecated***
+- context.fail() ***deprecated***
+- context.succeed() ***deprecated***
+
 
 ## Post install script
 When running `node-lambda deploy` if you need to do some action after `npm install --production` and before deploying to AWS Lambda (e.g. replace some modules with precompiled ones or download some libraries, replace some config file depending on environment) you can create `post_install.sh` script. If the file exists the script will be executed (and output shown after execution) if not it is skipped. Environment string is passed to script as first parameter so you can use it if needed. Make sure that the script is executable.
