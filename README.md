@@ -48,10 +48,10 @@ $ node-lambda setup --help
     -h, --help                     output usage information
 ```
 
-After running setup, it's a good idea to gitignore the generated `event.json` and `.env` files.
+After running setup, it's a good idea to gitignore the generated `event.json` and `.env` files, as well as `.lambda`.
 
 ```
-echo -e ".env\ndeploy.env\nevent.json" >> .gitignore
+echo -e ".env\ndeploy.env\nevent.json\n.lambda" >> .gitignore
 ```
 
 #### run
