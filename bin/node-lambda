@@ -34,6 +34,7 @@ var EVENT_FILE = process.env.EVENT_FILE || 'event.json';
 var PACKAGE_DIRECTORY = process.env.PACKAGE_DIRECTORY;
 var CONTEXT_FILE = process.env.CONTEXT_FILE || 'context.json';
 var PREBUILT_DIRECTORY = process.env.PREBUILT_DIRECTORY || '';
+var DOCKER_CONTAINER = process.env.DOCKER_CONTAINER || '';
 
 program
   .command('deploy')
@@ -59,6 +60,7 @@ program
   .option('-g, --vpcSecurityGroups [' + AWS_VPC_SECURITY_GROUPS + ']', 'Lambda VPC Security Group',
     AWS_VPC_SECURITY_GROUPS)
   .option('-A, --packageDirectory [' + PACKAGE_DIRECTORY + ']', 'Local Package Directory', PACKAGE_DIRECTORY)
+  .option('-C, --dockerContainer [' + DOCKER_CONTAINER + ']', 'Docker container', DOCKER_CONTAINER)
   .option('-f, --configFile [' + CONFIG_FILE + ']',
     'Path to file holding secret environment variables (e.g. "deploy.env")', CONFIG_FILE)
   .option('-x, --excludeGlobs [' + EXCLUDE_GLOBS + ']',
@@ -73,6 +75,7 @@ program
   .alias('zip')
   .description('Create zipped package for Amazon Lambda deployment')
   .option('-A, --packageDirectory [' + PACKAGE_DIRECTORY + ']', 'Local Package Directory', PACKAGE_DIRECTORY)
+  .option('-C, --dockerContainer [' + DOCKER_CONTAINER + ']', 'Docker container', DOCKER_CONTAINER)
   .option('-n, --functionName [' + AWS_FUNCTION_NAME + ']', 'Lambda FunctionName', AWS_FUNCTION_NAME)
   .option('-H, --handler [' + AWS_HANDLER + ']', 'Lambda Handler {index.handler}', AWS_HANDLER)
   .option('-e, --environment [' + AWS_ENVIRONMENT + ']', 'Choose environment {dev, staging, production}',
