@@ -60,7 +60,7 @@ program
   .option('-g, --vpcSecurityGroups [' + AWS_VPC_SECURITY_GROUPS + ']', 'Lambda VPC Security Group',
     AWS_VPC_SECURITY_GROUPS)
   .option('-A, --packageDirectory [' + PACKAGE_DIRECTORY + ']', 'Local Package Directory', PACKAGE_DIRECTORY)
-  .option('-C, --dockerContainer [' + DOCKER_CONTAINER + ']', 'Docker container', DOCKER_CONTAINER)
+  .option('-C, --dockerContainer [' + DOCKER_CONTAINER + ']', 'Docker container for npm install', DOCKER_CONTAINER)
   .option('-f, --configFile [' + CONFIG_FILE + ']',
     'Path to file holding secret environment variables (e.g. "deploy.env")', CONFIG_FILE)
   .option('-x, --excludeGlobs [' + EXCLUDE_GLOBS + ']',
@@ -75,7 +75,7 @@ program
   .alias('zip')
   .description('Create zipped package for Amazon Lambda deployment')
   .option('-A, --packageDirectory [' + PACKAGE_DIRECTORY + ']', 'Local Package Directory', PACKAGE_DIRECTORY)
-  .option('-C, --dockerContainer [' + DOCKER_CONTAINER + ']', 'Docker container', DOCKER_CONTAINER)
+  .option('-C, --dockerContainer [' + DOCKER_CONTAINER + ']', 'Docker container for npm install', DOCKER_CONTAINER)
   .option('-n, --functionName [' + AWS_FUNCTION_NAME + ']', 'Lambda FunctionName', AWS_FUNCTION_NAME)
   .option('-H, --handler [' + AWS_HANDLER + ']', 'Lambda Handler {index.handler}', AWS_HANDLER)
   .option('-e, --environment [' + AWS_ENVIRONMENT + ']', 'Choose environment {dev, staging, production}',

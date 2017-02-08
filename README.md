@@ -87,6 +87,7 @@ $ node-lambda package --help
 
     -h, --help                          output usage information
     -A, --packageDirectory [build]      Local Package Directory
+    -C, --dockerContainer []            Docker container for npm install
     -n, --functionName [node-lambda]    Lambda FunctionName
     -H, --handler [index.handler]       Lambda Handler {index.handler}
     -e, --environment [staging]         Choose environment {development, staging, production}
@@ -127,6 +128,7 @@ $ node-lambda deploy --help
     -b, --vpcSubnets []                  VPC Subnet ID(s, comma separated list) for your Lambda Function, when using this, the below param is also required
     -g, --vpcSecurityGroups []           VPC Security Group ID(s, comma separated list) for your Lambda Function, when using this, the above param is also required
     -A, --packageDirectory []            Local package directory
+    -C, --dockerContainer []             Docker container for npm install
     -x, --excludeGlobs []                Add a space separated list of file(type)s to ignore (e.g. "*.json .env")
     -D, --prebuiltDirectory []           Prebuilt directory
 ```
