@@ -73,6 +73,29 @@ describe('node-lambda', function () {
       var params = lambda._params(program);
       assert.equal(Object.keys(params.VpcConfig).length, 0);
     });
+
+    describe('configFile', function () {
+      beforeEach(function () {
+        // Prep...
+        fs.writeFileSync('tmp.env', 'FOO=bar\nBAZ=bing\n');
+      });
+
+      afterEach(function () {
+        fs.unlinkSync('tmp.env');
+      });
+
+      it('adds variables when configFile param is set', function () {
+        program.configFile = 'tmp.env';
+        var params = lambda._params(program);
+        assert.equal(params.Environment.Variables['FOO'], "bar");
+        assert.equal(params.Environment.Variables['BAZ'], "bing");
+      });
+
+      it('does not add when configFile param is not set', function () {
+        var params = lambda._params(program);
+        assert.equal(Object.keys(params.Environment.Variables).length, 0);
+      });
+    });
   });
 
   describe('_zipfileTmpPath', function () {
@@ -329,33 +352,6 @@ describe('node-lambda', function () {
     });
   });
 
-  describe('environment variable injection', function () {
-    beforeEach(function () {
-      // Prep...
-      fs.writeFileSync('tmp.env', 'FOO=bar\nBAZ=bing\n');
-      fs.writeFileSync('test.js', '');
-    });
-
-    afterEach(function () {
-      fs.unlinkSync('tmp.env');
-      fs.unlinkSync('test.js');
-    });
-
-    it('should inject environment variables at the top of the entry point file', function () {
-
-      // Run it...
-      lambda._setEnvironmentVars({
-        configFile: 'tmp.env',
-        handler: 'test.handler',
-      }, process.cwd());
-
-      assert.equal(fs.readFileSync('test.js').toString(), '////////////////////////////////////\n' +
-        '// "Environment Variables"\nprocess.env["FOO"]="bar";\n' +
-        'process.env["BAZ"]="bing";\n////////////////////////////////////\n\n');
-    });
-
-  });
-
   describe('environment variable injection at runtime', function () {
     beforeEach(function () {
       // Prep...
@@ -375,33 +371,6 @@ describe('node-lambda', function () {
 
       assert.equal(process.env["FOO"], 'bar');
       assert.equal(process.env["BAZ"], 'bing');
-    });
-
-  });
-
-  describe('environment variable injection - "use strict" allowance', function () {
-    beforeEach(function () {
-      // Prep...
-      fs.writeFileSync('tmp.env', 'FOO=bar\nBAZ=bing\n');
-      fs.writeFileSync('test.js', '\'use strict\';');
-    });
-
-    afterEach(function () {
-      fs.unlinkSync('tmp.env');
-      fs.unlinkSync('test.js');
-    });
-
-    it('should inject environment variables at the top of the entry point file', function () {
-
-      // Run it...
-      lambda._setEnvironmentVars({
-        configFile: 'tmp.env',
-        handler: 'test.handler',
-      }, process.cwd());
-
-      assert.equal(fs.readFileSync('test.js').toString(), '\'use strict\';\n////////////////////////////////////\n' +
-        '// "Environment Variables"\nprocess.env["FOO"]="bar";\n' +
-        'process.env["BAZ"]="bing";\n////////////////////////////////////\n\n');
     });
 
   });
