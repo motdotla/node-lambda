@@ -87,3 +87,14 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Bugfixes
 - Restore lambda version functionality [#156](https://github.com/motdotla/node-lambda/issues/156)
 - Namespaced packages fail to deploy [#157](https://github.com/motdotla/node-lambda/issues/157)
+
+## [0.8.12] - 2017-02-10
+### Bugfixes
+- Using path.join instead of hardcoded slashes [#173](https://github.com/motdotla/node-lambda/pull/173)
+- Drop node-uuid from package.json [#174](https://github.com/motdotla/node-lambda/pull/174)
+- Enforce max for timeout and update README docs [#180](https://github.com/motdotla/node-lambda/pull/180)
+- Fill default VpcConfig to prevent errors [#183](https://github.com/motdotla/node-lambda/pull/183)
+
+### Features
+- Added getRemainingTimeInMillis() to the context when running locally. [#179](https://github.com/motdotla/node-lambda/pull/179)
+- Adding support for lambda environment variables [#181](https://github.com/motdotla/node-lambda/pull/181)
