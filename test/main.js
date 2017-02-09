@@ -71,7 +71,8 @@ describe('node-lambda', function () {
 
     it('does not append VpcConfig when params are not set', function() {
       var params = lambda._params(program);
-      assert.equal(Object.keys(params.VpcConfig).length, 0);
+      assert.equal(Object.keys(params.VpcConfig.SubnetIds).length, 0);
+      assert.equal(Object.keys(params.VpcConfig.SecurityGroupIds).length, 0);
     });
 
     describe('configFile', function () {
