@@ -98,3 +98,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Features
 - Added getRemainingTimeInMillis() to the context when running locally. [#179](https://github.com/motdotla/node-lambda/pull/179)
 - Adding support for lambda environment variables [#181](https://github.com/motdotla/node-lambda/pull/181)
+
+## [0.8.13] - 2017-02-12
+### Bugfixes
+- Fixed wrong runtime call [#188](https://github.com/motdotla/node-lambda/pull/188)
+- Docker support [#186](https://github.com/motdotla/node-lambda/pull/186)
+- Make default excludes apply to root only [#185](https://github.com/motdotla/node-lambda/pull/185)
