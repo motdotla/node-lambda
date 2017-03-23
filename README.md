@@ -137,19 +137,7 @@ AWS Lambda will let you set environment variables for your function. Use the sam
 
 ## Node.js Runtime Configuration
 
-AWS Lambda now supports Node.js v4.3.2, and there have been some [API changes](http://docs.aws.amazon.com/lambda/latest/dg/nodejs-prog-model-using-old-runtime.html) for the new version.  Most notably,
-`context.done()`, `context.succeed()`, and `context.fail()` are deprecated in favor of the Node convention of passing in
-a callback function.  These will still work for now for backward compatibility, but are no longer recommended.
-
-v0.10.36 is still supported, and can be targeted by changing the `AWS_RUNTIME` value to `nodejs` in the `.env` file.
-
-Runtime context options available :
-
-- context.getRemainingTimeInMillis() 
-- context.done() ***deprecated***
-- context.fail() ***deprecated***
-- context.succeed() ***deprecated***
-
+AWS Lambda now supports Node.js 6.10 and Node.js 4.3. Please also check the [Programming Model (Node.js)](http://docs.aws.amazon.com/lambda/latest/dg/programming-model.html) page.
 
 ## Post install script
 When running `node-lambda deploy` if you need to do some action after `npm install --production` and before deploying to AWS Lambda (e.g. replace some modules with precompiled ones or download some libraries, replace some config file depending on environment) you can create `post_install.sh` script. If the file exists the script will be executed (and output shown after execution) if not it is skipped. Environment string is passed to script as first parameter so you can use it if needed. Make sure that the script is executable.
