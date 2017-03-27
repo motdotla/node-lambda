@@ -104,3 +104,14 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Fixed wrong runtime call [#188](https://github.com/motdotla/node-lambda/pull/188)
 - Docker support [#186](https://github.com/motdotla/node-lambda/pull/186)
 - Make default excludes apply to root only [#185](https://github.com/motdotla/node-lambda/pull/185)
+
+
+## [0.8.14] - 2017-03-27
+### Features
+- Event source mapping support [#189](https://github.com/motdotla/node-lambda/pull/189)
+- Fix version of Node.js supported by AWS Lambda [#197](https://github.com/motdotla/node-lambda/pull/197)
+- How about it if you have the option to specify the zip file? [#199](https://github.com/motdotla/node-lambda/pull/199)
+- Add 'Runtime' to the params of lambda.updateFunctionConfiguration [#200](https://github.com/motdotla/node-lambda/pull/200)
+
+### Bugfixes
+- Fix unit test failure at travis [#198](https://github.com/motdotla/node-lambda/pull/198)
