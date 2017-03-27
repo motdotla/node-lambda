@@ -21,7 +21,7 @@ var originalProgram = {
   memorySize: 128,
   timeout: 3,
   description: '',
-  runtime: 'nodejs',
+  runtime: 'nodejs6.10',
   region: 'us-east-1,us-west-2,eu-west-1',
   eventFile: 'event.json',
   contextFile: 'context.json',
