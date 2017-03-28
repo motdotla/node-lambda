@@ -126,6 +126,7 @@ $ node-lambda deploy --help
     -f, --configFile []                        Path to file holding secret environment variables (e.g. "deploy.env")
     -b, --vpcSubnets []                        VPC Subnet ID(s, comma separated list) for your Lambda Function, when using this, the below param is also required
     -g, --vpcSecurityGroups []                 VPC Security Group ID(s, comma separated list) for your Lambda Function, when using this, the above param is also required
+    -Q, --deadLetterConfigTargetArn []         Lambda DLQ resource
     -A, --packageDirectory []                  Local package directory
     -S, --eventSourceFile [event_sources.json] Path to file holding event source mapping variables (e.g. "event_sources.json")
     -x, --excludeGlobs []                      Add a space separated list of file(type)s to ignore (e.g. "*.json .env")
