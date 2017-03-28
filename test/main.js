@@ -22,6 +22,7 @@ var originalProgram = {
   timeout: 3,
   description: '',
   runtime: 'nodejs6.10',
+  deadLetterConfigTargetArn: '',
   region: 'us-east-1,us-west-2,eu-west-1',
   eventFile: 'event.json',
   contextFile: 'context.json',
