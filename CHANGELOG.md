@@ -115,3 +115,12 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Bugfixes
 - Fix unit test failure at travis [#198](https://github.com/motdotla/node-lambda/pull/198)
+
+## [0.8.15] - 2017-03-28
+### Features
+- Added DeadLetterConfig parameter [#206](https://github.com/motdotla/node-lambda/pull/206)
+
+### Bugfixes
+- Fix default value of EVENT_SOURCE_FILE set '' [#205](https://github.com/motdotla/node-lambda/pull/205)
+- Removed event_sources.json [#204](https://github.com/motdotla/node-lambda/pull/204)
+- Add -S, --eventSourceFile option. [#203](https://github.com/motdotla/node-lambda/pull/203)
