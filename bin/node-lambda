@@ -31,12 +31,18 @@ var AWS_PUBLISH = process.env.AWS_PUBLISH || false;
 var AWS_FUNCTION_VERSION = process.env.AWS_FUNCTION_VERSION || '';
 var AWS_VPC_SUBNETS = process.env.AWS_VPC_SUBNETS || '';
 var AWS_VPC_SECURITY_GROUPS = process.env.AWS_VPC_SECURITY_GROUPS || '';
-var AWS_DLQ_TARGET_ARN = process.env.AWS_DLQ_TARGET_ARN || '';
 var EVENT_FILE = process.env.EVENT_FILE || 'event.json';
 var PACKAGE_DIRECTORY = process.env.PACKAGE_DIRECTORY;
 var CONTEXT_FILE = process.env.CONTEXT_FILE || 'context.json';
 var PREBUILT_DIRECTORY = process.env.PREBUILT_DIRECTORY || '';
 var DEPLOY_ZIPFILE = process.env.DEPLOY_ZIPFILE || '';
+var AWS_DLQ_TARGET_ARN = (function() {
+  // You can clear the setting by passing an empty string
+  // when executing updateFunctionConfiguration
+  if (process.env.AWS_DLQ_TARGET_ARN !== undefined)
+    return process.env.AWS_DLQ_TARGET_ARN
+  return undefined;
+})();
 
 program
   .command('deploy')
