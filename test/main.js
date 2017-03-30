@@ -349,7 +349,52 @@ describe('node-lambda', function () {
                      _.includes(contents, 'node_modules/a');
         assert.equal(result, true);
         done();
+      });
+    });
+  });
 
+  describe('_readArchive', function () {
+    const testZipFile = '/tmp/node-lambda-test.zip';
+    var bufferExpected = null;
+    before(function(done) {
+      this.timeout(30000); // give it time to zip
+
+      lambda._zip(program, codeDirectory, function (err, data) {
+        bufferExpected = data;
+        fs.writeFileSync(testZipFile, data);
+        done();
+      });
+    });
+
+    after(function() {
+      fs.unlinkSync(testZipFile);
+    });
+
+    it('_readArchive fails (undefined)', function (done) {
+      lambda._readArchive(program, function (err, data) {
+        assert.isUndefined(data);
+        assert.instanceOf(err, Error);
+        assert.equal(err.message, 'No such Zipfile [undefined]');
+        done();
+      });
+    });
+
+    it('_readArchive fails (does not exists file)', function (done) {
+      const _program = Object.assign({ deployZipfile: '/aaaa/bbbb' }, program);
+      lambda._readArchive(_program, function (err, data) {
+        assert.isUndefined(data);
+        assert.instanceOf(err, Error);
+        assert.equal(err.message, 'No such Zipfile [/aaaa/bbbb]');
+        done();
+      });
+    });
+
+    it('_readArchive reads the contents of the zipfile', function (done) {
+      const _program = Object.assign({ deployZipfile: testZipFile }, program);
+      lambda._readArchive(_program, function (err, data) {
+        assert.isNull(err);
+        assert.deepEqual(data, bufferExpected);
+        done();
       });
     });
   });
