@@ -349,7 +349,6 @@ describe('node-lambda', function () {
                      _.includes(contents, 'node_modules/a');
         assert.equal(result, true);
         done();
-
       });
     });
   });
