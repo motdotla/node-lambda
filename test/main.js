@@ -423,30 +423,42 @@ describe('node-lambda', function () {
   });
 
   describe('create sample files', function () {
+    const targetFiles = [
+      '.env',
+      'context.json',
+      'event.json',
+      'deploy.env',
+      'event_sources.json'
+    ];
 
     afterEach(function () {
-      fs.unlinkSync('.env');
-      fs.unlinkSync('context.json');
-      fs.unlinkSync('event.json');
-      fs.unlinkSync('deploy.env');
+      targetFiles.forEach(function(file) {
+        fs.unlinkSync(file);
+      });
     });
 
     it('should create sample files', function () {
       lambda.setup(program);
 
-      var envBoilerplateFile = __dirname + '/../lib/.env.example';
-      var contextBoilerplateFile = __dirname + '/../lib/context.json.example';
-      var eventBoilerplateFile = __dirname + '/../lib/event.json.example';
-      var deployBoilerplateFile = __dirname + '/../lib/deploy.env.example';
+      const libPath = `${__dirname}/../lib`;
+      targetFiles.forEach(function(targetFile) {
+        const boilerplateFile = `${libPath}/${targetFile}.example`;
 
-      assert.equal(fs.readFileSync('.env').toString(), fs.readFileSync(envBoilerplateFile).toString());
-      assert.equal(fs.readFileSync('context.json').toString(), fs.readFileSync(contextBoilerplateFile).toString());
-      assert.equal(fs.readFileSync('event.json').toString(), fs.readFileSync(eventBoilerplateFile).toString());
-      assert.equal(fs.readFileSync('deploy.env').toString(), fs.readFileSync(deployBoilerplateFile).toString());
+        assert.equal(
+          fs.readFileSync(targetFile).toString(),
+          fs.readFileSync(boilerplateFile).toString(),
+          targetFile
+        );
+      });
     });
   });
 
   describe('check env vars before create sample files', function () {
+    const filesCreatedBySetup = [
+      '.env',
+      'deploy.env',
+      'event_sources.json'
+    ];
 
     beforeEach(function () {
       fs.writeFileSync('newContext.json', '{"FOO"="bar"\n"BAZ"="bing"\n}');
@@ -454,10 +466,11 @@ describe('node-lambda', function () {
     });
 
     afterEach(function () {
-      fs.unlinkSync('.env');
       fs.unlinkSync('newContext.json');
       fs.unlinkSync('newEvent.json');
-      fs.unlinkSync('deploy.env');
+      filesCreatedBySetup.forEach(function(file) {
+        fs.unlinkSync(file);
+      });
     });
 
     it('should use existing sample files', function () {
@@ -466,13 +479,19 @@ describe('node-lambda', function () {
 
       lambda.setup(program);
 
-      var envBoilerplateFile = __dirname + '/../lib/.env.example';
-      var deployBoilerplateFile = __dirname + '/../lib/deploy.env.example';
-
-      assert.equal(fs.readFileSync('.env').toString(), fs.readFileSync(envBoilerplateFile).toString());
       assert.equal(fs.readFileSync('newContext.json').toString(), '{"FOO"="bar"\n"BAZ"="bing"\n}');
       assert.equal(fs.readFileSync('newEvent.json').toString(), '{"FOO"="bar"}');
-      assert.equal(fs.readFileSync('deploy.env').toString(), fs.readFileSync(deployBoilerplateFile).toString());
+
+      const libPath = `${__dirname}/../lib`;
+      filesCreatedBySetup.forEach(function(targetFile) {
+        const boilerplateFile = `${libPath}/${targetFile}.example`;
+
+        assert.equal(
+          fs.readFileSync(targetFile).toString(),
+          fs.readFileSync(boilerplateFile).toString(),
+          targetFile
+        );
+      });
     });
 
   });
