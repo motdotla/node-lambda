@@ -507,6 +507,5 @@ describe('node-lambda', function () {
         );
       });
     });
-
   });
 });
