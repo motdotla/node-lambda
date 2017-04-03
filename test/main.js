@@ -76,6 +76,20 @@ describe('node-lambda', function () {
       assert.equal(Object.keys(params.VpcConfig.SecurityGroupIds).length, 0);
     });
 
+    it('appends DeadLetterConfig to params when DLQ params set', function() {
+      ['', 'arn:aws:sqs:test'].forEach(function(v) {
+        program.deadLetterConfigTargetArn = v;
+        const params = lambda._params(program);
+        assert.equal(params.DeadLetterConfig.TargetArn, v, v);
+      });
+    });
+
+    it('does not append DeadLetterConfig when params are not set', function() {
+      delete program.deadLetterConfigTargetArn;
+      var params = lambda._params(program);
+      assert.isNull(params.DeadLetterConfig.TargetArn);
+    });
+
     describe('configFile', function () {
       beforeEach(function () {
         // Prep...
