@@ -411,6 +411,34 @@ describe('node-lambda', function () {
         done();
       });
     });
+
+    describe('If value is set in `deployZipfile`, _readArchive is executed in _archive', function () {
+      it('`deployZipfile` is a invalid value. Process from creation of zip file', function (done) {
+        const _program = Object.assign({ deployZipfile: '/aaaa/bbbb' }, program);
+        this.timeout(30000); // give it time to zip
+        lambda._archive(_program, function (err, data) {
+          // same test as "installs and zips with an index.js file and node_modules/async"
+          var archive = new zip(data);
+          var contents = _.map(archive.files, function (f) {
+            return f.name.toString();
+          });
+          var result = _.includes(contents, 'index.js');
+          assert.equal(result, true);
+          result = _.includes(contents, 'node_modules/async/lib/async.js');
+          assert.equal(result, true);
+          done();
+        });
+      });
+
+      it('`deployZipfile` is a valid value._archive reads the contents of the zipfile', function (done) {
+        const _program = Object.assign({ deployZipfile: testZipFile }, program);
+        lambda._archive(_program, function (err, data) {
+          assert.isNull(err);
+          assert.deepEqual(data, bufferExpected);
+          done();
+        });
+      });
+    });
   });
 
   describe('environment variable injection at runtime', function () {
