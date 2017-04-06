@@ -25,6 +25,7 @@ var originalProgram = {
   deadLetterConfigTargetArn: '',
   region: 'us-east-1,us-west-2,eu-west-1',
   eventFile: 'event.json',
+  eventSourceFile: '',
   contextFile: 'context.json',
   prebuiltDirectory: '',
 };
@@ -473,10 +474,11 @@ describe('node-lambda', function () {
       'event_sources.json'
     ];
 
-    afterEach(function () {
+    after(function () {
       targetFiles.forEach(function(file) {
         fs.unlinkSync(file);
       });
+      program.eventSourceFile = '';
     });
 
     it('should create sample files', function () {
@@ -490,6 +492,33 @@ describe('node-lambda', function () {
           fs.readFileSync(targetFile).toString(),
           fs.readFileSync(boilerplateFile).toString(),
           targetFile
+        );
+      });
+    });
+
+    describe('_eventSourceList', function () {
+      it('program.eventSourceFile is empty value', function () {
+        program.eventSourceFile = '';
+        assert.deepEqual(lambda._eventSourceList(program), []);
+      });
+
+      it('program.eventSourceFile is valid value', function () {
+        program.eventSourceFile = 'event_sources.json';
+        const expected = [{
+          BatchSize: 100,
+          Enabled: true,
+          EventSourceArn: 'your event source arn',
+          StartingPosition: 'LATEST',
+        }];
+        assert.deepEqual(lambda._eventSourceList(program), expected);
+      });
+
+      it('program.eventSourceFile is invalid value', function () {
+        program.eventSourceFile = '/hoge/fuga';
+        assert.throws(
+          () => { lambda._eventSourceList(program); },
+          Error,
+          "ENOENT: no such file or directory, open '/hoge/fuga'"
         );
       });
     });
