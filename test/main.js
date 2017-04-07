@@ -95,10 +95,12 @@ describe('node-lambda', function () {
       beforeEach(function () {
         // Prep...
         fs.writeFileSync('tmp.env', 'FOO=bar\nBAZ=bing\n');
+        fs.writeFileSync('empty.env', '');
       });
 
       afterEach(function () {
         fs.unlinkSync('tmp.env');
+        fs.unlinkSync('empty.env');
       });
 
       it('adds variables when configFile param is set', function () {
@@ -108,9 +110,15 @@ describe('node-lambda', function () {
         assert.equal(params.Environment.Variables['BAZ'], "bing");
       });
 
-      it('does not add when configFile param is not set', function () {
+      it('when configFile param is set but it is an empty file', function () {
+        program.configFile = 'empty.env';
         var params = lambda._params(program);
         assert.equal(Object.keys(params.Environment.Variables).length, 0);
+      });
+
+      it('does not add when configFile param is not set', function () {
+        var params = lambda._params(program);
+        assert.isNull(params.Environment.Variables);
       });
     });
   });
