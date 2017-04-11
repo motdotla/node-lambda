@@ -510,17 +510,6 @@ describe('node-lambda', function () {
         assert.deepEqual(lambda._eventSourceList(program), []);
       });
 
-      it('program.eventSourceFile is valid value', function () {
-        program.eventSourceFile = 'event_sources.json';
-        const expected = [{
-          BatchSize: 100,
-          Enabled: true,
-          EventSourceArn: 'your event source arn',
-          StartingPosition: 'LATEST',
-        }];
-        assert.deepEqual(lambda._eventSourceList(program), expected);
-      });
-
       it('program.eventSourceFile is invalid value', function () {
         program.eventSourceFile = '/hoge/fuga';
         assert.throws(
@@ -528,6 +517,83 @@ describe('node-lambda', function () {
           Error,
           "ENOENT: no such file or directory, open '/hoge/fuga'"
         );
+      });
+
+      describe('program.eventSourceFile is valid value', function() {
+        before(function () {
+          fs.writeFileSync('only_EventSourceMappings.json', JSON.stringify({
+            EventSourceMappings: [{ test: 1 }]
+          }));
+          fs.writeFileSync('only_ScheduleEvents.json', JSON.stringify({
+            ScheduleEvents: [{ test: 2 }]
+          }));
+        });
+
+        after(function () {
+          fs.unlinkSync('only_EventSourceMappings.json');
+          fs.unlinkSync('only_ScheduleEvents.json');
+        });
+
+        it('only EventSourceMappings', function () {
+          program.eventSourceFile = 'only_EventSourceMappings.json';
+          const expected = {
+            EventSourceMappings: [{ test: 1 }],
+            ScheduleEvents: [],
+          };
+          assert.deepEqual(lambda._eventSourceList(program), expected);
+        });
+
+        it('only ScheduleEvents', function () {
+          program.eventSourceFile = 'only_ScheduleEvents.json';
+          const expected = {
+            EventSourceMappings: [],
+            ScheduleEvents: [{ test: 2 }],
+          };
+          assert.deepEqual(lambda._eventSourceList(program), expected);
+        });
+
+        it('EventSourceMappings & ScheduleEvents', function () {
+          program.eventSourceFile = 'event_sources.json';
+          const expected = {
+            EventSourceMappings: [{
+              BatchSize: 100,
+              Enabled: true,
+              EventSourceArn: 'your event source arn',
+              StartingPosition: 'LATEST',
+            }],
+            ScheduleEvents: [{
+              FunctionArnPrefix: 'arn:aws:lambda:us-west-2:XXX:function:',
+              ScheduleName: 'node-lambda-test-schedule',
+              ScheduleState: 'ENABLED',
+              ScheduleExpression: 'rate(1 hour)',
+            }],
+          };
+          assert.deepEqual(lambda._eventSourceList(program), expected);
+        });
+      });
+
+      describe('old style event_sources.json', function () {
+        const oldStyleValue = [{
+          BatchSize: 100,
+          Enabled: true,
+          EventSourceArn: 'your event source arn',
+          StartingPosition: 'LATEST',
+        }];
+        const fileName = 'event_sources_old_style.json';
+
+        before(function () {
+          fs.writeFileSync(fileName, JSON.stringify(oldStyleValue));
+        });
+
+        after(function () {
+          fs.unlinkSync(fileName);
+        });
+
+        it('program.eventSourceFile is valid value', function () {
+          program.eventSourceFile = fileName;
+          const expected = { EventSourceMappings: oldStyleValue };
+          assert.deepEqual(lambda._eventSourceList(program), expected);
+        });
       });
     });
   });
