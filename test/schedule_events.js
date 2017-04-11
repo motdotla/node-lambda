@@ -49,7 +49,9 @@ describe('schedule_events', () => {
       callback(null, mockResponse.addPermission);
     });
 
-    schedule = require(path.join('..', 'lib', 'schedule_events'));
+    const scheduleEventsPath = path.join(__dirname, '..', 'lib', 'schedule_events');
+    delete require.cache[scheduleEventsPath + '.js']; // Clear cache to use Mock
+    schedule = require(scheduleEventsPath);
   });
 
   describe('_ruleDescription', () => {
