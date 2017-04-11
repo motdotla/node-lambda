@@ -4,6 +4,7 @@ const assert = require('chai').assert;
 const path = require('path');
 const aws = require('aws-sdk-mock');
 aws.setSDK(path.resolve('node_modules/aws-sdk'));
+const ScheduleEvents = require(path.join('..', 'lib', 'schedule_events'));
 
 const params = {
   FunctionName: 'node-lambda-test-function',
@@ -49,7 +50,7 @@ describe('schedule_events', () => {
       callback(null, mockResponse.addPermission);
     });
 
-    schedule = require(path.join('..', 'lib', 'schedule_events'));
+    schedule = new ScheduleEvents(require('aws-sdk'));
   });
 
   describe('_ruleDescription', () => {
