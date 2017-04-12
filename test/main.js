@@ -601,6 +601,65 @@ describe('node-lambda', function () {
     });
   });
 
+  describe('_updateScheduleEvents', function () {
+    const aws = require('aws-sdk-mock');
+    const ScheduleEvents = require('../lib/schedule_events');
+    const eventSourcesJsonValue = {
+      ScheduleEvents: [{
+        FunctionArnPrefix: 'arn:aws:lambda:us-west-2:XXX:function:',
+        ScheduleName: 'node-lambda-test-schedule',
+        ScheduleState: 'ENABLED',
+        ScheduleExpression: 'rate(1 hour)',
+      }]
+    };
+
+    var schedule = null;
+
+    before(function () {
+      aws.mock('CloudWatchEvents', 'putRule', function (params, callback) {
+        callback(null, {});
+      });
+      aws.mock('CloudWatchEvents', 'putTargets', function (params, callback) {
+        callback(null, {});
+      });
+      aws.mock('Lambda', 'addPermission', function (params, callback) {
+        callback(null, {});
+      });
+
+      fs.writeFileSync(
+        'event_sources.json',
+        JSON.stringify(eventSourcesJsonValue)
+      );
+
+      schedule = new ScheduleEvents(require('aws-sdk'));
+    });
+
+    after(function () {
+      fs.unlinkSync('event_sources.json');
+      aws.restore('CloudWatchEvents');
+      aws.restore('Lambda');
+    });
+
+    it('simple test with mock', function () {
+      program.eventSourceFile = 'event_sources.json';
+      const eventSourceList = lambda._eventSourceList(program);
+      return new Promise(function (resolve) {
+        lambda._updateScheduleEvents(schedule, 'testfunc', eventSourceList.ScheduleEvents, function(err, results) {
+          resolve({ err: err, results: results });
+        });
+      }).then(function (actual) {
+        const expected = {
+          err: undefined,
+          results: [Object.assign(
+            eventSourcesJsonValue.ScheduleEvents[0],
+            { FunctionName: 'testfunc' }
+          )]
+        };
+        assert.deepEqual(actual, expected);
+      });
+    });
+  });
+
   describe('check env vars before create sample files', function () {
     const filesCreatedBySetup = [
       '.env',
