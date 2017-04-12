@@ -1,8 +1,18 @@
-[
+{
+  "EventSourceMappings": [
     {
-        "EventSourceArn": "your event source arn",
-        "StartingPosition": "LATEST",
-        "BatchSize": 100,
-        "Enabled": true
+      "EventSourceArn": "your event source arn",
+      "StartingPosition": "LATEST",
+      "BatchSize": 100,
+      "Enabled": true
     }
-]
+  ],
+  "ScheduleEvents": [
+    {
+      "FunctionArnPrefix": "arn:aws:lambda:us-west-2:XXX:function:",
+      "ScheduleName": "node-lambda-test-schedule",
+      "ScheduleState": "ENABLED",
+      "ScheduleExpression": "rate(1 hour)"
+    }
+  ]
+}
