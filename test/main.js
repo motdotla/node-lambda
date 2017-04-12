@@ -507,7 +507,10 @@ describe('node-lambda', function () {
     describe('_eventSourceList', function () {
       it('program.eventSourceFile is empty value', function () {
         program.eventSourceFile = '';
-        assert.deepEqual(lambda._eventSourceList(program), []);
+        assert.deepEqual(
+          lambda._eventSourceList(program),
+          { EventSourceMappings: [], ScheduleEvents: [] }
+        );
       });
 
       it('program.eventSourceFile is invalid value', function () {
