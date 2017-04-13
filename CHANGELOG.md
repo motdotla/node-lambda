@@ -139,6 +139,6 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Clean unnecessary `else` [#217](https://github.com/motdotla/node-lambda/pull/217)
 - Refactor _eventSourceList [#218](https://github.com/motdotla/node-lambda/pull/218)
 - Clean deploy function [#220](https://github.com/motdotla/node-lambda/pull/220)
-- Fix default value of params.Environment.Variables is null [#221](- Fix to use authenticated `aws` object in main.js [#225](https://github.com/motdotla/node-lambda/pull/2251)
+- Fix default value of params.Environment.Variables is null [#221](https://github.com/motdotla/node-lambda/pull/221)
 - Fix to use authenticated `aws` object in main.js [#225](https://github.com/motdotla/node-lambda/pull/225)
 - Changed the format of `event_sources.json` [#226](https://github.com/motdotla/node-lambda/pull/226)
