@@ -605,7 +605,6 @@ describe('node-lambda', function () {
     const ScheduleEvents = require('../lib/schedule_events');
     const eventSourcesJsonValue = {
       ScheduleEvents: [{
-        FunctionArnPrefix: 'arn:aws:lambda:us-west-2:XXX:function:',
         ScheduleName: 'node-lambda-test-schedule',
         ScheduleState: 'ENABLED',
         ScheduleExpression: 'rate(1 hour)',
@@ -642,8 +641,9 @@ describe('node-lambda', function () {
     it('simple test with mock', function () {
       program.eventSourceFile = 'event_sources.json';
       const eventSourceList = lambda._eventSourceList(program);
+      const functionArn = 'arn:aws:lambda:us-west-2:XXX:function:node-lambda-test-function';
       return new Promise(function (resolve) {
-        lambda._updateScheduleEvents(schedule, 'testfunc', eventSourceList.ScheduleEvents, function(err, results) {
+        lambda._updateScheduleEvents(schedule, functionArn, eventSourceList.ScheduleEvents, function(err, results) {
           resolve({ err: err, results: results });
         });
       }).then(function (actual) {
@@ -651,7 +651,7 @@ describe('node-lambda', function () {
           err: undefined,
           results: [Object.assign(
             eventSourcesJsonValue.ScheduleEvents[0],
-            { FunctionName: 'testfunc' }
+            { FunctionArn: functionArn }
           )]
         };
         assert.deepEqual(actual, expected);
