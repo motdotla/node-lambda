@@ -7,8 +7,7 @@ aws.setSDK(path.resolve('node_modules/aws-sdk'));
 const ScheduleEvents = require(path.join('..', 'lib', 'schedule_events'));
 
 const params = {
-  FunctionName: 'node-lambda-test-function',
-  FunctionArnPrefix: 'arn:aws:lambda:us-west-2:XXX:function:',
+  FunctionArn: 'arn:aws:lambda:us-west-2:XXX:function:node-lambda-test-function',
   ScheduleName: 'node-lambda-test-schedule',
   ScheduleState: 'ENABLED',
   ScheduleExpression: 'rate(1 hour)'
@@ -62,11 +61,11 @@ describe('schedule_events', () => {
     });
   });
 
-  describe('_functionArn', () => {
+  describe('_functionName', () => {
     it('correct value', () => {
       assert.equal(
-        schedule._functionArn(params),
-        'arn:aws:lambda:us-west-2:XXX:function:node-lambda-test-function'
+        schedule._functionName(params),
+        'node-lambda-test-function'
       );
     });
   });
