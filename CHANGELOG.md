@@ -124,3 +124,21 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Fix default value of EVENT_SOURCE_FILE set '' [#205](https://github.com/motdotla/node-lambda/pull/205)
 - Removed event_sources.json [#204](https://github.com/motdotla/node-lambda/pull/204)
 - Add -S, --eventSourceFile option. [#203](https://github.com/motdotla/node-lambda/pull/203)
+
+## [0.9.0] - 2017-04-13
+### Features
+- Add tests for _readArchive [#213](https://github.com/motdotla/node-lambda/pull/213)
+- Add tests for event_sources.json [#214](https://github.com/motdotla/node-lambda/pull/214)
+- Add tests for DeadLetterConfig [#215](https://github.com/motdotla/node-lambda/pull/215)
+- Add _readArchive tests called in _archive [#216](https://github.com/motdotla/node-lambda/pull/216)
+- modify badge from png to svg [#227](https://github.com/motdotla/node-lambda/pull/227)
+- ScheduleEvents [#228](https://github.com/motdotla/node-lambda/pull/228)
+
+### Bugfixes
+- Bugfix InvalidParameterValueException is given when createFunction [#209](https://github.com/motdotla/node-lambda/pull/209)
+- Clean unnecessary `else` [#217](https://github.com/motdotla/node-lambda/pull/217)
+- Refactor _eventSourceList [#218](https://github.com/motdotla/node-lambda/pull/218)
+- Clean deploy function [#220](https://github.com/motdotla/node-lambda/pull/220)
+- Fix default value of params.Environment.Variables is null [#221](- Fix to use authenticated `aws` object in main.js [#225](https://github.com/motdotla/node-lambda/pull/2251)
+- Fix to use authenticated `aws` object in main.js [#225](https://github.com/motdotla/node-lambda/pull/225)
+- Changed the format of `event_sources.json` [#226](https://github.com/motdotla/node-lambda/pull/226)
