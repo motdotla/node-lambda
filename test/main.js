@@ -565,7 +565,6 @@ describe('node-lambda', function () {
               StartingPosition: 'LATEST',
             }],
             ScheduleEvents: [{
-              FunctionArnPrefix: 'arn:aws:lambda:us-west-2:XXX:function:',
               ScheduleName: 'node-lambda-test-schedule',
               ScheduleState: 'ENABLED',
               ScheduleExpression: 'rate(1 hour)',
