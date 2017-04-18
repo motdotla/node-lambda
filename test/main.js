@@ -593,7 +593,10 @@ describe('node-lambda', function () {
 
         it('program.eventSourceFile is valid value', function () {
           program.eventSourceFile = fileName;
-          const expected = { EventSourceMappings: oldStyleValue };
+          const expected = {
+            EventSourceMappings: oldStyleValue,
+            ScheduleEvents: []
+          };
           assert.deepEqual(lambda._eventSourceList(program), expected);
         });
       });
