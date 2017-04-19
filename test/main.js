@@ -38,6 +38,10 @@ describe('node-lambda', function () {
     program = Hoek.clone(originalProgram);
   });
 
+  after(function () {
+    fs.removeSync(codeDirectory);
+  });
+
   it('version should be set', function () {
     assert.equal(lambda.version, '0.9.0');
   });
