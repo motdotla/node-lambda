@@ -2,10 +2,9 @@
 
 var chai = require('chai');
 var program = require('commander');
-var fs = require('fs');
+var fs = require('fs-extra');
 var Hoek = require('hoek');
 var lambda = require('../lib/main');
-var fs = require('fs');
 var _ = require('lodash');
 var zip = require('node-zip');
 var rimraf = require('rimraf');
