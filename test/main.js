@@ -16,7 +16,7 @@ var originalProgram = {
   accessKey: 'key',
   secretKey: 'secret',
   sessionToken: 'token',
-  functionName: 'node-lambda',
+  functionName: '___node-lambda',
   handler: 'index.handler',
   role: 'some:arn:aws:iam::role',
   memorySize: 128,
@@ -50,19 +50,19 @@ describe('node-lambda', function () {
   describe('_params', function () {
     it('appends environment to original functionName', function () {
       var params = lambda._params(program);
-      assert.equal(params.FunctionName, 'node-lambda-development');
+      assert.equal(params.FunctionName, '___node-lambda-development');
     });
 
     it('appends environment to original functionName (production)', function () {
       program.environment = 'production';
       var params = lambda._params(program);
-      assert.equal(params.FunctionName, 'node-lambda-production');
+      assert.equal(params.FunctionName, '___node-lambda-production');
     });
 
     it('appends version to original functionName', function () {
       program.lambdaVersion = '2015-02-01';
       var params = lambda._params(program);
-      assert.equal(params.FunctionName, 'node-lambda-development-2015-02-01');
+      assert.equal(params.FunctionName, '___node-lambda-development-2015-02-01');
     });
 
     it('appends VpcConfig to params when vpc params set', function() {
