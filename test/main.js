@@ -1,9 +1,10 @@
+'use strict';
+
 var chai = require('chai');
 var program = require('commander');
-var fs = require('fs');
+var fs = require('fs-extra');
 var Hoek = require('hoek');
 var lambda = require('../lib/main');
-var fs = require('fs');
 var _ = require('lodash');
 var zip = require('node-zip');
 var rimraf = require('rimraf');
@@ -15,7 +16,7 @@ var originalProgram = {
   accessKey: 'key',
   secretKey: 'secret',
   sessionToken: 'token',
-  functionName: 'node-lambda',
+  functionName: '___node-lambda',
   handler: 'index.handler',
   role: 'some:arn:aws:iam::role',
   memorySize: 128,
@@ -30,11 +31,16 @@ var originalProgram = {
   prebuiltDirectory: '',
 };
 
-var codeDirectory = lambda._codeDirectory(program);
+var codeDirectory = lambda._codeDirectory(Hoek.clone(originalProgram));
 
 describe('node-lambda', function () {
   beforeEach(function () {
     program = Hoek.clone(originalProgram);
+  });
+
+  after(function () {
+    this.timeout(30000); // give it time to remove
+    fs.removeSync(`/tmp/${program.functionName}-[0-9]*`);
   });
 
   it('version should be set', function () {
@@ -44,19 +50,19 @@ describe('node-lambda', function () {
   describe('_params', function () {
     it('appends environment to original functionName', function () {
       var params = lambda._params(program);
-      assert.equal(params.FunctionName, 'node-lambda-development');
+      assert.equal(params.FunctionName, '___node-lambda-development');
     });
 
     it('appends environment to original functionName (production)', function () {
       program.environment = 'production';
       var params = lambda._params(program);
-      assert.equal(params.FunctionName, 'node-lambda-production');
+      assert.equal(params.FunctionName, '___node-lambda-production');
     });
 
     it('appends version to original functionName', function () {
       program.lambdaVersion = '2015-02-01';
       var params = lambda._params(program);
-      assert.equal(params.FunctionName, 'node-lambda-development-2015-02-01');
+      assert.equal(params.FunctionName, '___node-lambda-development-2015-02-01');
     });
 
     it('appends VpcConfig to params when vpc params set', function() {
