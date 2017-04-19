@@ -39,7 +39,8 @@ describe('node-lambda', function () {
   });
 
   after(function () {
-    fs.removeSync(codeDirectory);
+    this.timeout(30000); // give it time to remove
+    fs.removeSync(`/tmp/${program.functionName}-[0-9]*`);
   });
 
   it('version should be set', function () {
