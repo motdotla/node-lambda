@@ -31,7 +31,7 @@ var originalProgram = {
   prebuiltDirectory: '',
 };
 
-var codeDirectory = lambda._codeDirectory(program);
+var codeDirectory = lambda._codeDirectory(Hoek.clone(originalProgram));
 
 describe('node-lambda', function () {
   beforeEach(function () {
