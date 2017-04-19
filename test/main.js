@@ -1,3 +1,5 @@
+'use strict';
+
 var chai = require('chai');
 var program = require('commander');
 var fs = require('fs');
