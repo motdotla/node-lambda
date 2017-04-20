@@ -137,6 +137,30 @@ describe('node-lambda', function () {
     });
   });
 
+  describe('_cleanDirectory', function () {
+    it('`codeDirectory` is empty', function (done) {
+      lambda._cleanDirectory(codeDirectory, function () {
+        assert.isTrue(fs.existsSync(codeDirectory));
+        const contents = fs.readdirSync(codeDirectory);
+        assert.equal(contents.length, 0);
+        done();
+      });
+    });
+
+    it('`codeDirectory` is empty. (For `codeDirectory` where the file was present)', function (done) {
+      lambda._rsync(program, '.', codeDirectory, true, function (err, result) {
+        const contents = fs.readdirSync(codeDirectory);
+        assert.isTrue(contents.length > 0);
+        lambda._cleanDirectory(codeDirectory, function () {
+          assert.isTrue(fs.existsSync(codeDirectory));
+          const contents = fs.readdirSync(codeDirectory);
+          assert.equal(contents.length, 0);
+          done();
+        });
+      });
+    });
+  });
+
   describe('_rsync', function () {
     beforeEach(function (done) {
       lambda._cleanDirectory(codeDirectory, done);
