@@ -179,9 +179,9 @@ describe('node-lambda', function () {
       });
     });
 
-    describe("when there are excluded files", function () {
+    describe('when there are excluded files', function () {
       beforeEach(function (done) {
-        program.excludeGlobs="*.png test";
+        program.excludeGlobs = '*.png test';
         done();
       });
 
@@ -210,7 +210,7 @@ describe('node-lambda', function () {
       });
 
       it(funcName + ' should not exclude package.json, even when excluded by excludeGlobs', function (done) {
-        program.excludeGlobs="*.json"
+        program.excludeGlobs = '*.json';
         lambda[funcName](program, '.', codeDirectory, true, function(err, result) {
           var contents = fs.readdirSync(codeDirectory);
           result = _.includes(contents, 'package.json');
@@ -230,7 +230,7 @@ describe('node-lambda', function () {
         fs.writeFileSync(path + '/testa');
         fs.writeFileSync(path + '/package.json');
 
-        program.excludeGlobs = "*.json"
+        program.excludeGlobs = '*.json';
         program.prebuiltDirectory = path;
         lambda[funcName](program, path, codeDirectory, true, function(err, result) {
           var contents = fs.readdirSync(codeDirectory);
