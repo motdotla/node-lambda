@@ -173,7 +173,7 @@ describe('node-lambda', function () {
         result = _.includes(contents, 'index.js') &&
                  _.includes(contents, 'package.json') &&
                  !_.includes(contents, 'node_modules');
-        assert.equal(result, true);
+        assert.isTrue(result);
 
         done();
       });
@@ -191,7 +191,7 @@ describe('node-lambda', function () {
 
           result = _.includes(contents, 'index.js') &&
                    _.includes(contents, 'package.json');
-          assert.equal(result, true);
+          assert.isTrue(result);
 
           done();
         });
@@ -203,7 +203,7 @@ describe('node-lambda', function () {
 
           result = _.includes(contents, 'node-lambda.png') &&
                    _.includes(contents, 'test');
-          assert.equal(result, false);
+          assert.isFalse(result);
 
           done();
         });
@@ -214,7 +214,7 @@ describe('node-lambda', function () {
         lambda[funcName](program, '.', codeDirectory, true, function(err, result) {
           var contents = fs.readdirSync(codeDirectory);
           result = _.includes(contents, 'package.json');
-          assert.equal(result, true);
+          assert.isTrue(result);
 
           done();
         });
@@ -236,7 +236,7 @@ describe('node-lambda', function () {
           var contents = fs.readdirSync(codeDirectory);
           result = !_.includes(contents, 'package.json') &&
                     _.includes(contents, 'testa');
-          assert.equal(result, true);
+          assert.isTrue(result);
 
           done();
         });
