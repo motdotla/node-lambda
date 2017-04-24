@@ -435,11 +435,12 @@ describe('node-lambda', function () {
     });
 
     it('_readArchive fails (does not exists file)', function (done) {
-      const _program = Object.assign({ deployZipfile: path.join('aaaa', 'bbbb') }, program);
+      const filePath = path.join(path.resolve('/aaaa'), 'bbbb');
+      const _program = Object.assign({ deployZipfile: filePath }, program);
       lambda._readArchive(_program, function (err, data) {
         assert.isUndefined(data);
         assert.instanceOf(err, Error);
-        assert.equal(err.message, `No such Zipfile [${path.join('aaaa', 'bbbb')}]`);
+        assert.equal(err.message, `No such Zipfile [${filePath}]`);
         done();
       });
     });
@@ -455,7 +456,8 @@ describe('node-lambda', function () {
 
     describe('If value is set in `deployZipfile`, _readArchive is executed in _archive', function () {
       it('`deployZipfile` is a invalid value. Process from creation of zip file', function (done) {
-        const _program = Object.assign({ deployZipfile: path.join('aaaa', 'bbbb') }, program);
+        const filePath = path.join(path.resolve('/aaaa'), 'bbbb');
+        const _program = Object.assign({ deployZipfile: filePath }, program);
         this.timeout(30000); // give it time to zip
         lambda._archive(_program, function (err, data) {
           // same test as "installs and zips with an index.js file and node_modules/async"
@@ -546,11 +548,12 @@ describe('node-lambda', function () {
       });
 
       it('program.eventSourceFile is invalid value', function () {
-        program.eventSourceFile = path.join('hoge', 'fuga');
+        const dirPath = path.join(path.resolve('/hoge'), 'fuga');
+        program.eventSourceFile = dirPath;
         assert.throws(
           () => { lambda._eventSourceList(program); },
           Error,
-          `ENOENT: no such file or directory, open '${path.join('hoge', 'fuga')}'`
+          `ENOENT: no such file or directory, open '${dirPath}'`
         );
       });
 
