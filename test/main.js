@@ -1,10 +1,12 @@
 'use strict';
 
+var path = require('path');
+var os = require('os');
 var chai = require('chai');
 var program = require('commander');
 var fs = require('fs-extra');
 var Hoek = require('hoek');
-var lambda = require('../lib/main');
+var lambda = require(path.join(__dirname, '..', 'lib', 'main'));
 var _ = require('lodash');
 var zip = require('node-zip');
 var rimraf = require('rimraf');
@@ -40,7 +42,7 @@ describe('node-lambda', function () {
 
   after(function () {
     this.timeout(30000); // give it time to remove
-    fs.removeSync(`/tmp/${program.functionName}-[0-9]*`);
+    fs.removeSync(path.join(os.tmpDir(), `${program.functionName}-[0-9]*`));
   });
 
   it('version should be set', function () {
@@ -221,18 +223,18 @@ describe('node-lambda', function () {
       });
 
       it('rsync should not include package.json when --prebuiltDirectory is set', function (done) {
-        var path = '.build_' + Date.now();
+        var buildDir = '.build_' + Date.now();
         after(function() {
-          rimraf.sync(path, fs);
+          rimraf.sync(buildDir, fs);
         });
 
-        fs.mkdirSync(path);
-        fs.writeFileSync(path + '/testa');
-        fs.writeFileSync(path + '/package.json');
+        fs.mkdirSync(buildDir);
+        fs.writeFileSync(path.join(buildDir, 'testa'));
+        fs.writeFileSync(path.join(buildDir, 'package.json'));
 
         program.excludeGlobs = "*.json"
-        program.prebuiltDirectory = path;
-        lambda._rsync(program, path, codeDirectory, true, function(err, result) {
+        program.prebuiltDirectory = buildDir;
+        lambda._rsync(program, buildDir, codeDirectory, true, function(err, result) {
           var contents = fs.readdirSync(codeDirectory);
           result = !_.includes(contents, 'package.json') &&
                     _.includes(contents, 'testa');
@@ -312,12 +314,12 @@ describe('node-lambda', function () {
     });
 
     it('running script gives expected output', function (done) {
-      fs.writeFileSync(codeDirectory + '/post_install.sh', fs.readFileSync('test/post_install.sh'));
-      fs.chmodSync(codeDirectory + '/post_install.sh', '755');
+      fs.writeFileSync(path.join(codeDirectory, 'post_install.sh'), fs.readFileSync(path.join('test', 'post_install.sh')));
+      fs.chmodSync(path.join(codeDirectory, 'post_install.sh'), '755');
       lambda._postInstallScript(program, codeDirectory, function (err) {
         assert.equal(err, null);
         assert.equal("=> Running post install script post_install.sh\n\t\tYour environment is "+program.environment+"\n", hook.captured());
-        fs.unlinkSync(codeDirectory + '/post_install.sh');
+        fs.unlinkSync(path.join(codeDirectory, 'post_install.sh'));
         done();
       });
     });
@@ -372,34 +374,34 @@ describe('node-lambda', function () {
         });
         var result = _.includes(contents, 'index.js');
         assert.equal(result, true);
-        result = _.includes(contents, 'node_modules/async/lib/async.js');
+        result = _.includes(contents, path.join('node_modules', 'async', 'lib', 'async.js'));
         assert.equal(result, true);
         done();
       });
     });
 
     it('packages a prebuilt module without installing', function (done) {
-      var path = '.build_' + Date.now();
+      var buildDir = '.build_' + Date.now();
       after(function() {
-        rimraf.sync(path, fs);
+        rimraf.sync(buildDir, fs);
       });
 
-      fs.mkdirSync(path);
-      fs.mkdirSync(path + '/d');
-      fs.mkdirSync(path + '/node_modules');
-      fs.writeFileSync(path + '/node_modules/a', '...');
-      fs.writeFileSync(path + '/testa', '...');
-      fs.writeFileSync(path + '/d/testb', '...');
+      fs.mkdirSync(buildDir);
+      fs.mkdirSync(path.join(buildDir, 'd'));
+      fs.mkdirSync(path.join(buildDir, 'node_modules'));
+      fs.writeFileSync(path.join(buildDir, 'node_modules', 'a'), '...');
+      fs.writeFileSync(path.join(buildDir, 'testa'), '...');
+      fs.writeFileSync(path.join(buildDir, 'd', 'testb'), '...');
 
-      program.prebuiltDirectory = path;
+      program.prebuiltDirectory = buildDir;
       lambda._archive(program, function (err, data) {
         var archive = new zip(data);
         var contents = _.map(archive.files, function (f) {
           return f.name.toString();
         });
         var result = _.includes(contents, 'testa') &&
-                     _.includes(contents, 'd/testb') &&
-                     _.includes(contents, 'node_modules/a');
+                     _.includes(contents, path.join('d', 'testb')) &&
+                     _.includes(contents, path.join('node_modules', 'a'));
         assert.equal(result, true);
         done();
       });
@@ -407,7 +409,7 @@ describe('node-lambda', function () {
   });
 
   describe('_readArchive', function () {
-    const testZipFile = '/tmp/node-lambda-test.zip';
+    const testZipFile = path.join(os.tmpDir(), 'node-lambda-test.zip');
     var bufferExpected = null;
     before(function(done) {
       this.timeout(30000); // give it time to zip
@@ -433,11 +435,11 @@ describe('node-lambda', function () {
     });
 
     it('_readArchive fails (does not exists file)', function (done) {
-      const _program = Object.assign({ deployZipfile: '/aaaa/bbbb' }, program);
+      const _program = Object.assign({ deployZipfile: path.join('aaaa', 'bbbb') }, program);
       lambda._readArchive(_program, function (err, data) {
         assert.isUndefined(data);
         assert.instanceOf(err, Error);
-        assert.equal(err.message, 'No such Zipfile [/aaaa/bbbb]');
+        assert.equal(err.message, `No such Zipfile [${path.join('aaaa', 'bbbb')}]`);
         done();
       });
     });
@@ -453,7 +455,7 @@ describe('node-lambda', function () {
 
     describe('If value is set in `deployZipfile`, _readArchive is executed in _archive', function () {
       it('`deployZipfile` is a invalid value. Process from creation of zip file', function (done) {
-        const _program = Object.assign({ deployZipfile: '/aaaa/bbbb' }, program);
+        const _program = Object.assign({ deployZipfile: path.join('aaaa', 'bbbb') }, program);
         this.timeout(30000); // give it time to zip
         lambda._archive(_program, function (err, data) {
           // same test as "installs and zips with an index.js file and node_modules/async"
@@ -463,7 +465,7 @@ describe('node-lambda', function () {
           });
           var result = _.includes(contents, 'index.js');
           assert.equal(result, true);
-          result = _.includes(contents, 'node_modules/async/lib/async.js');
+          result = _.includes(contents, path.join('node_modules', 'async', 'lib', 'async.js'));
           assert.equal(result, true);
           done();
         });
@@ -544,11 +546,11 @@ describe('node-lambda', function () {
       });
 
       it('program.eventSourceFile is invalid value', function () {
-        program.eventSourceFile = '/hoge/fuga';
+        program.eventSourceFile = path.join('hoge', 'fuga');
         assert.throws(
           () => { lambda._eventSourceList(program); },
           Error,
-          "ENOENT: no such file or directory, open '/hoge/fuga'"
+          `ENOENT: no such file or directory, open '${path.join('hoge', 'fuga')}'`
         );
       });
 
@@ -635,7 +637,7 @@ describe('node-lambda', function () {
 
   describe('_updateScheduleEvents', function () {
     const aws = require('aws-sdk-mock');
-    const ScheduleEvents = require('../lib/schedule_events');
+    const ScheduleEvents = require(path.join('..', 'lib', 'schedule_events'));
     const eventSourcesJsonValue = {
       ScheduleEvents: [{
         ScheduleName: 'node-lambda-test-schedule',
