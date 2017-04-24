@@ -161,66 +161,66 @@ describe('node-lambda', function () {
     });
   });
 
-  describe('_rsync', function () {
+  function rsyncTests(funcName) {
     beforeEach(function (done) {
       lambda._cleanDirectory(codeDirectory, done);
     });
 
-    it('rsync an index.js as well as other files', function (done) {
-      lambda._rsync(program, '.', codeDirectory, true, function (err, result) {
+    it(funcName + ' an index.js as well as other files', function (done) {
+      lambda[funcName](program, '.', codeDirectory, true, function (err, result) {
         var contents = fs.readdirSync(codeDirectory);
 
         result = _.includes(contents, 'index.js') &&
                  _.includes(contents, 'package.json') &&
                  !_.includes(contents, 'node_modules');
-        assert.equal(result, true);
+        assert.isTrue(result);
 
         done();
       });
     });
 
-    describe("when there are excluded files", function () {
+    describe('when there are excluded files', function () {
       beforeEach(function (done) {
-        program.excludeGlobs="*.png test";
+        program.excludeGlobs = '*.png test';
         done();
       });
 
-      it('rsync an index.js as well as other files', function (done) {
-        lambda._rsync(program, '.', codeDirectory, true, function (err, result) {
+      it(funcName + ' an index.js as well as other files', function (done) {
+        lambda[funcName](program, '.', codeDirectory, true, function (err, result) {
           var contents = fs.readdirSync(codeDirectory);
 
           result = _.includes(contents, 'index.js') &&
                    _.includes(contents, 'package.json');
-          assert.equal(result, true);
+          assert.isTrue(result);
 
           done();
         });
       });
 
-      it('rsync excludes files matching excludeGlobs', function (done) {
-        lambda._rsync(program, '.', codeDirectory, true, function (err, result) {
+      it(funcName + ' excludes files matching excludeGlobs', function (done) {
+        lambda[funcName](program, '.', codeDirectory, true, function (err, result) {
           var contents = fs.readdirSync(codeDirectory);
 
           result = _.includes(contents, 'node-lambda.png') &&
                    _.includes(contents, 'test');
-          assert.equal(result, false);
+          assert.isFalse(result);
 
           done();
         });
       });
 
-      it('rsync should not exclude package.json, even when excluded by excludeGlobs', function (done) {
-        program.excludeGlobs="*.json"
-        lambda._rsync(program, '.', codeDirectory, true, function(err, result) {
+      it(funcName + ' should not exclude package.json, even when excluded by excludeGlobs', function (done) {
+        program.excludeGlobs = '*.json';
+        lambda[funcName](program, '.', codeDirectory, true, function(err, result) {
           var contents = fs.readdirSync(codeDirectory);
           result = _.includes(contents, 'package.json');
-          assert.equal(result, true);
+          assert.isTrue(result);
 
           done();
         });
       });
 
-      it('rsync should not include package.json when --prebuiltDirectory is set', function (done) {
+      it(funcName + ' should not include package.json when --prebuiltDirectory is set', function (done) {
         var path = '.build_' + Date.now();
         after(function() {
           rimraf.sync(path, fs);
@@ -230,19 +230,22 @@ describe('node-lambda', function () {
         fs.writeFileSync(path + '/testa');
         fs.writeFileSync(path + '/package.json');
 
-        program.excludeGlobs = "*.json"
+        program.excludeGlobs = '*.json';
         program.prebuiltDirectory = path;
-        lambda._rsync(program, path, codeDirectory, true, function(err, result) {
+        lambda[funcName](program, path, codeDirectory, true, function(err, result) {
           var contents = fs.readdirSync(codeDirectory);
           result = !_.includes(contents, 'package.json') &&
                     _.includes(contents, 'testa');
-          assert.equal(result, true);
+          assert.isTrue(result);
 
           done();
         });
       });
     });
-  });
+  }
+
+  describe('_rsync', function() { rsyncTests('_rsync'); });
+  describe('_fileCopy', function() { rsyncTests('_fileCopy'); });
 
   describe('_npmInstall', function () {
     beforeEach(function (done) {
