@@ -169,12 +169,12 @@ describe('node-lambda', function () {
     it(funcName + ' an index.js as well as other files', function (done) {
       lambda[funcName](program, '.', codeDirectory, true, function (err, result) {
         var contents = fs.readdirSync(codeDirectory);
-
-        result = _.includes(contents, 'index.js') &&
-                 _.includes(contents, 'package.json') &&
-                 !_.includes(contents, 'node_modules');
-        assert.isTrue(result);
-
+        ['index.js', 'package.json'].forEach(function (needle) {
+          assert.include(contents, needle, `Target: "${needle}"`);
+        });
+        ['node_modules'].forEach(function (needle) {
+          assert.notInclude(contents, needle, `Target: "${needle}"`);
+        });
         done();
       });
     });
@@ -190,11 +190,9 @@ describe('node-lambda', function () {
       it(funcName + ' an index.js as well as other files', function (done) {
         lambda[funcName](program, '.', codeDirectory, true, function (err, result) {
           var contents = fs.readdirSync(codeDirectory);
-
-          result = _.includes(contents, 'index.js') &&
-                   _.includes(contents, 'package.json');
-          assert.isTrue(result);
-
+          ['index.js', 'package.json'].forEach(function (needle) {
+            assert.include(contents, needle, `Target: "${needle}"`);
+          });
           done();
         });
       });
@@ -202,11 +200,11 @@ describe('node-lambda', function () {
       it(funcName + ' excludes files matching excludeGlobs', function (done) {
         lambda[funcName](program, '.', codeDirectory, true, function (err, result) {
           var contents = fs.readdirSync(codeDirectory);
-
-          result = _.includes(contents, 'node-lambda.png') &&
-                   _.includes(contents, 'test');
-          assert.isFalse(result);
-
+          ['node-lambda.png', 'test'].forEach(function (needle) {
+            assert.notInclude(contents, needle, `Target: "${needle}"`);
+          });
+          contents = fs.readdirSync(codeDirectory + '/lib');
+          assert.notInclude(contents, 'main.js', 'Target: "lib/main.js"');
           done();
         });
       });
@@ -215,9 +213,7 @@ describe('node-lambda', function () {
         program.excludeGlobs = '*.json';
         lambda[funcName](program, '.', codeDirectory, true, function(err, result) {
           var contents = fs.readdirSync(codeDirectory);
-          result = _.includes(contents, 'package.json');
-          assert.isTrue(result);
-
+          assert.include(contents, 'package.json');
           done();
         });
       });
@@ -236,10 +232,8 @@ describe('node-lambda', function () {
         program.prebuiltDirectory = path;
         lambda[funcName](program, path, codeDirectory, true, function(err, result) {
           var contents = fs.readdirSync(codeDirectory);
-          result = !_.includes(contents, 'package.json') &&
-                    _.includes(contents, 'testa');
-          assert.isTrue(result);
-
+          assert.notInclude(contents, 'package.json', 'Target: "packages.json"');
+          assert.include(contents, 'testa', 'Target: "testa"');
           done();
         });
       });
