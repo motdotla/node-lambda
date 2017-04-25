@@ -24,6 +24,7 @@ var originalProgram = {
   description: '',
   runtime: 'nodejs6.10',
   deadLetterConfigTargetArn: '',
+  tracingConfig: '',
   region: 'us-east-1,us-west-2,eu-west-1',
   eventFile: 'event.json',
   eventSourceFile: '',
@@ -95,6 +96,18 @@ describe('node-lambda', function () {
       delete program.deadLetterConfigTargetArn;
       var params = lambda._params(program);
       assert.isNull(params.DeadLetterConfig.TargetArn);
+    });
+
+    it('appends TracingConfig to params when params set', function() {
+      program.tracingConfig = 'Active';
+      const params = lambda._params(program);
+      assert.equal(params.TracingConfig.Mode, 'Active');
+    });
+
+    it('does not append TracingConfig when params are not set', function() {
+      program.tracingConfig = '';
+      const params = lambda._params(program);
+      assert.isNull(params.TracingConfig.Mode);
     });
 
     describe('configFile', function () {
