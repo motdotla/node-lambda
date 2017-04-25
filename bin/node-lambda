@@ -31,6 +31,7 @@ var AWS_PUBLISH = process.env.AWS_PUBLISH || false;
 var AWS_FUNCTION_VERSION = process.env.AWS_FUNCTION_VERSION || '';
 var AWS_VPC_SUBNETS = process.env.AWS_VPC_SUBNETS || '';
 var AWS_VPC_SECURITY_GROUPS = process.env.AWS_VPC_SECURITY_GROUPS || '';
+var AWS_TRACING_CONFIG = process.env.AWS_TRACING_CONFIG || '';
 var EVENT_FILE = process.env.EVENT_FILE || 'event.json';
 var PACKAGE_DIRECTORY = process.env.PACKAGE_DIRECTORY;
 var CONTEXT_FILE = process.env.CONTEXT_FILE || 'context.json';
@@ -69,6 +70,8 @@ program
     AWS_VPC_SECURITY_GROUPS)
   .option('-Q, --deadLetterConfigTargetArn [' + AWS_DLQ_TARGET_ARN + ']', 'Lambda DLQ resource',
     AWS_DLQ_TARGET_ARN)
+  .option('-T, --tracingConfig [' + AWS_TRACING_CONFIG + ']', 'Lambda tracing settings',
+    AWS_TRACING_CONFIG)
   .option('-A, --packageDirectory [' + PACKAGE_DIRECTORY + ']', 'Local Package Directory', PACKAGE_DIRECTORY)
   .option('-f, --configFile [' + CONFIG_FILE + ']',
     'Path to file holding secret environment variables (e.g. "deploy.env")', CONFIG_FILE)
