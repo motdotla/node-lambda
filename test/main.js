@@ -181,7 +181,9 @@ describe('node-lambda', function () {
 
     describe('when there are excluded files', function () {
       beforeEach(function (done) {
-        program.excludeGlobs = '*.png test';
+        // *main* => lib/main.js
+        // In case of specifying files under the directory with wildcards
+        program.excludeGlobs = '*.png test *main*';
         done();
       });
 
