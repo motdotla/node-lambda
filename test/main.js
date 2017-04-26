@@ -107,7 +107,7 @@ describe('node-lambda', function () {
     it('does not append TracingConfig when params are not set', function() {
       program.tracingConfig = '';
       const params = lambda._params(program);
-      assert.isNull(params.TracingConfig.Mode);
+      assert.isUndefined(params.TracingConfig);
     });
 
     describe('configFile', function () {
