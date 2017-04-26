@@ -26,6 +26,7 @@ var originalProgram = {
   description: '',
   runtime: 'nodejs6.10',
   deadLetterConfigTargetArn: '',
+  tracingConfig: '',
   region: 'us-east-1,us-west-2,eu-west-1',
   eventFile: 'event.json',
   eventSourceFile: '',
@@ -97,6 +98,18 @@ describe('node-lambda', function () {
       delete program.deadLetterConfigTargetArn;
       var params = lambda._params(program);
       assert.isNull(params.DeadLetterConfig.TargetArn);
+    });
+
+    it('appends TracingConfig to params when params set', function() {
+      program.tracingConfig = 'Active';
+      const params = lambda._params(program);
+      assert.equal(params.TracingConfig.Mode, 'Active');
+    });
+
+    it('does not append TracingConfig when params are not set', function() {
+      program.tracingConfig = '';
+      const params = lambda._params(program);
+      assert.isNull(params.TracingConfig.Mode);
     });
 
     describe('configFile', function () {
@@ -171,30 +184,30 @@ describe('node-lambda', function () {
     it(funcName + ' an index.js as well as other files', function (done) {
       lambda[funcName](program, '.', codeDirectory, true, function (err, result) {
         var contents = fs.readdirSync(codeDirectory);
-
-        result = _.includes(contents, 'index.js') &&
-                 _.includes(contents, 'package.json') &&
-                 !_.includes(contents, 'node_modules');
-        assert.isTrue(result);
-
+        ['index.js', 'package.json'].forEach(function (needle) {
+          assert.include(contents, needle, `Target: "${needle}"`);
+        });
+        ['node_modules'].forEach(function (needle) {
+          assert.notInclude(contents, needle, `Target: "${needle}"`);
+        });
         done();
       });
     });
 
     describe('when there are excluded files', function () {
       beforeEach(function (done) {
-        program.excludeGlobs = '*.png test';
+        // *main* => lib/main.js
+        // In case of specifying files under the directory with wildcards
+        program.excludeGlobs = '*.png test *main*';
         done();
       });
 
       it(funcName + ' an index.js as well as other files', function (done) {
         lambda[funcName](program, '.', codeDirectory, true, function (err, result) {
           var contents = fs.readdirSync(codeDirectory);
-
-          result = _.includes(contents, 'index.js') &&
-                   _.includes(contents, 'package.json');
-          assert.isTrue(result);
-
+          ['index.js', 'package.json'].forEach(function (needle) {
+            assert.include(contents, needle, `Target: "${needle}"`);
+          });
           done();
         });
       });
@@ -202,11 +215,11 @@ describe('node-lambda', function () {
       it(funcName + ' excludes files matching excludeGlobs', function (done) {
         lambda[funcName](program, '.', codeDirectory, true, function (err, result) {
           var contents = fs.readdirSync(codeDirectory);
-
-          result = _.includes(contents, 'node-lambda.png') &&
-                   _.includes(contents, 'test');
-          assert.isFalse(result);
-
+          ['node-lambda.png', 'test'].forEach(function (needle) {
+            assert.notInclude(contents, needle, `Target: "${needle}"`);
+          });
+          contents = fs.readdirSync(codeDirectory + '/lib');
+          assert.notInclude(contents, 'main.js', 'Target: "lib/main.js"');
           done();
         });
       });
@@ -215,9 +228,7 @@ describe('node-lambda', function () {
         program.excludeGlobs = '*.json';
         lambda[funcName](program, '.', codeDirectory, true, function(err, result) {
           var contents = fs.readdirSync(codeDirectory);
-          result = _.includes(contents, 'package.json');
-          assert.isTrue(result);
-
+          assert.include(contents, 'package.json');
           done();
         });
       });
@@ -236,10 +247,8 @@ describe('node-lambda', function () {
         program.prebuiltDirectory = buildDir;
         lambda[funcName](program, buildDir, codeDirectory, true, function(err, result) {
           var contents = fs.readdirSync(codeDirectory);
-          result = !_.includes(contents, 'package.json') &&
-                    _.includes(contents, 'testa');
-          assert.isTrue(result);
-
+          assert.notInclude(contents, 'package.json', 'Target: "packages.json"');
+          assert.include(contents, 'testa', 'Target: "testa"');
           done();
         });
       });
