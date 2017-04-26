@@ -289,6 +289,7 @@ describe('node-lambda', function () {
   });
 
   describe('_postInstallScript', function () {
+    const postInstallScriptPath = path.join(codeDirectory, 'post_install.sh');
     var hook;
     /**
      * Capture console output
@@ -315,23 +316,31 @@ describe('node-lambda', function () {
     });
     afterEach(function(){
       hook.unhook();
+      if (fs.existsSync(postInstallScriptPath))
+        fs.unlinkSync(postInstallScriptPath);
     });
-
 
     it('should not throw any errors if no script', function (done) {
       lambda._postInstallScript(program, codeDirectory, function (err) {
-        assert.equal(err, null);
+        assert.isNull(err);
+        done();
+      });
+    });
+
+    it('should throw any errors if script fails', function (done) {
+      fs.writeFileSync(postInstallScriptPath, '___fails___');
+      lambda._postInstallScript(program, codeDirectory, function (err) {
+        assert.match(err, /^Error: Command failed:/);
         done();
       });
     });
 
     it('running script gives expected output', function (done) {
-      fs.writeFileSync(path.join(codeDirectory, 'post_install.sh'), fs.readFileSync(path.join('test', 'post_install.sh')));
+      fs.writeFileSync(postInstallScriptPath, fs.readFileSync(path.join('test', 'post_install.sh')));
       fs.chmodSync(path.join(codeDirectory, 'post_install.sh'), '755');
       lambda._postInstallScript(program, codeDirectory, function (err) {
-        assert.equal(err, null);
+        assert.isNull(err);
         assert.equal("=> Running post install script post_install.sh\n\t\tYour environment is "+program.environment+"\n", hook.captured());
-        fs.unlinkSync(path.join(codeDirectory, 'post_install.sh'));
         done();
       });
     });
