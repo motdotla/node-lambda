@@ -218,7 +218,7 @@ describe('node-lambda', function () {
           ['node-lambda.png', 'test'].forEach(function (needle) {
             assert.notInclude(contents, needle, `Target: "${needle}"`);
           });
-          contents = fs.readdirSync(codeDirectory + '/lib');
+          contents = fs.readdirSync(path.join(codeDirectory, 'lib'));
           assert.notInclude(contents, 'main.js', 'Target: "lib/main.js"');
           done();
         });
@@ -538,9 +538,9 @@ describe('node-lambda', function () {
     it('should create sample files', function () {
       lambda.setup(program);
 
-      const libPath = `${__dirname}/../lib`;
+      const libPath = path.join(__dirname, '..', 'lib');
       targetFiles.forEach(function(targetFile) {
-        const boilerplateFile = `${libPath}/${targetFile}.example`;
+        const boilerplateFile = path.join(libPath, `${targetFile}.example`);
 
         assert.equal(
           fs.readFileSync(targetFile).toString(),
@@ -738,9 +738,9 @@ describe('node-lambda', function () {
       assert.equal(fs.readFileSync('newContext.json').toString(), '{"FOO"="bar"\n"BAZ"="bing"\n}');
       assert.equal(fs.readFileSync('newEvent.json').toString(), '{"FOO"="bar"}');
 
-      const libPath = `${__dirname}/../lib`;
+      const libPath = path.join(__dirname, '..', 'lib');
       filesCreatedBySetup.forEach(function(targetFile) {
-        const boilerplateFile = `${libPath}/${targetFile}.example`;
+        const boilerplateFile = path.join(libPath, `${targetFile}.example`);
 
         assert.equal(
           fs.readFileSync(targetFile).toString(),
