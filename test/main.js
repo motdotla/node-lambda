@@ -179,12 +179,15 @@ describe('node-lambda', function () {
   function rsyncTests(funcName) {
     before(function () {
       fs.mkdirSync('build');
-      fs.mkdirSync('__unittest');
-      fs.writeFileSync(path.join('__unittest', 'piyo'));
+      fs.mkdirsSync(path.join('__unittest', 'hoge'));
+      fs.mkdirsSync(path.join('__unittest', 'fuga'));
+      fs.writeFileSync(path.join('__unittest', 'hoge', 'piyo'));
+      fs.writeFileSync('fuga');
     });
     after(function () {
-      fs.removeSync('build');
-      fs.removeSync('__unittest');
+      ['build', 'fuga', '__unittest'].forEach(function (path) {
+        fs.removeSync(path);
+      });
     });
 
     beforeEach(function (done) {
@@ -208,7 +211,13 @@ describe('node-lambda', function () {
       beforeEach(function (done) {
         // *main* => lib/main.js
         // In case of specifying files under the directory with wildcards
-        program.excludeGlobs = '*.png test *main* __unittest/*';
+        program.excludeGlobs = [
+          '*.png',
+          'test',
+          '*main*',
+          path.join('__unittest', 'hoge', '*'),
+          'fuga/'
+        ].join(' ');
         done();
       });
 
@@ -225,7 +234,9 @@ describe('node-lambda', function () {
       it(funcName + ' excludes files matching excludeGlobs', function (done) {
         lambda[funcName](program, '.', codeDirectory, true, function (err, result) {
           var contents = fs.readdirSync(codeDirectory);
-          assert.include(contents, '__unittest', `Target: "__unittest"`);
+          ['__unittest', 'fuga'].forEach(function (needle) {
+            assert.include(contents, needle, `Target: "${needle}"`);
+          });
 
           ['node-lambda.png', 'test'].forEach(function (needle) {
             assert.notInclude(contents, needle, `Target: "${needle}"`);
@@ -233,8 +244,13 @@ describe('node-lambda', function () {
 
           contents = fs.readdirSync(path.join(codeDirectory, 'lib'));
           assert.notInclude(contents, 'main.js', 'Target: "lib/main.js"');
+
           contents = fs.readdirSync(path.join(codeDirectory, '__unittest'));
-          assert.isTrue(contents.length == 0, 'directory:__unittest is empty');
+          assert.include(contents, 'hoge', 'Target: "__unittest/hoge"');
+          assert.notInclude(contents, 'fuga', 'Target: "__unittest/fuga"');
+
+          contents = fs.readdirSync(path.join(codeDirectory, '__unittest', 'hoge'));
+          assert.isTrue(contents.length == 0, 'directory:__unittest/hoge is empty');
           done();
         });
       });
