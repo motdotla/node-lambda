@@ -98,3 +98,47 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Features
 - Added getRemainingTimeInMillis() to the context when running locally. [#179](https://github.com/motdotla/node-lambda/pull/179)
 - Adding support for lambda environment variables [#181](https://github.com/motdotla/node-lambda/pull/181)
+
+## [0.8.13] - 2017-02-12
+### Bugfixes
+- Fixed wrong runtime call [#188](https://github.com/motdotla/node-lambda/pull/188)
+- Docker support [#186](https://github.com/motdotla/node-lambda/pull/186)
+- Make default excludes apply to root only [#185](https://github.com/motdotla/node-lambda/pull/185)
+
+
+## [0.8.14] - 2017-03-27
+### Features
+- Event source mapping support [#189](https://github.com/motdotla/node-lambda/pull/189)
+- Fix version of Node.js supported by AWS Lambda [#197](https://github.com/motdotla/node-lambda/pull/197)
+- How about it if you have the option to specify the zip file? [#199](https://github.com/motdotla/node-lambda/pull/199)
+- Add 'Runtime' to the params of lambda.updateFunctionConfiguration [#200](https://github.com/motdotla/node-lambda/pull/200)
+
+### Bugfixes
+- Fix unit test failure at travis [#198](https://github.com/motdotla/node-lambda/pull/198)
+
+## [0.8.15] - 2017-03-28
+### Features
+- Added DeadLetterConfig parameter [#206](https://github.com/motdotla/node-lambda/pull/206)
+
+### Bugfixes
+- Fix default value of EVENT_SOURCE_FILE set '' [#205](https://github.com/motdotla/node-lambda/pull/205)
+- Removed event_sources.json [#204](https://github.com/motdotla/node-lambda/pull/204)
+- Add -S, --eventSourceFile option. [#203](https://github.com/motdotla/node-lambda/pull/203)
+
+## [0.9.0] - 2017-04-13
+### Features
+- Add tests for _readArchive [#213](https://github.com/motdotla/node-lambda/pull/213)
+- Add tests for event_sources.json [#214](https://github.com/motdotla/node-lambda/pull/214)
+- Add tests for DeadLetterConfig [#215](https://github.com/motdotla/node-lambda/pull/215)
+- Add _readArchive tests called in _archive [#216](https://github.com/motdotla/node-lambda/pull/216)
+- modify badge from png to svg [#227](https://github.com/motdotla/node-lambda/pull/227)
+- ScheduleEvents [#228](https://github.com/motdotla/node-lambda/pull/228)
+
+### Bugfixes
+- Bugfix InvalidParameterValueException is given when createFunction [#209](https://github.com/motdotla/node-lambda/pull/209)
+- Clean unnecessary `else` [#217](https://github.com/motdotla/node-lambda/pull/217)
+- Refactor _eventSourceList [#218](https://github.com/motdotla/node-lambda/pull/218)
+- Clean deploy function [#220](https://github.com/motdotla/node-lambda/pull/220)
+- Fix default value of params.Environment.Variables is null [#221](https://github.com/motdotla/node-lambda/pull/221)
+- Fix to use authenticated `aws` object in main.js [#225](https://github.com/motdotla/node-lambda/pull/225)
+- Changed the format of `event_sources.json` [#226](https://github.com/motdotla/node-lambda/pull/226)

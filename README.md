@@ -4,8 +4,8 @@
 
 Command line tool to locally run and deploy your node.js application to [Amazon Lambda](http://aws.amazon.com/lambda/).
 
-[![BuildStatus](https://travis-ci.org/motdotla/node-lambda.png?branch=master)](https://travis-ci.org/motdotla/node-lambda)
-[![NPM version](https://badge.fury.io/js/node-lambda.png)](http://badge.fury.io/js/node-lambda)
+[![BuildStatus](https://travis-ci.org/motdotla/node-lambda.svg?branch=master)](https://travis-ci.org/motdotla/node-lambda)
+[![NPM version](https://badge.fury.io/js/node-lambda.svg)](http://badge.fury.io/js/node-lambda)
 
 ```
 node-lambda run
@@ -36,7 +36,7 @@ node-lambda deploy
 
 #### setup
 
-Initializes the `event.json`, `context.json`, `.env` files, and `deploy.env` files. `event.json` is where you mock your event. `context.json` is where you can add additional mock data to the context passed to your lambda function. `.env` is where you place your deployment configuration. `deploy.env` has the same format as `.env`, but is used for holding any environment/config variables that you need to be deployed with your code to Lambda but you don't want in version control (e.g. DB connection info).
+Initializes the `event.json`, `context.json`, `.env`, `deploy.env` files, and `event_sources.json` files. `event.json` is where you mock your event. `context.json` is where you can add additional mock data to the context passed to your lambda function. `.env` is where you place your deployment configuration. `deploy.env` has the same format as `.env`, but is used for holding any environment/config variables that you need to be deployed with your code to Lambda but you don't want in version control (e.g. DB connection info). `event_sources.json` is used to set the event source of the Labmda function (Not all event sources available in Lambda are supported).
 
 ```
 $ node-lambda setup --help
@@ -69,7 +69,7 @@ $ node-lambda run --help
     -H, --handler [index.handler]       Lambda Handler {index.handler}
     -j, --eventFile [event.json]        Event JSON File
     -f, --configFile []                 Path to file holding secret environment variables (e.g. "deploy.env")
-    -u, --runtime [nodejs4.3]           Lambda Runtime {nodejs4.3, nodejs} - "nodejs4.3" is the current standard, "nodejs" is v0.10.36
+    -u, --runtime [nodejs6.10]          Lambda Runtime {nodejs6.10, nodejs4.3}
     -t, --timeout [3]                   Lambda Timeout in seconds (max of 300)
     -x, --contextFile [context.json]    Context JSON file
 ```
@@ -108,29 +108,33 @@ $ node-lambda deploy --help
 
   Options:
 
-    -h, --help                           output usage information
-    -e, --environment [staging]          Choose environment {development, staging, production}
-    -a, --accessKey [your_key]           AWS Access Key
-    -s, --secretKey [your_secret]        AWS Secret Key
-    -P, --profile [your_profile]         AWS Profile
-    -k, --sessionToken [your_token]      AWS Session Token
-    -r, --region [us-east-1]             AWS Region(s)
-    -n, --functionName [node-lambda]     Lambda FunctionName
-    -H, --handler [index.handler]        Lambda Handler {index.handler}
-    -o, --role [your_role]               Amazon Role ARN
-    -m, --memorySize [128]               Lambda Memory Size
-    -t, --timeout [3]                    Lambda Timeout
-    -d, --description [missing]          Lambda Description
-    -u, --runtime [nodejs4.3]            Lambda Runtime {nodejs4.3, nodejs} - "nodejs4.3" is the current standard, "nodejs" is v0.10.36
-    -p, --publish [false]                This boolean parameter can be used to request AWS Lambda to create the Lambda function and publish a version as an atomic operation
-    -L, --lambdaVersion [custom-version] Lambda Version
-    -f, --configFile []                  Path to file holding secret environment variables (e.g. "deploy.env")
-    -b, --vpcSubnets []                  VPC Subnet ID(s, comma separated list) for your Lambda Function, when using this, the below param is also required
-    -g, --vpcSecurityGroups []           VPC Security Group ID(s, comma separated list) for your Lambda Function, when using this, the above param is also required
-    -A, --packageDirectory []            Local package directory
-    -C, --dockerContainer []             Docker container for npm install
-    -x, --excludeGlobs []                Add a space separated list of file(type)s to ignore (e.g. "*.json .env")
-    -D, --prebuiltDirectory []           Prebuilt directory
+    -h, --help                                 output usage information
+    -e, --environment [staging]                Choose environment {development, staging, production}
+    -a, --accessKey [your_key]                 AWS Access Key
+    -s, --secretKey [your_secret]              AWS Secret Key
+    -P, --profile [your_profile]               AWS Profile
+    -k, --sessionToken [your_token]            AWS Session Token
+    -r, --region [us-east-1]                   AWS Region(s)
+    -n, --functionName [node-lambda]           Lambda FunctionName
+    -H, --handler [index.handler]              Lambda Handler {index.handler}
+    -o, --role [your_role]                     Amazon Role ARN
+    -m, --memorySize [128]                     Lambda Memory Size
+    -t, --timeout [3]                          Lambda Timeout
+    -d, --description [missing]                Lambda Description
+    -u, --runtime [nodejs6.10]                 Lambda Runtime {nodejs6.10, nodejs4.3}
+    -p, --publish [false]                      This boolean parameter can be used to request AWS Lambda to create the Lambda function and publish a version as an atomic operation
+    -L, --lambdaVersion [custom-version]       Lambda Version
+    -f, --configFile []                        Path to file holding secret environment variables (e.g. "deploy.env")
+    -b, --vpcSubnets []                        VPC Subnet ID(s, comma separated list) for your Lambda Function, when using this, the below param is also required
+    -g, --vpcSecurityGroups []                 VPC Security Group ID(s, comma separated list) for your Lambda Function, when using this, the above param is also required
+    -Q, --deadLetterConfigTargetArn []         Lambda DLQ resource
+    -T, --tracingConfig []                     Lambda tracing settings
+    -A, --packageDirectory []                  Local package directory
+    -C, --dockerContainer []                   Docker container for npm install
+    -S, --eventSourceFile [event_sources.json] Path to file holding event source mapping variables (e.g. "event_sources.json")
+    -x, --excludeGlobs []                      Add a space separated list of file(type)s to ignore (e.g. "*.json .env")
+    -D, --prebuiltDirectory []                 Prebuilt directory
+    -z, --deployZipfile []                     Deploy zipfile
 ```
 
 ## Custom Environment Variables
@@ -139,19 +143,7 @@ AWS Lambda will let you set environment variables for your function. Use the sam
 
 ## Node.js Runtime Configuration
 
-AWS Lambda now supports Node.js v4.3.2, and there have been some [API changes](http://docs.aws.amazon.com/lambda/latest/dg/nodejs-prog-model-using-old-runtime.html) for the new version.  Most notably,
-`context.done()`, `context.succeed()`, and `context.fail()` are deprecated in favor of the Node convention of passing in
-a callback function.  These will still work for now for backward compatibility, but are no longer recommended.
-
-v0.10.36 is still supported, and can be targeted by changing the `AWS_RUNTIME` value to `nodejs` in the `.env` file.
-
-Runtime context options available :
-
-- context.getRemainingTimeInMillis() 
-- context.done() ***deprecated***
-- context.fail() ***deprecated***
-- context.succeed() ***deprecated***
-
+AWS Lambda now supports Node.js 6.10 and Node.js 4.3. Please also check the [Programming Model (Node.js)](http://docs.aws.amazon.com/lambda/latest/dg/programming-model.html) page.
 
 ## Post install script
 When running `node-lambda deploy` if you need to do some action after `npm install --production` and before deploying to AWS Lambda (e.g. replace some modules with precompiled ones or download some libraries, replace some config file depending on environment) you can create `post_install.sh` script. If the file exists the script will be executed (and output shown after execution) if not it is skipped. Environment string is passed to script as first parameter so you can use it if needed. Make sure that the script is executable.

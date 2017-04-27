@@ -1,0 +1,17 @@
+{
+  "EventSourceMappings": [
+    {
+      "EventSourceArn": "your event source arn",
+      "StartingPosition": "LATEST",
+      "BatchSize": 100,
+      "Enabled": true
+    }
+  ],
+  "ScheduleEvents": [
+    {
+      "ScheduleName": "node-lambda-test-schedule",
+      "ScheduleState": "ENABLED",
+      "ScheduleExpression": "rate(1 hour)"
+    }
+  ]
+}
