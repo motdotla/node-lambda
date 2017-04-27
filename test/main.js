@@ -177,6 +177,16 @@ describe('node-lambda', function () {
   });
 
   function rsyncTests(funcName) {
+    before(function () {
+      fs.mkdirSync('build');
+      fs.mkdirSync('__unittest');
+      fs.writeFileSync(path.join('__unittest', 'piyo'));
+    });
+    after(function () {
+      fs.removeSync('build');
+      fs.removeSync('__unittest');
+    });
+
     beforeEach(function (done) {
       lambda._cleanDirectory(codeDirectory, done);
     });
@@ -187,7 +197,7 @@ describe('node-lambda', function () {
         ['index.js', 'package.json'].forEach(function (needle) {
           assert.include(contents, needle, `Target: "${needle}"`);
         });
-        ['node_modules'].forEach(function (needle) {
+        ['node_modules', 'build'].forEach(function (needle) {
           assert.notInclude(contents, needle, `Target: "${needle}"`);
         });
         done();
@@ -198,7 +208,7 @@ describe('node-lambda', function () {
       beforeEach(function (done) {
         // *main* => lib/main.js
         // In case of specifying files under the directory with wildcards
-        program.excludeGlobs = '*.png test *main*';
+        program.excludeGlobs = '*.png test *main* __unittest/*';
         done();
       });
 
@@ -215,11 +225,16 @@ describe('node-lambda', function () {
       it(funcName + ' excludes files matching excludeGlobs', function (done) {
         lambda[funcName](program, '.', codeDirectory, true, function (err, result) {
           var contents = fs.readdirSync(codeDirectory);
+          assert.include(contents, '__unittest', `Target: "__unittest"`);
+
           ['node-lambda.png', 'test'].forEach(function (needle) {
             assert.notInclude(contents, needle, `Target: "${needle}"`);
           });
+
           contents = fs.readdirSync(path.join(codeDirectory, 'lib'));
           assert.notInclude(contents, 'main.js', 'Target: "lib/main.js"');
+          contents = fs.readdirSync(path.join(codeDirectory, '__unittest'));
+          assert.isTrue(contents.length == 0, 'directory:__unittest is empty');
           done();
         });
       });
