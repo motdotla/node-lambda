@@ -87,7 +87,7 @@ $ node-lambda package --help
 
     -h, --help                          output usage information
     -A, --packageDirectory [build]      Local Package Directory
-    -C, --dockerContainer []            Docker container for npm install
+    -I, --dockerImage []                Docker image for npm install
     -n, --functionName [node-lambda]    Lambda FunctionName
     -H, --handler [index.handler]       Lambda Handler {index.handler}
     -e, --environment [staging]         Choose environment {development, staging, production}
@@ -130,7 +130,7 @@ $ node-lambda deploy --help
     -Q, --deadLetterConfigTargetArn []         Lambda DLQ resource
     -T, --tracingConfig []                     Lambda tracing settings
     -A, --packageDirectory []                  Local package directory
-    -C, --dockerContainer []                   Docker container for npm install
+    -I, --dockerImage []                       Docker image for npm install
     -S, --eventSourceFile [event_sources.json] Path to file holding event source mapping variables (e.g. "event_sources.json")
     -x, --excludeGlobs []                      Add a space separated list of file(type)s to ignore (e.g. "*.json .env")
     -D, --prebuiltDirectory []                 Prebuilt directory
