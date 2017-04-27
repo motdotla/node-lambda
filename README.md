@@ -166,16 +166,6 @@ The `--prebuiltDirectory` flag is useful for working with Webpack for example. I
 ## Handling `npm link` and Dependencies With Local Paths
 Perhaps the easiest way to handle these cases is to bundle the code using Webpack and use the `--prebuiltDirectory` flag to package the output for deployment.
 
-## Running `node-lambda` as an NPM script
-Strangely, NPM overwrites the TMPDIR environment variable (and therefore the result of `os.tmpDir()`) to the current working directory. This means when running node-lambda deploy as a NPM script in `package.json`, it fails on the rsync step as the destination directory exists in the folder you're synchronising (causing heaps of file has vanished: type errors).
-
-You can resolve this by explicitly setting the `TMPDIR` variable as you deploy, something like:
-```
-"scripts": {
-  "deploy-stage": "TMPDIR=/tmp node-lambda deploy"
-}
-```
-
 ## Other AWS Lambda Tools Projects
 
 + [lambdaws](https://github.com/mentum/lambdaws)
