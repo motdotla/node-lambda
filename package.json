@@ -33,7 +33,6 @@
     "aws-sdk-mock": "^1.6.1",
     "chai": "^2.0.0",
     "hoek": "^2.11.1",
-    "lodash": "^4.17.4",
     "mocha": "",
     "should": ""
   },
