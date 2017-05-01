@@ -70,6 +70,7 @@ var EVENT_FILE = process.env.EVENT_FILE || 'event.json';
 var PACKAGE_DIRECTORY = process.env.PACKAGE_DIRECTORY;
 var CONTEXT_FILE = process.env.CONTEXT_FILE || 'context.json';
 var PREBUILT_DIRECTORY = process.env.PREBUILT_DIRECTORY || '';
+var DOCKER_IMAGE = process.env.DOCKER_IMAGE || '';
 var DEPLOY_ZIPFILE = process.env.DEPLOY_ZIPFILE || '';
 var AWS_DLQ_TARGET_ARN = (function() {
   // You can clear the setting by passing an empty string
@@ -107,6 +108,7 @@ program
   .option('-T, --tracingConfig [' + AWS_TRACING_CONFIG + ']', 'Lambda tracing settings',
     AWS_TRACING_CONFIG)
   .option('-A, --packageDirectory [' + PACKAGE_DIRECTORY + ']', 'Local Package Directory', PACKAGE_DIRECTORY)
+  .option('-I, --dockerImage [' + DOCKER_IMAGE + ']', 'Docker image for npm install', DOCKER_IMAGE)
   .option('-f, --configFile [' + CONFIG_FILE + ']',
     'Path to file holding secret environment variables (e.g. "deploy.env")', CONFIG_FILE)
   .option('-S, --eventSourceFile [' + EVENT_SOURCE_FILE + ']',
@@ -124,6 +126,7 @@ program
   .alias('zip')
   .description('Create zipped package for Amazon Lambda deployment')
   .option('-A, --packageDirectory [' + PACKAGE_DIRECTORY + ']', 'Local Package Directory', PACKAGE_DIRECTORY)
+  .option('-I, --dockerImage [' + DOCKER_IMAGE + ']', 'Docker image for npm install', DOCKER_IMAGE)
   .option('-n, --functionName [' + AWS_FUNCTION_NAME + ']', 'Lambda FunctionName', AWS_FUNCTION_NAME)
   .option('-H, --handler [' + AWS_HANDLER + ']', 'Lambda Handler {index.handler}', AWS_HANDLER)
   .option('-e, --environment [' + AWS_ENVIRONMENT + ']', 'Choose environment {dev, staging, production}',

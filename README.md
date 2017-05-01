@@ -48,10 +48,10 @@ $ node-lambda setup --help
     -h, --help                     output usage information
 ```
 
-After running setup, it's a good idea to gitignore the generated `event.json` and `.env` files.
+After running setup, it's a good idea to gitignore the generated `event.json` and `.env` files, as well as `.lambda`.
 
 ```
-echo -e ".env\ndeploy.env\nevent.json" >> .gitignore
+echo -e ".env\ndeploy.env\nevent.json\n.lambda" >> .gitignore
 ```
 
 #### run
@@ -87,6 +87,7 @@ $ node-lambda package --help
 
     -h, --help                          output usage information
     -A, --packageDirectory [build]      Local Package Directory
+    -I, --dockerImage []                Docker image for npm install
     -n, --functionName [node-lambda]    Lambda FunctionName
     -H, --handler [index.handler]       Lambda Handler {index.handler}
     -e, --environment [staging]         Choose environment {development, staging, production}
@@ -129,6 +130,7 @@ $ node-lambda deploy --help
     -Q, --deadLetterConfigTargetArn []         Lambda DLQ resource
     -T, --tracingConfig []                     Lambda tracing settings
     -A, --packageDirectory []                  Local package directory
+    -I, --dockerImage []                       Docker image for npm install
     -S, --eventSourceFile [event_sources.json] Path to file holding event source mapping variables (e.g. "event_sources.json")
     -x, --excludeGlobs []                      Add a space separated list of file(type)s to ignore (e.g. "*.json .env")
     -D, --prebuiltDirectory []                 Prebuilt directory
@@ -163,16 +165,6 @@ The `--prebuiltDirectory` flag is useful for working with Webpack for example. I
 
 ## Handling `npm link` and Dependencies With Local Paths
 Perhaps the easiest way to handle these cases is to bundle the code using Webpack and use the `--prebuiltDirectory` flag to package the output for deployment.
-
-## Running `node-lambda` as an NPM script
-Strangely, NPM overwrites the TMPDIR environment variable (and therefore the result of `os.tmpDir()`) to the current working directory. This means when running node-lambda deploy as a NPM script in `package.json`, it fails on the rsync step as the destination directory exists in the folder you're synchronising (causing heaps of file has vanished: type errors).
-
-You can resolve this by explicitly setting the `TMPDIR` variable as you deploy, something like:
-```
-"scripts": {
-  "deploy-stage": "TMPDIR=/tmp node-lambda deploy"
-}
-```
 
 ## Other AWS Lambda Tools Projects
 
