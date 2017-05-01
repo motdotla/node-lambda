@@ -176,6 +176,19 @@ describe('node-lambda', function () {
   });
 
   function rsyncTests(funcName) {
+    before(function () {
+      fs.mkdirSync('build');
+      fs.mkdirsSync(path.join('__unittest', 'hoge'));
+      fs.mkdirsSync(path.join('__unittest', 'fuga'));
+      fs.writeFileSync(path.join('__unittest', 'hoge', 'piyo'));
+      fs.writeFileSync('fuga');
+    });
+    after(function () {
+      ['build', 'fuga', '__unittest'].forEach(function (path) {
+        fs.removeSync(path);
+      });
+    });
+
     beforeEach(function (done) {
       lambda._cleanDirectory(codeDirectory, done);
     });
@@ -186,7 +199,7 @@ describe('node-lambda', function () {
         ['index.js', 'package.json'].forEach(function (needle) {
           assert.include(contents, needle, `Target: "${needle}"`);
         });
-        ['node_modules'].forEach(function (needle) {
+        ['node_modules', 'build'].forEach(function (needle) {
           assert.notInclude(contents, needle, `Target: "${needle}"`);
         });
         done();
@@ -197,7 +210,13 @@ describe('node-lambda', function () {
       beforeEach(function (done) {
         // *main* => lib/main.js
         // In case of specifying files under the directory with wildcards
-        program.excludeGlobs = '*.png test *main*';
+        program.excludeGlobs = [
+          '*.png',
+          'test',
+          '*main*',
+          path.join('__unittest', 'hoge', '*'),
+          path.join('fuga', path.sep)
+        ].join(' ');
         done();
       });
 
@@ -214,11 +233,23 @@ describe('node-lambda', function () {
       it(funcName + ' excludes files matching excludeGlobs', function (done) {
         lambda[funcName](program, '.', codeDirectory, true, function (err, result) {
           var contents = fs.readdirSync(codeDirectory);
+          ['__unittest', 'fuga'].forEach(function (needle) {
+            assert.include(contents, needle, `Target: "${needle}"`);
+          });
+
           ['node-lambda.png', 'test'].forEach(function (needle) {
             assert.notInclude(contents, needle, `Target: "${needle}"`);
           });
+
           contents = fs.readdirSync(path.join(codeDirectory, 'lib'));
           assert.notInclude(contents, 'main.js', 'Target: "lib/main.js"');
+
+          contents = fs.readdirSync(path.join(codeDirectory, '__unittest'));
+          assert.include(contents, 'hoge', 'Target: "__unittest/hoge"');
+          assert.notInclude(contents, 'fuga', 'Target: "__unittest/fuga"');
+
+          contents = fs.readdirSync(path.join(codeDirectory, '__unittest', 'hoge'));
+          assert.isTrue(contents.length == 0, 'directory:__unittest/hoge is empty');
           done();
         });
       });
