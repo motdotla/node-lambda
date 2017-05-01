@@ -215,7 +215,7 @@ describe('node-lambda', function () {
           'test',
           '*main*',
           path.join('__unittest', 'hoge', '*'),
-          'fuga/'
+          path.join('fuga', path.sep)
         ].join(' ');
         done();
       });
