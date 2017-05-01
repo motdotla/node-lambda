@@ -7,7 +7,6 @@ var program = require('commander');
 var fs = require('fs-extra');
 var Hoek = require('hoek');
 var lambda = require(path.join(__dirname, '..', 'lib', 'main'));
-var _ = require('lodash');
 var zip = require('node-zip');
 var rimraf = require('rimraf');
 
@@ -310,16 +309,14 @@ describe('node-lambda', function () {
 
       lambda._npmInstall(program, codeDirectory, function (err, result) {
         var contents = fs.readdirSync(codeDirectory);
-
-        result = _.includes(contents, 'node_modules');
-        assert.equal(result, true);
-
+        assert.include(contents, 'node_modules');
         done();
       });
     });
   });
 
   describe('_postInstallScript', function () {
+    const postInstallScriptPath = path.join(codeDirectory, 'post_install.sh');
     var hook;
     /**
      * Capture console output
@@ -346,23 +343,31 @@ describe('node-lambda', function () {
     });
     afterEach(function(){
       hook.unhook();
+      if (fs.existsSync(postInstallScriptPath))
+        fs.unlinkSync(postInstallScriptPath);
     });
-
 
     it('should not throw any errors if no script', function (done) {
       lambda._postInstallScript(program, codeDirectory, function (err) {
-        assert.equal(err, null);
+        assert.isNull(err);
+        done();
+      });
+    });
+
+    it('should throw any errors if script fails', function (done) {
+      fs.writeFileSync(postInstallScriptPath, '___fails___');
+      lambda._postInstallScript(program, codeDirectory, function (err) {
+        assert.match(err, /^Error: Command failed:/);
         done();
       });
     });
 
     it('running script gives expected output', function (done) {
-      fs.writeFileSync(path.join(codeDirectory, 'post_install.sh'), fs.readFileSync(path.join('test', 'post_install.sh')));
+      fs.writeFileSync(postInstallScriptPath, fs.readFileSync(path.join('test', 'post_install.sh')));
       fs.chmodSync(path.join(codeDirectory, 'post_install.sh'), '755');
       lambda._postInstallScript(program, codeDirectory, function (err) {
-        assert.equal(err, null);
+        assert.isNull(err);
         assert.equal("=> Running post install script post_install.sh\n\t\tYour environment is "+program.environment+"\n", hook.captured());
-        fs.unlinkSync(path.join(codeDirectory, 'post_install.sh'));
         done();
       });
     });
@@ -395,12 +400,10 @@ describe('node-lambda', function () {
 
       lambda._zip(program, codeDirectory, function (err, data) {
         var archive = new zip(data);
-        var contents = _.map(archive.files, function (f) {
-          return f.name.toString();
+        var contents = Object.keys(archive.files).map(function (k) {
+          return archive.files[k].name.toString();
         });
-        var result = _.includes(contents, 'index.js');
-        assert.equal(result, true);
-
+        assert.include(contents, 'index.js');
         done();
       });
     });
@@ -412,13 +415,11 @@ describe('node-lambda', function () {
 
       lambda._archive(program, function (err, data) {
         var archive = new zip(data);
-        var contents = _.map(archive.files, function (f) {
-          return f.name.toString();
+        var contents = Object.keys(archive.files).map(function (k) {
+          return archive.files[k].name.toString();
         });
-        var result = _.includes(contents, 'index.js');
-        assert.equal(result, true);
-        result = _.includes(contents, path.join('node_modules', 'async', 'lib', 'async.js'));
-        assert.equal(result, true);
+        assert.include(contents, 'index.js');
+        assert.include(contents, path.join('node_modules', 'async', 'lib', 'async.js'));
         done();
       });
     });
@@ -439,13 +440,16 @@ describe('node-lambda', function () {
       program.prebuiltDirectory = buildDir;
       lambda._archive(program, function (err, data) {
         var archive = new zip(data);
-        var contents = _.map(archive.files, function (f) {
-          return f.name.toString();
+        var contents = Object.keys(archive.files).map(function (k) {
+          return archive.files[k].name.toString();
         });
-        var result = _.includes(contents, 'testa') &&
-                     _.includes(contents, path.join('d', 'testb')) &&
-                     _.includes(contents, path.join('node_modules', 'a'));
-        assert.equal(result, true);
+        [
+          'testa',
+          path.join('d', 'testb'),
+          path.join('node_modules', 'a')
+        ].forEach(function (needle) {
+          assert.include(contents, needle, `Target: "${needle}"`);
+        });
         done();
       });
     });
@@ -505,13 +509,11 @@ describe('node-lambda', function () {
         lambda._archive(_program, function (err, data) {
           // same test as "installs and zips with an index.js file and node_modules/async"
           var archive = new zip(data);
-          var contents = _.map(archive.files, function (f) {
-            return f.name.toString();
+          var contents = Object.keys(archive.files).map(function (k) {
+            return archive.files[k].name.toString();
           });
-          var result = _.includes(contents, 'index.js');
-          assert.equal(result, true);
-          result = _.includes(contents, path.join('node_modules', 'async', 'lib', 'async.js'));
-          assert.equal(result, true);
+          assert.include(contents, 'index.js');
+          assert.include(contents, path.join('node_modules', 'async', 'lib', 'async.js'));
           done();
         });
       });
