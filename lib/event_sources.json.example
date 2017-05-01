@@ -11,7 +11,8 @@
     {
       "ScheduleName": "node-lambda-test-schedule",
       "ScheduleState": "ENABLED",
-      "ScheduleExpression": "rate(1 hour)"
+      "ScheduleExpression": "rate(1 hour)",
+      "ScheduleDescription": "Run node-lambda-test-function once per hour"
     }
   ]
 }

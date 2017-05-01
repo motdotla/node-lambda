@@ -10,7 +10,8 @@ const params = {
   FunctionArn: 'arn:aws:lambda:us-west-2:XXX:function:node-lambda-test-function',
   ScheduleName: 'node-lambda-test-schedule',
   ScheduleState: 'ENABLED',
-  ScheduleExpression: 'rate(1 hour)'
+  ScheduleExpression: 'rate(1 hour)',
+  ScheduleDescription: null
 };
 
 const mockResponse = {
@@ -52,11 +53,28 @@ describe('schedule_events', () => {
     schedule = new ScheduleEvents(require('aws-sdk'));
   });
 
-  describe('_ruleDescription', () => {
+  describe('_ruleDescription (default)', () => {
     it('correct value', () => {
       assert.equal(
         schedule._ruleDescription(params),
         'node-lambda-test-schedule - rate(1 hour)'
+      );
+    });
+  });
+
+  describe('_ruleDescription (custom)', () => {
+    before(() => {
+      params.ScheduleDescription = 'Run node-lambda-test-function once per hour';
+    });
+
+    after(() => {
+      params.ScheduleDescription = null;
+    });
+
+    it('correct value', () => {
+      assert.equal(
+        schedule._ruleDescription(params),
+        'Run node-lambda-test-function once per hour'
       );
     });
   });

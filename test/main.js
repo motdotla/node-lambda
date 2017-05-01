@@ -648,6 +648,7 @@ describe('node-lambda', function () {
               ScheduleName: 'node-lambda-test-schedule',
               ScheduleState: 'ENABLED',
               ScheduleExpression: 'rate(1 hour)',
+              ScheduleDescription: 'Run node-lambda-test-function once per hour'
             }],
           };
           assert.deepEqual(lambda._eventSourceList(program), expected);
@@ -691,6 +692,7 @@ describe('node-lambda', function () {
         ScheduleName: 'node-lambda-test-schedule',
         ScheduleState: 'ENABLED',
         ScheduleExpression: 'rate(1 hour)',
+        ScheduleDescription: 'Run node-lambda-test-function once per hour'
       }]
     };
 
