@@ -162,7 +162,7 @@ describe('node-lambda', function () {
     });
 
     it('`codeDirectory` is empty. (For `codeDirectory` where the file was present)', function (done) {
-      lambda._rsync(program, '.', codeDirectory, true, function (err, result) {
+      lambda._fileCopy(program, '.', codeDirectory, true, function (err, result) {
         const contents = fs.readdirSync(codeDirectory);
         assert.isTrue(contents.length > 0);
         lambda._cleanDirectory(codeDirectory, function () {
@@ -285,8 +285,12 @@ describe('node-lambda', function () {
     });
   }
 
-  describe('_rsync', function() { rsyncTests('_rsync'); });
   describe('_fileCopy', function() { rsyncTests('_fileCopy'); });
+  if (process.platform == 'win32') {
+    it('For Windows, `_rsync` tests pending');
+  } else {
+    describe('_rsync', function() { rsyncTests('_rsync'); });
+  }
 
   describe('_npmInstall', function () {
     beforeEach(function (done) {
@@ -295,7 +299,7 @@ describe('node-lambda', function () {
           return done(err);
         }
 
-        lambda._rsync(program, '.', codeDirectory, true, function (err) {
+        lambda._fileCopy(program, '.', codeDirectory, true, function (err) {
           if (err) {
             return done(err);
           }
@@ -381,7 +385,7 @@ describe('node-lambda', function () {
           return done(err);
         }
 
-        lambda._rsync(program, '.', codeDirectory, true, function (err) {
+        lambda._fileCopy(program, '.', codeDirectory, true, function (err) {
           if (err) {
             return done(err);
           }
