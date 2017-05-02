@@ -692,10 +692,7 @@ describe('node-lambda', function () {
           resolve({ err: err, results: results });
         });
       }).then(function (actual) {
-        const expected = {
-          err: null,
-          results: []
-        };
+        const expected = { err: null, results: [] };
         assert.deepEqual(actual, expected);
       });
     });
@@ -747,10 +744,7 @@ describe('node-lambda', function () {
           resolve({ err: err, results: results });
         });
       }).then(function (actual) {
-        const expected = {
-          err: null,
-          results: []
-        };
+        const expected = { err: null, results: [] };
         assert.deepEqual(actual, expected);
       });
     });
