@@ -35,13 +35,28 @@ var originalProgram = {
 
 var codeDirectory = lambda._codeDirectory(Hoek.clone(originalProgram));
 
+function _timeout(params) {
+  // Even if timeout is set for the whole test for Windows,
+  // if it is set in local it will be valid.
+  // For Windows, do not set it with local.
+  if (process.platform != 'win32') {
+    params.this.timeout(params.sec * 1000);
+  }
+}
+
 describe('node-lambda', function () {
+  if (process.platform == 'win32') {
+    // It seems that it takes time for file operation in Windows.
+    // So set `timeout(60000)` for the whole test.
+    this.timeout(60000);
+  }
+
   beforeEach(function () {
     program = Hoek.clone(originalProgram);
   });
 
   after(function () {
-    this.timeout(30000); // give it time to remove
+    _timeout({ this: this, sec: 30 }); // give it time to remove
     fs.removeSync(path.join(os.tmpDir(), `${program.functionName}-[0-9]*`));
   });
 
@@ -305,7 +320,7 @@ describe('node-lambda', function () {
     });
 
     it('_npm adds node_modules', function (done) {
-      this.timeout(60000); // give it time to build the node modules
+      _timeout({ this: this, sec: 30 }); // give it time to build the node modules
 
       lambda._npmInstall(program, codeDirectory, function (err, result) {
         var contents = fs.readdirSync(codeDirectory);
@@ -375,7 +390,7 @@ describe('node-lambda', function () {
 
   describe('_zip', function () {
     beforeEach(function (done) {
-      this.timeout(30000); // give it time to build the node modules
+      _timeout({ this: this, sec: 30 }); // give it time to build the node modules
       lambda._cleanDirectory(codeDirectory, function (err) {
         if (err) {
           return done(err);
@@ -396,7 +411,7 @@ describe('node-lambda', function () {
     });
 
     it('zips the file and has an index.js file', function (done) {
-      this.timeout(30000); // give it time to zip
+      _timeout({ this: this, sec: 30 }); // give it time to zip
 
       lambda._zip(program, codeDirectory, function (err, data) {
         var archive = new zip(data);
@@ -411,7 +426,7 @@ describe('node-lambda', function () {
 
   describe('_archive', function () {
     it('installs and zips with an index.js file and node_modules/async', function (done) {
-      this.timeout(30000); // give it time to zip
+      _timeout({ this: this, sec: 30 }); // give it time to zip
 
       lambda._archive(program, function (err, data) {
         var archive = new zip(data);
@@ -459,7 +474,7 @@ describe('node-lambda', function () {
     const testZipFile = path.join(os.tmpDir(), 'node-lambda-test.zip');
     var bufferExpected = null;
     before(function(done) {
-      this.timeout(30000); // give it time to zip
+      _timeout({ this: this, sec: 30 }); // give it time to zip
 
       lambda._zip(program, codeDirectory, function (err, data) {
         bufferExpected = data;
@@ -505,7 +520,7 @@ describe('node-lambda', function () {
       it('`deployZipfile` is a invalid value. Process from creation of zip file', function (done) {
         const filePath = path.join(path.resolve('/aaaa'), 'bbbb');
         const _program = Object.assign({ deployZipfile: filePath }, program);
-        this.timeout(30000); // give it time to zip
+        _timeout({ this: this, sec: 30 }); // give it time to zip
         lambda._archive(_program, function (err, data) {
           // same test as "installs and zips with an index.js file and node_modules/async"
           var archive = new zip(data);
