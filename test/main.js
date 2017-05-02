@@ -331,6 +331,10 @@ describe('node-lambda', function () {
   });
 
   describe('_postInstallScript', function () {
+    if (process.platform == 'win32') {
+      return it('`_postInstallScript` test does not support Windows.');
+    }
+
     const postInstallScriptPath = path.join(codeDirectory, 'post_install.sh');
     var hook;
     /**
