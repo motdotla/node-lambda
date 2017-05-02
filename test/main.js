@@ -285,8 +285,12 @@ describe('node-lambda', function () {
     });
   }
 
-  describe('_rsync', function() { rsyncTests('_rsync'); });
   describe('_fileCopy', function() { rsyncTests('_fileCopy'); });
+  if (process.platform == 'win32') {
+    it('For Windows, `_rsync` tests pending');
+  } else {
+    describe('_rsync', function() { rsyncTests('_rsync'); });
+  }
 
   describe('_npmInstall', function () {
     beforeEach(function (done) {
