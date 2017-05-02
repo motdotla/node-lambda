@@ -588,7 +588,7 @@ describe('node-lambda', function () {
         program.eventSourceFile = '';
         assert.deepEqual(
           lambda._eventSourceList(program),
-          { EventSourceMappings: [], ScheduleEvents: [] }
+          { EventSourceMappings: null, ScheduleEvents: null }
         );
       });
 
@@ -683,6 +683,21 @@ describe('node-lambda', function () {
     });
   });
 
+  describe('_updateEventSources', function () {
+    it('program.eventSourceFile is empty value', function () {
+      program.eventSourceFile = '';
+      const eventSourceList = lambda._eventSourceList(program);
+      return new Promise(function (resolve) {
+        lambda._updateEventSources(lambda, '', [], eventSourceList.EventSourceMappings, function(err, results) {
+          resolve({ err: err, results: results });
+        });
+      }).then(function (actual) {
+        const expected = { err: null, results: [] };
+        assert.deepEqual(actual, expected);
+      });
+    });
+  });
+
   describe('_updateScheduleEvents', function () {
     const aws = require('aws-sdk-mock');
     const ScheduleEvents = require(path.join('..', 'lib', 'schedule_events'));
@@ -719,6 +734,19 @@ describe('node-lambda', function () {
       fs.unlinkSync('event_sources.json');
       aws.restore('CloudWatchEvents');
       aws.restore('Lambda');
+    });
+
+    it('program.eventSourceFile is empty value', function () {
+      program.eventSourceFile = '';
+      const eventSourceList = lambda._eventSourceList(program);
+      return new Promise(function (resolve) {
+        lambda._updateScheduleEvents(schedule, '', eventSourceList.ScheduleEvents, function(err, results) {
+          resolve({ err: err, results: results });
+        });
+      }).then(function (actual) {
+        const expected = { err: null, results: [] };
+        assert.deepEqual(actual, expected);
+      });
     });
 
     it('simple test with mock', function () {
