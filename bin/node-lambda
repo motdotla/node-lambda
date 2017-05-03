@@ -34,12 +34,13 @@ if (commandTypes.indexOf(process.argv[2]) == -1) {
   process.exit(1);
 }
 
+var path = require('path');
 var dotenv = require('dotenv');
-var lambda = require('../lib/main.js');
+var lambda = require(path.join(__dirname, '..', 'lib', 'main.js'));
 var program = require('commander');
 var fs = require('fs');
-var packageJson = fs.existsSync(process.cwd() + '/package.json') ?
-      require(process.cwd() + '/package.json') : {};
+var packageJson = fs.existsSync(path.join(process.cwd(), 'package.json')) ?
+      require(path.join(process.cwd(), 'package.json')) : {};
 var packageJsonName = packageJson.name || 'UnnamedFunction';
 
 dotenv.load();
