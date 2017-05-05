@@ -71,18 +71,21 @@ describe('node-lambda', function () {
     it('appends environment to original functionName', function () {
       var params = lambda._params(program);
       assert.equal(params.FunctionName, '___node-lambda-development');
+      assert.match(params.FunctionName, functionNamePattern);
     });
 
     it('appends environment to original functionName (production)', function () {
       program.environment = 'production';
       var params = lambda._params(program);
       assert.equal(params.FunctionName, '___node-lambda-production');
+      assert.match(params.FunctionName, functionNamePattern);
     });
 
     it('appends version to original functionName', function () {
       program.lambdaVersion = '2015-02-01';
       var params = lambda._params(program);
       assert.equal(params.FunctionName, '___node-lambda-development-2015-02-01');
+      assert.match(params.FunctionName, functionNamePattern);
     });
 
     it('appends version to original functionName (value not allowed by AWS)', function () {
