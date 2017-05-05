@@ -65,21 +65,34 @@ describe('node-lambda', function () {
   });
 
   describe('_params', function () {
+    // http://docs.aws.amazon.com/lambda/latest/dg/API_CreateFunction.html#SSS-CreateFunction-request-FunctionName
+    const functionNamePattern =
+      /(arn:aws:lambda:)?([a-z]{2}-[a-z]+-\d{1}:)?(\d{12}:)?(function:)?([a-zA-Z0-9-_]+)(:(\$LATEST|[a-zA-Z0-9-_]+))?/;
     it('appends environment to original functionName', function () {
       var params = lambda._params(program);
       assert.equal(params.FunctionName, '___node-lambda-development');
+      assert.match(params.FunctionName, functionNamePattern);
     });
 
     it('appends environment to original functionName (production)', function () {
       program.environment = 'production';
       var params = lambda._params(program);
       assert.equal(params.FunctionName, '___node-lambda-production');
+      assert.match(params.FunctionName, functionNamePattern);
     });
 
     it('appends version to original functionName', function () {
       program.lambdaVersion = '2015-02-01';
       var params = lambda._params(program);
       assert.equal(params.FunctionName, '___node-lambda-development-2015-02-01');
+      assert.match(params.FunctionName, functionNamePattern);
+    });
+
+    it('appends version to original functionName (value not allowed by AWS)', function () {
+      program.lambdaVersion = '2015.02.01';
+      var params = lambda._params(program);
+      assert.equal(params.FunctionName, '___node-lambda-development-2015_02_01');
+      assert.match(params.FunctionName, functionNamePattern);
     });
 
     it('appends VpcConfig to params when vpc params set', function() {
