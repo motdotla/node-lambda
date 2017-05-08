@@ -64,6 +64,13 @@ describe('node-lambda', function () {
     assert.equal(lambda.version, '0.9.0');
   });
 
+  describe('_codeDirectory', function () {
+    it('.lambda in the current directory', function () {
+      assert.equal(lambda._codeDirectory(), path.resolve('.', '.lambda'));
+      assert.equal(lambda._codeDirectory(program), path.resolve('.', '.lambda'));
+    });
+  });
+
   describe('_params', function () {
     // http://docs.aws.amazon.com/lambda/latest/dg/API_CreateFunction.html#SSS-CreateFunction-request-FunctionName
     const functionNamePattern =
