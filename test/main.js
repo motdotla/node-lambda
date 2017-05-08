@@ -33,7 +33,7 @@ var originalProgram = {
   prebuiltDirectory: '',
 };
 
-var codeDirectory = lambda._codeDirectory(Hoek.clone(originalProgram));
+var codeDirectory = lambda._codeDirectory();
 
 function _timeout(params) {
   // Even if timeout is set for the whole test for Windows,
