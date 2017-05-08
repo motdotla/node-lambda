@@ -8,13 +8,13 @@ Command line tool to locally run and deploy your node.js application to [Amazon 
 [![NPM version](https://badge.fury.io/js/node-lambda.svg)](http://badge.fury.io/js/node-lambda)
 
 ```
-node-lambda run
+$ node-lambda run
 ```
 
 ## Installation
 
 ```
-npm install -g node-lambda
+$ npm install -g node-lambda
 ```
 
 ## Example App
@@ -26,10 +26,10 @@ The [node-lambda-template](https://github.com/RebelMail/node-lambda-template) ex
 There are 4 available commands.
 
 ```
-node-lambda setup
-node-lambda run
-node-lambda package
-node-lambda deploy
+$ node-lambda setup
+$ node-lambda run
+$ node-lambda package
+$ node-lambda deploy
 ```
 
 ### Commands
@@ -51,7 +51,7 @@ $ node-lambda setup --help
 After running setup, it's a good idea to gitignore the generated `event.json` and `.env` files, as well as `.lambda`.
 
 ```
-echo -e ".env\ndeploy.env\nevent.json\n.lambda" >> .gitignore
+$ echo -e ".env\ndeploy.env\nevent.json\n.lambda" >> .gitignore
 ```
 
 #### run
@@ -182,6 +182,6 @@ Perhaps the easiest way to handle these cases is to bundle the code using Webpac
 ## Running tests
 
 ```
-npm install
-npm test
+$ npm install
+$ npm test
 ```
