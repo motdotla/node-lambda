@@ -166,6 +166,13 @@ The `--prebuiltDirectory` flag is useful for working with Webpack for example. I
 ## Handling `npm link` and Dependencies With Local Paths
 Perhaps the easiest way to handle these cases is to bundle the code using Webpack and use the `--prebuiltDirectory` flag to package the output for deployment.
 
+## ScheduleEvents
+#### Optional Parameter
+When using the eventSourceFile flag (-S or --eventSourceFile) to set a ScheduleEvent trigger, you can pass an optional _ScheduleDescription_ key into the ScheduleEvent object with a custom description for the CloudWatch event rule you are defining. By default, node-lambda generates a _ScheduleDescription_ for you based on the ScheduleName and ScheduleExpression of the rule.
+
+#### Note on ScheduleState for ScheduleEvents
+When setting ScheduleState to `ENABLED` or `DISABLED` for ScheduleEvents, it is useful to note that this sets the state of the CloudWatch Event rule but _DOES NOT_ set the state of the trigger for the Lambda function you are deploying; ScheduleEvent triggers are enabled by default in the Lambda console when added using the eventSourceFile flag.
+
 ## Other AWS Lambda Tools Projects
 
 + [lambdaws](https://github.com/mentum/lambdaws)
