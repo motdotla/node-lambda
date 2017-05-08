@@ -35,13 +35,28 @@ var originalProgram = {
 
 var codeDirectory = lambda._codeDirectory(Hoek.clone(originalProgram));
 
+function _timeout(params) {
+  // Even if timeout is set for the whole test for Windows,
+  // if it is set in local it will be valid.
+  // For Windows, do not set it with local.
+  if (process.platform != 'win32') {
+    params.this.timeout(params.sec * 1000);
+  }
+}
+
 describe('node-lambda', function () {
+  if (process.platform == 'win32') {
+    // It seems that it takes time for file operation in Windows.
+    // So set `timeout(60000)` for the whole test.
+    this.timeout(60000);
+  }
+
   beforeEach(function () {
     program = Hoek.clone(originalProgram);
   });
 
   after(function () {
-    this.timeout(30000); // give it time to remove
+    _timeout({ this: this, sec: 30 }); // give it time to remove
     fs.removeSync(path.join(os.tmpDir(), `${program.functionName}-[0-9]*`));
   });
 
@@ -50,21 +65,34 @@ describe('node-lambda', function () {
   });
 
   describe('_params', function () {
+    // http://docs.aws.amazon.com/lambda/latest/dg/API_CreateFunction.html#SSS-CreateFunction-request-FunctionName
+    const functionNamePattern =
+      /(arn:aws:lambda:)?([a-z]{2}-[a-z]+-\d{1}:)?(\d{12}:)?(function:)?([a-zA-Z0-9-_]+)(:(\$LATEST|[a-zA-Z0-9-_]+))?/;
     it('appends environment to original functionName', function () {
       var params = lambda._params(program);
       assert.equal(params.FunctionName, '___node-lambda-development');
+      assert.match(params.FunctionName, functionNamePattern);
     });
 
     it('appends environment to original functionName (production)', function () {
       program.environment = 'production';
       var params = lambda._params(program);
       assert.equal(params.FunctionName, '___node-lambda-production');
+      assert.match(params.FunctionName, functionNamePattern);
     });
 
     it('appends version to original functionName', function () {
       program.lambdaVersion = '2015-02-01';
       var params = lambda._params(program);
       assert.equal(params.FunctionName, '___node-lambda-development-2015-02-01');
+      assert.match(params.FunctionName, functionNamePattern);
+    });
+
+    it('appends version to original functionName (value not allowed by AWS)', function () {
+      program.lambdaVersion = '2015.02.01';
+      var params = lambda._params(program);
+      assert.equal(params.FunctionName, '___node-lambda-development-2015_02_01');
+      assert.match(params.FunctionName, functionNamePattern);
     });
 
     it('appends VpcConfig to params when vpc params set', function() {
@@ -162,7 +190,7 @@ describe('node-lambda', function () {
     });
 
     it('`codeDirectory` is empty. (For `codeDirectory` where the file was present)', function (done) {
-      lambda._rsync(program, '.', codeDirectory, true, function (err, result) {
+      lambda._fileCopy(program, '.', codeDirectory, true, function (err, result) {
         const contents = fs.readdirSync(codeDirectory);
         assert.isTrue(contents.length > 0);
         lambda._cleanDirectory(codeDirectory, function () {
@@ -285,8 +313,12 @@ describe('node-lambda', function () {
     });
   }
 
-  describe('_rsync', function() { rsyncTests('_rsync'); });
   describe('_fileCopy', function() { rsyncTests('_fileCopy'); });
+  if (process.platform == 'win32') {
+    it('For Windows, `_rsync` tests pending');
+  } else {
+    describe('_rsync', function() { rsyncTests('_rsync'); });
+  }
 
   describe('_npmInstall', function () {
     beforeEach(function (done) {
@@ -295,7 +327,7 @@ describe('node-lambda', function () {
           return done(err);
         }
 
-        lambda._rsync(program, '.', codeDirectory, true, function (err) {
+        lambda._fileCopy(program, '.', codeDirectory, true, function (err) {
           if (err) {
             return done(err);
           }
@@ -305,7 +337,7 @@ describe('node-lambda', function () {
     });
 
     it('_npm adds node_modules', function (done) {
-      this.timeout(60000); // give it time to build the node modules
+      _timeout({ this: this, sec: 30 }); // give it time to build the node modules
 
       lambda._npmInstall(program, codeDirectory, function (err, result) {
         var contents = fs.readdirSync(codeDirectory);
@@ -316,6 +348,10 @@ describe('node-lambda', function () {
   });
 
   describe('_postInstallScript', function () {
+    if (process.platform == 'win32') {
+      return it('`_postInstallScript` test does not support Windows.');
+    }
+
     const postInstallScriptPath = path.join(codeDirectory, 'post_install.sh');
     var hook;
     /**
@@ -375,13 +411,13 @@ describe('node-lambda', function () {
 
   describe('_zip', function () {
     beforeEach(function (done) {
-      this.timeout(30000); // give it time to build the node modules
+      _timeout({ this: this, sec: 30 }); // give it time to build the node modules
       lambda._cleanDirectory(codeDirectory, function (err) {
         if (err) {
           return done(err);
         }
 
-        lambda._rsync(program, '.', codeDirectory, true, function (err) {
+        lambda._fileCopy(program, '.', codeDirectory, true, function (err) {
           if (err) {
             return done(err);
           }
@@ -396,7 +432,7 @@ describe('node-lambda', function () {
     });
 
     it('zips the file and has an index.js file', function (done) {
-      this.timeout(30000); // give it time to zip
+      _timeout({ this: this, sec: 30 }); // give it time to zip
 
       lambda._zip(program, codeDirectory, function (err, data) {
         var archive = new zip(data);
@@ -411,7 +447,7 @@ describe('node-lambda', function () {
 
   describe('_archive', function () {
     it('installs and zips with an index.js file and node_modules/async', function (done) {
-      this.timeout(30000); // give it time to zip
+      _timeout({ this: this, sec: 30 }); // give it time to zip
 
       lambda._archive(program, function (err, data) {
         var archive = new zip(data);
@@ -459,7 +495,7 @@ describe('node-lambda', function () {
     const testZipFile = path.join(os.tmpDir(), 'node-lambda-test.zip');
     var bufferExpected = null;
     before(function(done) {
-      this.timeout(30000); // give it time to zip
+      _timeout({ this: this, sec: 30 }); // give it time to zip
 
       lambda._zip(program, codeDirectory, function (err, data) {
         bufferExpected = data;
@@ -505,7 +541,7 @@ describe('node-lambda', function () {
       it('`deployZipfile` is a invalid value. Process from creation of zip file', function (done) {
         const filePath = path.join(path.resolve('/aaaa'), 'bbbb');
         const _program = Object.assign({ deployZipfile: filePath }, program);
-        this.timeout(30000); // give it time to zip
+        _timeout({ this: this, sec: 30 }); // give it time to zip
         lambda._archive(_program, function (err, data) {
           // same test as "installs and zips with an index.js file and node_modules/async"
           var archive = new zip(data);
@@ -588,7 +624,7 @@ describe('node-lambda', function () {
         program.eventSourceFile = '';
         assert.deepEqual(
           lambda._eventSourceList(program),
-          { EventSourceMappings: [], ScheduleEvents: [] }
+          { EventSourceMappings: null, ScheduleEvents: null }
         );
       });
 
@@ -683,6 +719,21 @@ describe('node-lambda', function () {
     });
   });
 
+  describe('_updateEventSources', function () {
+    it('program.eventSourceFile is empty value', function () {
+      program.eventSourceFile = '';
+      const eventSourceList = lambda._eventSourceList(program);
+      return new Promise(function (resolve) {
+        lambda._updateEventSources(lambda, '', [], eventSourceList.EventSourceMappings, function(err, results) {
+          resolve({ err: err, results: results });
+        });
+      }).then(function (actual) {
+        const expected = { err: null, results: [] };
+        assert.deepEqual(actual, expected);
+      });
+    });
+  });
+
   describe('_updateScheduleEvents', function () {
     const aws = require('aws-sdk-mock');
     const ScheduleEvents = require(path.join('..', 'lib', 'schedule_events'));
@@ -719,6 +770,19 @@ describe('node-lambda', function () {
       fs.unlinkSync('event_sources.json');
       aws.restore('CloudWatchEvents');
       aws.restore('Lambda');
+    });
+
+    it('program.eventSourceFile is empty value', function () {
+      program.eventSourceFile = '';
+      const eventSourceList = lambda._eventSourceList(program);
+      return new Promise(function (resolve) {
+        lambda._updateScheduleEvents(schedule, '', eventSourceList.ScheduleEvents, function(err, results) {
+          resolve({ err: err, results: results });
+        });
+      }).then(function (actual) {
+        const expected = { err: null, results: [] };
+        assert.deepEqual(actual, expected);
+      });
     });
 
     it('simple test with mock', function () {
