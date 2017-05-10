@@ -1,6 +1,7 @@
 {
 
   "maxerr"        : 50,       // {int} Maximum error before stopping
+  "esversion"     : 6,
 
   // Enforcing
   "bitwise"       : true,     // true: Prohibit bitwise operators (&, |, ^, etc.)
@@ -72,7 +73,7 @@
   "worker"        : false,    // Web Workers
   "wsh"           : false,    // Windows Scripting Host
   "yui"           : false,    // Yahoo User Interface
-  
+
   "ignore": [{"dir":"./node_modules"}],
 
 

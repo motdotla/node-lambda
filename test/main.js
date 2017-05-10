@@ -30,6 +30,7 @@ var originalProgram = {
   eventFile: 'event.json',
   eventSourceFile: '',
   contextFile: 'context.json',
+  deployTimeout: 120000,
   prebuiltDirectory: '',
 };
 
@@ -61,7 +62,7 @@ describe('node-lambda', function () {
   });
 
   it('version should be set', function () {
-    assert.equal(lambda.version, '0.9.0');
+    assert.equal(lambda.version, '0.10.0');
   });
 
   describe('_codeDirectory', function () {
@@ -589,8 +590,8 @@ describe('node-lambda', function () {
         configFile: 'tmp.env'
       }, process.cwd());
 
-      assert.equal(process.env["FOO"], 'bar');
-      assert.equal(process.env["BAZ"], 'bing');
+      assert.equal(process.env.FOO, 'bar');
+      assert.equal(process.env.BAZ, 'bing');
     });
 
   });
@@ -690,7 +691,7 @@ describe('node-lambda', function () {
             ScheduleEvents: [{
               ScheduleName: 'node-lambda-test-schedule',
               ScheduleState: 'ENABLED',
-              ScheduleExpression: 'rate(1 hour)',
+              ScheduleExpression: 'rate(1 hour)'
             }],
           };
           assert.deepEqual(lambda._eventSourceList(program), expected);
@@ -749,6 +750,7 @@ describe('node-lambda', function () {
         ScheduleName: 'node-lambda-test-schedule',
         ScheduleState: 'ENABLED',
         ScheduleExpression: 'rate(1 hour)',
+        ScheduleDescription: 'Run node-lambda-test-function once per hour'
       }]
     };
 

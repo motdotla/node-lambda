@@ -8,13 +8,13 @@ Command line tool to locally run and deploy your node.js application to [Amazon 
 [![NPM version](https://badge.fury.io/js/node-lambda.svg)](http://badge.fury.io/js/node-lambda)
 
 ```
-node-lambda run
+$ node-lambda run
 ```
 
 ## Installation
 
 ```
-npm install -g node-lambda
+$ npm install -g node-lambda
 ```
 
 ## Example App
@@ -26,17 +26,17 @@ The [node-lambda-template](https://github.com/RebelMail/node-lambda-template) ex
 There are 4 available commands.
 
 ```
-node-lambda setup
-node-lambda run
-node-lambda package
-node-lambda deploy
+$ node-lambda setup
+$ node-lambda run
+$ node-lambda package
+$ node-lambda deploy
 ```
 
 ### Commands
 
 #### setup
 
-Initializes the `event.json`, `context.json`, `.env`, `deploy.env` files, and `event_sources.json` files. `event.json` is where you mock your event. `context.json` is where you can add additional mock data to the context passed to your lambda function. `.env` is where you place your deployment configuration. `deploy.env` has the same format as `.env`, but is used for holding any environment/config variables that you need to be deployed with your code to Lambda but you don't want in version control (e.g. DB connection info). `event_sources.json` is used to set the event source of the Labmda function (Not all event sources available in Lambda are supported).
+Initializes the `event.json`, `context.json`, `.env`, `deploy.env` files, and `event_sources.json` files. `event.json` is where you mock your event. `context.json` is where you can add additional mock data to the context passed to your lambda function. `.env` is where you place your deployment configuration. `deploy.env` has the same format as `.env`, but is used for holding any environment/config variables that you need to be deployed with your code to Lambda but you don't want in version control (e.g. DB connection info). `event_sources.json` is used to set the event source of the Lambda function (Not all event sources available in Lambda are supported).
 
 ```
 $ node-lambda setup --help
@@ -51,7 +51,43 @@ $ node-lambda setup --help
 After running setup, it's a good idea to gitignore the generated `event.json` and `.env` files, as well as `.lambda`.
 
 ```
-echo -e ".env\ndeploy.env\nevent.json\n.lambda" >> .gitignore
+$ echo -e ".env\ndeploy.env\nevent.json\n.lambda" >> .gitignore
+```
+
+##### Deploy env variables
+
+```
+AWS_ENVIRONMENT            // (default: '')
+CONFIG_FILE                // (default: '')
+EVENT_SOURCE_FILE          // (default: '')
+EXCLUDE_GLOBS              // (default: '')
+AWS_ACCESS_KEY_ID          // (default: not set!)
+AWS_SECRET_ACCESS_KEY      // (default: not set!)
+AWS_PROFILE =              // (default: '')
+AWS_SESSION_TOKEN =        // (default: '')
+AWS_REGION =               // (default: 'us-east-1,us-west-2,eu-west-1')
+AWS_FUNCTION_NAME          // (default: package.json.name or 'UnnamedFunction')
+AWS_HANDLER                // (default: 'index.handler')
+AWS_ROLE_ARN || AWS_ROLE   // (default: 'missing')
+AWS_MEMORY_SIZE            // (default: 128)
+AWS_TIMEOUT                // (default: 60)
+AWS_RUN_TIMEOUT            // (default: 3)
+AWS_DESCRIPTION            // (default: package.json.description or '')
+AWS_RUNTIME                // (default: 'nodejs6.10')
+AWS_PUBLISH                // (default: false)
+AWS_FUNCTION_VERSION       // (default: '')
+AWS_VPC_SUBNETS            // (default: '')
+AWS_VPC_SECURITY_GROUPS    // (default: '')
+AWS_TRACING_CONFIG         // (default: '')
+EVENT_FILE                 // (default: 'event.json')
+PACKAGE_DIRECTORY          // (default: not set)
+CONTEXT_FILE               // (default: 'context.json')
+PREBUILT_DIRECTORY         // (default: '')
+SRC_DIRECTORY              // (default: '')
+DEPLOY_TIMEOUT             // (default: '120000')
+DOCKER_IMAGE               // (default: '')
+DEPLOY_ZIPFILE             // (default: '')
+AWS_DLQ_TARGET_ARN         // (default: not set)
 ```
 
 #### run
@@ -135,6 +171,8 @@ $ node-lambda deploy --help
     -x, --excludeGlobs []                      Add a space separated list of file(type)s to ignore (e.g. "*.json .env")
     -D, --prebuiltDirectory []                 Prebuilt directory
     -z, --deployZipfile []                     Deploy zipfile
+    -T, --deployTimeout [120000]               Deploy Timeout
+    -G, --sourceDirectory [.]                  Path to lambda source Directory (e.g. "./some-lambda")
 ```
 
 ## Custom Environment Variables
@@ -160,11 +198,25 @@ cp -v "config_$ENV.js" "config.js" \
 && printf "######  DONE!  ###### \n\n"
 ```
 
+## Post invoke script (example)
+If you wish to invoke your deployed AWS Lambda function, you can add the following as a `script` to your `package.json`:
+
+```
+"invoke:remote": "aws lambda invoke --function-name myLambdaFnName --payload fileb://fixtures/hi.json invoked.json --log-type Tail | jq -r '.LogResult' | base64 --decode && rm invoked.json"
+```
+
 ## Prebuilt packages
 The `--prebuiltDirectory` flag is useful for working with Webpack for example. It skips `npm install --production` and `post_install.sh` and simply packages the specified directory.
 
 ## Handling `npm link` and Dependencies With Local Paths
 Perhaps the easiest way to handle these cases is to bundle the code using Webpack and use the `--prebuiltDirectory` flag to package the output for deployment.
+
+## ScheduleEvents
+#### Optional Parameter
+When using the eventSourceFile flag (-S or --eventSourceFile) to set a ScheduleEvent trigger, you can pass an optional _ScheduleDescription_ key into the ScheduleEvent object with a custom description for the CloudWatch event rule you are defining. By default, node-lambda generates a _ScheduleDescription_ for you based on the ScheduleName and ScheduleExpression of the rule.
+
+#### Note on ScheduleState for ScheduleEvents
+When setting ScheduleState to `ENABLED` or `DISABLED` for ScheduleEvents, it is useful to note that this sets the state of the CloudWatch Event rule but _DOES NOT_ set the state of the trigger for the Lambda function you are deploying; ScheduleEvent triggers are enabled by default in the Lambda console when added using the eventSourceFile flag.
 
 ## Other AWS Lambda Tools Projects
 
@@ -182,6 +234,7 @@ Perhaps the easiest way to handle these cases is to bundle the code using Webpac
 ## Running tests
 
 ```
-npm install
-npm test
+$ npm install
+$ npm test
 ```
+
