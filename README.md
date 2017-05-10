@@ -198,6 +198,13 @@ cp -v "config_$ENV.js" "config.js" \
 && printf "######  DONE!  ###### \n\n"
 ```
 
+## Post invoke script (example)
+If you wish to invoke your deployed AWS Lambda function, you can add the following as a `script` to your `package.json`:
+
+```
+"invoke:remote": "aws lambda invoke --function-name myLambdaFnName --payload fileb://fixtures/hi.json invoked.json --log-type Tail | jq -r '.LogResult' | base64 --decode && rm invoked.json"
+```
+
 ## Prebuilt packages
 The `--prebuiltDirectory` flag is useful for working with Webpack for example. It skips `npm install --production` and `post_install.sh` and simply packages the specified directory.
 
