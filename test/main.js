@@ -210,6 +210,7 @@ describe('node-lambda', function () {
       fs.mkdirsSync(path.join('__unittest', 'hoge'));
       fs.mkdirsSync(path.join('__unittest', 'fuga'));
       fs.writeFileSync(path.join('__unittest', 'hoge', 'piyo'));
+      fs.writeFileSync(path.join('__unittest', 'hoge', 'package.json'));
       fs.writeFileSync('fuga');
     });
     after(function () {
