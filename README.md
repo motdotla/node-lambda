@@ -54,6 +54,42 @@ After running setup, it's a good idea to gitignore the generated `event.json` an
 $ echo -e ".env\ndeploy.env\nevent.json\n.lambda" >> .gitignore
 ```
 
+##### Deploy env variables
+
+```
+AWS_ENVIRONMENT            // (default: '')
+CONFIG_FILE                // (default: '')
+EVENT_SOURCE_FILE          // (default: '')
+EXCLUDE_GLOBS              // (default: '')
+AWS_ACCESS_KEY_ID          // (default: not set!)
+AWS_SECRET_ACCESS_KEY      // (default: not set!)
+AWS_PROFILE =              // (default: '')
+AWS_SESSION_TOKEN =        // (default: '')
+AWS_REGION =               // (default: 'us-east-1,us-west-2,eu-west-1')
+AWS_FUNCTION_NAME          // (default: package.json.name or 'UnnamedFunction')
+AWS_HANDLER                // (default: 'index.handler')
+AWS_ROLE_ARN || AWS_ROLE   // (default: 'missing')
+AWS_MEMORY_SIZE            // (default: 128)
+AWS_TIMEOUT                // (default: 60)
+AWS_RUN_TIMEOUT            // (default: 3)
+AWS_DESCRIPTION            // (default: package.json.description or '')
+AWS_RUNTIME                // (default: 'nodejs6.10')
+AWS_PUBLISH                // (default: false)
+AWS_FUNCTION_VERSION       // (default: '')
+AWS_VPC_SUBNETS            // (default: '')
+AWS_VPC_SECURITY_GROUPS    // (default: '')
+AWS_TRACING_CONFIG         // (default: '')
+EVENT_FILE                 // (default: 'event.json')
+PACKAGE_DIRECTORY          // (default: not set)
+CONTEXT_FILE               // (default: 'context.json')
+PREBUILT_DIRECTORY         // (default: '')
+SRC_DIRECTORY              // (default: '')
+DEPLOY_TIMEOUT             // (default: '120000')
+DOCKER_IMAGE               // (default: '')
+DEPLOY_ZIPFILE             // (default: '')
+AWS_DLQ_TARGET_ARN         // (default: not set)
+```
+
 #### run
 
 Runs your Amazon Lambda index.js file locally. Passes `event.json` data to the Amazon Lambda event object.
@@ -193,3 +229,4 @@ When setting ScheduleState to `ENABLED` or `DISABLED` for ScheduleEvents, it is 
 $ npm install
 $ npm test
 ```
+
