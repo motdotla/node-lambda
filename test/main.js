@@ -30,6 +30,7 @@ var originalProgram = {
   eventFile: 'event.json',
   eventSourceFile: '',
   contextFile: 'context.json',
+  deployTimeout: 120000,
   prebuiltDirectory: '',
 };
 

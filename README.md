@@ -135,6 +135,7 @@ $ node-lambda deploy --help
     -x, --excludeGlobs []                      Add a space separated list of file(type)s to ignore (e.g. "*.json .env")
     -D, --prebuiltDirectory []                 Prebuilt directory
     -z, --deployZipfile []                     Deploy zipfile
+    -T, --deployTimeout [120000]               Deploy Timeout
 ```
 
 ## Custom Environment Variables

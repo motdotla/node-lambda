@@ -71,6 +71,7 @@ var EVENT_FILE = process.env.EVENT_FILE || 'event.json';
 var PACKAGE_DIRECTORY = process.env.PACKAGE_DIRECTORY;
 var CONTEXT_FILE = process.env.CONTEXT_FILE || 'context.json';
 var PREBUILT_DIRECTORY = process.env.PREBUILT_DIRECTORY || '';
+var DEPLOY_TIMEOUT = process.env.DEPLOY_TIMEOUT || 120000;
 var DOCKER_IMAGE = process.env.DOCKER_IMAGE || '';
 var DEPLOY_ZIPFILE = process.env.DEPLOY_ZIPFILE || '';
 var AWS_DLQ_TARGET_ARN = (function() {
@@ -117,6 +118,7 @@ program
   .option('-x, --excludeGlobs [' + EXCLUDE_GLOBS + ']',
     'Space-separated glob pattern(s) for additional exclude files (e.g. "event.json dotenv.sample")', EXCLUDE_GLOBS)
   .option('-D, --prebuiltDirectory [' + PREBUILT_DIRECTORY + ']', 'Prebuilt directory', PREBUILT_DIRECTORY)
+  .option('-T, --deployTimeout [' + DEPLOY_TIMEOUT + ']', 'Deploy Timeout', DEPLOY_TIMEOUT)
   .option('-z, --deployZipfile [' + DEPLOY_ZIPFILE + ']', 'Deploy zipfile', DEPLOY_ZIPFILE)
   .action(function (prg) {
     lambda.deploy(prg);
