@@ -136,6 +136,7 @@ $ node-lambda deploy --help
     -D, --prebuiltDirectory []                 Prebuilt directory
     -z, --deployZipfile []                     Deploy zipfile
     -T, --deployTimeout [120000]               Deploy Timeout
+    -G, --sourceDirectory [.]                  Path to lambda source Directory (e.g. "./some-lambda")
 ```
 
 ## Custom Environment Variables
