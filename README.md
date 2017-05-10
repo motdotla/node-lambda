@@ -4,17 +4,17 @@
 
 Command line tool to locally run and deploy your node.js application to [Amazon Lambda](http://aws.amazon.com/lambda/).
 
-[![BuildStatus](https://travis-ci.org/motdotla/node-lambda.png?branch=master)](https://travis-ci.org/motdotla/node-lambda)
-[![NPM version](https://badge.fury.io/js/node-lambda.png)](http://badge.fury.io/js/node-lambda)
+[![BuildStatus](https://travis-ci.org/motdotla/node-lambda.svg?branch=master)](https://travis-ci.org/motdotla/node-lambda)
+[![NPM version](https://badge.fury.io/js/node-lambda.svg)](http://badge.fury.io/js/node-lambda)
 
 ```
-node-lambda run
+$ node-lambda run
 ```
 
 ## Installation
 
 ```
-npm install -g node-lambda
+$ npm install -g node-lambda
 ```
 
 ## Example App
@@ -26,32 +26,32 @@ The [node-lambda-template](https://github.com/RebelMail/node-lambda-template) ex
 There are 4 available commands.
 
 ```
-node-lambda setup
-node-lambda run
-node-lambda package
-node-lambda deploy
+$ node-lambda setup
+$ node-lambda run
+$ node-lambda package
+$ node-lambda deploy
 ```
 
 ### Commands
 
 #### setup
 
-Initializes the `event.json`, `context.json`, `.env` files, and `deploy.env` files. `event.json` is where you mock your event. `context.json` is where you can add additional mock data to the context passed to your lambda function. `.env` is where you place your deployment configuration. `deploy.env` has the same format as `.env`, but is used for holding any environment/config variables that you need to be deployed with your code to Lambda but you don't want in version control (e.g. DB connection info).
+Initializes the `event.json`, `context.json`, `.env`, `deploy.env` files, and `event_sources.json` files. `event.json` is where you mock your event. `context.json` is where you can add additional mock data to the context passed to your lambda function. `.env` is where you place your deployment configuration. `deploy.env` has the same format as `.env`, but is used for holding any environment/config variables that you need to be deployed with your code to Lambda but you don't want in version control (e.g. DB connection info). `event_sources.json` is used to set the event source of the Lambda function (Not all event sources available in Lambda are supported).
 
 ```
 $ node-lambda setup --help
 
-  Usage: run [options]
+  Usage: setup [options]
 
   Options:
 
     -h, --help                     output usage information
 ```
 
-After running setup, it's a good idea to gitignore the generated `event.json` and `.env` files.
+After running setup, it's a good idea to gitignore the generated `event.json` and `.env` files, as well as `.lambda`.
 
 ```
-echo -e ".env\ndeploy.env\nevent.json" >> .gitignore
+$ echo -e ".env\ndeploy.env\nevent.json\n.lambda" >> .gitignore
 ```
 
 #### run
@@ -69,7 +69,8 @@ $ node-lambda run --help
     -H, --handler [index.handler]       Lambda Handler {index.handler}
     -j, --eventFile [event.json]        Event JSON File
     -f, --configFile []                 Path to file holding secret environment variables (e.g. "deploy.env")
-    -u, --runtime [nodejs4.3]           Lambda Runtime {nodejs4.3, nodejs} - "nodejs4.3" is the current standard, "nodejs" is v0.10.36
+    -u, --runtime [nodejs6.10]          Lambda Runtime {nodejs6.10, nodejs4.3}
+    -t, --timeout [3]                   Lambda Timeout in seconds (max of 300)
     -x, --contextFile [context.json]    Context JSON file
 ```
 
@@ -86,6 +87,7 @@ $ node-lambda package --help
 
     -h, --help                          output usage information
     -A, --packageDirectory [build]      Local Package Directory
+    -I, --dockerImage []                Docker image for npm install
     -n, --functionName [node-lambda]    Lambda FunctionName
     -H, --handler [index.handler]       Lambda Handler {index.handler}
     -e, --environment [staging]         Choose environment {development, staging, production}
@@ -106,42 +108,44 @@ $ node-lambda deploy --help
 
   Options:
 
-    -h, --help                        output usage information
-    -e, --environment [staging]       Choose environment {development, staging, production}
-    -a, --accessKey [your_key]        AWS Access Key
-    -s, --secretKey [your_secret]     AWS Secret Key
-    -P, --profile [your_profile]      AWS Profile
-    -k, --sessionToken [your_token]   AWS Session Token
-    -r, --region [us-east-1]          AWS Region(s)
-    -n, --functionName [node-lambda]  Lambda FunctionName
-    -H, --handler [index.handler]     Lambda Handler {index.handler}
-    -o, --role [your_role]            Amazon Role ARN
-    -m, --memorySize [128]            Lambda Memory Size
-    -t, --timeout [3]                 Lambda Timeout
-    -d, --description [missing]       Lambda Description
-    -u, --runtime [nodejs4.3]         Lambda Runtime {nodejs4.3, nodejs} - "nodejs4.3" is the current standard, "nodejs" is v0.10.36
-    -p, --publish [false]             This boolean parameter can be used to request AWS Lambda to create the Lambda function and publish a version as an atomic operation
-    -v, --version [custom-version]    Lambda Version
-    -f, --configFile []               Path to file holding secret environment variables (e.g. "deploy.env")
-    -b, --vpcSubnets []               VPC Subnet ID(s, comma separated list) for your Lambda Function, when using this, the below param is also required
-    -g, --vpcSecurityGroups []        VPC Security Group ID(s, comma separated list) for your Lambda Function, when using this, the above param is also required
-    -A, --packageDirectory []         Local package directory
-    -S, --sourceDirectory [.]         Path to lambda source Directory (e.g. "./some-lambda")
-    -x, --excludeGlobs []             Add a space separated list of file(type)s to ignore (e.g. "*.json .env")
-    -D, --prebuiltDirectory []        Prebuilt directory
+    -h, --help                                 output usage information
+    -e, --environment [staging]                Choose environment {development, staging, production}
+    -a, --accessKey [your_key]                 AWS Access Key
+    -s, --secretKey [your_secret]              AWS Secret Key
+    -P, --profile [your_profile]               AWS Profile
+    -k, --sessionToken [your_token]            AWS Session Token
+    -r, --region [us-east-1]                   AWS Region(s)
+    -n, --functionName [node-lambda]           Lambda FunctionName
+    -H, --handler [index.handler]              Lambda Handler {index.handler}
+    -o, --role [your_role]                     Amazon Role ARN
+    -m, --memorySize [128]                     Lambda Memory Size
+    -t, --timeout [3]                          Lambda Timeout
+    -d, --description [missing]                Lambda Description
+    -u, --runtime [nodejs6.10]                 Lambda Runtime {nodejs6.10, nodejs4.3}
+    -p, --publish [false]                      This boolean parameter can be used to request AWS Lambda to create the Lambda function and publish a version as an atomic operation
+    -L, --lambdaVersion [custom-version]       Lambda Version
+    -f, --configFile []                        Path to file holding secret environment variables (e.g. "deploy.env")
+    -b, --vpcSubnets []                        VPC Subnet ID(s, comma separated list) for your Lambda Function, when using this, the below param is also required
+    -g, --vpcSecurityGroups []                 VPC Security Group ID(s, comma separated list) for your Lambda Function, when using this, the above param is also required
+    -Q, --deadLetterConfigTargetArn []         Lambda DLQ resource
+    -T, --tracingConfig []                     Lambda tracing settings
+    -A, --packageDirectory []                  Local package directory
+    -I, --dockerImage []                       Docker image for npm install
+    -S, --eventSourceFile [event_sources.json] Path to file holding event source mapping variables (e.g. "event_sources.json")
+    -x, --excludeGlobs []                      Add a space separated list of file(type)s to ignore (e.g. "*.json .env")
+    -D, --prebuiltDirectory []                 Prebuilt directory
+    -z, --deployZipfile []                     Deploy zipfile
+    -T, --deployTimeout [120000]               Deploy Timeout
+    -G, --sourceDirectory [.]                  Path to lambda source Directory (e.g. "./some-lambda")
 ```
 
 ## Custom Environment Variables
 
-AWS Lambda doesn't let you set environment variables for your function, but in many cases you will need to configure your function with secure values that you don't want to check into version control, for example a DB connection string or encryption key. Use the sample `deploy.env` file in combination with the `--configFile` flag to set values which will be prepended to your compiled Lambda function as `process.env` environment variables before it gets uploaded to S3.
+AWS Lambda will let you set environment variables for your function. Use the sample `deploy.env` file in combination with the `--configFile` flag to set values which will be added to the lambda configuration upon deploy.  Environment variables will also be set when running locally using the same flag
 
 ## Node.js Runtime Configuration
 
-AWS Lambda now supports Node.js v4.3.2, and there have been some [API changes](http://docs.aws.amazon.com/lambda/latest/dg/nodejs-prog-model-using-old-runtime.html) for the new version.  Most notably,
-`context.done()`, `context.succeed()`, and `context.fail()` are deprecated in favor of the Node convention of passing in
-a callback function.  These will still work for now for backward compatibility, but are no longer recommended.
-
-v0.10.36 is still supported, and can be targeted by changing the `AWS_RUNTIME` value to `nodejs` in the `.env` file.
+AWS Lambda now supports Node.js 6.10 and Node.js 4.3. Please also check the [Programming Model (Node.js)](http://docs.aws.amazon.com/lambda/latest/dg/programming-model.html) page.
 
 ## Post install script
 When running `node-lambda deploy` if you need to do some action after `npm install --production` and before deploying to AWS Lambda (e.g. replace some modules with precompiled ones or download some libraries, replace some config file depending on environment) you can create `post_install.sh` script. If the file exists the script will be executed (and output shown after execution) if not it is skipped. Environment string is passed to script as first parameter so you can use it if needed. Make sure that the script is executable.
@@ -164,15 +168,12 @@ The `--prebuiltDirectory` flag is useful for working with Webpack for example. I
 ## Handling `npm link` and Dependencies With Local Paths
 Perhaps the easiest way to handle these cases is to bundle the code using Webpack and use the `--prebuiltDirectory` flag to package the output for deployment.
 
-## Running `node-lambda` as an NPM script
-Strangely, NPM overwrites the TMPDIR environment variable (and therefore the result of `os.tmpDir()`) to the current working directory. This means when running node-lambda deploy as a NPM script in `package.json`, it fails on the rsync step as the destination directory exists in the folder you're synchronising (causing heaps of file has vanished: type errors).
+## ScheduleEvents
+#### Optional Parameter
+When using the eventSourceFile flag (-S or --eventSourceFile) to set a ScheduleEvent trigger, you can pass an optional _ScheduleDescription_ key into the ScheduleEvent object with a custom description for the CloudWatch event rule you are defining. By default, node-lambda generates a _ScheduleDescription_ for you based on the ScheduleName and ScheduleExpression of the rule.
 
-You can resolve this by explicitly setting the `TMPDIR` variable as you deploy, something like:
-```
-"scripts": {
-  "deploy-stage": "TMPDIR=/tmp node-lambda deploy"
-}
-```
+#### Note on ScheduleState for ScheduleEvents
+When setting ScheduleState to `ENABLED` or `DISABLED` for ScheduleEvents, it is useful to note that this sets the state of the CloudWatch Event rule but _DOES NOT_ set the state of the trigger for the Lambda function you are deploying; ScheduleEvent triggers are enabled by default in the Lambda console when added using the eventSourceFile flag.
 
 ## Other AWS Lambda Tools Projects
 
@@ -190,6 +191,6 @@ You can resolve this by explicitly setting the `TMPDIR` variable as you deploy, 
 ## Running tests
 
 ```
-npm install
-npm test
+$ npm install
+$ npm test
 ```

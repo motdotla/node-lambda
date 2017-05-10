@@ -34,3 +34,4 @@ node_modules
 .env
 event.json
 npm-debug.log*
+.lambda
