@@ -583,8 +583,8 @@ describe('node-lambda', function () {
         configFile: 'tmp.env'
       }, process.cwd());
 
-      assert.equal(process.env["FOO"], 'bar');
-      assert.equal(process.env["BAZ"], 'bing');
+      assert.equal(process.env.FOO, 'bar');
+      assert.equal(process.env.BAZ, 'bing');
     });
 
   });
