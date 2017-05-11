@@ -58,7 +58,7 @@ describe('node-lambda', function () {
 
   after(function () {
     _timeout({ this: this, sec: 30 }); // give it time to remove
-    fs.removeSync(path.join(os.tmpDir(), `${program.functionName}-[0-9]*`));
+    fs.removeSync(path.join(os.tmpdir(), `${program.functionName}-[0-9]*`));
   });
 
   it('version should be set', function () {
@@ -494,7 +494,7 @@ describe('node-lambda', function () {
   });
 
   describe('_readArchive', function () {
-    const testZipFile = path.join(os.tmpDir(), 'node-lambda-test.zip');
+    const testZipFile = path.join(os.tmpdir(), 'node-lambda-test.zip');
     var bufferExpected = null;
     before(function(done) {
       _timeout({ this: this, sec: 30 }); // give it time to zip
