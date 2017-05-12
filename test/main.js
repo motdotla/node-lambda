@@ -68,7 +68,6 @@ describe('node-lambda', function () {
   describe('_codeDirectory', function () {
     it('.lambda in the current directory', function () {
       assert.equal(lambda._codeDirectory(), path.resolve('.', '.lambda'));
-      assert.equal(lambda._codeDirectory(program), path.resolve('.', '.lambda'));
     });
   });
 
