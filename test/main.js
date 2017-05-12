@@ -34,7 +34,7 @@ var originalProgram = {
   prebuiltDirectory: '',
 };
 
-var codeDirectory = lambda._codeDirectory(Hoek.clone(originalProgram));
+var codeDirectory = lambda._codeDirectory();
 
 function _timeout(params) {
   // Even if timeout is set for the whole test for Windows,
@@ -63,6 +63,12 @@ describe('node-lambda', function () {
 
   it('version should be set', function () {
     assert.equal(lambda.version, '0.10.0');
+  });
+
+  describe('_codeDirectory', function () {
+    it('.lambda in the current directory', function () {
+      assert.equal(lambda._codeDirectory(), path.resolve('.', '.lambda'));
+    });
   });
 
   describe('_params', function () {
