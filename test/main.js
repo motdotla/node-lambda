@@ -178,14 +178,6 @@ describe('node-lambda', function () {
     });
   });
 
-  describe('_zipfileTmpPath', function () {
-    it('has the correct path', function () {
-      var zipfileTmpPath = lambda._zipfileTmpPath(program);
-      var value = zipfileTmpPath.indexOf(program.functionName) > 0;
-      assert.equal(value, true);
-    });
-  });
-
   describe('_cleanDirectory', function () {
     it('`codeDirectory` is empty', function (done) {
       lambda._cleanDirectory(codeDirectory, function () {
@@ -469,6 +461,7 @@ describe('node-lambda', function () {
     });
 
     it('packages a prebuilt module without installing', function (done) {
+      _timeout({ this: this, sec: 30 }); // give it time to zip
       var buildDir = '.build_' + Date.now();
       after(function() {
         rimraf.sync(buildDir, fs);
