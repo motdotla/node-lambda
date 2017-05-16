@@ -218,6 +218,10 @@ When using the eventSourceFile flag (-S or --eventSourceFile) to set a ScheduleE
 #### Note on ScheduleState for ScheduleEvents
 When setting ScheduleState to `ENABLED` or `DISABLED` for ScheduleEvents, it is useful to note that this sets the state of the CloudWatch Event rule but _DOES NOT_ set the state of the trigger for the Lambda function you are deploying; ScheduleEvent triggers are enabled by default in the Lambda console when added using the eventSourceFile flag.
 
+#### Known Issue
+###### Duplicate ScheduleEvent Triggers
+If you are adding a trigger via the `eventSourceFile` for the first time, remove preexisting triggers from the Lambda console before deploying. Deploying a Lambda with the `--eventSourceFile` flag will *NOT* overwrite the same triggers created from the AWS console and may result in a duplicate triggers for the same rule.
+
 ## Other AWS Lambda Tools Projects
 
 + [lambdaws](https://github.com/mentum/lambdaws)
@@ -237,4 +241,3 @@ When setting ScheduleState to `ENABLED` or `DISABLED` for ScheduleEvents, it is 
 $ npm install
 $ npm test
 ```
-
