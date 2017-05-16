@@ -56,11 +56,6 @@ describe('node-lambda', function () {
     program = Hoek.clone(originalProgram);
   });
 
-  after(function () {
-    _timeout({ this: this, sec: 30 }); // give it time to remove
-    fs.removeSync(path.join(os.tmpdir(), `${program.functionName}-[0-9]*`));
-  });
-
   it('version should be set', function () {
     assert.equal(lambda.version, '0.10.0');
   });
