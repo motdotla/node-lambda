@@ -883,7 +883,7 @@ describe('node-lambda', function () {
     });
 
     it('`node-lambda run` exitCode is `0` (callback(null))', function (done) {
-      const run = spawn(nodeLambdaPath, ['run']);
+      const run = spawn('node', [nodeLambdaPath, 'run']);
       var stdoutString = '';
       run.stdout.on('data', function (data) {
         stdoutString += data.toString().replace(/\r|\n/g, '');
@@ -899,7 +899,7 @@ describe('node-lambda', function () {
     it('`node-lambda run` exitCode is `0` (callback(null, "text"))', function (done) {
       _generateHandlerFile('callback(null, "text");');
 
-      const run = spawn(nodeLambdaPath, ['run', '--handler', '__test.handler']);
+      const run = spawn('node', [nodeLambdaPath, 'run', '--handler', '__test.handler']);
       var stdoutString = '';
       run.stdout.on('data', function (data) {
         stdoutString += data.toString().replace(/\r|\n/g, '');
@@ -915,7 +915,7 @@ describe('node-lambda', function () {
     it('`node-lambda run` exitCode is `255` (callback(new Error("e")))', function (done) {
       _generateHandlerFile('callback(new Error("e"));');
 
-      const run = spawn(nodeLambdaPath, ['run', '--handler', '__test.handler']);
+      const run = spawn('node', [nodeLambdaPath, 'run', '--handler', '__test.handler']);
       var stdoutString = '';
       run.stdout.on('data', function (data) {
         stdoutString += data.toString().replace(/\r|\n/g, '');
