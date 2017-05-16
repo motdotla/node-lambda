@@ -852,6 +852,8 @@ describe('node-lambda', function () {
   });
 
   describe('node-lambda run', function () {
+    // The reason for specifying the node command in this test is to support Windows.
+
     const nodeLambdaPath = path.join('bin', 'node-lambda');
     const _generateHandlerFile = function (callbackString) {
       fs.writeFileSync(
