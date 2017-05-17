@@ -38,7 +38,7 @@ const mockResponse = {
 
 var schedule = null;
 
-describe('schedule_events', () => {
+describe('lib/schedule_events', () => {
   before(() => {
     aws.mock('CloudWatchEvents', 'putRule', (params, callback) => {
       callback(null, mockResponse.putRule);

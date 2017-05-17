@@ -9,7 +9,6 @@ var Hoek = require('hoek');
 var lambda = require(path.join(__dirname, '..', 'lib', 'main'));
 var zip = require('node-zip');
 var rimraf = require('rimraf');
-var spawn = require('child_process').spawn;
 
 var assert = chai.assert;
 
@@ -46,7 +45,7 @@ function _timeout(params) {
   }
 }
 
-describe('node-lambda', function () {
+describe('lib/main', function () {
   if (process.platform == 'win32') {
     // It seems that it takes time for file operation in Windows.
     // So set `timeout(60000)` for the whole test.
@@ -847,86 +846,6 @@ describe('node-lambda', function () {
           fs.readFileSync(boilerplateFile).toString(),
           targetFile
         );
-      });
-    });
-  });
-
-  describe('node-lambda run', function () {
-    // The reason for specifying the node command in this test is to support Windows.
-
-    const nodeLambdaPath = path.join('bin', 'node-lambda');
-    const _generateHandlerFile = function (callbackString) {
-      fs.writeFileSync(
-        '__test.js',
-        fs.readFileSync('index.js').toString()
-          .replace(/callback\(null\);/, callbackString)
-      );
-    };
-
-    before(function () {
-      // Restore default value
-      program.eventFile = 'event.json';
-      program.contextFile = 'context.json';
-
-      lambda.setup(program);
-    });
-
-    after(function () {
-      [
-        '.env',
-        'context.json',
-        'event.json',
-        'deploy.env',
-        'event_sources.json',
-        '__test.js'
-      ].forEach(function(file) {
-        fs.unlinkSync(file);
-      });
-    });
-
-    it('`node-lambda run` exitCode is `0` (callback(null))', function (done) {
-      const run = spawn('node', [nodeLambdaPath, 'run']);
-      var stdoutString = '';
-      run.stdout.on('data', function (data) {
-        stdoutString += data.toString().replace(/\r|\n/g, '');
-      });
-
-      run.on('exit', function (code) {
-        assert.match(stdoutString, /Success:$/);
-        assert.equal(code, 0);
-        done();
-      });
-    });
-
-    it('`node-lambda run` exitCode is `0` (callback(null, "text"))', function (done) {
-      _generateHandlerFile('callback(null, "text");');
-
-      const run = spawn('node', [nodeLambdaPath, 'run', '--handler', '__test.handler']);
-      var stdoutString = '';
-      run.stdout.on('data', function (data) {
-        stdoutString += data.toString().replace(/\r|\n/g, '');
-      });
-
-      run.on('exit', function (code) {
-        assert.match(stdoutString, /Success:"text"$/);
-        assert.equal(code, 0);
-        done();
-      });
-    });
-
-    it('`node-lambda run` exitCode is `255` (callback(new Error("e")))', function (done) {
-      _generateHandlerFile('callback(new Error("e"));');
-
-      const run = spawn('node', [nodeLambdaPath, 'run', '--handler', '__test.handler']);
-      var stdoutString = '';
-      run.stdout.on('data', function (data) {
-        stdoutString += data.toString().replace(/\r|\n/g, '');
-      });
-
-      run.on('exit', function (code) {
-        assert.match(stdoutString, /Error: Error: e$/);
-        assert.equal(code, 255);
-        done();
       });
     });
   });
