@@ -45,7 +45,7 @@ function _timeout(params) {
   }
 }
 
-describe('node-lambda', function () {
+describe('lib/main', function () {
   if (process.platform == 'win32') {
     // It seems that it takes time for file operation in Windows.
     // So set `timeout(60000)` for the whole test.
