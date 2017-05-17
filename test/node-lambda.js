@@ -5,7 +5,7 @@ const path = require('path');
 const fs = require('fs-extra');
 const spawn = require('child_process').spawn;
 const execSync = require('child_process').execSync;
-const nodeLambdaPath = path.join('bin', 'node-lambda');
+const nodeLambdaPath = path.join(__dirname, '..', 'bin', 'node-lambda');
 
 // The reason for specifying the node command in this test is to support Windows.
 describe('bin/node-lambda', () => {
