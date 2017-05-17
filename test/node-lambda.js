@@ -18,9 +18,7 @@ describe('bin/node-lambda', () => {
       );
     };
 
-    before(() => {
-      execSync(`node ${nodeLambdaPath} setup`);
-    });
+    before(() => execSync(`node ${nodeLambdaPath} setup`));
 
     after(() => {
       [
@@ -30,51 +28,49 @@ describe('bin/node-lambda', () => {
         'deploy.env',
         'event_sources.json',
         '__test.js'
-      ].forEach(function(file) {
-        fs.unlinkSync(file);
-      });
+      ].forEach((file) => fs.unlinkSync(file));
     });
 
-    it('`node-lambda run` exitCode is `0` (callback(null))', function (done) {
+    it('`node-lambda run` exitCode is `0` (callback(null))', (done) => {
       const run = spawn('node', [nodeLambdaPath, 'run']);
       var stdoutString = '';
-      run.stdout.on('data', function (data) {
+      run.stdout.on('data', (data) => {
         stdoutString += data.toString().replace(/\r|\n/g, '');
       });
 
-      run.on('exit', function (code) {
+      run.on('exit', (code) => {
         assert.match(stdoutString, /Success:$/);
         assert.equal(code, 0);
         done();
       });
     });
 
-    it('`node-lambda run` exitCode is `0` (callback(null, "text"))', function (done) {
+    it('`node-lambda run` exitCode is `0` (callback(null, "text"))', (done) => {
       _generateHandlerFile('callback(null, "text");');
 
       const run = spawn('node', [nodeLambdaPath, 'run', '--handler', '__test.handler']);
       var stdoutString = '';
-      run.stdout.on('data', function (data) {
+      run.stdout.on('data', (data) => {
         stdoutString += data.toString().replace(/\r|\n/g, '');
       });
 
-      run.on('exit', function (code) {
+      run.on('exit', (code) => {
         assert.match(stdoutString, /Success:"text"$/);
         assert.equal(code, 0);
         done();
       });
     });
 
-    it('`node-lambda run` exitCode is `255` (callback(new Error("e")))', function (done) {
+    it('`node-lambda run` exitCode is `255` (callback(new Error("e")))', (done) => {
       _generateHandlerFile('callback(new Error("e"));');
 
       const run = spawn('node', [nodeLambdaPath, 'run', '--handler', '__test.handler']);
       var stdoutString = '';
-      run.stdout.on('data', function (data) {
+      run.stdout.on('data', (data) => {
         stdoutString += data.toString().replace(/\r|\n/g, '');
       });
 
-      run.on('exit', function (code) {
+      run.on('exit', (code) => {
         assert.match(stdoutString, /Error: Error: e$/);
         assert.equal(code, 255);
         done();
