@@ -41,7 +41,7 @@ describe('bin/node-lambda', () => {
         'event.json',
         'deploy.env',
         'event_sources.json',
-//        '__test.js'
+        '__test.js'
       ].forEach((file) => fs.unlinkSync(file));
     });
 
