@@ -8,7 +8,6 @@ var fs = require('fs-extra');
 var Hoek = require('hoek');
 var lambda = require(path.join(__dirname, '..', 'lib', 'main'));
 var zip = require('node-zip');
-var rimraf = require('rimraf');
 
 var assert = chai.assert;
 
@@ -289,7 +288,7 @@ describe('lib/main', function () {
       it(funcName + ' should not include package.json when --prebuiltDirectory is set', function (done) {
         var buildDir = '.build_' + Date.now();
         after(function() {
-          rimraf.sync(buildDir, fs);
+          fs.removeSync(buildDir);
         });
 
         fs.mkdirSync(buildDir);
@@ -459,7 +458,7 @@ describe('lib/main', function () {
       _timeout({ this: this, sec: 30 }); // give it time to zip
       var buildDir = '.build_' + Date.now();
       after(function() {
-        rimraf.sync(buildDir, fs);
+        fs.removeSync(buildDir);
       });
 
       fs.mkdirSync(buildDir);
