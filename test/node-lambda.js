@@ -11,7 +11,11 @@ const nodeLambdaPath = path.join(__dirname, '..', 'bin', 'node-lambda');
 describe('bin/node-lambda', () => {
   describe('node-lambda run', () => {
     const _testMain = (expectedValues, done) => {
-      const run = spawn('node', [nodeLambdaPath, 'run', '--handler', '__test.handler']);
+      const run = spawn('node', [
+        nodeLambdaPath, 'run',
+        '--handler', '__test.handler',
+        '--eventFile', 'event.json',
+      ]);
       var stdoutString = '';
       run.stdout.on('data', (data) => {
         stdoutString += data.toString().replace(/\r|\n/g, '');
@@ -24,15 +28,14 @@ describe('bin/node-lambda', () => {
       });
     };
 
-    const _generateHandlerFile = (callbackString) => {
-      fs.writeFileSync(
-        '__test.js',
-        fs.readFileSync('index.js').toString()
-          .replace(/callback\(null\);/, callbackString)
-      );
+    const _generateEventFile = (eventObj) => {
+      fs.writeFileSync('event.json', JSON.stringify(eventObj));
     };
 
-    before(() => execSync(`node ${nodeLambdaPath} setup`));
+    before(() => {
+      execSync(`node ${nodeLambdaPath} setup`);
+      fs.copy(path.join(__dirname, 'handler', 'index.js'), '__test.js');
+    });
 
     after(() => {
       [
@@ -45,69 +48,89 @@ describe('bin/node-lambda', () => {
       ].forEach((file) => fs.unlinkSync(file));
     });
 
-    it('`node-lambda run` exitCode is `0` (callback(null))', (done) => {
-      _generateHandlerFile('callback(null);');
-      _testMain({ stdoutRegExp: /Success:$/, exitCode: 0 }, done);
-    });
-
-    it('`node-lambda run` exitCode is `0` (callback(null, "text"))', (done) => {
-      _generateHandlerFile('callback(null, "text");');
-      _testMain({ stdoutRegExp: /Success:"text"$/, exitCode: 0 }, done);
-    });
-
-    it('`node-lambda run` exitCode is `255` (callback(new Error("e")))', (done) => {
-      _generateHandlerFile('callback(new Error("e"));');
-      _testMain({ stdoutRegExp: /Error: Error: e$/, exitCode: 255 }, done);
-    });
-
-    describe('node-lambda run (async)', function () {
-      this.timeout(5000); // give it time to setTimeout
-
-      const _generateHandlerFile = (callbackString, callbackWaitsForEmptyEventLoop) => {
-        const asyncCodeAndCallbackWaitsForEmptyEventLoopSettig = `
-          setTimeout(() => console.log('sleep 3500 msec'), 3500);
-          context.callbackWaitsForEmptyEventLoop = ${callbackWaitsForEmptyEventLoop};
-        `;
-        const testJsText = fs
-          .readFileSync('index.js').toString()
-          .replace(
-            /console.log\('Running index.handler'\);/,
-            asyncCodeAndCallbackWaitsForEmptyEventLoopSettig
-          )
-          .replace(/callback\(null\);/, callbackString);
-        fs.writeFileSync('__test.js', testJsText);
+    describe('node-lambda run (Handler only sync processing)', () => {
+      const eventObj = {
+        asyncTest: false,
+        callbackWaitsForEmptyEventLoop: true // True is the default value of Lambda
       };
 
-      describe('callbackWaitsForEmptyEventLoop = true', () => {
+      it('`node-lambda run` exitCode is `0` (callback(null))', (done) => {
+        _generateEventFile(Object.assign(eventObj, {
+          callbackCode: 'callback(null);'
+        }));
+        _testMain({ stdoutRegExp: /Success:$/, exitCode: 0 }, done);
+      });
+
+      it('`node-lambda run` exitCode is `0` (callback(null, "text"))', (done) => {
+        _generateEventFile(Object.assign(eventObj, {
+          callbackCode: 'callback(null, "text");'
+        }));
+        _testMain({ stdoutRegExp: /Success:"text"$/, exitCode: 0 }, done);
+      });
+
+      it('`node-lambda run` exitCode is `255` (callback(new Error("e")))', (done) => {
+        _generateEventFile(Object.assign(eventObj, {
+          callbackCode: 'callback(new Error("e"));'
+        }));
+        _testMain({ stdoutRegExp: /Error: Error: e$/, exitCode: 255 }, done);
+      });
+    });
+
+    describe('node-lambda run (Handler includes async processing)', () => {
+      describe('callbackWaitsForEmptyEventLoop = true', function () {
+        this.timeout(5000); // give it time to setTimeout
+
+        const eventObj = {
+          asyncTest: true,
+          callbackWaitsForEmptyEventLoop: true
+        };
+
         it('`node-lambda run` exitCode is `0` (callback(null))', (done) => {
-          _generateHandlerFile('callback(null);', true);
+          _generateEventFile(Object.assign(eventObj, {
+            callbackCode: 'callback(null);',
+          }));
           _testMain({ stdoutRegExp: /Success:sleep 3500 msec$/, exitCode: 0 }, done);
         });
 
         it('`node-lambda run` exitCode is `0` (callback(null, "text"))', (done) => {
-          _generateHandlerFile('callback(null, "text");', true);
+          _generateEventFile(Object.assign(eventObj, {
+            callbackCode: 'callback(null, "text");',
+          }));
           _testMain({ stdoutRegExp: /Success:"text"sleep 3500 msec$/, exitCode: 0 }, done);
         });
 
         it('`node-lambda run` exitCode is `255` (callback(new Error("e")))', (done) => {
-          _generateHandlerFile('callback(new Error("e"));', true);
+          _generateEventFile(Object.assign(eventObj, {
+            callbackCode: 'callback(new Error("e"));',
+          }));
           _testMain({ stdoutRegExp: /Error: Error: esleep 3500 msec$/, exitCode: 255 }, done);
         });
       });
 
       describe('callbackWaitsForEmptyEventLoop = false', () => {
+        const eventObj = {
+          asyncTest: true,
+          callbackWaitsForEmptyEventLoop: false
+        };
+
         it('`node-lambda run` exitCode is `0` (callback(null))', (done) => {
-          _generateHandlerFile('callback(null);', false);
+          _generateEventFile(Object.assign(eventObj, {
+            callbackCode: 'callback(null);',
+          }));
           _testMain({ stdoutRegExp: /Success:$/, exitCode: 0 }, done);
         });
 
         it('`node-lambda run` exitCode is `0` (callback(null, "text"))', (done) => {
-          _generateHandlerFile('callback(null, "text");', false);
+          _generateEventFile(Object.assign(eventObj, {
+            callbackCode: 'callback(null, "text");',
+          }));
           _testMain({ stdoutRegExp: /Success:"text"$/, exitCode: 0 }, done);
         });
 
         it('`node-lambda run` exitCode is `255` (callback(new Error("e")))', (done) => {
-          _generateHandlerFile('callback(new Error("e"));', false);
+          _generateEventFile(Object.assign(eventObj, {
+            callbackCode: 'callback(new Error("e"));',
+          }));
           _testMain({ stdoutRegExp: /Error: Error: e$/, exitCode: 255 }, done);
         });
       });
