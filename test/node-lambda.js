@@ -60,9 +60,7 @@ describe('bin/node-lambda', () => {
       _testMain({ stdoutRegExp: /Error: Error: e$/, exitCode: 255 }, done);
     });
 
-    describe('node-lambda run (async)', function () {
-      this.timeout(5000); // give it time to setTimeout
-
+    describe('node-lambda run (async)', () => {
       const _generateHandlerFile = (callbackString, callbackWaitsForEmptyEventLoop) => {
         const asyncCodeAndCallbackWaitsForEmptyEventLoopSettig = `
           setTimeout(() => console.log('sleep 3500 msec'), 3500);
@@ -78,7 +76,8 @@ describe('bin/node-lambda', () => {
         fs.writeFileSync('__test.js', testJsText);
       };
 
-      describe('callbackWaitsForEmptyEventLoop = true', () => {
+      describe('callbackWaitsForEmptyEventLoop = true', function () {
+        this.timeout(5000); // give it time to setTimeout
         it('`node-lambda run` exitCode is `0` (callback(null))', (done) => {
           _generateHandlerFile('callback(null);', true);
           _testMain({ stdoutRegExp: /Success:sleep 3500 msec$/, exitCode: 0 }, done);
