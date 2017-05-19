@@ -40,13 +40,13 @@ function _timeout(params) {
   // Even if timeout is set for the whole test for Windows,
   // if it is set in local it will be valid.
   // For Windows, do not set it with local.
-  if (process.platform != 'win32') {
+  if (process.platform !== 'win32') {
     params.this.timeout(params.sec * 1000);
   }
 }
 
 describe('lib/main', function () {
-  if (process.platform == 'win32') {
+  if (process.platform === 'win32') {
     // It seems that it takes time for file operation in Windows.
     // So set `timeout(60000)` for the whole test.
     this.timeout(60000);
@@ -272,7 +272,7 @@ describe('lib/main', function () {
           assert.notInclude(contents, 'fuga', 'Target: "__unittest/fuga"');
 
           contents = fs.readdirSync(path.join(codeDirectory, '__unittest', 'hoge'));
-          assert.isTrue(contents.length == 0, 'directory:__unittest/hoge is empty');
+          assert.equal(contents.length, 0, 'directory:__unittest/hoge is empty');
           done();
         });
       });
@@ -309,7 +309,7 @@ describe('lib/main', function () {
   }
 
   describe('_fileCopy', function() { rsyncTests('_fileCopy'); });
-  if (process.platform == 'win32') {
+  if (process.platform === 'win32') {
     it('For Windows, `_rsync` tests pending');
   } else {
     describe('_rsync', function() { rsyncTests('_rsync'); });
@@ -343,7 +343,7 @@ describe('lib/main', function () {
   });
 
   describe('_postInstallScript', function () {
-    if (process.platform == 'win32') {
+    if (process.platform === 'win32') {
       return it('`_postInstallScript` test does not support Windows.');
     }
 
