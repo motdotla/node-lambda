@@ -36,7 +36,7 @@ var originalProgram = {
 
 var codeDirectory = lambda._codeDirectory();
 
-function _timeout(params) {
+function _timeout (params) {
   // Even if timeout is set for the whole test for Windows,
   // if it is set in local it will be valid.
   // For Windows, do not set it with local.
@@ -97,7 +97,7 @@ describe('lib/main', function () {
       assert.match(params.FunctionName, functionNamePattern);
     });
 
-    it('appends VpcConfig to params when vpc params set', function() {
+    it('appends VpcConfig to params when vpc params set', function () {
       program.vpcSubnets = 'subnet-00000000,subnet-00000001,subnet-00000002';
       program.vpcSecurityGroups = 'sg-00000000,sg-00000001,sg-00000002';
       var params = lambda._params(program);
@@ -109,33 +109,33 @@ describe('lib/main', function () {
       assert.equal(params.VpcConfig.SecurityGroupIds[2], program.vpcSecurityGroups.split(',')[2]);
     });
 
-    it('does not append VpcConfig when params are not set', function() {
+    it('does not append VpcConfig when params are not set', function () {
       var params = lambda._params(program);
       assert.equal(Object.keys(params.VpcConfig.SubnetIds).length, 0);
       assert.equal(Object.keys(params.VpcConfig.SecurityGroupIds).length, 0);
     });
 
-    it('appends DeadLetterConfig to params when DLQ params set', function() {
-      ['', 'arn:aws:sqs:test'].forEach(function(v) {
+    it('appends DeadLetterConfig to params when DLQ params set', function () {
+      ['', 'arn:aws:sqs:test'].forEach(function (v) {
         program.deadLetterConfigTargetArn = v;
         const params = lambda._params(program);
         assert.equal(params.DeadLetterConfig.TargetArn, v, v);
       });
     });
 
-    it('does not append DeadLetterConfig when params are not set', function() {
+    it('does not append DeadLetterConfig when params are not set', function () {
       delete program.deadLetterConfigTargetArn;
       var params = lambda._params(program);
       assert.isNull(params.DeadLetterConfig.TargetArn);
     });
 
-    it('appends TracingConfig to params when params set', function() {
+    it('appends TracingConfig to params when params set', function () {
       program.tracingConfig = 'Active';
       const params = lambda._params(program);
       assert.equal(params.TracingConfig.Mode, 'Active');
     });
 
-    it('does not append TracingConfig when params are not set', function() {
+    it('does not append TracingConfig when params are not set', function () {
       program.tracingConfig = '';
       const params = lambda._params(program);
       assert.isNull(params.TracingConfig.Mode);
@@ -197,7 +197,7 @@ describe('lib/main', function () {
     });
   });
 
-  function rsyncTests(funcName) {
+  function rsyncTests (funcName) {
     before(function () {
       fs.mkdirSync('build');
       fs.mkdirsSync(path.join('__unittest', 'hoge'));
@@ -279,7 +279,7 @@ describe('lib/main', function () {
 
       it(funcName + ' should not exclude package.json, even when excluded by excludeGlobs', function (done) {
         program.excludeGlobs = '*.json';
-        lambda[funcName](program, '.', codeDirectory, true, function(err, result) {
+        lambda[funcName](program, '.', codeDirectory, true, function (err, result) {
           var contents = fs.readdirSync(codeDirectory);
           assert.include(contents, 'package.json');
           done();
@@ -288,7 +288,7 @@ describe('lib/main', function () {
 
       it(funcName + ' should not include package.json when --prebuiltDirectory is set', function (done) {
         var buildDir = '.build_' + Date.now();
-        after(function() {
+        after(function () {
           rimraf.sync(buildDir, fs);
         });
 
@@ -298,7 +298,7 @@ describe('lib/main', function () {
 
         program.excludeGlobs = '*.json';
         program.prebuiltDirectory = buildDir;
-        lambda[funcName](program, buildDir, codeDirectory, true, function(err, result) {
+        lambda[funcName](program, buildDir, codeDirectory, true, function (err, result) {
           var contents = fs.readdirSync(codeDirectory);
           assert.notInclude(contents, 'package.json', 'Target: "packages.json"');
           assert.include(contents, 'testa', 'Target: "testa"');
@@ -308,11 +308,11 @@ describe('lib/main', function () {
     });
   }
 
-  describe('_fileCopy', function() { rsyncTests('_fileCopy'); });
+  describe('_fileCopy', function () { rsyncTests('_fileCopy'); });
   if (process.platform === 'win32') {
     it('For Windows, `_rsync` tests pending');
   } else {
-    describe('_rsync', function() { rsyncTests('_rsync'); });
+    describe('_rsync', function () { rsyncTests('_rsync'); });
   }
 
   describe('_npmInstall', function () {
@@ -352,27 +352,27 @@ describe('lib/main', function () {
     /**
      * Capture console output
      */
-    function captureStream(stream){
+    function captureStream (stream) {
       var oldWrite = stream.write;
       var buf = '';
-      stream.write = function(chunk, encoding, callback){
+      stream.write = function (chunk, encoding, callback) {
         buf += chunk.toString(); // chunk is a String or Buffer
         oldWrite.apply(stream, arguments);
       }
 
       return {
-        unhook: function unhook(){
+        unhook: function unhook () {
          stream.write = oldWrite;
         },
-        captured: function(){
+        captured: function () {
           return buf;
         }
       };
     }
-    beforeEach(function(){
+    beforeEach(function () {
       hook = captureStream(process.stdout);
     });
-    afterEach(function(){
+    afterEach(function () {
       hook.unhook();
       if (fs.existsSync(postInstallScriptPath))
         fs.unlinkSync(postInstallScriptPath);
@@ -461,7 +461,7 @@ describe('lib/main', function () {
     it('packages a prebuilt module without installing', function (done) {
       _timeout({ this: this, sec: 30 }); // give it time to zip
       var buildDir = '.build_' + Date.now();
-      after(function() {
+      after(function () {
         rimraf.sync(buildDir, fs);
       });
 
@@ -493,7 +493,7 @@ describe('lib/main', function () {
   describe('_readArchive', function () {
     const testZipFile = path.join(os.tmpdir(), 'node-lambda-test.zip');
     var bufferExpected = null;
-    before(function(done) {
+    before(function (done) {
       _timeout({ this: this, sec: 30 }); // give it time to zip
 
       lambda._zip(program, codeDirectory, function (err, data) {
@@ -503,7 +503,7 @@ describe('lib/main', function () {
       });
     });
 
-    after(function() {
+    after(function () {
       fs.unlinkSync(testZipFile);
     });
 
@@ -597,7 +597,7 @@ describe('lib/main', function () {
     ];
 
     after(function () {
-      targetFiles.forEach(function(file) {
+      targetFiles.forEach(function (file) {
         fs.unlinkSync(file);
       });
       program.eventSourceFile = '';
@@ -607,7 +607,7 @@ describe('lib/main', function () {
       lambda.setup(program);
 
       const libPath = path.join(__dirname, '..', 'lib');
-      targetFiles.forEach(function(targetFile) {
+      targetFiles.forEach(function (targetFile) {
         const boilerplateFile = path.join(libPath, `${targetFile}.example`);
 
         assert.equal(
@@ -637,7 +637,7 @@ describe('lib/main', function () {
         );
       });
 
-      describe('program.eventSourceFile is valid value', function() {
+      describe('program.eventSourceFile is valid value', function () {
         before(function () {
           fs.writeFileSync('only_EventSourceMappings.json', JSON.stringify({
             EventSourceMappings: [{ test: 1 }]
@@ -723,7 +723,7 @@ describe('lib/main', function () {
       program.eventSourceFile = '';
       const eventSourceList = lambda._eventSourceList(program);
       return new Promise(function (resolve) {
-        lambda._updateEventSources(lambda, '', [], eventSourceList.EventSourceMappings, function(err, results) {
+        lambda._updateEventSources(lambda, '', [], eventSourceList.EventSourceMappings, function (err, results) {
           resolve({ err: err, results: results });
         });
       }).then(function (actual) {
@@ -776,7 +776,7 @@ describe('lib/main', function () {
       program.eventSourceFile = '';
       const eventSourceList = lambda._eventSourceList(program);
       return new Promise(function (resolve) {
-        lambda._updateScheduleEvents(schedule, '', eventSourceList.ScheduleEvents, function(err, results) {
+        lambda._updateScheduleEvents(schedule, '', eventSourceList.ScheduleEvents, function (err, results) {
           resolve({ err: err, results: results });
         });
       }).then(function (actual) {
@@ -790,7 +790,7 @@ describe('lib/main', function () {
       const eventSourceList = lambda._eventSourceList(program);
       const functionArn = 'arn:aws:lambda:us-west-2:XXX:function:node-lambda-test-function';
       return new Promise(function (resolve) {
-        lambda._updateScheduleEvents(schedule, functionArn, eventSourceList.ScheduleEvents, function(err, results) {
+        lambda._updateScheduleEvents(schedule, functionArn, eventSourceList.ScheduleEvents, function (err, results) {
           resolve({ err: err, results: results });
         });
       }).then(function (actual) {
@@ -821,7 +821,7 @@ describe('lib/main', function () {
     afterEach(function () {
       fs.unlinkSync('newContext.json');
       fs.unlinkSync('newEvent.json');
-      filesCreatedBySetup.forEach(function(file) {
+      filesCreatedBySetup.forEach(function (file) {
         fs.unlinkSync(file);
       });
     });
@@ -836,7 +836,7 @@ describe('lib/main', function () {
       assert.equal(fs.readFileSync('newEvent.json').toString(), '{"FOO"="bar"}');
 
       const libPath = path.join(__dirname, '..', 'lib');
-      filesCreatedBySetup.forEach(function(targetFile) {
+      filesCreatedBySetup.forEach(function (targetFile) {
         const boilerplateFile = path.join(libPath, `${targetFile}.example`);
 
         assert.equal(
