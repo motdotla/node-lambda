@@ -156,8 +156,8 @@ describe('lib/main', function () {
       it('adds variables when configFile param is set', function () {
         program.configFile = 'tmp.env';
         var params = lambda._params(program);
-        assert.equal(params.Environment.Variables['FOO'], "bar");
-        assert.equal(params.Environment.Variables['BAZ'], "bing");
+        assert.equal(params.Environment.Variables['FOO'], 'bar');
+        assert.equal(params.Environment.Variables['BAZ'], 'bing');
       });
 
       it('when configFile param is set but it is an empty file', function () {
@@ -398,7 +398,10 @@ describe('lib/main', function () {
       fs.chmodSync(path.join(codeDirectory, 'post_install.sh'), '755');
       lambda._postInstallScript(program, codeDirectory, function (err) {
         assert.isNull(err);
-        assert.equal("=> Running post install script post_install.sh\n\t\tYour environment is "+program.environment+"\n", hook.captured());
+        assert.equal(
+          `=> Running post install script post_install.sh\n\t\tYour environment is ${program.environment}\n`,
+          hook.captured()
+        );
         done();
       });
     });
