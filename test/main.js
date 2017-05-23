@@ -30,7 +30,7 @@ var originalProgram = {
   eventSourceFile: '',
   contextFile: 'context.json',
   deployTimeout: 120000,
-  prebuiltDirectory: '',
+  prebuiltDirectory: ''
 };
 
 var codeDirectory = lambda._codeDirectory();
@@ -668,7 +668,7 @@ describe('lib/main', function () {
           program.eventSourceFile = 'only_EventSourceMappings.json';
           const expected = {
             EventSourceMappings: [{ test: 1 }],
-            ScheduleEvents: [],
+            ScheduleEvents: []
           };
           assert.deepEqual(lambda._eventSourceList(program), expected);
         });
@@ -677,7 +677,7 @@ describe('lib/main', function () {
           program.eventSourceFile = 'only_ScheduleEvents.json';
           const expected = {
             EventSourceMappings: [],
-            ScheduleEvents: [{ test: 2 }],
+            ScheduleEvents: [{ test: 2 }]
           };
           assert.deepEqual(lambda._eventSourceList(program), expected);
         });
@@ -689,13 +689,13 @@ describe('lib/main', function () {
               BatchSize: 100,
               Enabled: true,
               EventSourceArn: 'your event source arn',
-              StartingPosition: 'LATEST',
+              StartingPosition: 'LATEST'
             }],
             ScheduleEvents: [{
               ScheduleName: 'node-lambda-test-schedule',
               ScheduleState: 'ENABLED',
               ScheduleExpression: 'rate(1 hour)'
-            }],
+            }]
           };
           assert.deepEqual(lambda._eventSourceList(program), expected);
         });
@@ -706,7 +706,7 @@ describe('lib/main', function () {
           BatchSize: 100,
           Enabled: true,
           EventSourceArn: 'your event source arn',
-          StartingPosition: 'LATEST',
+          StartingPosition: 'LATEST'
         }];
         const fileName = 'event_sources_old_style.json';
 

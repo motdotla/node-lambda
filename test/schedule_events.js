@@ -33,7 +33,7 @@ const mockResponse = {
   putTargets: {
     FailedEntries: [],
     FailedEntryCount: 0
-  },
+  }
 };
 
 var schedule = null;
@@ -108,7 +108,7 @@ describe('lib/schedule_events', () => {
         FunctionName: 'node-lambda-test-function',
         Principal: 'events.amazonaws.com',
         SourceArn: 'arn:aws:events:hoge:fuga',
-        StatementId: 'node-lambda-test-schedule',
+        StatementId: 'node-lambda-test-schedule'
       };
       const _params = Object.assign(params, mockResponse.putRule);
       assert.deepEqual(schedule._addPermissionParams(_params), expected);
@@ -121,7 +121,7 @@ describe('lib/schedule_events', () => {
         Rule: 'node-lambda-test-schedule',
         Targets: [{
           Arn: 'arn:aws:lambda:us-west-2:XXX:function:node-lambda-test-function',
-          Id: 'node-lambda-test-function',
+          Id: 'node-lambda-test-function'
         }]
       };
       assert.deepEqual(schedule._putTargetsParams(params), expected);
