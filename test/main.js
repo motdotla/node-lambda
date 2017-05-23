@@ -369,7 +369,7 @@ describe('lib/main', function () {
 
       return {
         unhook: function unhook () {
-         stream.write = oldWrite;
+          stream.write = oldWrite;
         },
         captured: function () {
           return buf;
