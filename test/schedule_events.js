@@ -103,7 +103,7 @@ describe('lib/schedule_events', () => {
   describe('_addPermissionParams', () => {
     it('correct value', () => {
       const expected = {
-        Action:'lambda:InvokeFunction',
+        Action: 'lambda:InvokeFunction',
         FunctionName: 'node-lambda-test-function',
         Principal: 'events.amazonaws.com',
         SourceArn: 'arn:aws:events:hoge:fuga',
