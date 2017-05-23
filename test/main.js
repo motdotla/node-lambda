@@ -7,7 +7,7 @@ var program = require('commander');
 var fs = require('fs-extra');
 var Hoek = require('hoek');
 var lambda = require(path.join(__dirname, '..', 'lib', 'main'));
-var zip = require('node-zip');
+var Zip = require('node-zip');
 
 var assert = chai.assert;
 
@@ -441,7 +441,7 @@ describe('lib/main', function () {
 
       lambda._zip(program, codeDirectory, function (err, data) {
         assert.isNull(err);
-        var archive = new zip(data);
+        var archive = new Zip(data);
         var contents = Object.keys(archive.files).map(function (k) {
           return archive.files[k].name.toString();
         });
@@ -457,7 +457,7 @@ describe('lib/main', function () {
 
       lambda._archive(program, function (err, data) {
         assert.isNull(err);
-        var archive = new zip(data);
+        var archive = new Zip(data);
         var contents = Object.keys(archive.files).map(function (k) {
           return archive.files[k].name.toString();
         });
@@ -484,7 +484,7 @@ describe('lib/main', function () {
       program.prebuiltDirectory = buildDir;
       lambda._archive(program, function (err, data) {
         assert.isNull(err);
-        var archive = new zip(data);
+        var archive = new Zip(data);
         var contents = Object.keys(archive.files).map(function (k) {
           return archive.files[k].name.toString();
         });
@@ -555,7 +555,7 @@ describe('lib/main', function () {
         lambda._archive(_program, function (err, data) {
           assert.isNull(err);
           // same test as "installs and zips with an index.js file and node_modules/async"
-          var archive = new zip(data);
+          var archive = new Zip(data);
           var contents = Object.keys(archive.files).map(function (k) {
             return archive.files[k].name.toString();
           });
