@@ -44,6 +44,7 @@ function _timeout (params) {
   }
 }
 
+/* global before, after, beforeEach, afterEach, describe, it */
 describe('lib/main', function () {
   if (process.platform === 'win32') {
     // It seems that it takes time for file operation in Windows.
