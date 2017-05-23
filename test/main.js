@@ -587,7 +587,6 @@ describe('lib/main', function () {
     });
 
     it('should inject environment variables at runtime', function () {
-
       // Run it...
       lambda._setRunTimeEnvironmentVars({
         configFile: 'tmp.env'
@@ -596,7 +595,6 @@ describe('lib/main', function () {
       assert.equal(process.env.FOO, 'bar');
       assert.equal(process.env.BAZ, 'bing');
     });
-
   });
 
   describe('create sample files', function () {
