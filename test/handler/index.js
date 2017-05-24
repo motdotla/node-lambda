@@ -5,8 +5,10 @@ exports.handler = (event, context, callback) => {
   context.callbackWaitsForEmptyEventLoop =
     !!event.callbackWaitsForEmptyEventLoop;
 
-  if (event.asyncTest)
+  if (event.asyncTest) {
     setTimeout(() => console.log('sleep 3500 msec'), 3500);
+  }
 
+  /* eslint-disable no-eval */
   eval(event.callbackCode);
 };

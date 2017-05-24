@@ -381,8 +381,9 @@ describe('lib/main', function () {
     });
     afterEach(function () {
       hook.unhook();
-      if (fs.existsSync(postInstallScriptPath))
+      if (fs.existsSync(postInstallScriptPath)) {
         fs.unlinkSync(postInstallScriptPath);
+      }
     });
 
     it('should not throw any errors if no script', function (done) {
@@ -395,7 +396,8 @@ describe('lib/main', function () {
     it('should throw any errors if script fails', function (done) {
       fs.writeFileSync(postInstallScriptPath, '___fails___');
       lambda._postInstallScript(program, codeDirectory, function (err) {
-        assert.match(err, /^Error: Command failed:/);
+        assert.instanceOf(err, Error);
+        assert.match(err.message, /^Error: Command failed:/);
         done();
       });
     });
