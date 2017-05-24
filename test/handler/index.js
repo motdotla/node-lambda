@@ -8,5 +8,6 @@ exports.handler = (event, context, callback) => {
   if (event.asyncTest)
     setTimeout(() => console.log('sleep 3500 msec'), 3500);
 
+  /* eslint-disable no-eval */
   eval(event.callbackCode);
 };
