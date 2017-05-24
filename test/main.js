@@ -381,8 +381,9 @@ describe('lib/main', function () {
     });
     afterEach(function () {
       hook.unhook();
-      if (fs.existsSync(postInstallScriptPath))
+      if (fs.existsSync(postInstallScriptPath)) {
         fs.unlinkSync(postInstallScriptPath);
+      }
     });
 
     it('should not throw any errors if no script', function (done) {
