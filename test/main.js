@@ -7,7 +7,7 @@ var program = require('commander');
 var fs = require('fs-extra');
 var Hoek = require('hoek');
 var lambda = require(path.join(__dirname, '..', 'lib', 'main'));
-var zip = require('node-zip');
+var Zip = require('node-zip');
 
 var assert = chai.assert;
 
@@ -30,7 +30,7 @@ var originalProgram = {
   eventSourceFile: '',
   contextFile: 'context.json',
   deployTimeout: 120000,
-  prebuiltDirectory: '',
+  prebuiltDirectory: ''
 };
 
 var codeDirectory = lambda._codeDirectory();
@@ -44,6 +44,7 @@ function _timeout (params) {
   }
 }
 
+/* global before, after, beforeEach, afterEach, describe, it */
 describe('lib/main', function () {
   if (process.platform === 'win32') {
     // It seems that it takes time for file operation in Windows.
@@ -184,6 +185,7 @@ describe('lib/main', function () {
 
     it('`codeDirectory` is empty. (For `codeDirectory` where the file was present)', function (done) {
       lambda._fileCopy(program, '.', codeDirectory, true, function (err, result) {
+        assert.isNull(err);
         const contents = fs.readdirSync(codeDirectory);
         assert.isTrue(contents.length > 0);
         lambda._cleanDirectory(codeDirectory, function () {
@@ -217,6 +219,7 @@ describe('lib/main', function () {
 
     it(funcName + ' an index.js as well as other files', function (done) {
       lambda[funcName](program, '.', codeDirectory, true, function (err, result) {
+        assert.isNull(err);
         var contents = fs.readdirSync(codeDirectory);
         ['index.js', 'package.json'].forEach(function (needle) {
           assert.include(contents, needle, `Target: "${needle}"`);
@@ -244,6 +247,7 @@ describe('lib/main', function () {
 
       it(funcName + ' an index.js as well as other files', function (done) {
         lambda[funcName](program, '.', codeDirectory, true, function (err, result) {
+          assert.isNull(err);
           var contents = fs.readdirSync(codeDirectory);
           ['index.js', 'package.json'].forEach(function (needle) {
             assert.include(contents, needle, `Target: "${needle}"`);
@@ -254,6 +258,7 @@ describe('lib/main', function () {
 
       it(funcName + ' excludes files matching excludeGlobs', function (done) {
         lambda[funcName](program, '.', codeDirectory, true, function (err, result) {
+          assert.isNull(err);
           var contents = fs.readdirSync(codeDirectory);
           ['__unittest', 'fuga'].forEach(function (needle) {
             assert.include(contents, needle, `Target: "${needle}"`);
@@ -279,6 +284,7 @@ describe('lib/main', function () {
       it(funcName + ' should not exclude package.json, even when excluded by excludeGlobs', function (done) {
         program.excludeGlobs = '*.json';
         lambda[funcName](program, '.', codeDirectory, true, function (err, result) {
+          assert.isNull(err);
           var contents = fs.readdirSync(codeDirectory);
           assert.include(contents, 'package.json');
           done();
@@ -298,6 +304,7 @@ describe('lib/main', function () {
         program.excludeGlobs = '*.json';
         program.prebuiltDirectory = buildDir;
         lambda[funcName](program, buildDir, codeDirectory, true, function (err, result) {
+          assert.isNull(err);
           var contents = fs.readdirSync(codeDirectory);
           assert.notInclude(contents, 'package.json', 'Target: "packages.json"');
           assert.include(contents, 'testa', 'Target: "testa"');
@@ -334,6 +341,7 @@ describe('lib/main', function () {
       _timeout({ this: this, sec: 30 }); // give it time to build the node modules
 
       lambda._npmInstall(program, codeDirectory, function (err, result) {
+        assert.isNull(err);
         var contents = fs.readdirSync(codeDirectory);
         assert.include(contents, 'node_modules');
         done();
@@ -361,7 +369,7 @@ describe('lib/main', function () {
 
       return {
         unhook: function unhook () {
-         stream.write = oldWrite;
+          stream.write = oldWrite;
         },
         captured: function () {
           return buf;
@@ -432,7 +440,8 @@ describe('lib/main', function () {
       _timeout({ this: this, sec: 30 }); // give it time to zip
 
       lambda._zip(program, codeDirectory, function (err, data) {
-        var archive = new zip(data);
+        assert.isNull(err);
+        var archive = new Zip(data);
         var contents = Object.keys(archive.files).map(function (k) {
           return archive.files[k].name.toString();
         });
@@ -447,7 +456,8 @@ describe('lib/main', function () {
       _timeout({ this: this, sec: 30 }); // give it time to zip
 
       lambda._archive(program, function (err, data) {
-        var archive = new zip(data);
+        assert.isNull(err);
+        var archive = new Zip(data);
         var contents = Object.keys(archive.files).map(function (k) {
           return archive.files[k].name.toString();
         });
@@ -473,7 +483,8 @@ describe('lib/main', function () {
 
       program.prebuiltDirectory = buildDir;
       lambda._archive(program, function (err, data) {
-        var archive = new zip(data);
+        assert.isNull(err);
+        var archive = new Zip(data);
         var contents = Object.keys(archive.files).map(function (k) {
           return archive.files[k].name.toString();
         });
@@ -496,6 +507,7 @@ describe('lib/main', function () {
       _timeout({ this: this, sec: 30 }); // give it time to zip
 
       lambda._zip(program, codeDirectory, function (err, data) {
+        assert.isNull(err);
         bufferExpected = data;
         fs.writeFileSync(testZipFile, data);
         done();
@@ -541,8 +553,9 @@ describe('lib/main', function () {
         const _program = Object.assign({ deployZipfile: filePath }, program);
         _timeout({ this: this, sec: 30 }); // give it time to zip
         lambda._archive(_program, function (err, data) {
+          assert.isNull(err);
           // same test as "installs and zips with an index.js file and node_modules/async"
-          var archive = new zip(data);
+          var archive = new Zip(data);
           var contents = Object.keys(archive.files).map(function (k) {
             return archive.files[k].name.toString();
           });
@@ -574,7 +587,6 @@ describe('lib/main', function () {
     });
 
     it('should inject environment variables at runtime', function () {
-
       // Run it...
       lambda._setRunTimeEnvironmentVars({
         configFile: 'tmp.env'
@@ -583,7 +595,6 @@ describe('lib/main', function () {
       assert.equal(process.env.FOO, 'bar');
       assert.equal(process.env.BAZ, 'bing');
     });
-
   });
 
   describe('create sample files', function () {
@@ -655,7 +666,7 @@ describe('lib/main', function () {
           program.eventSourceFile = 'only_EventSourceMappings.json';
           const expected = {
             EventSourceMappings: [{ test: 1 }],
-            ScheduleEvents: [],
+            ScheduleEvents: []
           };
           assert.deepEqual(lambda._eventSourceList(program), expected);
         });
@@ -664,7 +675,7 @@ describe('lib/main', function () {
           program.eventSourceFile = 'only_ScheduleEvents.json';
           const expected = {
             EventSourceMappings: [],
-            ScheduleEvents: [{ test: 2 }],
+            ScheduleEvents: [{ test: 2 }]
           };
           assert.deepEqual(lambda._eventSourceList(program), expected);
         });
@@ -676,13 +687,13 @@ describe('lib/main', function () {
               BatchSize: 100,
               Enabled: true,
               EventSourceArn: 'your event source arn',
-              StartingPosition: 'LATEST',
+              StartingPosition: 'LATEST'
             }],
             ScheduleEvents: [{
               ScheduleName: 'node-lambda-test-schedule',
               ScheduleState: 'ENABLED',
               ScheduleExpression: 'rate(1 hour)'
-            }],
+            }]
           };
           assert.deepEqual(lambda._eventSourceList(program), expected);
         });
@@ -693,7 +704,7 @@ describe('lib/main', function () {
           BatchSize: 100,
           Enabled: true,
           EventSourceArn: 'your event source arn',
-          StartingPosition: 'LATEST',
+          StartingPosition: 'LATEST'
         }];
         const fileName = 'event_sources_old_style.json';
 

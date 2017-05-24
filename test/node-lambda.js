@@ -7,6 +7,7 @@ const spawn = require('child_process').spawn;
 const execSync = require('child_process').execSync;
 const nodeLambdaPath = path.join(__dirname, '..', 'bin', 'node-lambda');
 
+/* global before, after, describe, it */
 // The reason for specifying the node command in this test is to support Windows.
 describe('bin/node-lambda', () => {
   describe('node-lambda run', () => {
@@ -14,7 +15,7 @@ describe('bin/node-lambda', () => {
       const run = spawn('node', [
         nodeLambdaPath, 'run',
         '--handler', '__test.handler',
-        '--eventFile', 'event.json',
+        '--eventFile', 'event.json'
       ]);
       var stdoutString = '';
       run.stdout.on('data', (data) => {
@@ -87,21 +88,21 @@ describe('bin/node-lambda', () => {
 
         it('`node-lambda run` exitCode is `0` (callback(null))', (done) => {
           _generateEventFile(Object.assign(eventObj, {
-            callbackCode: 'callback(null);',
+            callbackCode: 'callback(null);'
           }));
           _testMain({ stdoutRegExp: /Success:sleep 3500 msec$/, exitCode: 0 }, done);
         });
 
         it('`node-lambda run` exitCode is `0` (callback(null, "text"))', (done) => {
           _generateEventFile(Object.assign(eventObj, {
-            callbackCode: 'callback(null, "text");',
+            callbackCode: 'callback(null, "text");'
           }));
           _testMain({ stdoutRegExp: /Success:"text"sleep 3500 msec$/, exitCode: 0 }, done);
         });
 
         it('`node-lambda run` exitCode is `255` (callback(new Error("e")))', (done) => {
           _generateEventFile(Object.assign(eventObj, {
-            callbackCode: 'callback(new Error("e"));',
+            callbackCode: 'callback(new Error("e"));'
           }));
           _testMain({ stdoutRegExp: /Error: Error: esleep 3500 msec$/, exitCode: 255 }, done);
         });
@@ -115,21 +116,21 @@ describe('bin/node-lambda', () => {
 
         it('`node-lambda run` exitCode is `0` (callback(null))', (done) => {
           _generateEventFile(Object.assign(eventObj, {
-            callbackCode: 'callback(null);',
+            callbackCode: 'callback(null);'
           }));
           _testMain({ stdoutRegExp: /Success:$/, exitCode: 0 }, done);
         });
 
         it('`node-lambda run` exitCode is `0` (callback(null, "text"))', (done) => {
           _generateEventFile(Object.assign(eventObj, {
-            callbackCode: 'callback(null, "text");',
+            callbackCode: 'callback(null, "text");'
           }));
           _testMain({ stdoutRegExp: /Success:"text"$/, exitCode: 0 }, done);
         });
 
         it('`node-lambda run` exitCode is `255` (callback(new Error("e")))', (done) => {
           _generateEventFile(Object.assign(eventObj, {
-            callbackCode: 'callback(new Error("e"));',
+            callbackCode: 'callback(new Error("e"));'
           }));
           _testMain({ stdoutRegExp: /Error: Error: e$/, exitCode: 255 }, done);
         });
