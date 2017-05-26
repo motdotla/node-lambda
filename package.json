@@ -34,7 +34,8 @@
     "chai": "^2.0.0",
     "hoek": "^2.11.1",
     "mocha": "",
-    "should": ""
+    "should": "",
+    "standard": "^10.0.2"
   },
   "dependencies": {
     "async": "^0.9.0",
