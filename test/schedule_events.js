@@ -1,10 +1,10 @@
-'use strict';
+'use strict'
 
-const assert = require('chai').assert;
-const path = require('path');
-const aws = require('aws-sdk-mock');
-aws.setSDK(path.resolve('node_modules/aws-sdk'));
-const ScheduleEvents = require(path.join('..', 'lib', 'schedule_events'));
+const assert = require('chai').assert
+const path = require('path')
+const aws = require('aws-sdk-mock')
+aws.setSDK(path.resolve('node_modules/aws-sdk'))
+const ScheduleEvents = require(path.join('..', 'lib', 'schedule_events'))
 
 const params = {
   FunctionArn: 'arn:aws:lambda:us-west-2:XXX:function:node-lambda-test-function',
@@ -12,7 +12,7 @@ const params = {
   ScheduleState: 'ENABLED',
   ScheduleExpression: 'rate(1 hour)',
   ScheduleDescription: null
-};
+}
 
 const mockResponse = {
   putRule: {
@@ -34,60 +34,60 @@ const mockResponse = {
     FailedEntries: [],
     FailedEntryCount: 0
   }
-};
+}
 
-var schedule = null;
+var schedule = null
 
 /* global before, after, describe, it */
 describe('lib/schedule_events', () => {
   before(() => {
     aws.mock('CloudWatchEvents', 'putRule', (params, callback) => {
-      callback(null, mockResponse.putRule);
-    });
+      callback(null, mockResponse.putRule)
+    })
     aws.mock('CloudWatchEvents', 'putTargets', (params, callback) => {
-      callback(null, mockResponse.putTargets);
-    });
+      callback(null, mockResponse.putTargets)
+    })
     aws.mock('Lambda', 'addPermission', (params, callback) => {
-      callback(null, mockResponse.addPermission);
-    });
+      callback(null, mockResponse.addPermission)
+    })
 
-    schedule = new ScheduleEvents(require('aws-sdk'));
-  });
+    schedule = new ScheduleEvents(require('aws-sdk'))
+  })
 
   describe('_ruleDescription (default)', () => {
     it('correct value', () => {
       assert.equal(
         schedule._ruleDescription(params),
         'node-lambda-test-schedule - rate(1 hour)'
-      );
-    });
-  });
+      )
+    })
+  })
 
   describe('_ruleDescription (custom)', () => {
     before(() => {
-      params.ScheduleDescription = 'Run node-lambda-test-function once per hour';
-    });
+      params.ScheduleDescription = 'Run node-lambda-test-function once per hour'
+    })
 
     after(() => {
-      params.ScheduleDescription = null;
-    });
+      params.ScheduleDescription = null
+    })
 
     it('correct value', () => {
       assert.equal(
         schedule._ruleDescription(params),
         'Run node-lambda-test-function once per hour'
-      );
-    });
-  });
+      )
+    })
+  })
 
   describe('_functionName', () => {
     it('correct value', () => {
       assert.equal(
         schedule._functionName(params),
         'node-lambda-test-function'
-      );
-    });
-  });
+      )
+    })
+  })
 
   describe('_putRulePrams', () => {
     it('correct value', () => {
@@ -96,10 +96,10 @@ describe('lib/schedule_events', () => {
         Description: 'node-lambda-test-schedule - rate(1 hour)',
         State: 'ENABLED',
         ScheduleExpression: 'rate(1 hour)'
-      };
-      assert.deepEqual(schedule._putRulePrams(params), expected);
-    });
-  });
+      }
+      assert.deepEqual(schedule._putRulePrams(params), expected)
+    })
+  })
 
   describe('_addPermissionParams', () => {
     it('correct value', () => {
@@ -109,11 +109,11 @@ describe('lib/schedule_events', () => {
         Principal: 'events.amazonaws.com',
         SourceArn: 'arn:aws:events:hoge:fuga',
         StatementId: 'node-lambda-test-schedule'
-      };
-      const _params = Object.assign(params, mockResponse.putRule);
-      assert.deepEqual(schedule._addPermissionParams(_params), expected);
-    });
-  });
+      }
+      const _params = Object.assign(params, mockResponse.putRule)
+      assert.deepEqual(schedule._addPermissionParams(_params), expected)
+    })
+  })
 
   describe('_putTargetsParams', () => {
     it('correct value', () => {
@@ -123,41 +123,41 @@ describe('lib/schedule_events', () => {
           Arn: 'arn:aws:lambda:us-west-2:XXX:function:node-lambda-test-function',
           Id: 'node-lambda-test-function'
         }]
-      };
-      assert.deepEqual(schedule._putTargetsParams(params), expected);
-    });
-  });
+      }
+      assert.deepEqual(schedule._putTargetsParams(params), expected)
+    })
+  })
 
   describe('_putRule', () => {
     it('using mock', () => {
       return schedule._putRule(params).then((data) => {
-        assert.deepEqual(data, mockResponse.putRule);
-      });
-    });
-  });
+        assert.deepEqual(data, mockResponse.putRule)
+      })
+    })
+  })
 
   describe('_addPermission', () => {
     it('using mock', () => {
-      const _params = Object.assign(params, mockResponse.putTargets);
+      const _params = Object.assign(params, mockResponse.putTargets)
       return schedule._addPermission(_params).then((data) => {
-        assert.deepEqual(data, mockResponse.addPermission);
-      });
-    });
-  });
+        assert.deepEqual(data, mockResponse.addPermission)
+      })
+    })
+  })
 
   describe('_putTargets', () => {
     it('using mock', () => {
       return schedule._putTargets(params).then((data) => {
-        assert.deepEqual(data, mockResponse.putTargets);
-      });
-    });
-  });
+        assert.deepEqual(data, mockResponse.putTargets)
+      })
+    })
+  })
 
   describe('add', () => {
     it('using mock', () => {
       return schedule.add(params).then((data) => {
-        assert.deepEqual(data, mockResponse.putTargets);
-      });
-    });
-  });
-});
+        assert.deepEqual(data, mockResponse.putTargets)
+      })
+    })
+  })
+})
