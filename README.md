@@ -235,6 +235,11 @@ If you are adding a trigger via the `eventSourceFile` for the first time, remove
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create new Pull Request
 
+### Coding style
+This project uses [JavaScript Standard Style](https://standardjs.com/).
+
+[![JavaScript Style Guide](https://cdn.rawgit.com/feross/standard/master/badge.svg)](https://github.com/feross/standard)
+
 ## Running tests
 
 ```
