@@ -807,7 +807,7 @@ describe('lib/main', function () {
         })
       }).then(function (actual) {
         const expected = {
-          err: undefined,
+          err: null,
           results: [Object.assign(
             eventSourcesJsonValue.ScheduleEvents[0],
             { FunctionArn: functionArn }
