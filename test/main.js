@@ -342,7 +342,7 @@ describe('lib/main', function () {
 
       lambda._npmInstall(program, codeDirectory, (err, result) => {
         assert.isNull(err)
-        var contents = fs.readdirSync(codeDirectory)
+        const contents = fs.readdirSync(codeDirectory)
         assert.include(contents, 'node_modules')
         done()
       })
