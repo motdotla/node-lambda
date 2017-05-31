@@ -353,7 +353,7 @@ describe('lib/main', function () {
     beforeEach((done) => {
       // Since '\' can not be included in the file or directory name in Windows
       const directoryName = process.platform === 'win32'
-        ? 'hoge "fuga\' piyo'
+        ? 'hoge fuga\' piyo'
         : 'hoge "fuga\' \\piyo'
       codeDirectory = path.join(os.tmpdir(), directoryName)
       lambda._cleanDirectory(codeDirectory, (err) => {
