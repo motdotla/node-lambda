@@ -349,6 +349,40 @@ describe('lib/main', function () {
     })
   })
 
+  describe('_npmInstall (When codeDirectory contains characters to be escaped)', () => {
+    beforeEach((done) => {
+      codeDirectory = path.join(os.tmpdir(), 'hoge "fuga\' \\piyo')
+      lambda._cleanDirectory(codeDirectory, (err) => {
+        if (err) {
+          return done(err)
+        }
+
+        lambda._fileCopy(program, '.', codeDirectory, true, (err) => {
+          if (err) {
+            return done(err)
+          }
+          done()
+        })
+      })
+    })
+
+    afterEach(() => {
+      fs.removeSync(codeDirectory)
+      codeDirectory = lambda._codeDirectory()
+    })
+
+    it('_npm adds node_modules', function (done) {
+      _timeout({ this: this, sec: 30 }) // give it time to build the node modules
+
+      lambda._npmInstall(program, codeDirectory, (err, result) => {
+        assert.isNull(err)
+        const contents = fs.readdirSync(codeDirectory)
+        assert.include(contents, 'node_modules')
+        done()
+      })
+    })
+  })
+
   describe('_postInstallScript', function () {
     if (process.platform === 'win32') {
       return it('`_postInstallScript` test does not support Windows.')
