@@ -351,7 +351,11 @@ describe('lib/main', function () {
 
   describe('_npmInstall (When codeDirectory contains characters to be escaped)', () => {
     beforeEach((done) => {
-      codeDirectory = path.join(os.tmpdir(), 'hoge "fuga\' \\piyo')
+      // Since '\' can not be included in the file or directory name in Windows
+      const directoryName = process.platform === 'win32'
+        ? 'hoge "fuga\' piyo'
+        : 'hoge "fuga\' \\piyo'
+      codeDirectory = path.join(os.tmpdir(), directoryName)
       lambda._cleanDirectory(codeDirectory, (err) => {
         if (err) {
           return done(err)
