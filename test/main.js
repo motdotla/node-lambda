@@ -321,14 +321,14 @@ describe('lib/main', function () {
     describe('_rsync', function () { rsyncTests('_rsync') })
   }
 
-  describe('_npmInstall', function () {
-    beforeEach(function (done) {
-      lambda._cleanDirectory(codeDirectory, function (err) {
+  describe('_npmInstall', () => {
+    beforeEach((done) => {
+      lambda._cleanDirectory(codeDirectory, (err) => {
         if (err) {
           return done(err)
         }
 
-        lambda._fileCopy(program, '.', codeDirectory, true, function (err) {
+        lambda._fileCopy(program, '.', codeDirectory, true, (err) => {
           if (err) {
             return done(err)
           }
@@ -340,7 +340,7 @@ describe('lib/main', function () {
     it('_npm adds node_modules', function (done) {
       _timeout({ this: this, sec: 30 }) // give it time to build the node modules
 
-      lambda._npmInstall(program, codeDirectory, function (err, result) {
+      lambda._npmInstall(program, codeDirectory, (err, result) => {
         assert.isNull(err)
         var contents = fs.readdirSync(codeDirectory)
         assert.include(contents, 'node_modules')
