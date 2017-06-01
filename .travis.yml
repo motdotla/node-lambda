@@ -5,3 +5,12 @@ node_js:
   - 5
   - 6
   - 7
+  - 8
+
+deploy:
+  provider: npm
+  email: chase@sillevis.net
+  api_key:
+    secure: "fPmrr3f1Iw/4mUylzTRuLRC0397z4TJDYzNfSI2BQwFe851EyR1CQv2PQJE2eHC07mxrGZ0i/Fh2F4U5S2u3hSg+qqD0UFzSFXZI//C6b2GG1suld9EVhQBIevPnKTWjT+qitGxsSI82VOIuheQdYmJdFVKcpQOmsqocifGX5XU="
+  on:
+    tags: true
