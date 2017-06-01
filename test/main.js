@@ -1,17 +1,14 @@
 'use strict'
 
-var path = require('path')
-var os = require('os')
-var chai = require('chai')
-var program = require('commander')
-var fs = require('fs-extra')
-var Hoek = require('hoek')
-var lambda = require(path.join(__dirname, '..', 'lib', 'main'))
-var Zip = require('node-zip')
+const path = require('path')
+const os = require('os')
+const fs = require('fs-extra')
+const Hoek = require('hoek')
+const lambda = require(path.join(__dirname, '..', 'lib', 'main'))
+const Zip = require('node-zip')
+const assert = require('chai').assert
 
-var assert = chai.assert
-
-var originalProgram = {
+const originalProgram = {
   environment: 'development',
   accessKey: 'key',
   secretKey: 'secret',
@@ -33,6 +30,7 @@ var originalProgram = {
   prebuiltDirectory: ''
 }
 
+var program = require('commander')
 var codeDirectory = lambda._codeDirectory()
 
 function _timeout (params) {
