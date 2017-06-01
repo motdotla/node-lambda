@@ -7,6 +7,7 @@ const Hoek = require('hoek')
 const lambda = require(path.join(__dirname, '..', 'lib', 'main'))
 const Zip = require('node-zip')
 const assert = require('chai').assert
+const awsMock = require('aws-sdk-mock')
 
 const originalProgram = {
   environment: 'development',
@@ -782,7 +783,6 @@ describe('lib/main', function () {
   })
 
   describe('_updateScheduleEvents', function () {
-    const aws = require('aws-sdk-mock')
     const ScheduleEvents = require(path.join('..', 'lib', 'schedule_events'))
     const eventSourcesJsonValue = {
       ScheduleEvents: [{
@@ -796,13 +796,13 @@ describe('lib/main', function () {
     var schedule = null
 
     before(function () {
-      aws.mock('CloudWatchEvents', 'putRule', function (params, callback) {
+      awsMock.mock('CloudWatchEvents', 'putRule', function (params, callback) {
         callback(null, {})
       })
-      aws.mock('CloudWatchEvents', 'putTargets', function (params, callback) {
+      awsMock.mock('CloudWatchEvents', 'putTargets', function (params, callback) {
         callback(null, {})
       })
-      aws.mock('Lambda', 'addPermission', function (params, callback) {
+      awsMock.mock('Lambda', 'addPermission', function (params, callback) {
         callback(null, {})
       })
 
@@ -816,8 +816,8 @@ describe('lib/main', function () {
 
     after(function () {
       fs.unlinkSync('event_sources.json')
-      aws.restore('CloudWatchEvents')
-      aws.restore('Lambda')
+      awsMock.restore('CloudWatchEvents')
+      awsMock.restore('Lambda')
     })
 
     it('program.eventSourceFile is empty value', function () {
