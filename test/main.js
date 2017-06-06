@@ -43,6 +43,45 @@ const _timeout = function (params) {
   }
 }
 
+// It does not completely reproduce the response of the actual API.
+const lambdaMockSettings = {
+  addPermission: {},
+  getFunction: {
+    Code: {},
+    Configuration: {},
+    FunctionArn: 'Lambda.getFunction.mock.FunctionArn'
+  },
+  createFunction: {
+    FunctionArn: 'Lambda.createFunction.mock.FunctionArn',
+    FunctionName: 'Lambda.createFunction.mock.FunctionName'
+  },
+  listEventSourceMappings: {
+    EventSourceMappings: [{
+      EventSourceArn: 'Lambda.listEventSourceMappings.mock.EventSourceArn',
+      UUID: 'Lambda.listEventSourceMappings.mock.UUID'
+    }]
+  },
+  updateFunctionCode: {
+    FunctionArn: 'Lambda.updateFunctionCode.mock.FunctionArn',
+    FunctionName: 'Lambda.updateFunctionCode.mock.FunctionName'
+  },
+  updateFunctionConfiguration: {
+    FunctionArn: 'Lambda.updateFunctionConfiguration.mock.FunctionArn',
+    FunctionName: 'Lambda.updateFunctionConfiguration.mock.FunctionName'
+  },
+  createEventSourceMapping: {
+    EventSourceArn: 'Lambda.createEventSourceMapping.mock.EventSourceArn',
+    FunctionName: 'Lambda.createEventSourceMapping.mock.EventSourceArn'
+  },
+  updateEventSourceMapping: {
+    EventSourceArn: 'Lambda.updateEventSourceMapping.mock.EventSourceArn',
+    FunctionName: 'Lambda.updateEventSourceMapping.mock.EventSourceArn'
+  },
+  deleteEventSourceMapping: {
+    EventSourceArn: 'Lambda.deleteEventSourceMapping.mock.EventSourceArn',
+    FunctionName: 'Lambda.deleteEventSourceMapping.mock.EventSourceArn'
+  }
+}
 const _mockSetting = () => {
   awsMock.mock('CloudWatchEvents', 'putRule', (params, callback) => {
     callback(null, {})
@@ -50,8 +89,11 @@ const _mockSetting = () => {
   awsMock.mock('CloudWatchEvents', 'putTargets', (params, callback) => {
     callback(null, {})
   })
-  awsMock.mock('Lambda', 'addPermission', (params, callback) => {
-    callback(null, {})
+
+  Object.keys(lambdaMockSettings).forEach((method) => {
+    awsMock.mock('Lambda', method, (params, callback) => {
+      callback(null, lambdaMockSettings[method])
+    })
   })
 }
 
