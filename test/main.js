@@ -854,17 +854,21 @@ describe('lib/main', function () {
       awsMock.restore('Lambda')
     })
 
-    it('program.eventSourceFile is empty value', function () {
+    it('program.eventSourceFile is empty value', (done) => {
       program.eventSourceFile = ''
       const eventSourceList = lambda._eventSourceList(program)
-      return new Promise(function (resolve) {
-        lambda._updateEventSources(lambda, '', [], eventSourceList.EventSourceMappings, function (err, results) {
-          resolve({ err: err, results: results })
-        })
-      }).then(function (actual) {
-        const expected = { err: null, results: [] }
-        assert.deepEqual(actual, expected)
-      })
+      lambda._updateEventSources(
+        awsLambda,
+        '',
+        [],
+        eventSourceList.EventSourceMappings,
+        (err, results) => {
+          assert.isNull(err)
+          assert.deepEqual(results, [])
+          done()
+        }
+      )
+    })
 
     it('simple test with mock (In case of new addition)', (done) => {
       program.eventSourceFile = 'event_sources.json'
@@ -913,7 +917,7 @@ describe('lib/main', function () {
     })
   })
 
-  describe('_updateScheduleEvents', function () {
+  describe('_updateScheduleEvents', () => {
     const ScheduleEvents = require(path.join('..', 'lib', 'schedule_events'))
     const eventSourcesJsonValue = {
       ScheduleEvents: [{
@@ -924,47 +928,51 @@ describe('lib/main', function () {
       }]
     }
 
-    var schedule = null
+    let schedule = null
 
-    before(function () {
-      _mockSetting()
-
+    before(() => {
       fs.writeFileSync(
         'event_sources.json',
         JSON.stringify(eventSourcesJsonValue)
       )
 
+      _mockSetting()
       schedule = new ScheduleEvents(require('aws-sdk'))
     })
 
-    after(function () {
+    after(() => {
       fs.unlinkSync('event_sources.json')
       awsMock.restore('CloudWatchEvents')
       awsMock.restore('Lambda')
     })
 
-    it('program.eventSourceFile is empty value', function () {
+    it('program.eventSourceFile is empty value', (done) => {
       program.eventSourceFile = ''
       const eventSourceList = lambda._eventSourceList(program)
-      return new Promise(function (resolve) {
-        lambda._updateScheduleEvents(schedule, '', eventSourceList.ScheduleEvents, function (err, results) {
-          resolve({ err: err, results: results })
-        })
-      }).then(function (actual) {
-        const expected = { err: null, results: [] }
-        assert.deepEqual(actual, expected)
-      })
+      lambda._updateScheduleEvents(
+        schedule,
+        '',
+        eventSourceList.ScheduleEvents,
+        (err, results) => {
+          assert.isNull(err)
+          assert.deepEqual(results, [])
+          done()
+        }
+      )
     })
 
-    it('simple test with mock', function () {
+    it('simple test with mock', () => {
       program.eventSourceFile = 'event_sources.json'
       const eventSourceList = lambda._eventSourceList(program)
       const functionArn = 'arn:aws:lambda:us-west-2:XXX:function:node-lambda-test-function'
-      return new Promise(function (resolve) {
-        lambda._updateScheduleEvents(schedule, functionArn, eventSourceList.ScheduleEvents, function (err, results) {
-          resolve({ err: err, results: results })
-        })
-      }).then(function (actual) {
+      return new Promise((resolve) => {
+        lambda._updateScheduleEvents(
+          schedule,
+          functionArn,
+          eventSourceList.ScheduleEvents,
+          (err, results) => resolve({ err: err, results: results })
+        )
+      }).then((actual) => {
         const expected = {
           err: null,
           results: [Object.assign(
