@@ -43,6 +43,18 @@ const _timeout = function (params) {
   }
 }
 
+const _mockSetting = () => {
+  awsMock.mock('CloudWatchEvents', 'putRule', (params, callback) => {
+    callback(null, {})
+  })
+  awsMock.mock('CloudWatchEvents', 'putTargets', (params, callback) => {
+    callback(null, {})
+  })
+  awsMock.mock('Lambda', 'addPermission', (params, callback) => {
+    callback(null, {})
+  })
+}
+
 /* global before, after, beforeEach, afterEach, describe, it */
 describe('lib/main', function () {
   if (process.platform === 'win32') {
@@ -796,15 +808,7 @@ describe('lib/main', function () {
     var schedule = null
 
     before(function () {
-      awsMock.mock('CloudWatchEvents', 'putRule', function (params, callback) {
-        callback(null, {})
-      })
-      awsMock.mock('CloudWatchEvents', 'putTargets', function (params, callback) {
-        callback(null, {})
-      })
-      awsMock.mock('Lambda', 'addPermission', function (params, callback) {
-        callback(null, {})
-      })
+      _mockSetting()
 
       fs.writeFileSync(
         'event_sources.json',
