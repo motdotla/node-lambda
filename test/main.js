@@ -34,7 +34,7 @@ const originalProgram = {
 var program = require('commander')
 var codeDirectory = lambda._codeDirectory()
 
-function _timeout (params) {
+const _timeout = function (params) {
   // Even if timeout is set for the whole test for Windows,
   // if it is set in local it will be valid.
   // For Windows, do not set it with local.
