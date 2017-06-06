@@ -1,17 +1,15 @@
 'use strict'
 
-var path = require('path')
-var os = require('os')
-var chai = require('chai')
-var program = require('commander')
-var fs = require('fs-extra')
-var Hoek = require('hoek')
-var lambda = require(path.join(__dirname, '..', 'lib', 'main'))
-var Zip = require('node-zip')
+const path = require('path')
+const os = require('os')
+const fs = require('fs-extra')
+const Hoek = require('hoek')
+const lambda = require(path.join(__dirname, '..', 'lib', 'main'))
+const Zip = require('node-zip')
+const assert = require('chai').assert
+const awsMock = require('aws-sdk-mock')
 
-var assert = chai.assert
-
-var originalProgram = {
+const originalProgram = {
   environment: 'development',
   accessKey: 'key',
   secretKey: 'secret',
@@ -33,15 +31,70 @@ var originalProgram = {
   prebuiltDirectory: ''
 }
 
+var program = require('commander')
 var codeDirectory = lambda._codeDirectory()
 
-function _timeout (params) {
+const _timeout = function (params) {
   // Even if timeout is set for the whole test for Windows,
   // if it is set in local it will be valid.
   // For Windows, do not set it with local.
   if (process.platform !== 'win32') {
     params.this.timeout(params.sec * 1000)
   }
+}
+
+// It does not completely reproduce the response of the actual API.
+const lambdaMockSettings = {
+  addPermission: {},
+  getFunction: {
+    Code: {},
+    Configuration: {},
+    FunctionArn: 'Lambda.getFunction.mock.FunctionArn'
+  },
+  createFunction: {
+    FunctionArn: 'Lambda.createFunction.mock.FunctionArn',
+    FunctionName: 'Lambda.createFunction.mock.FunctionName'
+  },
+  listEventSourceMappings: {
+    EventSourceMappings: [{
+      EventSourceArn: 'Lambda.listEventSourceMappings.mock.EventSourceArn',
+      UUID: 'Lambda.listEventSourceMappings.mock.UUID'
+    }]
+  },
+  updateFunctionCode: {
+    FunctionArn: 'Lambda.updateFunctionCode.mock.FunctionArn',
+    FunctionName: 'Lambda.updateFunctionCode.mock.FunctionName'
+  },
+  updateFunctionConfiguration: {
+    FunctionArn: 'Lambda.updateFunctionConfiguration.mock.FunctionArn',
+    FunctionName: 'Lambda.updateFunctionConfiguration.mock.FunctionName'
+  },
+  createEventSourceMapping: {
+    EventSourceArn: 'Lambda.createEventSourceMapping.mock.EventSourceArn',
+    FunctionName: 'Lambda.createEventSourceMapping.mock.EventSourceArn'
+  },
+  updateEventSourceMapping: {
+    EventSourceArn: 'Lambda.updateEventSourceMapping.mock.EventSourceArn',
+    FunctionName: 'Lambda.updateEventSourceMapping.mock.EventSourceArn'
+  },
+  deleteEventSourceMapping: {
+    EventSourceArn: 'Lambda.deleteEventSourceMapping.mock.EventSourceArn',
+    FunctionName: 'Lambda.deleteEventSourceMapping.mock.EventSourceArn'
+  }
+}
+const _mockSetting = () => {
+  awsMock.mock('CloudWatchEvents', 'putRule', (params, callback) => {
+    callback(null, {})
+  })
+  awsMock.mock('CloudWatchEvents', 'putTargets', (params, callback) => {
+    callback(null, {})
+  })
+
+  Object.keys(lambdaMockSettings).forEach((method) => {
+    awsMock.mock('Lambda', method, (params, callback) => {
+      callback(null, lambdaMockSettings[method])
+    })
+  })
 }
 
 /* global before, after, beforeEach, afterEach, describe, it */
@@ -768,23 +821,103 @@ describe('lib/main', function () {
     })
   })
 
-  describe('_updateEventSources', function () {
-    it('program.eventSourceFile is empty value', function () {
+  describe('_updateEventSources', () => {
+    const eventSourcesJsonValue = {
+      EventSourceMappings: [{
+        EventSourceArn: lambdaMockSettings
+          .listEventSourceMappings
+          .EventSourceMappings[0]
+          .EventSourceArn,
+        StartingPosition: 'LATEST',
+        BatchSize: 100,
+        Enabled: true
+      }]
+    }
+
+    let awsLambda = null
+
+    before(() => {
+      fs.writeFileSync(
+        'event_sources.json',
+        JSON.stringify(eventSourcesJsonValue)
+      )
+      _mockSetting()
+
+      awsLambda = new (require('aws-sdk')).Lambda({
+        apiVersion: '2015-03-31'
+      })
+    })
+
+    after(() => {
+      fs.unlinkSync('event_sources.json')
+      awsMock.restore('CloudWatchEvents')
+      awsMock.restore('Lambda')
+    })
+
+    it('program.eventSourceFile is empty value', (done) => {
       program.eventSourceFile = ''
       const eventSourceList = lambda._eventSourceList(program)
-      return new Promise(function (resolve) {
-        lambda._updateEventSources(lambda, '', [], eventSourceList.EventSourceMappings, function (err, results) {
-          resolve({ err: err, results: results })
-        })
-      }).then(function (actual) {
-        const expected = { err: null, results: [] }
-        assert.deepEqual(actual, expected)
-      })
+      lambda._updateEventSources(
+        awsLambda,
+        '',
+        [],
+        eventSourceList.EventSourceMappings,
+        (err, results) => {
+          assert.isNull(err)
+          assert.deepEqual(results, [])
+          done()
+        }
+      )
+    })
+
+    it('simple test with mock (In case of new addition)', (done) => {
+      program.eventSourceFile = 'event_sources.json'
+      const eventSourceList = lambda._eventSourceList(program)
+      lambda._updateEventSources(
+        awsLambda,
+        'functionName',
+        [],
+        eventSourceList.EventSourceMappings,
+        (err, results) => {
+          assert.isUndefined(err)
+          assert.deepEqual(results, [lambdaMockSettings.createEventSourceMapping])
+          done()
+        }
+      )
+    })
+
+    it('simple test with mock (In case of deletion)', (done) => {
+      lambda._updateEventSources(
+        awsLambda,
+        'functionName',
+        lambdaMockSettings.listEventSourceMappings.EventSourceMappings,
+        {},
+        (err, results) => {
+          assert.isUndefined(err)
+          assert.deepEqual(results, [lambdaMockSettings.deleteEventSourceMapping])
+          done()
+        }
+      )
+    })
+
+    it('simple test with mock (In case of update)', (done) => {
+      program.eventSourceFile = 'event_sources.json'
+      const eventSourceList = lambda._eventSourceList(program)
+      lambda._updateEventSources(
+        awsLambda,
+        'functionName',
+        lambdaMockSettings.listEventSourceMappings.EventSourceMappings,
+        eventSourceList.EventSourceMappings,
+        (err, results) => {
+          assert.isUndefined(err)
+          assert.deepEqual(results, [lambdaMockSettings.updateEventSourceMapping])
+          done()
+        }
+      )
     })
   })
 
-  describe('_updateScheduleEvents', function () {
-    const aws = require('aws-sdk-mock')
+  describe('_updateScheduleEvents', () => {
     const ScheduleEvents = require(path.join('..', 'lib', 'schedule_events'))
     const eventSourcesJsonValue = {
       ScheduleEvents: [{
@@ -795,55 +928,51 @@ describe('lib/main', function () {
       }]
     }
 
-    var schedule = null
+    let schedule = null
 
-    before(function () {
-      aws.mock('CloudWatchEvents', 'putRule', function (params, callback) {
-        callback(null, {})
-      })
-      aws.mock('CloudWatchEvents', 'putTargets', function (params, callback) {
-        callback(null, {})
-      })
-      aws.mock('Lambda', 'addPermission', function (params, callback) {
-        callback(null, {})
-      })
-
+    before(() => {
       fs.writeFileSync(
         'event_sources.json',
         JSON.stringify(eventSourcesJsonValue)
       )
 
+      _mockSetting()
       schedule = new ScheduleEvents(require('aws-sdk'))
     })
 
-    after(function () {
+    after(() => {
       fs.unlinkSync('event_sources.json')
-      aws.restore('CloudWatchEvents')
-      aws.restore('Lambda')
+      awsMock.restore('CloudWatchEvents')
+      awsMock.restore('Lambda')
     })
 
-    it('program.eventSourceFile is empty value', function () {
+    it('program.eventSourceFile is empty value', (done) => {
       program.eventSourceFile = ''
       const eventSourceList = lambda._eventSourceList(program)
-      return new Promise(function (resolve) {
-        lambda._updateScheduleEvents(schedule, '', eventSourceList.ScheduleEvents, function (err, results) {
-          resolve({ err: err, results: results })
-        })
-      }).then(function (actual) {
-        const expected = { err: null, results: [] }
-        assert.deepEqual(actual, expected)
-      })
+      lambda._updateScheduleEvents(
+        schedule,
+        '',
+        eventSourceList.ScheduleEvents,
+        (err, results) => {
+          assert.isNull(err)
+          assert.deepEqual(results, [])
+          done()
+        }
+      )
     })
 
-    it('simple test with mock', function () {
+    it('simple test with mock', () => {
       program.eventSourceFile = 'event_sources.json'
       const eventSourceList = lambda._eventSourceList(program)
       const functionArn = 'arn:aws:lambda:us-west-2:XXX:function:node-lambda-test-function'
-      return new Promise(function (resolve) {
-        lambda._updateScheduleEvents(schedule, functionArn, eventSourceList.ScheduleEvents, function (err, results) {
-          resolve({ err: err, results: results })
-        })
-      }).then(function (actual) {
+      return new Promise((resolve) => {
+        lambda._updateScheduleEvents(
+          schedule,
+          functionArn,
+          eventSourceList.ScheduleEvents,
+          (err, results) => resolve({ err: err, results: results })
+        )
+      }).then((actual) => {
         const expected = {
           err: null,
           results: [Object.assign(
@@ -896,5 +1025,9 @@ describe('lib/main', function () {
         )
       })
     })
+  })
+
+  describe('Lambda.prototype.deploy()', () => {
+    it('TODO: Add test. Since the current deploy function is hard to test, skip')
   })
 })
