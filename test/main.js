@@ -1026,4 +1026,8 @@ describe('lib/main', function () {
       })
     })
   })
+
+  describe('Lambda.prototype.deploy()', () => {
+    it('TODO: Add test. Since the current deploy function is hard to test, skip')
+  })
 })
