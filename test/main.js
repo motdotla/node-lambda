@@ -112,6 +112,14 @@ describe('lib/main', function () {
     this.timeout(60000)
   }
 
+  let aws = null // mock
+  let awsLambda = null // mock
+  before(() => {
+    aws = _mockSetting()
+    awsLambda = new aws.Lambda({ apiVersion: '2015-03-31' })
+  })
+  after(() => _awsRestore())
+
   beforeEach(function () {
     program = Hoek.clone(originalProgram)
   })
@@ -841,23 +849,14 @@ describe('lib/main', function () {
       }]
     }
 
-    let awsLambda = null
-
     before(() => {
       fs.writeFileSync(
         'event_sources.json',
         JSON.stringify(eventSourcesJsonValue)
       )
-      awsLambda = new (_mockSetting()).Lambda({
-        apiVersion: '2015-03-31'
-      })
     })
 
-    after(() => {
-      fs.unlinkSync('event_sources.json')
-      awsMock.restore('CloudWatchEvents')
-      awsMock.restore('Lambda')
-    })
+    after(() => fs.unlinkSync('event_sources.json'))
 
     it('program.eventSourceFile is empty value', (done) => {
       program.eventSourceFile = ''
@@ -940,16 +939,10 @@ describe('lib/main', function () {
         'event_sources.json',
         JSON.stringify(eventSourcesJsonValue)
       )
-
-      const aws = _mockSetting()
       schedule = new ScheduleEvents(aws)
     })
 
-    after(() => {
-      fs.unlinkSync('event_sources.json')
-      awsMock.restore('CloudWatchEvents')
-      awsMock.restore('Lambda')
-    })
+    after(() => fs.unlinkSync('event_sources.json'))
 
     it('program.eventSourceFile is empty value', (done) => {
       program.eventSourceFile = ''
@@ -991,19 +984,6 @@ describe('lib/main', function () {
   })
 
   describe('_uploadNew', () => {
-    let awsLambda = null
-
-    before(() => {
-      awsLambda = new (_mockSetting()).Lambda({
-        apiVersion: '2015-03-31'
-      })
-    })
-
-    after(() => {
-      awsMock.restore('CloudWatchEvents')
-      awsMock.restore('Lambda')
-    })
-
     it('simple test with mock', (done) => {
       const params = lambda._params(program, null)
       lambda._uploadNew(awsLambda, params, (err, results) => {
