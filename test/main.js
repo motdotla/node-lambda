@@ -95,6 +95,8 @@ const _mockSetting = () => {
       callback(null, lambdaMockSettings[method])
     })
   })
+
+  return require('aws-sdk')
 }
 
 /* global before, after, beforeEach, afterEach, describe, it */
@@ -841,9 +843,7 @@ describe('lib/main', function () {
         'event_sources.json',
         JSON.stringify(eventSourcesJsonValue)
       )
-      _mockSetting()
-
-      awsLambda = new (require('aws-sdk')).Lambda({
+      awsLambda = new (_mockSetting()).Lambda({
         apiVersion: '2015-03-31'
       })
     })
@@ -936,8 +936,8 @@ describe('lib/main', function () {
         JSON.stringify(eventSourcesJsonValue)
       )
 
-      _mockSetting()
-      schedule = new ScheduleEvents(require('aws-sdk'))
+      const aws = _mockSetting()
+      schedule = new ScheduleEvents(aws)
     })
 
     after(() => {
