@@ -95,6 +95,13 @@ const _mockSetting = () => {
       callback(null, lambdaMockSettings[method])
     })
   })
+
+  return require('aws-sdk')
+}
+
+const _awsRestore = () => {
+  awsMock.restore('CloudWatchEvents')
+  awsMock.restore('Lambda')
 }
 
 /* global before, after, beforeEach, afterEach, describe, it */
@@ -104,6 +111,14 @@ describe('lib/main', function () {
     // So set `timeout(60000)` for the whole test.
     this.timeout(60000)
   }
+
+  let aws = null // mock
+  let awsLambda = null // mock
+  before(() => {
+    aws = _mockSetting()
+    awsLambda = new aws.Lambda({ apiVersion: '2015-03-31' })
+  })
+  after(() => _awsRestore())
 
   beforeEach(function () {
     program = Hoek.clone(originalProgram)
@@ -834,25 +849,14 @@ describe('lib/main', function () {
       }]
     }
 
-    let awsLambda = null
-
     before(() => {
       fs.writeFileSync(
         'event_sources.json',
         JSON.stringify(eventSourcesJsonValue)
       )
-      _mockSetting()
-
-      awsLambda = new (require('aws-sdk')).Lambda({
-        apiVersion: '2015-03-31'
-      })
     })
 
-    after(() => {
-      fs.unlinkSync('event_sources.json')
-      awsMock.restore('CloudWatchEvents')
-      awsMock.restore('Lambda')
-    })
+    after(() => fs.unlinkSync('event_sources.json'))
 
     it('program.eventSourceFile is empty value', (done) => {
       program.eventSourceFile = ''
@@ -935,16 +939,10 @@ describe('lib/main', function () {
         'event_sources.json',
         JSON.stringify(eventSourcesJsonValue)
       )
-
-      _mockSetting()
-      schedule = new ScheduleEvents(require('aws-sdk'))
+      schedule = new ScheduleEvents(aws)
     })
 
-    after(() => {
-      fs.unlinkSync('event_sources.json')
-      awsMock.restore('CloudWatchEvents')
-      awsMock.restore('Lambda')
-    })
+    after(() => fs.unlinkSync('event_sources.json'))
 
     it('program.eventSourceFile is empty value', (done) => {
       program.eventSourceFile = ''
@@ -981,6 +979,28 @@ describe('lib/main', function () {
           )]
         }
         assert.deepEqual(actual, expected)
+      })
+    })
+  })
+
+  describe('_uploadNew', () => {
+    it('simple test with mock', (done) => {
+      const params = lambda._params(program, null)
+      lambda._uploadNew(awsLambda, params, (err, results) => {
+        assert.isNull(err)
+        assert.deepEqual(results, lambdaMockSettings.createFunction)
+        done()
+      })
+    })
+  })
+
+  describe('_uploadExisting', () => {
+    it('simple test with mock', (done) => {
+      const params = lambda._params(program, null)
+      lambda._uploadExisting(awsLambda, params, (err, results) => {
+        assert.isNull(err)
+        assert.deepEqual(results, lambdaMockSettings.updateFunctionConfiguration)
+        done()
       })
     })
   })
