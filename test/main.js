@@ -985,6 +985,29 @@ describe('lib/main', function () {
     })
   })
 
+  describe('_uploadNew', () => {
+    let awsLambda = null
+
+    before(() => {
+      awsLambda = new (_mockSetting()).Lambda({
+        apiVersion: '2015-03-31'
+      })
+    })
+    after(() => {
+      awsMock.restore('CloudWatchEvents')
+      awsMock.restore('Lambda')
+    })
+
+    it('simple test with mock', (done) => {
+      const params = lambda._params(program, null)
+      lambda._uploadNew(awsLambda, params, (err, results) => {
+        assert.isNull(err)
+        assert.deepEqual(results, lambdaMockSettings.createFunction)
+        done()
+      })
+    })
+  })
+
   describe('check env vars before create sample files', function () {
     const filesCreatedBySetup = [
       '.env',
