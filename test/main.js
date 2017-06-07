@@ -99,6 +99,11 @@ const _mockSetting = () => {
   return require('aws-sdk')
 }
 
+const _awsRestore = () => {
+  awsMock.restore('CloudWatchEvents')
+  awsMock.restore('Lambda')
+}
+
 /* global before, after, beforeEach, afterEach, describe, it */
 describe('lib/main', function () {
   if (process.platform === 'win32') {
