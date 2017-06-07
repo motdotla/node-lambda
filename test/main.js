@@ -994,6 +994,17 @@ describe('lib/main', function () {
     })
   })
 
+  describe('_uploadExisting', () => {
+    it('simple test with mock', (done) => {
+      const params = lambda._params(program, null)
+      lambda._uploadExisting(awsLambda, params, (err, results) => {
+        assert.isNull(err)
+        assert.deepEqual(results, lambdaMockSettings.updateFunctionConfiguration)
+        done()
+      })
+    })
+  })
+
   describe('check env vars before create sample files', function () {
     const filesCreatedBySetup = [
       '.env',
