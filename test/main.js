@@ -993,6 +993,7 @@ describe('lib/main', function () {
         apiVersion: '2015-03-31'
       })
     })
+
     after(() => {
       awsMock.restore('CloudWatchEvents')
       awsMock.restore('Lambda')
