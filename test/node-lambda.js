@@ -169,5 +169,32 @@ describe('bin/node-lambda', () => {
         }, done)
       })
     })
+
+    describe('node-lambda run (Multiple events))', () => {
+      const eventObj = [{
+        asyncTest: false,
+        callbackWaitsForEmptyEventLoop: true,
+        callbackCode: 'callback(null);',
+        no: 1
+      }, {
+        asyncTest: false,
+        callbackWaitsForEmptyEventLoop: true,
+        callbackCode: 'callback(null);',
+        no: 2
+      }, {
+        asyncTest: false,
+        callbackWaitsForEmptyEventLoop: true,
+        callbackCode: 'callback(null);',
+        no: 3
+      }]
+
+      it('`node-lambda run` exitCode is `0`', (done) => {
+        _generateEventFile(eventObj)
+        _testMain({
+          stdoutRegExp: / no: [123] .+ no: [123] .+ no: [123] .+Success:/,
+          exitCode: 0
+        }, done)
+      })
+    })
   })
 })
