@@ -18,12 +18,21 @@ describe('bin/node-lambda', () => {
         '--eventFile', 'event.json'
       ])
       var stdoutString = ''
+      var stderrString = ''
       run.stdout.on('data', (data) => {
         stdoutString += data.toString().replace(/\r|\n/g, '')
       })
+      run.stderr.on('data', (data) => {
+        stderrString += data.toString().replace(/\r|\n/g, '')
+      })
 
       run.on('exit', (code) => {
-        assert.match(stdoutString, expectedValues.stdoutRegExp)
+        if (expectedValues.stdoutRegExp) {
+          assert.match(stdoutString, expectedValues.stdoutRegExp)
+        }
+        if (expectedValues.stderrRegExp) {
+          assert.match(stderrString, expectedValues.stderrRegExp)
+        }
         assert.equal(code, expectedValues.exitCode)
         done()
       })
