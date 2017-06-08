@@ -17,8 +17,8 @@ describe('bin/node-lambda', () => {
         '--handler', '__test.handler',
         '--eventFile', 'event.json'
       ])
-      var stdoutString = ''
-      var stderrString = ''
+      let stdoutString = ''
+      let stderrString = ''
       run.stdout.on('data', (data) => {
         stdoutString += data.toString().replace(/\r|\n/g, '')
       })
