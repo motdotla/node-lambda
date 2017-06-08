@@ -18,12 +18,21 @@ describe('bin/node-lambda', () => {
         '--eventFile', 'event.json'
       ])
       var stdoutString = ''
+      var stderrString = ''
       run.stdout.on('data', (data) => {
         stdoutString += data.toString().replace(/\r|\n/g, '')
       })
+      run.stderr.on('data', (data) => {
+        stderrString += data.toString().replace(/\r|\n/g, '')
+      })
 
       run.on('exit', (code) => {
-        assert.match(stdoutString, expectedValues.stdoutRegExp)
+        if (expectedValues.stdoutRegExp) {
+          assert.match(stdoutString, expectedValues.stdoutRegExp)
+        }
+        if (expectedValues.stderrRegExp) {
+          assert.match(stderrString, expectedValues.stderrRegExp)
+        }
         assert.equal(code, expectedValues.exitCode)
         done()
       })
@@ -134,6 +143,30 @@ describe('bin/node-lambda', () => {
           }))
           _testMain({ stdoutRegExp: /Error: Error: e$/, exitCode: 255 }, done)
         })
+      })
+    })
+
+    describe('node-lambda run (Runtime is not supported)', () => {
+      const eventObj = {
+        asyncTest: false,
+        callbackWaitsForEmptyEventLoop: true // True is the default value of Lambda
+      }
+
+      before(() => {
+        process.env.AWS_RUNTIME = 'test'
+      })
+      after(() => {
+        process.env.AWS_RUNTIME = 'nodejs6.10'
+      })
+
+      it('`node-lambda run` exitCode is `254` (callback(null))', (done) => {
+        _generateEventFile(Object.assign(eventObj, {
+          callbackCode: 'callback(null);'
+        }))
+        _testMain({
+          stderrRegExp: /^Runtime \[test\] is not supported\.$/,
+          exitCode: 254
+        }, done)
       })
     })
   })
