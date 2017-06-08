@@ -188,10 +188,11 @@ describe('bin/node-lambda', () => {
         no: 3
       }]
 
-      it('`node-lambda run` exitCode is `0`', (done) => {
+      it('`node-lambda run` exitCode is `0`', function (done) {
+        this.timeout(10000) // give it time to multiple executions
         _generateEventFile(eventObj)
         _testMain({
-          stdoutRegExp: / no: [123] .+ no: [123] .+ no: [123] .+Success:/,
+          stdoutRegExp: / no: 1 .+ no: 2 .+ no: 3 .+Success:/,
           exitCode: 0
         }, done)
       })
