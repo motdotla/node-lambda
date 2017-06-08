@@ -191,7 +191,7 @@ describe('bin/node-lambda', () => {
       it('`node-lambda run` exitCode is `0`', (done) => {
         _generateEventFile(eventObj)
         _testMain({
-          stdoutRegExp: / no: [123] .+ no: [123] .+ no: [123] .+Success:/,
+          stdoutRegExp: / no: 1 .+ no: 2 .+ no: 3 .+Success:/,
           exitCode: 0
         }, done)
       })
