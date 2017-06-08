@@ -145,5 +145,29 @@ describe('bin/node-lambda', () => {
         })
       })
     })
+
+    describe('node-lambda run (Runtime is not supported)', () => {
+      const eventObj = {
+        asyncTest: false,
+        callbackWaitsForEmptyEventLoop: true // True is the default value of Lambda
+      }
+
+      before(() => {
+        process.env.AWS_RUNTIME = 'test'
+      })
+      after(() => {
+        process.env.AWS_RUNTIME = 'nodejs6.10'
+      })
+
+      it('`node-lambda run` exitCode is `254` (callback(null))', (done) => {
+        _generateEventFile(Object.assign(eventObj, {
+          callbackCode: 'callback(null);'
+        }))
+        _testMain({
+          stderrRegExp: /^Runtime \[test\] is not supported\.$/,
+          exitCode: 254
+        }, done)
+      })
+    })
   })
 })
