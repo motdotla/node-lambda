@@ -17,8 +17,8 @@ describe('bin/node-lambda', () => {
         '--handler', '__test.handler',
         '--eventFile', 'event.json'
       ])
-      var stdoutString = ''
-      var stderrString = ''
+      let stdoutString = ''
+      let stderrString = ''
       run.stdout.on('data', (data) => {
         stdoutString += data.toString().replace(/\r|\n/g, '')
       })
@@ -166,6 +166,33 @@ describe('bin/node-lambda', () => {
         _testMain({
           stderrRegExp: /^Runtime \[test\] is not supported\.$/,
           exitCode: 254
+        }, done)
+      })
+    })
+
+    describe('node-lambda run (Multiple events))', () => {
+      const eventObj = [{
+        asyncTest: false,
+        callbackWaitsForEmptyEventLoop: true,
+        callbackCode: 'callback(null);',
+        no: 1
+      }, {
+        asyncTest: false,
+        callbackWaitsForEmptyEventLoop: true,
+        callbackCode: 'callback(null);',
+        no: 2
+      }, {
+        asyncTest: false,
+        callbackWaitsForEmptyEventLoop: true,
+        callbackCode: 'callback(null);',
+        no: 3
+      }]
+
+      it('`node-lambda run` exitCode is `0`', (done) => {
+        _generateEventFile(eventObj)
+        _testMain({
+          stdoutRegExp: / no: [123] .+ no: [123] .+ no: [123] .+Success:/,
+          exitCode: 0
         }, done)
       })
     })
