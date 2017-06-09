@@ -78,8 +78,9 @@ var DEPLOY_ZIPFILE = process.env.DEPLOY_ZIPFILE || '';
 var AWS_DLQ_TARGET_ARN = (function() {
   // You can clear the setting by passing an empty string
   // when executing updateFunctionConfiguration
-  if (process.env.AWS_DLQ_TARGET_ARN !== undefined)
+  if (process.env.AWS_DLQ_TARGET_ARN !== undefined) {
     return process.env.AWS_DLQ_TARGET_ARN
+  }
   return undefined;
 })();
 
