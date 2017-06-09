@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-'use strict';
+'use strict'
 
 // Temporary correspondence in case usage is not displayed correctly
 // due to `commander` bug.
@@ -12,7 +12,7 @@ const commandTypes = [
   'run',
   'execute',
   'setup'
-];
+]
 if (commandTypes.indexOf(process.argv[2]) === -1) {
   console.log(
 `
@@ -30,59 +30,59 @@ if (commandTypes.indexOf(process.argv[2]) === -1) {
 
     -h, --help  output usage information
 `
-  );
-  process.exit(1);
+  )
+  process.exit(1)
 }
 
-var path = require('path');
-var dotenv = require('dotenv');
-var lambda = require(path.join(__dirname, '..', 'lib', 'main.js'));
-var program = require('commander');
-var fs = require('fs');
+var path = require('path')
+var dotenv = require('dotenv')
+var lambda = require(path.join(__dirname, '..', 'lib', 'main.js'))
+var program = require('commander')
+var fs = require('fs')
 var packageJson = fs.existsSync(path.join(process.cwd(), 'package.json'))
-  ? require(path.join(process.cwd(), 'package.json')) : {};
-var packageJsonName = packageJson.name || 'UnnamedFunction';
+  ? require(path.join(process.cwd(), 'package.json')) : {}
+var packageJsonName = packageJson.name || 'UnnamedFunction'
 
-dotenv.load();
+dotenv.load()
 
-var AWS_ENVIRONMENT = process.env.AWS_ENVIRONMENT || '';
-var CONFIG_FILE = process.env.CONFIG_FILE || '';
-var EVENT_SOURCE_FILE = process.env.EVENT_SOURCE_FILE || '';
-var EXCLUDE_GLOBS = process.env.EXCLUDE_GLOBS || '';
-var AWS_ACCESS_KEY_ID = process.env.AWS_ACCESS_KEY_ID;
-var AWS_SECRET_ACCESS_KEY = process.env.AWS_SECRET_ACCESS_KEY;
-var AWS_PROFILE = process.env.AWS_PROFILE || '';
-var AWS_SESSION_TOKEN = process.env.AWS_SESSION_TOKEN || '';
-var AWS_REGION = process.env.AWS_REGION || 'us-east-1,us-west-2,eu-west-1';
-var AWS_FUNCTION_NAME = process.env.AWS_FUNCTION_NAME || packageJsonName;
-var AWS_HANDLER = process.env.AWS_HANDLER || 'index.handler';
-var AWS_ROLE = process.env.AWS_ROLE_ARN || process.env.AWS_ROLE || 'missing';
-var AWS_MEMORY_SIZE = process.env.AWS_MEMORY_SIZE || 128;
-var AWS_TIMEOUT = process.env.AWS_TIMEOUT || 60;
-var AWS_RUN_TIMEOUT = process.env.AWS_RUN_TIMEOUT || 3;
-var AWS_DESCRIPTION = process.env.AWS_DESCRIPTION || packageJson.description || '';
-var AWS_RUNTIME = process.env.AWS_RUNTIME || 'nodejs6.10';
-var AWS_PUBLISH = process.env.AWS_PUBLISH || false;
-var AWS_FUNCTION_VERSION = process.env.AWS_FUNCTION_VERSION || '';
-var AWS_VPC_SUBNETS = process.env.AWS_VPC_SUBNETS || '';
-var AWS_VPC_SECURITY_GROUPS = process.env.AWS_VPC_SECURITY_GROUPS || '';
-var AWS_TRACING_CONFIG = process.env.AWS_TRACING_CONFIG || '';
-var EVENT_FILE = process.env.EVENT_FILE || 'event.json';
-var PACKAGE_DIRECTORY = process.env.PACKAGE_DIRECTORY;
-var CONTEXT_FILE = process.env.CONTEXT_FILE || 'context.json';
-var PREBUILT_DIRECTORY = process.env.PREBUILT_DIRECTORY || '';
-var SRC_DIRECTORY = process.env.SRC_DIRECTORY || '';
-var DEPLOY_TIMEOUT = process.env.DEPLOY_TIMEOUT || 120000;
-var DOCKER_IMAGE = process.env.DOCKER_IMAGE || '';
-var DEPLOY_ZIPFILE = process.env.DEPLOY_ZIPFILE || '';
+var AWS_ENVIRONMENT = process.env.AWS_ENVIRONMENT || ''
+var CONFIG_FILE = process.env.CONFIG_FILE || ''
+var EVENT_SOURCE_FILE = process.env.EVENT_SOURCE_FILE || ''
+var EXCLUDE_GLOBS = process.env.EXCLUDE_GLOBS || ''
+var AWS_ACCESS_KEY_ID = process.env.AWS_ACCESS_KEY_ID
+var AWS_SECRET_ACCESS_KEY = process.env.AWS_SECRET_ACCESS_KEY
+var AWS_PROFILE = process.env.AWS_PROFILE || ''
+var AWS_SESSION_TOKEN = process.env.AWS_SESSION_TOKEN || ''
+var AWS_REGION = process.env.AWS_REGION || 'us-east-1,us-west-2,eu-west-1'
+var AWS_FUNCTION_NAME = process.env.AWS_FUNCTION_NAME || packageJsonName
+var AWS_HANDLER = process.env.AWS_HANDLER || 'index.handler'
+var AWS_ROLE = process.env.AWS_ROLE_ARN || process.env.AWS_ROLE || 'missing'
+var AWS_MEMORY_SIZE = process.env.AWS_MEMORY_SIZE || 128
+var AWS_TIMEOUT = process.env.AWS_TIMEOUT || 60
+var AWS_RUN_TIMEOUT = process.env.AWS_RUN_TIMEOUT || 3
+var AWS_DESCRIPTION = process.env.AWS_DESCRIPTION || packageJson.description || ''
+var AWS_RUNTIME = process.env.AWS_RUNTIME || 'nodejs6.10'
+var AWS_PUBLISH = process.env.AWS_PUBLISH || false
+var AWS_FUNCTION_VERSION = process.env.AWS_FUNCTION_VERSION || ''
+var AWS_VPC_SUBNETS = process.env.AWS_VPC_SUBNETS || ''
+var AWS_VPC_SECURITY_GROUPS = process.env.AWS_VPC_SECURITY_GROUPS || ''
+var AWS_TRACING_CONFIG = process.env.AWS_TRACING_CONFIG || ''
+var EVENT_FILE = process.env.EVENT_FILE || 'event.json'
+var PACKAGE_DIRECTORY = process.env.PACKAGE_DIRECTORY
+var CONTEXT_FILE = process.env.CONTEXT_FILE || 'context.json'
+var PREBUILT_DIRECTORY = process.env.PREBUILT_DIRECTORY || ''
+var SRC_DIRECTORY = process.env.SRC_DIRECTORY || ''
+var DEPLOY_TIMEOUT = process.env.DEPLOY_TIMEOUT || 120000
+var DOCKER_IMAGE = process.env.DOCKER_IMAGE || ''
+var DEPLOY_ZIPFILE = process.env.DEPLOY_ZIPFILE || ''
 var AWS_DLQ_TARGET_ARN = (function () {
   // You can clear the setting by passing an empty string
   // when executing updateFunctionConfiguration
   if (process.env.AWS_DLQ_TARGET_ARN !== undefined) {
     return process.env.AWS_DLQ_TARGET_ARN
   }
-  return undefined;
-})();
+  return undefined
+})()
 
 program
   .command('deploy')
@@ -124,8 +124,8 @@ program
   .option('-T, --deployTimeout [' + DEPLOY_TIMEOUT + ']', 'Deploy Timeout', DEPLOY_TIMEOUT)
   .option('-z, --deployZipfile [' + DEPLOY_ZIPFILE + ']', 'Deploy zipfile', DEPLOY_ZIPFILE)
   .action(function (prg) {
-    lambda.deploy(prg);
-  });
+    lambda.deploy(prg)
+  })
 
 program
   .command('package')
@@ -143,8 +143,8 @@ program
     'Path to file holding secret environment variables (e.g. "deploy.env")', CONFIG_FILE)
   .option('-D, --prebuiltDirectory [' + PREBUILT_DIRECTORY + ']', 'Prebuilt directory', PREBUILT_DIRECTORY)
   .action(function (prg) {
-    lambda.package(prg);
-  });
+    lambda.package(prg)
+  })
 
 program
   .command('run')
@@ -158,8 +158,8 @@ program
     'Path to file holding secret environment variables (e.g. "deploy.env")', CONFIG_FILE)
   .option('-x, --contextFile [' + CONTEXT_FILE + ']', 'Context JSON File', CONTEXT_FILE)
   .action(function (prg) {
-    lambda.run(prg);
-  });
+    lambda.run(prg)
+  })
 
 program
   .command('setup')
@@ -167,7 +167,7 @@ program
   .option('-j, --eventFile [' + EVENT_FILE + ']', 'Event JSON File', EVENT_FILE)
   .option('-x, --contextFile [' + CONTEXT_FILE + ']', 'Context JSON File', CONTEXT_FILE)
   .action(function (prg) {
-    lambda.setup(prg);
-  });
+    lambda.setup(prg)
+  })
 
-program.parse(process.argv);
+program.parse(process.argv)
