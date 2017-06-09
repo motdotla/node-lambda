@@ -39,8 +39,8 @@ var dotenv = require('dotenv');
 var lambda = require(path.join(__dirname, '..', 'lib', 'main.js'));
 var program = require('commander');
 var fs = require('fs');
-var packageJson = fs.existsSync(path.join(process.cwd(), 'package.json')) ?
-      require(path.join(process.cwd(), 'package.json')) : {};
+var packageJson = fs.existsSync(path.join(process.cwd(), 'package.json'))
+  ? require(path.join(process.cwd(), 'package.json')) : {};
 var packageJsonName = packageJson.name || 'UnnamedFunction';
 
 dotenv.load();
