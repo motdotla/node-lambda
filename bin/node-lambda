@@ -13,7 +13,7 @@ const commandTypes = [
   'execute',
   'setup'
 ];
-if (commandTypes.indexOf(process.argv[2]) == -1) {
+if (commandTypes.indexOf(process.argv[2]) === -1) {
   console.log(
 `
   Usage: node-lambda [options] [command]
