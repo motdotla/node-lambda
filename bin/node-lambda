@@ -11,7 +11,7 @@ const commandTypes = [
   'zip',
   'run',
   'execute',
-  'setup',
+  'setup'
 ];
 if (commandTypes.indexOf(process.argv[2]) == -1) {
   console.log(
