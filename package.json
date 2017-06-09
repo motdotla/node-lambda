@@ -7,7 +7,7 @@
     "test": "test"
   },
   "scripts": {
-    "test": "standard && mocha"
+    "test": "standard && standard bin/node-lambda && mocha"
   },
   "bin": {
     "node-lambda": "./bin/node-lambda"
