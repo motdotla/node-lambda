@@ -874,50 +874,62 @@ describe('lib/main', function () {
       )
     })
 
-    it('simple test with mock (In case of new addition)', (done) => {
+    it('simple test with mock (In case of new addition)', () => {
       program.eventSourceFile = 'event_sources.json'
       const eventSourceList = lambda._eventSourceList(program)
-      lambda._updateEventSources(
-        awsLambda,
-        'functionName',
-        [],
-        eventSourceList.EventSourceMappings,
-        (err, results) => {
-          assert.isUndefined(err)
-          assert.deepEqual(results, [lambdaMockSettings.createEventSourceMapping])
-          done()
+      return new Promise((resolve) => {
+        lambda._updateEventSources(
+          awsLambda,
+          'functionName',
+          [],
+          eventSourceList.EventSourceMappings,
+          (err, results) => resolve({ err: err, results: results })
+        )
+      }).then((actual) => {
+        const expected = {
+          err: null,
+          results: [lambdaMockSettings.createEventSourceMapping]
         }
-      )
+        assert.deepEqual(actual, expected)
+      })
     })
 
-    it('simple test with mock (In case of deletion)', (done) => {
-      lambda._updateEventSources(
-        awsLambda,
-        'functionName',
-        lambdaMockSettings.listEventSourceMappings.EventSourceMappings,
-        {},
-        (err, results) => {
-          assert.isUndefined(err)
-          assert.deepEqual(results, [lambdaMockSettings.deleteEventSourceMapping])
-          done()
+    it('simple test with mock (In case of deletion)', () => {
+      return new Promise((resolve) => {
+        lambda._updateEventSources(
+          awsLambda,
+          'functionName',
+          lambdaMockSettings.listEventSourceMappings.EventSourceMappings,
+          {},
+          (err, results) => resolve({ err: err, results: results })
+        )
+      }).then((actual) => {
+        const expected = {
+          err: null,
+          results: [lambdaMockSettings.deleteEventSourceMapping]
         }
-      )
+        assert.deepEqual(actual, expected)
+      })
     })
 
-    it('simple test with mock (In case of update)', (done) => {
+    it('simple test with mock (In case of update)', () => {
       program.eventSourceFile = 'event_sources.json'
       const eventSourceList = lambda._eventSourceList(program)
-      lambda._updateEventSources(
-        awsLambda,
-        'functionName',
-        lambdaMockSettings.listEventSourceMappings.EventSourceMappings,
-        eventSourceList.EventSourceMappings,
-        (err, results) => {
-          assert.isUndefined(err)
-          assert.deepEqual(results, [lambdaMockSettings.updateEventSourceMapping])
-          done()
+      return new Promise((resolve) => {
+        lambda._updateEventSources(
+          awsLambda,
+          'functionName',
+          lambdaMockSettings.listEventSourceMappings.EventSourceMappings,
+          eventSourceList.EventSourceMappings,
+          (err, results) => resolve({ err: err, results: results })
+        )
+      }).then((actual) => {
+        const expected = {
+          err: null,
+          results: [lambdaMockSettings.updateEventSourceMapping]
         }
-      )
+        assert.deepEqual(actual, expected)
+      })
     })
   })
 
