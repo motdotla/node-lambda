@@ -32,13 +32,12 @@
   "devDependencies": {
     "aws-sdk-mock": "^1.6.1",
     "chai": "^2.0.0",
-    "hoek": "^2.11.1",
     "mocha": "",
     "standard": "^10.0.2"
   },
   "dependencies": {
     "async": "^0.9.0",
-    "aws-sdk": "^2.49.0",
+    "aws-sdk": "^2.67.0",
     "commander": "^2.5.0",
     "dotenv": "^0.4.0",
     "fs-extra": "^0.30.0",
