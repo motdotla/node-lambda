@@ -3,7 +3,6 @@
 const path = require('path')
 const os = require('os')
 const fs = require('fs-extra')
-const Hoek = require('hoek')
 const lambda = require(path.join(__dirname, '..', 'lib', 'main'))
 const Zip = require('node-zip')
 const assert = require('chai').assert
@@ -120,8 +119,8 @@ describe('lib/main', function () {
   })
   after(() => _awsRestore())
 
-  beforeEach(function () {
-    program = Hoek.clone(originalProgram)
+  beforeEach(() => {
+    program = Object.assign({}, originalProgram) // clone
   })
 
   it('version should be set', function () {
