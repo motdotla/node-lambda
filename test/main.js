@@ -1007,12 +1007,10 @@ describe('lib/main', function () {
   })
 
   describe('_uploadExisting', () => {
-    it('simple test with mock', (done) => {
+    it('simple test with mock', () => {
       const params = lambda._params(program, null)
-      lambda._uploadExisting(awsLambda, params, (err, results) => {
-        assert.isNull(err)
+      return lambda._uploadExisting(awsLambda, params).then((results) => {
         assert.deepEqual(results, lambdaMockSettings.updateFunctionConfiguration)
-        done()
       })
     })
   })
