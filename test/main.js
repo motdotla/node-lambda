@@ -7,6 +7,7 @@ const lambda = require(path.join(__dirname, '..', 'lib', 'main'))
 const Zip = require('node-zip')
 const assert = require('chai').assert
 const awsMock = require('aws-sdk-mock')
+awsMock.setSDK(path.resolve('node_modules/aws-sdk'))
 
 const originalProgram = {
   environment: 'development',
