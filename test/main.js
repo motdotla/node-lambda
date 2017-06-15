@@ -559,18 +559,18 @@ describe('lib/main', function () {
     })
   })
 
-  describe('_archive', function () {
-    it('installs and zips with an index.js file and node_modules/async', function (done) {
+  describe('_archive', () => {
+    it('installs and zips with an index.js file and node_modules/aws-sdk', function (done) {
       _timeout({ this: this, sec: 30 }) // give it time to zip
 
-      lambda._archive(program, function (err, data) {
+      lambda._archive(program, (err, data) => {
         assert.isNull(err)
-        var archive = new Zip(data)
-        var contents = Object.keys(archive.files).map(function (k) {
+        const archive = new Zip(data)
+        const contents = Object.keys(archive.files).map((k) => {
           return archive.files[k].name.toString()
         })
         assert.include(contents, 'index.js')
-        assert.include(contents, path.join('node_modules', 'async', 'lib', 'async.js'))
+        assert.include(contents, path.join('node_modules', 'aws-sdk', 'lib', 'aws.js'))
         done()
       })
     })
@@ -655,20 +655,20 @@ describe('lib/main', function () {
       })
     })
 
-    describe('If value is set in `deployZipfile`, _readArchive is executed in _archive', function () {
+    describe('If value is set in `deployZipfile`, _readArchive is executed in _archive', () => {
       it('`deployZipfile` is a invalid value. Process from creation of zip file', function (done) {
         const filePath = path.join(path.resolve('/aaaa'), 'bbbb')
         const _program = Object.assign({ deployZipfile: filePath }, program)
         _timeout({ this: this, sec: 30 }) // give it time to zip
-        lambda._archive(_program, function (err, data) {
+        lambda._archive(_program, (err, data) => {
           assert.isNull(err)
-          // same test as "installs and zips with an index.js file and node_modules/async"
-          var archive = new Zip(data)
-          var contents = Object.keys(archive.files).map(function (k) {
+          // same test as "installs and zips with an index.js file and node_modules/aws-sdk"
+          const archive = new Zip(data)
+          const contents = Object.keys(archive.files).map((k) => {
             return archive.files[k].name.toString()
           })
           assert.include(contents, 'index.js')
-          assert.include(contents, path.join('node_modules', 'async', 'lib', 'async.js'))
+          assert.include(contents, path.join('node_modules', 'aws-sdk', 'lib', 'aws.js'))
           done()
         })
       })
