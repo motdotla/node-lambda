@@ -956,41 +956,32 @@ describe('lib/main', function () {
 
     after(() => fs.unlinkSync('event_sources.json'))
 
-    it('program.eventSourceFile is empty value', (done) => {
+    it('program.eventSourceFile is empty value', () => {
       program.eventSourceFile = ''
       const eventSourceList = lambda._eventSourceList(program)
-      lambda._updateScheduleEvents(
+      return lambda._updateScheduleEvents(
         schedule,
         '',
-        eventSourceList.ScheduleEvents,
-        (err, results) => {
-          assert.isNull(err)
-          assert.deepEqual(results, [])
-          done()
-        }
-      )
+        eventSourceList.ScheduleEvents
+      ).then((results) => {
+        assert.deepEqual(results, [])
+      })
     })
 
     it('simple test with mock', () => {
       program.eventSourceFile = 'event_sources.json'
       const eventSourceList = lambda._eventSourceList(program)
       const functionArn = 'arn:aws:lambda:us-west-2:XXX:function:node-lambda-test-function'
-      return new Promise((resolve) => {
-        lambda._updateScheduleEvents(
-          schedule,
-          functionArn,
-          eventSourceList.ScheduleEvents,
-          (err, results) => resolve({ err: err, results: results })
-        )
-      }).then((actual) => {
-        const expected = {
-          err: null,
-          results: [Object.assign(
-            eventSourcesJsonValue.ScheduleEvents[0],
-            { FunctionArn: functionArn }
-          )]
-        }
-        assert.deepEqual(actual, expected)
+      return lambda._updateScheduleEvents(
+        schedule,
+        functionArn,
+        eventSourceList.ScheduleEvents
+      ).then((results) => {
+        const expected = [Object.assign(
+          eventSourcesJsonValue.ScheduleEvents[0],
+          { FunctionArn: functionArn }
+        )]
+        assert.deepEqual(results, expected)
       })
     })
   })
