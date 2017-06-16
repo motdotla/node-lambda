@@ -858,77 +858,53 @@ describe('lib/main', function () {
 
     after(() => fs.unlinkSync('event_sources.json'))
 
-    it('program.eventSourceFile is empty value', (done) => {
+    it('program.eventSourceFile is empty value', () => {
       program.eventSourceFile = ''
       const eventSourceList = lambda._eventSourceList(program)
-      lambda._updateEventSources(
+      return lambda._updateEventSources(
         awsLambda,
         '',
         [],
-        eventSourceList.EventSourceMappings,
-        (err, results) => {
-          assert.isNull(err)
-          assert.deepEqual(results, [])
-          done()
-        }
-      )
+        eventSourceList.EventSourceMappings
+      ).then((results) => {
+        assert.deepEqual(results, [])
+      })
     })
 
     it('simple test with mock (In case of new addition)', () => {
       program.eventSourceFile = 'event_sources.json'
       const eventSourceList = lambda._eventSourceList(program)
-      return new Promise((resolve) => {
-        lambda._updateEventSources(
-          awsLambda,
-          'functionName',
-          [],
-          eventSourceList.EventSourceMappings,
-          (err, results) => resolve({ err: err, results: results })
-        )
-      }).then((actual) => {
-        const expected = {
-          err: null,
-          results: [lambdaMockSettings.createEventSourceMapping]
-        }
-        assert.deepEqual(actual, expected)
+      return lambda._updateEventSources(
+        awsLambda,
+        'functionName',
+        [],
+        eventSourceList.EventSourceMappings
+      ).then((results) => {
+        assert.deepEqual(results, [lambdaMockSettings.createEventSourceMapping])
       })
     })
 
     it('simple test with mock (In case of deletion)', () => {
-      return new Promise((resolve) => {
-        lambda._updateEventSources(
-          awsLambda,
-          'functionName',
-          lambdaMockSettings.listEventSourceMappings.EventSourceMappings,
-          {},
-          (err, results) => resolve({ err: err, results: results })
-        )
-      }).then((actual) => {
-        const expected = {
-          err: null,
-          results: [lambdaMockSettings.deleteEventSourceMapping]
-        }
-        assert.deepEqual(actual, expected)
+      return lambda._updateEventSources(
+        awsLambda,
+        'functionName',
+        lambdaMockSettings.listEventSourceMappings.EventSourceMappings,
+        {}
+      ).then((results) => {
+        assert.deepEqual(results, [lambdaMockSettings.deleteEventSourceMapping])
       })
     })
 
     it('simple test with mock (In case of update)', () => {
       program.eventSourceFile = 'event_sources.json'
       const eventSourceList = lambda._eventSourceList(program)
-      return new Promise((resolve) => {
-        lambda._updateEventSources(
-          awsLambda,
-          'functionName',
-          lambdaMockSettings.listEventSourceMappings.EventSourceMappings,
-          eventSourceList.EventSourceMappings,
-          (err, results) => resolve({ err: err, results: results })
-        )
-      }).then((actual) => {
-        const expected = {
-          err: null,
-          results: [lambdaMockSettings.updateEventSourceMapping]
-        }
-        assert.deepEqual(actual, expected)
+      return lambda._updateEventSources(
+        awsLambda,
+        'functionName',
+        lambdaMockSettings.listEventSourceMappings.EventSourceMappings,
+        eventSourceList.EventSourceMappings
+      ).then((results) => {
+        assert.deepEqual(results, [lambdaMockSettings.updateEventSourceMapping])
       })
     })
   })
@@ -956,63 +932,50 @@ describe('lib/main', function () {
 
     after(() => fs.unlinkSync('event_sources.json'))
 
-    it('program.eventSourceFile is empty value', (done) => {
+    it('program.eventSourceFile is empty value', () => {
       program.eventSourceFile = ''
       const eventSourceList = lambda._eventSourceList(program)
-      lambda._updateScheduleEvents(
+      return lambda._updateScheduleEvents(
         schedule,
         '',
-        eventSourceList.ScheduleEvents,
-        (err, results) => {
-          assert.isNull(err)
-          assert.deepEqual(results, [])
-          done()
-        }
-      )
+        eventSourceList.ScheduleEvents
+      ).then((results) => {
+        assert.deepEqual(results, [])
+      })
     })
 
     it('simple test with mock', () => {
       program.eventSourceFile = 'event_sources.json'
       const eventSourceList = lambda._eventSourceList(program)
       const functionArn = 'arn:aws:lambda:us-west-2:XXX:function:node-lambda-test-function'
-      return new Promise((resolve) => {
-        lambda._updateScheduleEvents(
-          schedule,
-          functionArn,
-          eventSourceList.ScheduleEvents,
-          (err, results) => resolve({ err: err, results: results })
-        )
-      }).then((actual) => {
-        const expected = {
-          err: null,
-          results: [Object.assign(
-            eventSourcesJsonValue.ScheduleEvents[0],
-            { FunctionArn: functionArn }
-          )]
-        }
-        assert.deepEqual(actual, expected)
+      return lambda._updateScheduleEvents(
+        schedule,
+        functionArn,
+        eventSourceList.ScheduleEvents
+      ).then((results) => {
+        const expected = [Object.assign(
+          eventSourcesJsonValue.ScheduleEvents[0],
+          { FunctionArn: functionArn }
+        )]
+        assert.deepEqual(results, expected)
       })
     })
   })
 
   describe('_uploadNew', () => {
-    it('simple test with mock', (done) => {
+    it('simple test with mock', () => {
       const params = lambda._params(program, null)
-      lambda._uploadNew(awsLambda, params, (err, results) => {
-        assert.isNull(err)
+      return lambda._uploadNew(awsLambda, params, (results) => {
         assert.deepEqual(results, lambdaMockSettings.createFunction)
-        done()
       })
     })
   })
 
   describe('_uploadExisting', () => {
-    it('simple test with mock', (done) => {
+    it('simple test with mock', () => {
       const params = lambda._params(program, null)
-      lambda._uploadExisting(awsLambda, params, (err, results) => {
-        assert.isNull(err)
+      return lambda._uploadExisting(awsLambda, params).then((results) => {
         assert.deepEqual(results, lambdaMockSettings.updateFunctionConfiguration)
-        done()
       })
     })
   })
