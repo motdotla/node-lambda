@@ -28,7 +28,8 @@ const originalProgram = {
   eventSourceFile: '',
   contextFile: 'context.json',
   deployTimeout: 120000,
-  prebuiltDirectory: ''
+  prebuiltDirectory: '',
+  proxy: ''
 }
 
 var program = require('commander')

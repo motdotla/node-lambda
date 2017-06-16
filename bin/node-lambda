@@ -83,6 +83,7 @@ const AWS_DLQ_TARGET_ARN = (function () {
   }
   return undefined
 })()
+const PROXY = process.env.PROXY || process.env.http_proxy || ''
 
 program
   .command('deploy')
@@ -123,6 +124,7 @@ program
   .option('-D, --prebuiltDirectory [' + PREBUILT_DIRECTORY + ']', 'Prebuilt directory', PREBUILT_DIRECTORY)
   .option('-T, --deployTimeout [' + DEPLOY_TIMEOUT + ']', 'Deploy Timeout', DEPLOY_TIMEOUT)
   .option('-z, --deployZipfile [' + DEPLOY_ZIPFILE + ']', 'Deploy zipfile', DEPLOY_ZIPFILE)
+  .option('-y, --proxy [' + PROXY + ']', 'Proxy server', PROXY)
   .action(function (prg) {
     lambda.deploy(prg)
   })
