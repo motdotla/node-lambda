@@ -1023,7 +1023,11 @@ describe('lib/main', function () {
     })
   })
 
+  describe('Lambda.prototype._deployToRegion()', () => {
+    it('Since `aws-mock` does not correspond to `request.on`, it is impossible to test with Mock')
+  })
+
   describe('Lambda.prototype.deploy()', () => {
-    it('TODO: Add test. Since the current deploy function is hard to test, skip')
+    it('Since `aws-mock` does not correspond to `request.on`, it is impossible to test with Mock')
   })
 })
