@@ -287,7 +287,7 @@ describe('lib/main', function () {
     it('_fileCopy an index.js as well as other files', (done) => {
       lambda._fileCopy(program, '.', codeDirectory, true, (err, result) => {
         assert.isNull(err)
-        var contents = fs.readdirSync(codeDirectory);
+        const contents = fs.readdirSync(codeDirectory);
         ['index.js', 'package.json'].forEach((needle) => {
           assert.include(contents, needle, `Target: "${needle}"`)
         });
@@ -315,7 +315,7 @@ describe('lib/main', function () {
       it('_fileCopy an index.js as well as other files', (done) => {
         lambda._fileCopy(program, '.', codeDirectory, true, (err, result) => {
           assert.isNull(err)
-          var contents = fs.readdirSync(codeDirectory);
+          const contents = fs.readdirSync(codeDirectory);
           ['index.js', 'package.json'].forEach((needle) => {
             assert.include(contents, needle, `Target: "${needle}"`)
           })
@@ -326,7 +326,7 @@ describe('lib/main', function () {
       it('_fileCopy excludes files matching excludeGlobs', (done) => {
         lambda._fileCopy(program, '.', codeDirectory, true, (err, result) => {
           assert.isNull(err)
-          var contents = fs.readdirSync(codeDirectory);
+          let contents = fs.readdirSync(codeDirectory);
           ['__unittest', 'fuga'].forEach((needle) => {
             assert.include(contents, needle, `Target: "${needle}"`)
           });
@@ -352,14 +352,14 @@ describe('lib/main', function () {
         program.excludeGlobs = '*.json'
         lambda._fileCopy(program, '.', codeDirectory, true, (err, result) => {
           assert.isNull(err)
-          var contents = fs.readdirSync(codeDirectory)
+          const contents = fs.readdirSync(codeDirectory)
           assert.include(contents, 'package.json')
           done()
         })
       })
 
       it('_fileCopy should not include package.json when --prebuiltDirectory is set', (done) => {
-        var buildDir = '.build_' + Date.now()
+        const buildDir = '.build_' + Date.now()
         after(() => fs.removeSync(buildDir))
 
         fs.mkdirSync(buildDir)
@@ -370,7 +370,7 @@ describe('lib/main', function () {
         program.prebuiltDirectory = buildDir
         lambda._fileCopy(program, buildDir, codeDirectory, true, (err, result) => {
           assert.isNull(err)
-          var contents = fs.readdirSync(codeDirectory)
+          const contents = fs.readdirSync(codeDirectory)
           assert.notInclude(contents, 'package.json', 'Target: "packages.json"')
           assert.include(contents, 'testa', 'Target: "testa"')
           done()
