@@ -267,8 +267,8 @@ describe('lib/main', function () {
     })
   })
 
-  function rsyncTests (funcName) {
-    before(function () {
+  describe('_fileCopy', () => {
+    before(() => {
       fs.mkdirSync('build')
       fs.mkdirsSync(path.join('__unittest', 'hoge'))
       fs.mkdirsSync(path.join('__unittest', 'fuga'))
@@ -276,32 +276,30 @@ describe('lib/main', function () {
       fs.writeFileSync(path.join('__unittest', 'hoge', 'package.json'))
       fs.writeFileSync('fuga')
     })
-    after(function () {
-      ['build', 'fuga', '__unittest'].forEach(function (path) {
+    after(() => {
+      ['build', 'fuga', '__unittest'].forEach((path) => {
         fs.removeSync(path)
       })
     })
 
-    beforeEach(function (done) {
-      lambda._cleanDirectory(codeDirectory, done)
-    })
+    beforeEach((done) => lambda._cleanDirectory(codeDirectory, done))
 
-    it(funcName + ' an index.js as well as other files', function (done) {
-      lambda[funcName](program, '.', codeDirectory, true, function (err, result) {
+    it('_fileCopy an index.js as well as other files', (done) => {
+      lambda._fileCopy(program, '.', codeDirectory, true, (err, result) => {
         assert.isNull(err)
-        var contents = fs.readdirSync(codeDirectory);
-        ['index.js', 'package.json'].forEach(function (needle) {
+        const contents = fs.readdirSync(codeDirectory);
+        ['index.js', 'package.json'].forEach((needle) => {
           assert.include(contents, needle, `Target: "${needle}"`)
         });
-        ['node_modules', 'build'].forEach(function (needle) {
+        ['node_modules', 'build'].forEach((needle) => {
           assert.notInclude(contents, needle, `Target: "${needle}"`)
         })
         done()
       })
     })
 
-    describe('when there are excluded files', function () {
-      beforeEach(function (done) {
+    describe('when there are excluded files', () => {
+      beforeEach((done) => {
         // *main* => lib/main.js
         // In case of specifying files under the directory with wildcards
         program.excludeGlobs = [
@@ -314,26 +312,26 @@ describe('lib/main', function () {
         done()
       })
 
-      it(funcName + ' an index.js as well as other files', function (done) {
-        lambda[funcName](program, '.', codeDirectory, true, function (err, result) {
+      it('_fileCopy an index.js as well as other files', (done) => {
+        lambda._fileCopy(program, '.', codeDirectory, true, (err, result) => {
           assert.isNull(err)
-          var contents = fs.readdirSync(codeDirectory);
-          ['index.js', 'package.json'].forEach(function (needle) {
+          const contents = fs.readdirSync(codeDirectory);
+          ['index.js', 'package.json'].forEach((needle) => {
             assert.include(contents, needle, `Target: "${needle}"`)
           })
           done()
         })
       })
 
-      it(funcName + ' excludes files matching excludeGlobs', function (done) {
-        lambda[funcName](program, '.', codeDirectory, true, function (err, result) {
+      it('_fileCopy excludes files matching excludeGlobs', (done) => {
+        lambda._fileCopy(program, '.', codeDirectory, true, (err, result) => {
           assert.isNull(err)
-          var contents = fs.readdirSync(codeDirectory);
-          ['__unittest', 'fuga'].forEach(function (needle) {
+          let contents = fs.readdirSync(codeDirectory);
+          ['__unittest', 'fuga'].forEach((needle) => {
             assert.include(contents, needle, `Target: "${needle}"`)
           });
 
-          ['node-lambda.png', 'test'].forEach(function (needle) {
+          ['node-lambda.png', 'test'].forEach((needle) => {
             assert.notInclude(contents, needle, `Target: "${needle}"`)
           })
 
@@ -350,21 +348,19 @@ describe('lib/main', function () {
         })
       })
 
-      it(funcName + ' should not exclude package.json, even when excluded by excludeGlobs', function (done) {
+      it('_fileCopy should not exclude package.json, even when excluded by excludeGlobs', (done) => {
         program.excludeGlobs = '*.json'
-        lambda[funcName](program, '.', codeDirectory, true, function (err, result) {
+        lambda._fileCopy(program, '.', codeDirectory, true, (err, result) => {
           assert.isNull(err)
-          var contents = fs.readdirSync(codeDirectory)
+          const contents = fs.readdirSync(codeDirectory)
           assert.include(contents, 'package.json')
           done()
         })
       })
 
-      it(funcName + ' should not include package.json when --prebuiltDirectory is set', function (done) {
-        var buildDir = '.build_' + Date.now()
-        after(function () {
-          fs.removeSync(buildDir)
-        })
+      it('_fileCopy should not include package.json when --prebuiltDirectory is set', (done) => {
+        const buildDir = '.build_' + Date.now()
+        after(() => fs.removeSync(buildDir))
 
         fs.mkdirSync(buildDir)
         fs.writeFileSync(path.join(buildDir, 'testa'))
@@ -372,23 +368,16 @@ describe('lib/main', function () {
 
         program.excludeGlobs = '*.json'
         program.prebuiltDirectory = buildDir
-        lambda[funcName](program, buildDir, codeDirectory, true, function (err, result) {
+        lambda._fileCopy(program, buildDir, codeDirectory, true, (err, result) => {
           assert.isNull(err)
-          var contents = fs.readdirSync(codeDirectory)
+          const contents = fs.readdirSync(codeDirectory)
           assert.notInclude(contents, 'package.json', 'Target: "packages.json"')
           assert.include(contents, 'testa', 'Target: "testa"')
           done()
         })
       })
     })
-  }
-
-  describe('_fileCopy', function () { rsyncTests('_fileCopy') })
-  if (process.platform === 'win32') {
-    it('For Windows, `_rsync` tests pending')
-  } else {
-    describe('_rsync', function () { rsyncTests('_rsync') })
-  }
+  })
 
   describe('_npmInstall', () => {
     beforeEach((done) => {
