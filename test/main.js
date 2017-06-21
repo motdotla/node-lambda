@@ -242,22 +242,21 @@ describe('lib/main', function () {
     })
   })
 
-  describe('_cleanDirectory', function () {
-    it('`codeDirectory` is empty', function (done) {
-      lambda._cleanDirectory(codeDirectory, function () {
+  describe('_cleanDirectory', () => {
+    it('`codeDirectory` is empty', () => {
+      return lambda._cleanDirectory(codeDirectory).then(() => {
         assert.isTrue(fs.existsSync(codeDirectory))
         const contents = fs.readdirSync(codeDirectory)
         assert.equal(contents.length, 0)
-        done()
       })
     })
 
-    it('`codeDirectory` is empty. (For `codeDirectory` where the file was present)', function (done) {
-      lambda._fileCopy(program, '.', codeDirectory, true, function (err, result) {
+    it('`codeDirectory` is empty. (For `codeDirectory` where the file was present)', (done) => {
+      lambda._fileCopy(program, '.', codeDirectory, true, (err, result) => {
         assert.isNull(err)
         const contents = fs.readdirSync(codeDirectory)
         assert.isTrue(contents.length > 0)
-        lambda._cleanDirectory(codeDirectory, function () {
+        lambda._cleanDirectory(codeDirectory).then(() => {
           assert.isTrue(fs.existsSync(codeDirectory))
           const contents = fs.readdirSync(codeDirectory)
           assert.equal(contents.length, 0)
@@ -282,7 +281,7 @@ describe('lib/main', function () {
       })
     })
 
-    beforeEach((done) => lambda._cleanDirectory(codeDirectory, done))
+    beforeEach(() => lambda._cleanDirectory(codeDirectory))
 
     it('_fileCopy an index.js as well as other files', (done) => {
       lambda._fileCopy(program, '.', codeDirectory, true, (err, result) => {
@@ -381,17 +380,15 @@ describe('lib/main', function () {
 
   describe('_npmInstall', () => {
     beforeEach((done) => {
-      lambda._cleanDirectory(codeDirectory, (err) => {
-        if (err) {
-          return done(err)
-        }
-
+      lambda._cleanDirectory(codeDirectory).then(() => {
         lambda._fileCopy(program, '.', codeDirectory, true, (err) => {
           if (err) {
             return done(err)
           }
           done()
         })
+      }).catch((err) => {
+        done(err)
       })
     })
 
@@ -414,17 +411,15 @@ describe('lib/main', function () {
         ? 'hoge fuga\' piyo'
         : 'hoge "fuga\' \\piyo'
       codeDirectory = path.join(os.tmpdir(), directoryName)
-      lambda._cleanDirectory(codeDirectory, (err) => {
-        if (err) {
-          return done(err)
-        }
-
+      lambda._cleanDirectory(codeDirectory).then(() => {
         lambda._fileCopy(program, '.', codeDirectory, true, (err) => {
           if (err) {
             return done(err)
           }
           done()
         })
+      }).catch((err) => {
+        done(err)
       })
     })
 
@@ -515,11 +510,7 @@ describe('lib/main', function () {
   describe('_zip', function () {
     beforeEach(function (done) {
       _timeout({ this: this, sec: 30 }) // give it time to build the node modules
-      lambda._cleanDirectory(codeDirectory, function (err) {
-        if (err) {
-          return done(err)
-        }
-
+      lambda._cleanDirectory(codeDirectory).then(() => {
         lambda._fileCopy(program, '.', codeDirectory, true, function (err) {
           if (err) {
             return done(err)
@@ -531,6 +522,8 @@ describe('lib/main', function () {
             done()
           })
         })
+      }).catch((err) => {
+        done(err)
       })
     })
 
