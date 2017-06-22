@@ -510,9 +510,7 @@ describe('lib/main', function () {
       _timeout({ this: this, sec: 30 }) // give it time to build the node modules
       lambda._cleanDirectory(codeDirectory).then(() => {
         lambda._fileCopy(program, '.', codeDirectory, true, (err) => {
-          if (err) {
-            return done(err)
-          }
+          if (err) return done(err)
           lambda._npmInstall(program, codeDirectory).then(() => {
             done()
           }).catch((err) => {
@@ -524,17 +522,15 @@ describe('lib/main', function () {
       })
     })
 
-    it('zips the file and has an index.js file', function (done) {
+    it('zips the file and has an index.js file', function () {
       _timeout({ this: this, sec: 30 }) // give it time to zip
 
-      lambda._zip(program, codeDirectory, function (err, data) {
-        assert.isNull(err)
-        var archive = new Zip(data)
-        var contents = Object.keys(archive.files).map(function (k) {
+      return lambda._zip(program, codeDirectory).then((data) => {
+        const archive = new Zip(data)
+        const contents = Object.keys(archive.files).map((k) => {
           return archive.files[k].name.toString()
         })
         assert.include(contents, 'index.js')
-        done()
       })
     })
   })
@@ -588,26 +584,22 @@ describe('lib/main', function () {
     })
   })
 
-  describe('_readArchive', function () {
+  describe('_readArchive', () => {
     const testZipFile = path.join(os.tmpdir(), 'node-lambda-test.zip')
-    var bufferExpected = null
-    before(function (done) {
+    let bufferExpected = null
+    before(function () {
       _timeout({ this: this, sec: 30 }) // give it time to zip
 
-      lambda._zip(program, codeDirectory, function (err, data) {
-        assert.isNull(err)
+      return lambda._zip(program, codeDirectory).then((data) => {
         bufferExpected = data
         fs.writeFileSync(testZipFile, data)
-        done()
       })
     })
 
-    after(function () {
-      fs.unlinkSync(testZipFile)
-    })
+    after(() => fs.unlinkSync(testZipFile))
 
-    it('_readArchive fails (undefined)', function (done) {
-      lambda._readArchive(program, function (err, data) {
+    it('_readArchive fails (undefined)', (done) => {
+      lambda._readArchive(program, (err, data) => {
         assert.isUndefined(data)
         assert.instanceOf(err, Error)
         assert.equal(err.message, 'No such Zipfile [undefined]')
@@ -615,10 +607,10 @@ describe('lib/main', function () {
       })
     })
 
-    it('_readArchive fails (does not exists file)', function (done) {
+    it('_readArchive fails (does not exists file)', (done) => {
       const filePath = path.join(path.resolve('/aaaa'), 'bbbb')
       const _program = Object.assign({ deployZipfile: filePath }, program)
-      lambda._readArchive(_program, function (err, data) {
+      lambda._readArchive(_program, (err, data) => {
         assert.isUndefined(data)
         assert.instanceOf(err, Error)
         assert.equal(err.message, `No such Zipfile [${filePath}]`)
@@ -626,9 +618,9 @@ describe('lib/main', function () {
       })
     })
 
-    it('_readArchive reads the contents of the zipfile', function (done) {
+    it('_readArchive reads the contents of the zipfile', (done) => {
       const _program = Object.assign({ deployZipfile: testZipFile }, program)
-      lambda._readArchive(_program, function (err, data) {
+      lambda._readArchive(_program, (err, data) => {
         assert.isNull(err)
         assert.deepEqual(data, bufferExpected)
         done()
@@ -653,9 +645,9 @@ describe('lib/main', function () {
         })
       })
 
-      it('`deployZipfile` is a valid value._archive reads the contents of the zipfile', function (done) {
+      it('`deployZipfile` is a valid value._archive reads the contents of the zipfile', (done) => {
         const _program = Object.assign({ deployZipfile: testZipFile }, program)
-        lambda._archive(_program, function (err, data) {
+        lambda._archive(_program, (err, data) => {
           assert.isNull(err)
           assert.deepEqual(data, bufferExpected)
           done()
