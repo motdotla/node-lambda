@@ -392,14 +392,12 @@ describe('lib/main', function () {
       })
     })
 
-    it('_npm adds node_modules', function (done) {
+    it('_npm adds node_modules', function () {
       _timeout({ this: this, sec: 30 }) // give it time to build the node modules
 
-      lambda._npmInstall(program, codeDirectory, (err, result) => {
-        assert.isNull(err)
+      return lambda._npmInstall(program, codeDirectory).then(() => {
         const contents = fs.readdirSync(codeDirectory)
         assert.include(contents, 'node_modules')
-        done()
       })
     })
   })
@@ -428,14 +426,12 @@ describe('lib/main', function () {
       codeDirectory = lambda._codeDirectory()
     })
 
-    it('_npm adds node_modules', function (done) {
+    it('_npm adds node_modules', function () {
       _timeout({ this: this, sec: 30 }) // give it time to build the node modules
 
-      lambda._npmInstall(program, codeDirectory, (err, result) => {
-        assert.isNull(err)
+      return lambda._npmInstall(program, codeDirectory).then(() => {
         const contents = fs.readdirSync(codeDirectory)
         assert.include(contents, 'node_modules')
-        done()
       })
     })
   })
@@ -507,19 +503,18 @@ describe('lib/main', function () {
     })
   })
 
-  describe('_zip', function () {
+  describe('_zip', () => {
     beforeEach(function (done) {
       _timeout({ this: this, sec: 30 }) // give it time to build the node modules
       lambda._cleanDirectory(codeDirectory).then(() => {
-        lambda._fileCopy(program, '.', codeDirectory, true, function (err) {
+        lambda._fileCopy(program, '.', codeDirectory, true, (err) => {
           if (err) {
             return done(err)
           }
-          lambda._npmInstall(program, codeDirectory, function (err) {
-            if (err) {
-              return done(err)
-            }
+          lambda._npmInstall(program, codeDirectory).then(() => {
             done()
+          }).catch((err) => {
+            done(err)
           })
         })
       }).catch((err) => {
