@@ -436,69 +436,71 @@ describe('lib/main', function () {
     })
   })
 
-  describe('_postInstallScript', function () {
+  describe('_postInstallScript', () => {
     if (process.platform === 'win32') {
       return it('`_postInstallScript` test does not support Windows.')
     }
 
     const postInstallScriptPath = path.join(codeDirectory, 'post_install.sh')
-    var hook
+    let hook
     /**
      * Capture console output
      */
     function captureStream (stream) {
-      var oldWrite = stream.write
-      var buf = ''
+      let oldWrite = stream.write
+      let buf = ''
       stream.write = function (chunk, encoding, callback) {
         buf += chunk.toString() // chunk is a String or Buffer
         oldWrite.apply(stream, arguments)
       }
 
       return {
-        unhook: function unhook () {
+        unhook: () => {
           stream.write = oldWrite
         },
-        captured: function () {
-          return buf
-        }
+        captured: () => buf
       }
     }
-    beforeEach(function () {
+    beforeEach(() => {
       hook = captureStream(process.stdout)
     })
-    afterEach(function () {
+    afterEach(() => {
       hook.unhook()
       if (fs.existsSync(postInstallScriptPath)) {
         fs.unlinkSync(postInstallScriptPath)
       }
     })
 
-    it('should not throw any errors if no script', function (done) {
-      lambda._postInstallScript(program, codeDirectory, function (err) {
-        assert.isNull(err)
-        done()
+    it('should not throw any errors if no script', () => {
+      return lambda._postInstallScript(program, codeDirectory).then((dummy) => {
+        assert.isUndefined(dummy)
       })
     })
 
-    it('should throw any errors if script fails', function (done) {
+    it('should throw any errors if script fails', () => {
       fs.writeFileSync(postInstallScriptPath, '___fails___')
-      lambda._postInstallScript(program, codeDirectory, function (err) {
+      return lambda._postInstallScript(program, codeDirectory).then((dummy) => {
+        assert.isUndefined(dummy)
+      }).catch((err) => {
         assert.instanceOf(err, Error)
         assert.match(err.message, /^Error: Command failed:/)
-        done()
       })
     })
 
-    it('running script gives expected output', function (done) {
-      fs.writeFileSync(postInstallScriptPath, fs.readFileSync(path.join('test', 'post_install.sh')))
+    it('running script gives expected output', () => {
+      fs.writeFileSync(
+        postInstallScriptPath,
+        fs.readFileSync(path.join('test', 'post_install.sh'))
+      )
       fs.chmodSync(path.join(codeDirectory, 'post_install.sh'), '755')
-      lambda._postInstallScript(program, codeDirectory, function (err) {
+      return lambda._postInstallScript(program, codeDirectory).then((dummy) => {
+        assert.isUndefined(dummy)
+      }).catch((err) => {
         assert.isNull(err)
         assert.equal(
           `=> Running post install script post_install.sh\n\t\tYour environment is ${program.environment}\n`,
           hook.captured()
         )
-        done()
       })
     })
   })
