@@ -2,38 +2,6 @@
 
 'use strict'
 
-// Temporary correspondence in case usage is not displayed correctly
-// due to `commander` bug.
-// It seems that development of the `commander` project is also stopped
-const commandTypes = [
-  'deploy',
-  'package',
-  'zip',
-  'run',
-  'execute',
-  'setup'
-]
-if (commandTypes.indexOf(process.argv[2]) === -1) {
-  console.log(
-`
-  Usage: node-lambda [options] [command]
-
-
-  Commands:
-
-    deploy [options]        Deploy your application to Amazon Lambda
-    package|zip [options]   Create zipped package for Amazon Lambda deployment
-    run|execute [options]   Run your Amazon Lambda application locally
-    setup [options]         Sets up the .env file.
-
-  Options:
-
-    -h, --help  output usage information
-`
-  )
-  process.exit(1)
-}
-
 const path = require('path')
 const dotenv = require('dotenv')
 const lambda = require(path.join(__dirname, '..', 'lib', 'main.js'))
@@ -173,3 +141,7 @@ program
   })
 
 program.parse(process.argv)
+
+if (!process.argv.slice(2).length) {
+  program.outputHelp()
+}
