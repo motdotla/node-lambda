@@ -436,69 +436,71 @@ describe('lib/main', function () {
     })
   })
 
-  describe('_postInstallScript', function () {
+  describe('_postInstallScript', () => {
     if (process.platform === 'win32') {
       return it('`_postInstallScript` test does not support Windows.')
     }
 
     const postInstallScriptPath = path.join(codeDirectory, 'post_install.sh')
-    var hook
+    let hook
     /**
      * Capture console output
      */
     function captureStream (stream) {
-      var oldWrite = stream.write
-      var buf = ''
+      let oldWrite = stream.write
+      let buf = ''
       stream.write = function (chunk, encoding, callback) {
         buf += chunk.toString() // chunk is a String or Buffer
         oldWrite.apply(stream, arguments)
       }
 
       return {
-        unhook: function unhook () {
+        unhook: () => {
           stream.write = oldWrite
         },
-        captured: function () {
-          return buf
-        }
+        captured: () => buf
       }
     }
-    beforeEach(function () {
+    beforeEach(() => {
       hook = captureStream(process.stdout)
     })
-    afterEach(function () {
+    afterEach(() => {
       hook.unhook()
       if (fs.existsSync(postInstallScriptPath)) {
         fs.unlinkSync(postInstallScriptPath)
       }
     })
 
-    it('should not throw any errors if no script', function (done) {
-      lambda._postInstallScript(program, codeDirectory, function (err) {
-        assert.isNull(err)
-        done()
+    it('should not throw any errors if no script', () => {
+      return lambda._postInstallScript(program, codeDirectory).then((dummy) => {
+        assert.isUndefined(dummy)
       })
     })
 
-    it('should throw any errors if script fails', function (done) {
+    it('should throw any errors if script fails', () => {
       fs.writeFileSync(postInstallScriptPath, '___fails___')
-      lambda._postInstallScript(program, codeDirectory, function (err) {
+      return lambda._postInstallScript(program, codeDirectory).then((dummy) => {
+        assert.isUndefined(dummy)
+      }).catch((err) => {
         assert.instanceOf(err, Error)
         assert.match(err.message, /^Error: Command failed:/)
-        done()
       })
     })
 
-    it('running script gives expected output', function (done) {
-      fs.writeFileSync(postInstallScriptPath, fs.readFileSync(path.join('test', 'post_install.sh')))
+    it('running script gives expected output', () => {
+      fs.writeFileSync(
+        postInstallScriptPath,
+        fs.readFileSync(path.join('test', 'post_install.sh'))
+      )
       fs.chmodSync(path.join(codeDirectory, 'post_install.sh'), '755')
-      lambda._postInstallScript(program, codeDirectory, function (err) {
+      return lambda._postInstallScript(program, codeDirectory).then((dummy) => {
+        assert.isUndefined(dummy)
+      }).catch((err) => {
         assert.isNull(err)
         assert.equal(
           `=> Running post install script post_install.sh\n\t\tYour environment is ${program.environment}\n`,
           hook.captured()
         )
-        done()
       })
     })
   })
@@ -508,9 +510,7 @@ describe('lib/main', function () {
       _timeout({ this: this, sec: 30 }) // give it time to build the node modules
       lambda._cleanDirectory(codeDirectory).then(() => {
         lambda._fileCopy(program, '.', codeDirectory, true, (err) => {
-          if (err) {
-            return done(err)
-          }
+          if (err) return done(err)
           lambda._npmInstall(program, codeDirectory).then(() => {
             done()
           }).catch((err) => {
@@ -522,17 +522,15 @@ describe('lib/main', function () {
       })
     })
 
-    it('zips the file and has an index.js file', function (done) {
+    it('zips the file and has an index.js file', function () {
       _timeout({ this: this, sec: 30 }) // give it time to zip
 
-      lambda._zip(program, codeDirectory, function (err, data) {
-        assert.isNull(err)
-        var archive = new Zip(data)
-        var contents = Object.keys(archive.files).map(function (k) {
+      return lambda._zip(program, codeDirectory).then((data) => {
+        const archive = new Zip(data)
+        const contents = Object.keys(archive.files).map((k) => {
           return archive.files[k].name.toString()
         })
         assert.include(contents, 'index.js')
-        done()
       })
     })
   })
@@ -586,26 +584,22 @@ describe('lib/main', function () {
     })
   })
 
-  describe('_readArchive', function () {
+  describe('_readArchive', () => {
     const testZipFile = path.join(os.tmpdir(), 'node-lambda-test.zip')
-    var bufferExpected = null
-    before(function (done) {
+    let bufferExpected = null
+    before(function () {
       _timeout({ this: this, sec: 30 }) // give it time to zip
 
-      lambda._zip(program, codeDirectory, function (err, data) {
-        assert.isNull(err)
+      return lambda._zip(program, codeDirectory).then((data) => {
         bufferExpected = data
         fs.writeFileSync(testZipFile, data)
-        done()
       })
     })
 
-    after(function () {
-      fs.unlinkSync(testZipFile)
-    })
+    after(() => fs.unlinkSync(testZipFile))
 
-    it('_readArchive fails (undefined)', function (done) {
-      lambda._readArchive(program, function (err, data) {
+    it('_readArchive fails (undefined)', (done) => {
+      lambda._readArchive(program, (err, data) => {
         assert.isUndefined(data)
         assert.instanceOf(err, Error)
         assert.equal(err.message, 'No such Zipfile [undefined]')
@@ -613,10 +607,10 @@ describe('lib/main', function () {
       })
     })
 
-    it('_readArchive fails (does not exists file)', function (done) {
+    it('_readArchive fails (does not exists file)', (done) => {
       const filePath = path.join(path.resolve('/aaaa'), 'bbbb')
       const _program = Object.assign({ deployZipfile: filePath }, program)
-      lambda._readArchive(_program, function (err, data) {
+      lambda._readArchive(_program, (err, data) => {
         assert.isUndefined(data)
         assert.instanceOf(err, Error)
         assert.equal(err.message, `No such Zipfile [${filePath}]`)
@@ -624,9 +618,9 @@ describe('lib/main', function () {
       })
     })
 
-    it('_readArchive reads the contents of the zipfile', function (done) {
+    it('_readArchive reads the contents of the zipfile', (done) => {
       const _program = Object.assign({ deployZipfile: testZipFile }, program)
-      lambda._readArchive(_program, function (err, data) {
+      lambda._readArchive(_program, (err, data) => {
         assert.isNull(err)
         assert.deepEqual(data, bufferExpected)
         done()
@@ -651,9 +645,9 @@ describe('lib/main', function () {
         })
       })
 
-      it('`deployZipfile` is a valid value._archive reads the contents of the zipfile', function (done) {
+      it('`deployZipfile` is a valid value._archive reads the contents of the zipfile', (done) => {
         const _program = Object.assign({ deployZipfile: testZipFile }, program)
-        lambda._archive(_program, function (err, data) {
+        lambda._archive(_program, (err, data) => {
           assert.isNull(err)
           assert.deepEqual(data, bufferExpected)
           done()
