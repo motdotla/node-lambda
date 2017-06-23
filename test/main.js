@@ -251,16 +251,14 @@ describe('lib/main', function () {
       })
     })
 
-    it('`codeDirectory` is empty. (For `codeDirectory` where the file was present)', (done) => {
-      lambda._fileCopy(program, '.', codeDirectory, true, (err, result) => {
-        assert.isNull(err)
+    it('`codeDirectory` is empty. (For `codeDirectory` where the file was present)', () => {
+      return lambda._fileCopy(program, '.', codeDirectory, true).then(() => {
         const contents = fs.readdirSync(codeDirectory)
         assert.isTrue(contents.length > 0)
-        lambda._cleanDirectory(codeDirectory).then(() => {
+        return lambda._cleanDirectory(codeDirectory).then(() => {
           assert.isTrue(fs.existsSync(codeDirectory))
           const contents = fs.readdirSync(codeDirectory)
           assert.equal(contents.length, 0)
-          done()
         })
       })
     })
@@ -283,9 +281,8 @@ describe('lib/main', function () {
 
     beforeEach(() => lambda._cleanDirectory(codeDirectory))
 
-    it('_fileCopy an index.js as well as other files', (done) => {
-      lambda._fileCopy(program, '.', codeDirectory, true, (err, result) => {
-        assert.isNull(err)
+    it('_fileCopy an index.js as well as other files', () => {
+      return lambda._fileCopy(program, '.', codeDirectory, true).then(() => {
         const contents = fs.readdirSync(codeDirectory);
         ['index.js', 'package.json'].forEach((needle) => {
           assert.include(contents, needle, `Target: "${needle}"`)
@@ -293,7 +290,6 @@ describe('lib/main', function () {
         ['node_modules', 'build'].forEach((needle) => {
           assert.notInclude(contents, needle, `Target: "${needle}"`)
         })
-        done()
       })
     })
 
@@ -311,20 +307,17 @@ describe('lib/main', function () {
         done()
       })
 
-      it('_fileCopy an index.js as well as other files', (done) => {
-        lambda._fileCopy(program, '.', codeDirectory, true, (err, result) => {
-          assert.isNull(err)
+      it('_fileCopy an index.js as well as other files', () => {
+        return lambda._fileCopy(program, '.', codeDirectory, true).then(() => {
           const contents = fs.readdirSync(codeDirectory);
           ['index.js', 'package.json'].forEach((needle) => {
             assert.include(contents, needle, `Target: "${needle}"`)
           })
-          done()
         })
       })
 
-      it('_fileCopy excludes files matching excludeGlobs', (done) => {
-        lambda._fileCopy(program, '.', codeDirectory, true, (err, result) => {
-          assert.isNull(err)
+      it('_fileCopy excludes files matching excludeGlobs', () => {
+        return lambda._fileCopy(program, '.', codeDirectory, true).then(() => {
           let contents = fs.readdirSync(codeDirectory);
           ['__unittest', 'fuga'].forEach((needle) => {
             assert.include(contents, needle, `Target: "${needle}"`)
@@ -343,21 +336,18 @@ describe('lib/main', function () {
 
           contents = fs.readdirSync(path.join(codeDirectory, '__unittest', 'hoge'))
           assert.equal(contents.length, 0, 'directory:__unittest/hoge is empty')
-          done()
         })
       })
 
-      it('_fileCopy should not exclude package.json, even when excluded by excludeGlobs', (done) => {
+      it('_fileCopy should not exclude package.json, even when excluded by excludeGlobs', () => {
         program.excludeGlobs = '*.json'
-        lambda._fileCopy(program, '.', codeDirectory, true, (err, result) => {
-          assert.isNull(err)
+        return lambda._fileCopy(program, '.', codeDirectory, true).then(() => {
           const contents = fs.readdirSync(codeDirectory)
           assert.include(contents, 'package.json')
-          done()
         })
       })
 
-      it('_fileCopy should not include package.json when --prebuiltDirectory is set', (done) => {
+      it('_fileCopy should not include package.json when --prebuiltDirectory is set', () => {
         const buildDir = '.build_' + Date.now()
         after(() => fs.removeSync(buildDir))
 
@@ -367,28 +357,19 @@ describe('lib/main', function () {
 
         program.excludeGlobs = '*.json'
         program.prebuiltDirectory = buildDir
-        lambda._fileCopy(program, buildDir, codeDirectory, true, (err, result) => {
-          assert.isNull(err)
+        return lambda._fileCopy(program, buildDir, codeDirectory, true).then(() => {
           const contents = fs.readdirSync(codeDirectory)
           assert.notInclude(contents, 'package.json', 'Target: "packages.json"')
           assert.include(contents, 'testa', 'Target: "testa"')
-          done()
         })
       })
     })
   })
 
   describe('_npmInstall', () => {
-    beforeEach((done) => {
-      lambda._cleanDirectory(codeDirectory).then(() => {
-        lambda._fileCopy(program, '.', codeDirectory, true, (err) => {
-          if (err) {
-            return done(err)
-          }
-          done()
-        })
-      }).catch((err) => {
-        done(err)
+    beforeEach(() => {
+      return lambda._cleanDirectory(codeDirectory).then(() => {
+        return lambda._fileCopy(program, '.', codeDirectory, true)
       })
     })
 
@@ -403,21 +384,14 @@ describe('lib/main', function () {
   })
 
   describe('_npmInstall (When codeDirectory contains characters to be escaped)', () => {
-    beforeEach((done) => {
+    beforeEach(() => {
       // Since '\' can not be included in the file or directory name in Windows
       const directoryName = process.platform === 'win32'
         ? 'hoge fuga\' piyo'
         : 'hoge "fuga\' \\piyo'
       codeDirectory = path.join(os.tmpdir(), directoryName)
-      lambda._cleanDirectory(codeDirectory).then(() => {
-        lambda._fileCopy(program, '.', codeDirectory, true, (err) => {
-          if (err) {
-            return done(err)
-          }
-          done()
-        })
-      }).catch((err) => {
-        done(err)
+      return lambda._cleanDirectory(codeDirectory).then(() => {
+        return lambda._fileCopy(program, '.', codeDirectory, true)
       })
     })
 
@@ -506,19 +480,14 @@ describe('lib/main', function () {
   })
 
   describe('_zip', () => {
-    beforeEach(function (done) {
+    beforeEach(function () {
       _timeout({ this: this, sec: 30 }) // give it time to build the node modules
-      lambda._cleanDirectory(codeDirectory).then(() => {
-        lambda._fileCopy(program, '.', codeDirectory, true, (err) => {
-          if (err) return done(err)
-          lambda._npmInstall(program, codeDirectory).then(() => {
-            done()
-          }).catch((err) => {
-            done(err)
-          })
-        })
-      }).catch((err) => {
-        done(err)
+      return Promise.resolve().then(() => {
+        return lambda._cleanDirectory(codeDirectory)
+      }).then(() => {
+        return lambda._fileCopy(program, '.', codeDirectory, true)
+      }).then(() => {
+        return lambda._npmInstall(program, codeDirectory)
       })
     })
 
