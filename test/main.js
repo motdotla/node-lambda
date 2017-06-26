@@ -522,20 +522,33 @@ describe('lib/main', function () {
       })
     })
 
-    it('zips the file and has an index.js file', function () {
+    it('Compress the file. `index.js` and `bin/node-lambda` are included and the permission is also preserved.', function () {
       _timeout({ this: this, sec: 30 }) // give it time to zip
 
       return lambda._zip(program, codeDirectory).then((data) => {
+        const indexJsStat = fs.lstatSync('index.js')
+        const binNodeLambdaStat = fs.lstatSync(path.join('bin', 'node-lambda'))
+
         const archive = new Zip(data)
-        const contents = Object.keys(archive.files).map((k) => {
-          return archive.files[k].name.toString()
-        })
-        assert.include(contents, 'index.js')
+        assert.include(archive.files['index.js'].name, 'index.js')
+        assert.include(archive.files['bin/node-lambda'].name, 'bin/node-lambda')
+
+        if (process.platform !== 'win32') {
+          assert.equal(
+            archive.files['index.js'].unixPermissions,
+            indexJsStat.mode
+          )
+          assert.equal(
+            archive.files['bin/node-lambda'].unixPermissions,
+            binNodeLambdaStat.mode
+          )
+        }
       })
     })
   })
 
   describe('_archive', () => {
+    // archive.files's name is a slash delimiter regardless of platform.
     it('installs and zips with an index.js file and node_modules/aws-sdk', function (done) {
       _timeout({ this: this, sec: 30 }) // give it time to zip
 
@@ -546,17 +559,15 @@ describe('lib/main', function () {
           return archive.files[k].name.toString()
         })
         assert.include(contents, 'index.js')
-        assert.include(contents, path.join('node_modules', 'aws-sdk', 'lib', 'aws.js'))
+        assert.include(contents, 'node_modules/aws-sdk/lib/aws.js')
         done()
       })
     })
 
     it('packages a prebuilt module without installing', function (done) {
       _timeout({ this: this, sec: 30 }) // give it time to zip
-      var buildDir = '.build_' + Date.now()
-      after(function () {
-        fs.removeSync(buildDir)
-      })
+      let buildDir = '.build_' + Date.now()
+      after(() => fs.removeSync(buildDir))
 
       fs.mkdirSync(buildDir)
       fs.mkdirSync(path.join(buildDir, 'd'))
@@ -566,17 +577,17 @@ describe('lib/main', function () {
       fs.writeFileSync(path.join(buildDir, 'd', 'testb'), '...')
 
       program.prebuiltDirectory = buildDir
-      lambda._archive(program, function (err, data) {
+      lambda._archive(program, (err, data) => {
         assert.isNull(err)
-        var archive = new Zip(data)
-        var contents = Object.keys(archive.files).map(function (k) {
+        const archive = new Zip(data)
+        const contents = Object.keys(archive.files).map((k) => {
           return archive.files[k].name.toString()
         });
         [
           'testa',
-          path.join('d', 'testb'),
-          path.join('node_modules', 'a')
-        ].forEach(function (needle) {
+          'd/testb',
+          'node_modules/a'
+        ].forEach((needle) => {
           assert.include(contents, needle, `Target: "${needle}"`)
         })
         done()
@@ -640,7 +651,7 @@ describe('lib/main', function () {
             return archive.files[k].name.toString()
           })
           assert.include(contents, 'index.js')
-          assert.include(contents, path.join('node_modules', 'aws-sdk', 'lib', 'aws.js'))
+          assert.include(contents, 'node_modules/aws-sdk/lib/aws.js')
           done()
         })
       })
