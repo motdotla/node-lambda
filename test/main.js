@@ -528,17 +528,19 @@ describe('lib/main', function () {
       return lambda._zip(program, codeDirectory).then((data) => {
         const archive = new Zip(data)
         assert.include(archive.files['index.js'].name, 'index.js')
-        assert.equal(
-          archive.files['index.js'].unixPermissions.toString(8),
-          '100644'
-        )
-
         const binUuid = path.join('node_modules', 'uuid', 'bin', 'uuid')
         assert.include(archive.files[binUuid].name, binUuid)
-        assert.equal(
-          archive.files[binUuid].unixPermissions.toString(8),
-          '100755'
-        )
+
+        if (process.platform !== 'win32') {
+          assert.equal(
+            archive.files['index.js'].unixPermissions.toString(8),
+            '100644'
+          )
+          assert.equal(
+            archive.files[binUuid].unixPermissions.toString(8),
+            '100755'
+          )
+        }
       })
     })
   })
