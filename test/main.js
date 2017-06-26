@@ -563,10 +563,8 @@ describe('lib/main', function () {
 
     it('packages a prebuilt module without installing', function (done) {
       _timeout({ this: this, sec: 30 }) // give it time to zip
-      var buildDir = '.build_' + Date.now()
-      after(function () {
-        fs.removeSync(buildDir)
-      })
+      let buildDir = '.build_' + Date.now()
+      after(() => fs.removeSync(buildDir))
 
       fs.mkdirSync(buildDir)
       fs.mkdirSync(path.join(buildDir, 'd'))
@@ -576,10 +574,10 @@ describe('lib/main', function () {
       fs.writeFileSync(path.join(buildDir, 'd', 'testb'), '...')
 
       program.prebuiltDirectory = buildDir
-      lambda._archive(program, function (err, data) {
+      lambda._archive(program, (err, data) => {
         assert.isNull(err)
-        var archive = new Zip(data)
-        var contents = Object.keys(archive.files).map(function (k) {
+        const archive = new Zip(data)
+        const contents = Object.keys(archive.files).map((k) => {
           return archive.files[k].name.toString()
         });
         [
