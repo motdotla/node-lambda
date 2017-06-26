@@ -522,15 +522,23 @@ describe('lib/main', function () {
       })
     })
 
-    it('zips the file and has an index.js file', function () {
+    it('Compress the file. `index.js` and `bin/uuid` are included and the permission is also preserved.', function () {
       _timeout({ this: this, sec: 30 }) // give it time to zip
 
       return lambda._zip(program, codeDirectory).then((data) => {
         const archive = new Zip(data)
-        const contents = Object.keys(archive.files).map((k) => {
-          return archive.files[k].name.toString()
-        })
-        assert.include(contents, 'index.js')
+        assert.include(archive.files['index.js'].name, 'index.js')
+        assert.equal(
+          archive.files['index.js'].unixPermissions.toString(8),
+          '100644'
+        )
+
+        const binUuid = path.join('node_modules', 'uuid', 'bin', 'uuid')
+        assert.include(archive.files[binUuid].name, binUuid)
+        assert.equal(
+          archive.files[binUuid].unixPermissions.toString(8),
+          '100755'
+        )
       })
     })
   })
