@@ -528,8 +528,10 @@ describe('lib/main', function () {
       return lambda._zip(program, codeDirectory).then((data) => {
         const archive = new Zip(data)
         assert.include(archive.files['index.js'].name, 'index.js')
-        const binNodeLambda = path.join('bin', 'node-lambda')
-        assert.include(archive.files[binNodeLambda].name, binNodeLambda)
+        assert.include(
+          archive.files['bin/node-lambda'].name,
+          path.join('bin', 'node-lambda')
+        )
 
         if (process.platform !== 'win32') {
           assert.equal(
@@ -537,7 +539,7 @@ describe('lib/main', function () {
             '100644'
           )
           assert.equal(
-            archive.files[binNodeLambda].unixPermissions.toString(8),
+            archive.files['bin/node-lambda'].unixPermissions.toString(8),
             '100755'
           )
         }
