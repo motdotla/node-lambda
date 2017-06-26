@@ -522,14 +522,14 @@ describe('lib/main', function () {
       })
     })
 
-    it('Compress the file. `index.js` and `rimraf/bin.js` are included and the permission is also preserved.', function () {
+    it('Compress the file. `index.js` and `bin/node-lambda` are included and the permission is also preserved.', function () {
       _timeout({ this: this, sec: 30 }) // give it time to zip
 
       return lambda._zip(program, codeDirectory).then((data) => {
         const archive = new Zip(data)
         assert.include(archive.files['index.js'].name, 'index.js')
-        const rimrafBin = path.join('node_modules', 'rimraf', 'bin.js')
-        assert.include(archive.files[rimrafBin].name, rimrafBin)
+        const binNodeLambda = path.join('bin', 'node-lambda')
+        assert.include(archive.files[binNodeLambda].name, binNodeLambda)
 
         if (process.platform !== 'win32') {
           assert.equal(
@@ -537,7 +537,7 @@ describe('lib/main', function () {
             '100644'
           )
           assert.equal(
-            archive.files[rimrafBin].unixPermissions.toString(8),
+            archive.files[binNodeLambda].unixPermissions.toString(8),
             '100755'
           )
         }
