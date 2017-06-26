@@ -545,6 +545,7 @@ describe('lib/main', function () {
   })
 
   describe('_archive', () => {
+    // archive.files's name is a slash delimiter regardless of platform.
     it('installs and zips with an index.js file and node_modules/aws-sdk', function (done) {
       _timeout({ this: this, sec: 30 }) // give it time to zip
 
@@ -555,7 +556,7 @@ describe('lib/main', function () {
           return archive.files[k].name.toString()
         })
         assert.include(contents, 'index.js')
-        assert.include(contents, path.join('node_modules', 'aws-sdk', 'lib', 'aws.js'))
+        assert.include(contents, 'node_modules/aws-sdk/lib/aws.js')
         done()
       })
     })
@@ -583,9 +584,9 @@ describe('lib/main', function () {
         });
         [
           'testa',
-          path.join('d', 'testb'),
-          path.join('node_modules', 'a')
-        ].forEach(function (needle) {
+          'd/testb',
+          'node_modules/a'
+        ].forEach((needle) => {
           assert.include(contents, needle, `Target: "${needle}"`)
         })
         done()
@@ -649,7 +650,7 @@ describe('lib/main', function () {
             return archive.files[k].name.toString()
           })
           assert.include(contents, 'index.js')
-          assert.include(contents, path.join('node_modules', 'aws-sdk', 'lib', 'aws.js'))
+          assert.include(contents, 'node_modules/aws-sdk/lib/aws.js')
           done()
         })
       })
