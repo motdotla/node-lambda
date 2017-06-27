@@ -135,6 +135,18 @@ describe('lib/main', function () {
     })
   })
 
+  describe('_runHandler', () => {
+    it('context methods is a function', (done) => {
+      const handler = (event, context, callback) => {
+        assert.isFunction(context.succeed)
+        assert.isFunction(context.fail)
+        assert.isFunction(context.done)
+        done()
+      }
+      lambda._runHandler(handler, {}, program, {})
+    })
+  })
+
   describe('_params', function () {
     // http://docs.aws.amazon.com/lambda/latest/dg/API_CreateFunction.html#SSS-CreateFunction-request-FunctionName
     const functionNamePattern =
