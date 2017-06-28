@@ -530,22 +530,20 @@ describe('lib/main', function () {
 
   describe('_archive', () => {
     // archive.files's name is a slash delimiter regardless of platform.
-    it('installs and zips with an index.js file and node_modules/aws-sdk (It is also a test of `_buildAndArchive`)', function (done) {
+    it('installs and zips with an index.js file and node_modules/aws-sdk (It is also a test of `_buildAndArchive`)', function () {
       _timeout({ this: this, sec: 30 }) // give it time to zip
 
-      lambda._archive(program, (err, data) => {
-        assert.isNull(err)
+      return lambda._archive(program).then((data) => {
         const archive = new Zip(data)
         const contents = Object.keys(archive.files).map((k) => {
           return archive.files[k].name.toString()
         })
         assert.include(contents, 'index.js')
         assert.include(contents, 'node_modules/aws-sdk/lib/aws.js')
-        done()
       })
     })
 
-    it('packages a prebuilt module without installing (It is also a test of `_archivePrebuilt`)', function (done) {
+    it('packages a prebuilt module without installing (It is also a test of `_archivePrebuilt`)', function () {
       _timeout({ this: this, sec: 30 }) // give it time to zip
       let buildDir = '.build_' + Date.now()
       after(() => fs.removeSync(buildDir))
@@ -558,8 +556,7 @@ describe('lib/main', function () {
       fs.writeFileSync(path.join(buildDir, 'd', 'testb'), '...')
 
       program.prebuiltDirectory = buildDir
-      lambda._archive(program, (err, data) => {
-        assert.isNull(err)
+      return lambda._archive(program).then((data) => {
         const archive = new Zip(data)
         const contents = Object.keys(archive.files).map((k) => {
           return archive.files[k].name.toString()
@@ -571,7 +568,6 @@ describe('lib/main', function () {
         ].forEach((needle) => {
           assert.include(contents, needle, `Target: "${needle}"`)
         })
-        done()
       })
     })
   })
@@ -618,12 +614,11 @@ describe('lib/main', function () {
     })
 
     describe('If value is set in `deployZipfile`, _readArchive is executed in _archive', () => {
-      it('`deployZipfile` is a invalid value. Process from creation of zip file', function (done) {
+      it('`deployZipfile` is a invalid value. Process from creation of zip file', function () {
         const filePath = path.join(path.resolve('/aaaa'), 'bbbb')
         const _program = Object.assign({ deployZipfile: filePath }, program)
         _timeout({ this: this, sec: 30 }) // give it time to zip
-        lambda._archive(_program, (err, data) => {
-          assert.isNull(err)
+        return lambda._archive(_program).then((data) => {
           // same test as "installs and zips with an index.js file and node_modules/aws-sdk"
           const archive = new Zip(data)
           const contents = Object.keys(archive.files).map((k) => {
@@ -631,16 +626,13 @@ describe('lib/main', function () {
           })
           assert.include(contents, 'index.js')
           assert.include(contents, 'node_modules/aws-sdk/lib/aws.js')
-          done()
         })
       })
 
-      it('`deployZipfile` is a valid value._archive reads the contents of the zipfile', (done) => {
+      it('`deployZipfile` is a valid value._archive reads the contents of the zipfile', () => {
         const _program = Object.assign({ deployZipfile: testZipFile }, program)
-        lambda._archive(_program, (err, data) => {
-          assert.isNull(err)
+        return lambda._archive(_program).then((data) => {
           assert.deepEqual(data, bufferExpected)
-          done()
         })
       })
     })
