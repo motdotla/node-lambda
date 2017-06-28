@@ -530,7 +530,7 @@ describe('lib/main', function () {
 
   describe('_archive', () => {
     // archive.files's name is a slash delimiter regardless of platform.
-    it('installs and zips with an index.js file and node_modules/aws-sdk', function (done) {
+    it('installs and zips with an index.js file and node_modules/aws-sdk (It is also a test of `_buildAndArchive`)', function (done) {
       _timeout({ this: this, sec: 30 }) // give it time to zip
 
       lambda._archive(program, (err, data) => {
