@@ -800,6 +800,20 @@ describe('lib/main', function () {
     })
   })
 
+  describe('_listEventSourceMappings', () => {
+    it('simple test with mock', () => {
+      return lambda._listEventSourceMappings(
+        awsLambda,
+        { FunctionName: 'test-func' }
+      ).then((results) => {
+        assert.deepEqual(
+          results,
+          lambdaMockSettings.listEventSourceMappings.EventSourceMappings
+        )
+      })
+    })
+  })
+
   describe('_updateEventSources', () => {
     const eventSourcesJsonValue = {
       EventSourceMappings: [{
