@@ -545,7 +545,7 @@ describe('lib/main', function () {
       })
     })
 
-    it('packages a prebuilt module without installing', function (done) {
+    it('packages a prebuilt module without installing (It is also a test of `_archivePrebuilt`)', function (done) {
       _timeout({ this: this, sec: 30 }) // give it time to zip
       let buildDir = '.build_' + Date.now()
       after(() => fs.removeSync(buildDir))
