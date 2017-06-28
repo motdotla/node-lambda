@@ -590,32 +590,30 @@ describe('lib/main', function () {
 
     after(() => fs.unlinkSync(testZipFile))
 
-    it('_readArchive fails (undefined)', (done) => {
-      lambda._readArchive(program, (err, data) => {
+    it('_readArchive fails (undefined)', () => {
+      return lambda._readArchive(program).then((data) => {
         assert.isUndefined(data)
+      }).catch((err) => {
         assert.instanceOf(err, Error)
         assert.equal(err.message, 'No such Zipfile [undefined]')
-        done()
       })
     })
 
-    it('_readArchive fails (does not exists file)', (done) => {
+    it('_readArchive fails (does not exists file)', () => {
       const filePath = path.join(path.resolve('/aaaa'), 'bbbb')
       const _program = Object.assign({ deployZipfile: filePath }, program)
-      lambda._readArchive(_program, (err, data) => {
+      return lambda._readArchive(_program).then((data) => {
         assert.isUndefined(data)
+      }).catch((err) => {
         assert.instanceOf(err, Error)
         assert.equal(err.message, `No such Zipfile [${filePath}]`)
-        done()
       })
     })
 
-    it('_readArchive reads the contents of the zipfile', (done) => {
+    it('_readArchive reads the contents of the zipfile', () => {
       const _program = Object.assign({ deployZipfile: testZipFile }, program)
-      lambda._readArchive(_program, (err, data) => {
-        assert.isNull(err)
+      return lambda._readArchive(_program).then((data) => {
         assert.deepEqual(data, bufferExpected)
-        done()
       })
     })
 
