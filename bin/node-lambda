@@ -43,7 +43,7 @@ const SRC_DIRECTORY = process.env.SRC_DIRECTORY || ''
 const DEPLOY_TIMEOUT = process.env.DEPLOY_TIMEOUT || 120000
 const DOCKER_IMAGE = process.env.DOCKER_IMAGE || ''
 const DEPLOY_ZIPFILE = process.env.DEPLOY_ZIPFILE || ''
-const AWS_DLQ_TARGET_ARN = (function () {
+const AWS_DLQ_TARGET_ARN = (() => {
   // You can clear the setting by passing an empty string
   // when executing updateFunctionConfiguration
   if (process.env.AWS_DLQ_TARGET_ARN !== undefined) {
@@ -93,9 +93,7 @@ program
   .option('-T, --deployTimeout [' + DEPLOY_TIMEOUT + ']', 'Deploy Timeout', DEPLOY_TIMEOUT)
   .option('-z, --deployZipfile [' + DEPLOY_ZIPFILE + ']', 'Deploy zipfile', DEPLOY_ZIPFILE)
   .option('-y, --proxy [' + PROXY + ']', 'Proxy server', PROXY)
-  .action(function (prg) {
-    lambda.deploy(prg)
-  })
+  .action((prg) => lambda.deploy(prg))
 
 program
   .command('package')
@@ -112,9 +110,7 @@ program
   .option('-f, --configFile [' + CONFIG_FILE + ']',
     'Path to file holding secret environment variables (e.g. "deploy.env")', CONFIG_FILE)
   .option('-D, --prebuiltDirectory [' + PREBUILT_DIRECTORY + ']', 'Prebuilt directory', PREBUILT_DIRECTORY)
-  .action(function (prg) {
-    lambda.package(prg)
-  })
+  .action((prg) => lambda.package(prg))
 
 program
   .command('run')
@@ -127,18 +123,14 @@ program
   .option('-f, --configFile [' + CONFIG_FILE + ']',
     'Path to file holding secret environment variables (e.g. "deploy.env")', CONFIG_FILE)
   .option('-x, --contextFile [' + CONTEXT_FILE + ']', 'Context JSON File', CONTEXT_FILE)
-  .action(function (prg) {
-    lambda.run(prg)
-  })
+  .action((prg) => lambda.run(prg))
 
 program
   .command('setup')
   .description('Sets up the .env file.')
   .option('-j, --eventFile [' + EVENT_FILE + ']', 'Event JSON File', EVENT_FILE)
   .option('-x, --contextFile [' + CONTEXT_FILE + ']', 'Context JSON File', CONTEXT_FILE)
-  .action(function (prg) {
-    lambda.setup(prg)
-  })
+  .action((prg) => lambda.setup(prg))
 
 program.parse(process.argv)
 
