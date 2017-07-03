@@ -152,28 +152,28 @@ describe('lib/main', function () {
     const functionNamePattern =
       /(arn:aws:lambda:)?([a-z]{2}-[a-z]+-\d{1}:)?(\d{12}:)?(function:)?([a-zA-Z0-9-_]+)(:(\$LATEST|[a-zA-Z0-9-_]+))?/
     it('appends environment to original functionName', function () {
-      var params = lambda._params(program)
+      const params = lambda._params(program)
       assert.equal(params.FunctionName, '___node-lambda-development')
       assert.match(params.FunctionName, functionNamePattern)
     })
 
     it('appends environment to original functionName (production)', function () {
       program.environment = 'production'
-      var params = lambda._params(program)
+      const params = lambda._params(program)
       assert.equal(params.FunctionName, '___node-lambda-production')
       assert.match(params.FunctionName, functionNamePattern)
     })
 
     it('appends version to original functionName', function () {
       program.lambdaVersion = '2015-02-01'
-      var params = lambda._params(program)
+      const params = lambda._params(program)
       assert.equal(params.FunctionName, '___node-lambda-development-2015-02-01')
       assert.match(params.FunctionName, functionNamePattern)
     })
 
     it('appends version to original functionName (value not allowed by AWS)', function () {
       program.lambdaVersion = '2015.02.01'
-      var params = lambda._params(program)
+      const params = lambda._params(program)
       assert.equal(params.FunctionName, '___node-lambda-development-2015_02_01')
       assert.match(params.FunctionName, functionNamePattern)
     })
@@ -181,7 +181,7 @@ describe('lib/main', function () {
     it('appends VpcConfig to params when vpc params set', function () {
       program.vpcSubnets = 'subnet-00000000,subnet-00000001,subnet-00000002'
       program.vpcSecurityGroups = 'sg-00000000,sg-00000001,sg-00000002'
-      var params = lambda._params(program)
+      const params = lambda._params(program)
       assert.equal(params.VpcConfig.SubnetIds[0], program.vpcSubnets.split(',')[0])
       assert.equal(params.VpcConfig.SubnetIds[1], program.vpcSubnets.split(',')[1])
       assert.equal(params.VpcConfig.SubnetIds[2], program.vpcSubnets.split(',')[2])
@@ -191,7 +191,7 @@ describe('lib/main', function () {
     })
 
     it('does not append VpcConfig when params are not set', function () {
-      var params = lambda._params(program)
+      const params = lambda._params(program)
       assert.equal(Object.keys(params.VpcConfig.SubnetIds).length, 0)
       assert.equal(Object.keys(params.VpcConfig.SecurityGroupIds).length, 0)
     })
@@ -206,7 +206,7 @@ describe('lib/main', function () {
 
     it('does not append DeadLetterConfig when params are not set', function () {
       delete program.deadLetterConfigTargetArn
-      var params = lambda._params(program)
+      const params = lambda._params(program)
       assert.isNull(params.DeadLetterConfig.TargetArn)
     })
 
@@ -236,19 +236,19 @@ describe('lib/main', function () {
 
       it('adds variables when configFile param is set', function () {
         program.configFile = 'tmp.env'
-        var params = lambda._params(program)
+        const params = lambda._params(program)
         assert.equal(params.Environment.Variables['FOO'], 'bar')
         assert.equal(params.Environment.Variables['BAZ'], 'bing')
       })
 
       it('when configFile param is set but it is an empty file', function () {
         program.configFile = 'empty.env'
-        var params = lambda._params(program)
+        const params = lambda._params(program)
         assert.equal(Object.keys(params.Environment.Variables).length, 0)
       })
 
       it('does not add when configFile param is not set', function () {
-        var params = lambda._params(program)
+        const params = lambda._params(program)
         assert.isNull(params.Environment.Variables)
       })
     })
