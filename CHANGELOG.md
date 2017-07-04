@@ -127,17 +127,17 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [0.9.0] - 2017-04-13
 ### Features
-- Add tests for _readArchive [#213](https://github.com/motdotla/node-lambda/pull/213)
+- Add tests for `_readArchive` [#213](https://github.com/motdotla/node-lambda/pull/213)
 - Add tests for event_sources.json [#214](https://github.com/motdotla/node-lambda/pull/214)
 - Add tests for DeadLetterConfig [#215](https://github.com/motdotla/node-lambda/pull/215)
-- Add _readArchive tests called in _archive [#216](https://github.com/motdotla/node-lambda/pull/216)
+- Add `_readArchive` tests called in `_archive` [#216](https://github.com/motdotla/node-lambda/pull/216)
 - modify badge from png to svg [#227](https://github.com/motdotla/node-lambda/pull/227)
 - ScheduleEvents [#228](https://github.com/motdotla/node-lambda/pull/228)
 
 ### Bugfixes
 - Bugfix InvalidParameterValueException is given when createFunction [#209](https://github.com/motdotla/node-lambda/pull/209)
 - Clean unnecessary `else` [#217](https://github.com/motdotla/node-lambda/pull/217)
-- Refactor _eventSourceList [#218](https://github.com/motdotla/node-lambda/pull/218)
+- Refactor `_eventSourceList` [#218](https://github.com/motdotla/node-lambda/pull/218)
 - Clean deploy function [#220](https://github.com/motdotla/node-lambda/pull/220)
 - Fix default value of params.Environment.Variables is null [#221](https://github.com/motdotla/node-lambda/pull/221)
 - Fix to use authenticated `aws` object in main.js [#225](https://github.com/motdotla/node-lambda/pull/225)
@@ -194,7 +194,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Refactored, improved error handling [#295](https://github.com/motdotla/node-lambda/pull/295)
 - Remove semicolon (Automatic update with `standard --fix`) [#298](https://github.com/motdotla/node-lambda/pull/298)
 - Adopted "JavaScript Standard Style" as coding style [#299](https://github.com/motdotla/node-lambda/pull/299)
-- Replace async.js in _updateScheduleEvents with Promise [#302](https://github.com/motdotla/node-lambda/pull/302)
+- Replace async.js in `_updateScheduleEvents` with Promise [#302](https://github.com/motdotla/node-lambda/pull/302)
 - Modify from `exec` to `execFile` with `_npmInstall` [#303](https://github.com/motdotla/node-lambda/pull/303)
 - Automated NPM deploys (on tags) [#304](https://github.com/motdotla/node-lambda/pull/304)
 - Add package-lock.json [#305](https://github.com/motdotla/node-lambda/pull/305)
@@ -205,7 +205,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Modify to use isArray [#312](https://github.com/motdotla/node-lambda/pull/312)
 - Modify execution of multiple events to synchronous processing [#313](https://github.com/motdotla/node-lambda/pull/313)
 - Fix to make `bin/node-lambda` conform to JavaScript Standard Style [#315](https://github.com/motdotla/node-lambda/pull/315)
-- Replace asyncjs of _updateEventSources with Promise [#316](https://github.com/motdotla/node-lambda/pull/316)
+- Replace asyncjs of `_updateEventSources` with Promise [#316](https://github.com/motdotla/node-lambda/pull/316)
 - Replace async.js of deploy with Promise [#319](https://github.com/motdotla/node-lambda/pull/319)
 - Modified the function used in `deploy` to return Promise [#320](https://github.com/motdotla/node-lambda/pull/320)
 - Modify main process of deploy to another function [#323](https://github.com/motdotla/node-lambda/pull/323)
@@ -220,3 +220,23 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Refactoring and unnecessary package removal [#307](https://github.com/motdotla/node-lambda/pull/307)
 - Modify `var` of global variable to `const` [#317](https://github.com/motdotla/node-lambda/pull/317)
 - Remove Hoek [#318](https://github.com/motdotla/node-lambda/pull/318)
+
+## [0.11.1] - 2017-07-04
+### Features
+- Improve deploy process with Promise [#327](https://github.com/motdotla/node-lambda/pull/327)
+- Refactoring `_cleanDirectory` [#330](https://github.com/motdotla/node-lambda/pull/330)
+- Refactoring `_npmInstall` [#331](https://github.com/motdotla/node-lambda/pull/331)
+- Replace callback with Promise [#332](https://github.com/motdotla/node-lambda/pull/332)
+- Upgrade commander.js [#334](https://github.com/motdotla/node-lambda/pull/332)
+- Refactoring `_fileCopy` [#336](https://github.com/motdotla/node-lambda/pull/336)
+- Add simple context method [#337](https://github.com/motdotla/node-lambda/pull/337)
+- Refactoring `_archive` [#338](https://github.com/motdotla/node-lambda/pull/338)
+- Refactoring `_listEventSourceMappings` [#339](https://github.com/motdotla/node-lambda/pull/339)
+- Replace `var` with `const` [#341](https://github.com/motdotla/node-lambda/pull/341)
+- Replace with arrow function [#342](https://github.com/motdotla/node-lambda/pull/342)
+
+### Bugfixes
+- Modify file used for test [#326](https://github.com/motdotla/node-lambda/pull/326)
+- Update package-lock.json [#328](https://github.com/motdotla/node-lambda/pull/328)
+- Remove `_rsync` [#329](https://github.com/motdotla/node-lambda/pull/329)
+- Bugfixed that mode of file changes when zip is created [#335](https://github.com/motdotla/node-lambda/pull/335)
