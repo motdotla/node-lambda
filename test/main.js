@@ -125,12 +125,12 @@ describe('lib/main', function () {
     program = Object.assign({}, originalProgram) // clone
   })
 
-  it('version should be set', function () {
+  it('version should be set', () => {
     assert.equal(lambda.version, '0.11.0')
   })
 
-  describe('_codeDirectory', function () {
-    it('.lambda in the current directory', function () {
+  describe('_codeDirectory', () => {
+    it('.lambda in the current directory', () => {
       assert.equal(lambda._codeDirectory(), path.resolve('.', '.lambda'))
     })
   })
@@ -147,38 +147,38 @@ describe('lib/main', function () {
     })
   })
 
-  describe('_params', function () {
+  describe('_params', () => {
     // http://docs.aws.amazon.com/lambda/latest/dg/API_CreateFunction.html#SSS-CreateFunction-request-FunctionName
     const functionNamePattern =
       /(arn:aws:lambda:)?([a-z]{2}-[a-z]+-\d{1}:)?(\d{12}:)?(function:)?([a-zA-Z0-9-_]+)(:(\$LATEST|[a-zA-Z0-9-_]+))?/
-    it('appends environment to original functionName', function () {
+    it('appends environment to original functionName', () => {
       const params = lambda._params(program)
       assert.equal(params.FunctionName, '___node-lambda-development')
       assert.match(params.FunctionName, functionNamePattern)
     })
 
-    it('appends environment to original functionName (production)', function () {
+    it('appends environment to original functionName (production)', () => {
       program.environment = 'production'
       const params = lambda._params(program)
       assert.equal(params.FunctionName, '___node-lambda-production')
       assert.match(params.FunctionName, functionNamePattern)
     })
 
-    it('appends version to original functionName', function () {
+    it('appends version to original functionName', () => {
       program.lambdaVersion = '2015-02-01'
       const params = lambda._params(program)
       assert.equal(params.FunctionName, '___node-lambda-development-2015-02-01')
       assert.match(params.FunctionName, functionNamePattern)
     })
 
-    it('appends version to original functionName (value not allowed by AWS)', function () {
+    it('appends version to original functionName (value not allowed by AWS)', () => {
       program.lambdaVersion = '2015.02.01'
       const params = lambda._params(program)
       assert.equal(params.FunctionName, '___node-lambda-development-2015_02_01')
       assert.match(params.FunctionName, functionNamePattern)
     })
 
-    it('appends VpcConfig to params when vpc params set', function () {
+    it('appends VpcConfig to params when vpc params set', () => {
       program.vpcSubnets = 'subnet-00000000,subnet-00000001,subnet-00000002'
       program.vpcSecurityGroups = 'sg-00000000,sg-00000001,sg-00000002'
       const params = lambda._params(program)
@@ -190,64 +190,64 @@ describe('lib/main', function () {
       assert.equal(params.VpcConfig.SecurityGroupIds[2], program.vpcSecurityGroups.split(',')[2])
     })
 
-    it('does not append VpcConfig when params are not set', function () {
+    it('does not append VpcConfig when params are not set', () => {
       const params = lambda._params(program)
       assert.equal(Object.keys(params.VpcConfig.SubnetIds).length, 0)
       assert.equal(Object.keys(params.VpcConfig.SecurityGroupIds).length, 0)
     })
 
-    it('appends DeadLetterConfig to params when DLQ params set', function () {
-      ['', 'arn:aws:sqs:test'].forEach(function (v) {
+    it('appends DeadLetterConfig to params when DLQ params set', () => {
+      ['', 'arn:aws:sqs:test'].forEach((v) => {
         program.deadLetterConfigTargetArn = v
         const params = lambda._params(program)
         assert.equal(params.DeadLetterConfig.TargetArn, v, v)
       })
     })
 
-    it('does not append DeadLetterConfig when params are not set', function () {
+    it('does not append DeadLetterConfig when params are not set', () => {
       delete program.deadLetterConfigTargetArn
       const params = lambda._params(program)
       assert.isNull(params.DeadLetterConfig.TargetArn)
     })
 
-    it('appends TracingConfig to params when params set', function () {
+    it('appends TracingConfig to params when params set', () => {
       program.tracingConfig = 'Active'
       const params = lambda._params(program)
       assert.equal(params.TracingConfig.Mode, 'Active')
     })
 
-    it('does not append TracingConfig when params are not set', function () {
+    it('does not append TracingConfig when params are not set', () => {
       program.tracingConfig = ''
       const params = lambda._params(program)
       assert.isNull(params.TracingConfig.Mode)
     })
 
-    describe('configFile', function () {
-      beforeEach(function () {
+    describe('configFile', () => {
+      beforeEach(() => {
         // Prep...
         fs.writeFileSync('tmp.env', 'FOO=bar\nBAZ=bing\n')
         fs.writeFileSync('empty.env', '')
       })
 
-      afterEach(function () {
+      afterEach(() => {
         fs.unlinkSync('tmp.env')
         fs.unlinkSync('empty.env')
       })
 
-      it('adds variables when configFile param is set', function () {
+      it('adds variables when configFile param is set', () => {
         program.configFile = 'tmp.env'
         const params = lambda._params(program)
         assert.equal(params.Environment.Variables['FOO'], 'bar')
         assert.equal(params.Environment.Variables['BAZ'], 'bing')
       })
 
-      it('when configFile param is set but it is an empty file', function () {
+      it('when configFile param is set but it is an empty file', () => {
         program.configFile = 'empty.env'
         const params = lambda._params(program)
         assert.equal(Object.keys(params.Environment.Variables).length, 0)
       })
 
-      it('does not add when configFile param is not set', function () {
+      it('does not add when configFile param is not set', () => {
         const params = lambda._params(program)
         assert.isNull(params.Environment.Variables)
       })
@@ -432,7 +432,7 @@ describe('lib/main', function () {
     /**
      * Capture console output
      */
-    function captureStream (stream) {
+    const captureStream = function (stream) {
       let oldWrite = stream.write
       let buf = ''
       stream.write = function (chunk, encoding, callback) {
@@ -638,17 +638,15 @@ describe('lib/main', function () {
     })
   })
 
-  describe('environment variable injection at runtime', function () {
-    beforeEach(function () {
+  describe('environment variable injection at runtime', () => {
+    beforeEach(() => {
       // Prep...
       fs.writeFileSync('tmp.env', 'FOO=bar\nBAZ=bing\n')
     })
 
-    afterEach(function () {
-      fs.unlinkSync('tmp.env')
-    })
+    afterEach(() => fs.unlinkSync('tmp.env'))
 
-    it('should inject environment variables at runtime', function () {
+    it('should inject environment variables at runtime', () => {
       // Run it...
       lambda._setRunTimeEnvironmentVars({
         configFile: 'tmp.env'
@@ -659,7 +657,7 @@ describe('lib/main', function () {
     })
   })
 
-  describe('create sample files', function () {
+  describe('create sample files', () => {
     const targetFiles = [
       '.env',
       'context.json',
@@ -668,18 +666,16 @@ describe('lib/main', function () {
       'event_sources.json'
     ]
 
-    after(function () {
-      targetFiles.forEach(function (file) {
-        fs.unlinkSync(file)
-      })
+    after(() => {
+      targetFiles.forEach((file) => fs.unlinkSync(file))
       program.eventSourceFile = ''
     })
 
-    it('should create sample files', function () {
+    it('should create sample files', () => {
       lambda.setup(program)
 
       const libPath = path.join(__dirname, '..', 'lib')
-      targetFiles.forEach(function (targetFile) {
+      targetFiles.forEach((targetFile) => {
         const boilerplateFile = path.join(libPath, `${targetFile}.example`)
 
         assert.equal(
@@ -690,8 +686,8 @@ describe('lib/main', function () {
       })
     })
 
-    describe('_eventSourceList', function () {
-      it('program.eventSourceFile is empty value', function () {
+    describe('_eventSourceList', () => {
+      it('program.eventSourceFile is empty value', () => {
         program.eventSourceFile = ''
         assert.deepEqual(
           lambda._eventSourceList(program),
@@ -699,7 +695,7 @@ describe('lib/main', function () {
         )
       })
 
-      it('program.eventSourceFile is invalid value', function () {
+      it('program.eventSourceFile is invalid value', () => {
         const dirPath = path.join(path.resolve('/hoge'), 'fuga')
         program.eventSourceFile = dirPath
         assert.throws(
@@ -709,8 +705,8 @@ describe('lib/main', function () {
         )
       })
 
-      describe('program.eventSourceFile is valid value', function () {
-        before(function () {
+      describe('program.eventSourceFile is valid value', () => {
+        before(() => {
           fs.writeFileSync('only_EventSourceMappings.json', JSON.stringify({
             EventSourceMappings: [{ test: 1 }]
           }))
@@ -719,12 +715,12 @@ describe('lib/main', function () {
           }))
         })
 
-        after(function () {
+        after(() => {
           fs.unlinkSync('only_EventSourceMappings.json')
           fs.unlinkSync('only_ScheduleEvents.json')
         })
 
-        it('only EventSourceMappings', function () {
+        it('only EventSourceMappings', () => {
           program.eventSourceFile = 'only_EventSourceMappings.json'
           const expected = {
             EventSourceMappings: [{ test: 1 }],
@@ -733,7 +729,7 @@ describe('lib/main', function () {
           assert.deepEqual(lambda._eventSourceList(program), expected)
         })
 
-        it('only ScheduleEvents', function () {
+        it('only ScheduleEvents', () => {
           program.eventSourceFile = 'only_ScheduleEvents.json'
           const expected = {
             EventSourceMappings: [],
@@ -742,7 +738,7 @@ describe('lib/main', function () {
           assert.deepEqual(lambda._eventSourceList(program), expected)
         })
 
-        it('EventSourceMappings & ScheduleEvents', function () {
+        it('EventSourceMappings & ScheduleEvents', () => {
           program.eventSourceFile = 'event_sources.json'
           const expected = {
             EventSourceMappings: [{
@@ -761,7 +757,7 @@ describe('lib/main', function () {
         })
       })
 
-      describe('old style event_sources.json', function () {
+      describe('old style event_sources.json', () => {
         const oldStyleValue = [{
           BatchSize: 100,
           Enabled: true,
@@ -770,15 +766,10 @@ describe('lib/main', function () {
         }]
         const fileName = 'event_sources_old_style.json'
 
-        before(function () {
-          fs.writeFileSync(fileName, JSON.stringify(oldStyleValue))
-        })
+        before(() => fs.writeFileSync(fileName, JSON.stringify(oldStyleValue)))
+        after(() => fs.unlinkSync(fileName))
 
-        after(function () {
-          fs.unlinkSync(fileName)
-        })
-
-        it('program.eventSourceFile is valid value', function () {
+        it('program.eventSourceFile is valid value', () => {
           program.eventSourceFile = fileName
           const expected = {
             EventSourceMappings: oldStyleValue,
@@ -948,27 +939,25 @@ describe('lib/main', function () {
     })
   })
 
-  describe('check env vars before create sample files', function () {
+  describe('check env vars before create sample files', () => {
     const filesCreatedBySetup = [
       '.env',
       'deploy.env',
       'event_sources.json'
     ]
 
-    beforeEach(function () {
+    beforeEach(() => {
       fs.writeFileSync('newContext.json', '{"FOO"="bar"\n"BAZ"="bing"\n}')
       fs.writeFileSync('newEvent.json', '{"FOO"="bar"}')
     })
 
-    afterEach(function () {
+    afterEach(() => {
       fs.unlinkSync('newContext.json')
       fs.unlinkSync('newEvent.json')
-      filesCreatedBySetup.forEach(function (file) {
-        fs.unlinkSync(file)
-      })
+      filesCreatedBySetup.forEach((file) => fs.unlinkSync(file))
     })
 
-    it('should use existing sample files', function () {
+    it('should use existing sample files', () => {
       program.eventFile = 'newEvent.json'
       program.contextFile = 'newContext.json'
 
@@ -978,7 +967,7 @@ describe('lib/main', function () {
       assert.equal(fs.readFileSync('newEvent.json').toString(), '{"FOO"="bar"}')
 
       const libPath = path.join(__dirname, '..', 'lib')
-      filesCreatedBySetup.forEach(function (targetFile) {
+      filesCreatedBySetup.forEach((targetFile) => {
         const boilerplateFile = path.join(libPath, `${targetFile}.example`)
 
         assert.equal(
