@@ -240,3 +240,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Update package-lock.json [#328](https://github.com/motdotla/node-lambda/pull/328)
 - Remove `_rsync` [#329](https://github.com/motdotla/node-lambda/pull/329)
 - Bugfixed that mode of file changes when zip is created [#335](https://github.com/motdotla/node-lambda/pull/335)
+
+## [0.11.2] - 2017-07-05
+### Features
+- Fix to deprecated the `configFile` option in the `pacakage` command [#344](https://github.com/motdotla/node-lambda/pull/344)
+
+### Bugfixes
+- Fix to set boolean in params.Publish [#346](https://github.com/motdotla/node-lambda/pull/346)
