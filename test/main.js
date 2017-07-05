@@ -222,6 +222,35 @@ describe('lib/main', function () {
       assert.isNull(params.TracingConfig.Mode)
     })
 
+    describe('params.Publish', () => {
+      describe('boolean', () => {
+        it('If true, it is set to true', () => {
+          program.publish = true
+          const params = lambda._params(program)
+          assert.isTrue(params.Publish)
+        })
+        it('If false, it is set to false', () => {
+          program.publish = false
+          const params = lambda._params(program)
+          assert.isFalse(params.Publish)
+        })
+      })
+
+      describe('string', () => {
+        it('If "true", it is set to true', () => {
+          program.publish = 'true'
+          const params = lambda._params(program)
+          assert.isTrue(params.Publish)
+        })
+        it('If not "true", it is set to false', () => {
+          program.publish = 'false'
+          assert.isFalse(lambda._params(program).Publish)
+          program.publish = 'aaa'
+          assert.isFalse(lambda._params(program).Publish)
+        })
+      })
+    })
+
     describe('configFile', () => {
       beforeEach(() => {
         // Prep...
