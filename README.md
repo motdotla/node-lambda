@@ -127,7 +127,6 @@ $ node-lambda package --help
     -n, --functionName [node-lambda]    Lambda FunctionName
     -H, --handler [index.handler]       Lambda Handler {index.handler}
     -e, --environment [staging]         Choose environment {development, staging, production}
-    -f, --configFile []                 Path to file holding secret environment variables (e.g. "deploy.env")
     -x, --excludeGlobs []               Add a space separated list of file(type)s to ignore (e.g. "*.json .env")
     -D, --prebuiltDirectory []          Prebuilt directory
 
