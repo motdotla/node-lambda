@@ -541,9 +541,6 @@ describe('lib/main', function () {
       _timeout({ this: this, sec: 30 }) // give it time to zip
 
       return lambda._zip(program, codeDirectory).then((data) => {
-        const indexJsStat = fs.lstatSync('index.js')
-        const binNodeLambdaStat = fs.lstatSync(path.join('bin', 'node-lambda'))
-
         const archive = new Zip(data)
         assert.include(archive.files['index.js'].name, 'index.js')
         assert.include(archive.files['bin/node-lambda'].name, 'bin/node-lambda')
@@ -557,6 +554,8 @@ describe('lib/main', function () {
         )
 
         if (process.platform !== 'win32') {
+          const indexJsStat = fs.lstatSync('index.js')
+          const binNodeLambdaStat = fs.lstatSync(path.join('bin', 'node-lambda'))
           assert.equal(
             archive.files['index.js'].unixPermissions,
             indexJsStat.mode
