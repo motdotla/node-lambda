@@ -530,10 +530,12 @@ describe('lib/main', function () {
       }).then(() => {
         return lambda._npmInstall(program, codeDirectory)
       }).then(() => {
-        fs.symlinkSync(
-          path.join(__dirname, '..', 'bin', 'node-lambda'),
-          path.join(codeDirectory, 'node-lambda-link')
-        )
+        if (process.platform !== 'win32') {
+          fs.symlinkSync(
+            path.join(__dirname, '..', 'bin', 'node-lambda'),
+            path.join(codeDirectory, 'node-lambda-link')
+          )
+        }
       })
     })
 
@@ -544,14 +546,6 @@ describe('lib/main', function () {
         const archive = new Zip(data)
         assert.include(archive.files['index.js'].name, 'index.js')
         assert.include(archive.files['bin/node-lambda'].name, 'bin/node-lambda')
-        assert.include(archive.files['node-lambda-link'].name, 'node-lambda-link')
-
-        // isSymbolicLink
-        const fsConstants = process.binding('constants').fs || require('constants')
-        assert.equal(
-          archive.files['node-lambda-link'].unixPermissions & fsConstants.S_IFMT,
-          fsConstants.S_IFLNK
-        )
 
         if (process.platform !== 'win32') {
           const indexJsStat = fs.lstatSync('index.js')
@@ -563,6 +557,14 @@ describe('lib/main', function () {
           assert.equal(
             archive.files['bin/node-lambda'].unixPermissions,
             binNodeLambdaStat.mode
+          )
+
+          // isSymbolicLink
+          assert.include(archive.files['node-lambda-link'].name, 'node-lambda-link')
+          const fsConstants = process.binding('constants').fs || require('constants')
+          assert.equal(
+            archive.files['node-lambda-link'].unixPermissions & fsConstants.S_IFMT,
+            fsConstants.S_IFLNK
           )
         }
       })
