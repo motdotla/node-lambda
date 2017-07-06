@@ -547,7 +547,7 @@ describe('lib/main', function () {
         assert.include(archive.files['node-lambda-link'].name, 'node-lambda-link')
 
         // isSymbolicLink
-        const fsConstants = process.binding('constants').fs
+        const fsConstants = process.binding('constants').fs || require('constants')
         assert.equal(
           archive.files['node-lambda-link'].unixPermissions & fsConstants.S_IFMT,
           fsConstants.S_IFLNK
