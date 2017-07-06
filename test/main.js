@@ -529,6 +529,11 @@ describe('lib/main', function () {
         return lambda._fileCopy(program, '.', codeDirectory, true)
       }).then(() => {
         return lambda._npmInstall(program, codeDirectory)
+      }).then(() => {
+        fs.symlinkSync(
+          path.join(__dirname, '..', 'bin', 'node-lambda'),
+          path.join(codeDirectory, 'node-lambda-link')
+        )
       })
     })
 
@@ -542,6 +547,14 @@ describe('lib/main', function () {
         const archive = new Zip(data)
         assert.include(archive.files['index.js'].name, 'index.js')
         assert.include(archive.files['bin/node-lambda'].name, 'bin/node-lambda')
+        assert.include(archive.files['node-lambda-link'].name, 'node-lambda-link')
+
+        // isSymbolicLink
+        const fsConstants = process.binding('constants').fs
+        assert.equal(
+          archive.files['node-lambda-link'].unixPermissions & fsConstants.S_IFMT,
+          fsConstants.S_IFLNK
+        )
 
         if (process.platform !== 'win32') {
           assert.equal(
