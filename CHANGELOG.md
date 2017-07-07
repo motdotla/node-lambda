@@ -247,3 +247,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Bugfixes
 - Fix to set boolean in params.Publish [#346](https://github.com/motdotla/node-lambda/pull/346)
+
+## [0.11.3] - 2017-07-07
+### Features
+- Fix symlink at zip [#348](https://github.com/motdotla/node-lambda/pull/348)
