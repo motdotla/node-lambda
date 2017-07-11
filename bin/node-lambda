@@ -107,7 +107,6 @@ program
     AWS_ENVIRONMENT)
   .option('-x, --excludeGlobs [' + EXCLUDE_GLOBS + ']',
     'Space-separated glob pattern(s) for additional exclude files (e.g. "event.json dotenv.sample")', EXCLUDE_GLOBS)
-  .option('-f, --configFile [' + CONFIG_FILE + ']', '!!! Deprecated option in package command !!!', CONFIG_FILE)
   .option('-D, --prebuiltDirectory [' + PREBUILT_DIRECTORY + ']', 'Prebuilt directory', PREBUILT_DIRECTORY)
   .action((prg) => lambda.package(prg))
 
