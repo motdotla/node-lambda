@@ -31,7 +31,7 @@
   "license": "BSD-2-Clause",
   "devDependencies": {
     "aws-sdk-mock": "^1.6.1",
-    "chai": "^2.0.0",
+    "chai": "^4.0.2",
     "mocha": "",
     "standard": "^10.0.2"
   },
