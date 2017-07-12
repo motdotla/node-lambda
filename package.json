@@ -31,13 +31,13 @@
   "license": "BSD-2-Clause",
   "devDependencies": {
     "aws-sdk-mock": "^1.6.1",
-    "chai": "^2.0.0",
+    "chai": "^4.0.2",
     "mocha": "",
     "standard": "^10.0.2"
   },
   "dependencies": {
     "archiver": "^2.0.0",
-    "aws-sdk": "^2.81.0",
+    "aws-sdk": "^2.82.0",
     "commander": "^2.11.0",
     "dotenv": "^0.4.0",
     "fs-extra": "^0.30.0",
