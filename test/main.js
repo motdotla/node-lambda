@@ -196,6 +196,19 @@ describe('lib/main', function () {
       assert.equal(Object.keys(params.VpcConfig.SecurityGroupIds).length, 0)
     })
 
+    it('appends KMSKeyArn to params when KMS params set', () => {
+      ['', 'arn:aws:kms:test'].forEach((v) => {
+        program.kmsKeyArn = v
+        const params = lambda._params(program)
+        assert.equal(params.KMSKeyArn, v, v)
+      })
+    })
+
+    it('does not append KMSKeyArn when params are not set', () => {
+      const params = lambda._params(program)
+      assert.isUndefined(params.KMSKeyArn)
+    })
+
     it('appends DeadLetterConfig to params when DLQ params set', () => {
       ['', 'arn:aws:sqs:test'].forEach((v) => {
         program.deadLetterConfigTargetArn = v
