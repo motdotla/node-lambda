@@ -54,6 +54,11 @@ describe('lib/schedule_events', () => {
     schedule = new ScheduleEvents(require('aws-sdk'))
   })
 
+  after(() => {
+    aws.restore('CloudWatchEvents')
+    aws.restore('Lambda')
+  })
+
   describe('_ruleDescription (default)', () => {
     it('correct value', () => {
       assert.equal(
