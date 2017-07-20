@@ -79,6 +79,7 @@ AWS_FUNCTION_VERSION       // (default: '')
 AWS_VPC_SUBNETS            // (default: '')
 AWS_VPC_SECURITY_GROUPS    // (default: '')
 AWS_TRACING_CONFIG         // (default: '')
+AWS_LOGS_RETENTION_IN_DAYS // (default: '')
 EVENT_FILE                 // (default: 'event.json')
 PACKAGE_DIRECTORY          // (default: not set)
 CONTEXT_FILE               // (default: 'context.json')
@@ -164,6 +165,7 @@ $ node-lambda deploy --help
     -g, --vpcSecurityGroups []                 VPC Security Group ID(s, comma separated list) for your Lambda Function, when using this, the above param is also required
     -Q, --deadLetterConfigTargetArn []         Lambda DLQ resource
     -T, --tracingConfig []                     Lambda tracing settings
+    -R, --retentionInDays []                   CloudWatchLogs retentionInDays settings
     -A, --packageDirectory []                  Local package directory
     -I, --dockerImage []                       Docker image for npm install
     -S, --eventSourceFile [event_sources.json] Path to file holding event source mapping variables (e.g. "event_sources.json")
