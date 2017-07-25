@@ -23,6 +23,7 @@ const originalProgram = {
   runtime: 'nodejs6.10',
   deadLetterConfigTargetArn: '',
   tracingConfig: '',
+  retentionInDays: 30,
   region: 'us-east-1,us-west-2,eu-west-1',
   eventFile: 'event.json',
   eventSourceFile: '',
@@ -90,6 +91,12 @@ const _mockSetting = () => {
   awsMock.mock('CloudWatchEvents', 'putTargets', (params, callback) => {
     callback(null, {})
   })
+  awsMock.mock('CloudWatchLogs', 'createLogGroup', (params, callback) => {
+    callback(null, {})
+  })
+  awsMock.mock('CloudWatchLogs', 'putRetentionPolicy', (params, callback) => {
+    callback(null, {})
+  })
 
   Object.keys(lambdaMockSettings).forEach((method) => {
     awsMock.mock('Lambda', method, (params, callback) => {
@@ -102,6 +109,7 @@ const _mockSetting = () => {
 
 const _awsRestore = () => {
   awsMock.restore('CloudWatchEvents')
+  awsMock.restore('CloudWatchLogs')
   awsMock.restore('Lambda')
 }
 
@@ -991,6 +999,20 @@ describe('lib/main', function () {
       const params = lambda._params(program, null)
       return lambda._uploadExisting(awsLambda, params).then((results) => {
         assert.deepEqual(results, lambdaMockSettings.updateFunctionConfiguration)
+      })
+    })
+  })
+
+  describe('_setLogsRetentionPolicy', () => {
+    const CloudWatchLogs = require(path.join('..', 'lib', 'cloudwatch_logs'))
+    it('simple test with mock', () => {
+      const params = lambda._params(program, null)
+      return lambda._setLogsRetentionPolicy(
+        new CloudWatchLogs(aws),
+        program,
+        params.FunctionName
+      ).then((results) => {
+        assert.deepEqual(results, { retentionInDays: program.retentionInDays })
       })
     })
   })
