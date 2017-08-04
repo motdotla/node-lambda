@@ -113,6 +113,18 @@ const _awsRestore = () => {
   awsMock.restore('Lambda')
 }
 
+const disableLog = () => {
+  ['log', 'warn', 'info'].forEach((f) => {
+    console[f] = () => {}
+  })
+}
+
+const enableLog = () => {
+  ['log', 'warn', 'info'].forEach((f) => {
+    if (String(console[f]) === '() => {}') delete console[f]
+  })
+}
+
 /* global before, after, beforeEach, afterEach, describe, it */
 describe('lib/main', function () {
   if (process.platform === 'win32') {
