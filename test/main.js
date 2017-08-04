@@ -527,9 +527,7 @@ describe('lib/main', function () {
 
     it('should throw any errors if script fails', () => {
       fs.writeFileSync(postInstallScriptPath, '___fails___')
-      return lambda._postInstallScript(program, codeDirectory).then((dummy) => {
-        assert.isUndefined(dummy)
-      }).catch((err) => {
+      return lambda._postInstallScript(program, codeDirectory).catch((err) => {
         assert.instanceOf(err, Error)
         assert.match(err.message, /^Error: Command failed:/)
       })
