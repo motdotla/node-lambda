@@ -202,7 +202,7 @@ describe('bin/node-lambda', () => {
   describe('node-lambda --version', () => {
     const packageJson = require(path.join(__dirname, '..', 'package.json'))
     it('The current version is displayed', () => {
-      const ret = execSync(`${nodeLambdaPath} --version`)
+      const ret = execSync(`node ${nodeLambdaPath} --version`)
       assert.equal(ret.toString().trim(), packageJson.version)
     })
   })
