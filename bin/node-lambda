@@ -57,7 +57,6 @@ const PROXY = process.env.PROXY || process.env.http_proxy || ''
 
 program
   .command('deploy')
-  .version(lambda.version)
   .description('Deploy your application to Amazon Lambda')
   .option('-e, --environment [' + AWS_ENVIRONMENT + ']', 'Choose environment {dev, staging, production}',
     AWS_ENVIRONMENT)
@@ -135,7 +134,9 @@ program
   .option('-x, --contextFile [' + CONTEXT_FILE + ']', 'Context JSON File', CONTEXT_FILE)
   .action((prg) => lambda.setup(prg))
 
-program.parse(process.argv)
+program
+  .version(lambda.version)
+  .parse(process.argv)
 
 if (!process.argv.slice(2).length) {
   program.outputHelp()
