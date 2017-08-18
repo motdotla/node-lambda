@@ -10,7 +10,7 @@ node_js:
 jobs:
   include:
     - stage: npm release
-      node_js: "7"
+      node_js: node
       script: echo "Deploying to npm ..."
       deploy:
         provider: npm
