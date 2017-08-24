@@ -215,11 +215,11 @@ describe('bin/node-lambda', () => {
         callbackCode: 'callback(null);',
         no: 3
       }]
-      _generateEventFile(eventObj)
 
       it('`node-lambda run` exitCode is `0`', function (done) {
         this.timeout(10000) // give it time to multiple executions
 
+        _generateEventFile(eventObj)
         const run = spawn('node', [
           nodeLambdaPath, 'run',
           '--handler', 'index.handler',
