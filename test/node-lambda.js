@@ -197,6 +197,53 @@ describe('bin/node-lambda', () => {
         }, done)
       })
     })
+
+    describe('node-lambda run (disable Multiple events))', () => {
+      const eventObj = [{
+        asyncTest: false,
+        callbackWaitsForEmptyEventLoop: true,
+        callbackCode: 'callback(null);',
+        no: 1
+      }, {
+        asyncTest: false,
+        callbackWaitsForEmptyEventLoop: true,
+        callbackCode: 'callback(null);',
+        no: 2
+      }, {
+        asyncTest: false,
+        callbackWaitsForEmptyEventLoop: true,
+        callbackCode: 'callback(null);',
+        no: 3
+      }]
+
+      it('`node-lambda run` exitCode is `0`', function (done) {
+        this.timeout(10000) // give it time to multiple executions
+
+        _generateEventFile(eventObj)
+        const run = spawn('node', [
+          nodeLambdaPath, 'run',
+          '--handler', 'index.handler',
+          '--eventFile', 'event.json',
+          '-M', 'false'
+        ])
+        let stdoutString = ''
+        run.stdout.on('data', (data) => {
+          stdoutString += data.toString().replace(/\r|\n/g, '')
+        })
+
+        run.on('exit', (code) => {
+          const expected = 'Running index.handler==================================event ' +
+            '[ { asyncTest: false,    callbackWaitsForEmptyEventLoop: true,    callbackCode: \'callback(null);\',    no: 1 },  ' +
+            '{ asyncTest: false,    callbackWaitsForEmptyEventLoop: true,    callbackCode: \'callback(null);\',    no: 2 },  ' +
+            '{ asyncTest: false,    callbackWaitsForEmptyEventLoop: true,    callbackCode: \'callback(null);\',    no: 3 } ]' +
+            '==================================Stopping index.handlerSuccess:'
+
+          assert.equal(stdoutString, expected)
+          assert.equal(code, 0)
+          done()
+        })
+      })
+    })
   })
 
   describe('node-lambda --version', () => {

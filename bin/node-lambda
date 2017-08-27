@@ -55,6 +55,7 @@ const AWS_DLQ_TARGET_ARN = (() => {
   return undefined
 })()
 const PROXY = process.env.PROXY || process.env.http_proxy || ''
+const ENABLE_RUN_MULTIPLE_EVENTS = true
 
 program
   .command('deploy')
@@ -126,6 +127,8 @@ program
   .option('-f, --configFile [' + CONFIG_FILE + ']',
     'Path to file holding secret environment variables (e.g. "deploy.env")', CONFIG_FILE)
   .option('-x, --contextFile [' + CONTEXT_FILE + ']', 'Context JSON File', CONTEXT_FILE)
+  .option('-M, --enableRunMultipleEvents [' + ENABLE_RUN_MULTIPLE_EVENTS + ']', 'Enable run multiple events',
+    ENABLE_RUN_MULTIPLE_EVENTS)
   .action((prg) => lambda.run(prg))
 
 program
