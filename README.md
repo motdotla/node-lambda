@@ -98,17 +98,24 @@ Runs your Amazon Lambda index.js file locally. Passes `event.json` data to the A
 ```
 $ node-lambda run --help
 
-  Usage: run [options]
+  Usage: run|execute [options]
+
+  Run your Amazon Lambda application locally
+
 
   Options:
 
-    -h, --help                          Output usage information
-    -H, --handler [index.handler]       Lambda Handler {index.handler}
-    -j, --eventFile [event.json]        Event JSON File
-    -f, --configFile []                 Path to file holding secret environment variables (e.g. "deploy.env")
-    -u, --runtime [nodejs6.10]          Lambda Runtime {nodejs6.10, nodejs4.3}
-    -t, --timeout [3]                   Lambda Timeout in seconds (max of 300)
-    -x, --contextFile [context.json]    Context JSON file
+    -a, --accessKey [undefined]           AWS Access Key
+    -s, --secretKey [undefined]           AWS Secret Key
+    -P, --profile []                      AWS Profile
+    -H, --handler [index.handler]         Lambda Handler {index.handler}
+    -j, --eventFile [event.json]          Event JSON File
+    -u, --runtime [nodejs6.10]            Lambda Runtime
+    -t, --timeout [3]                     Lambda Timeout
+    -f, --configFile []                   Path to file holding secret environment variables (e.g. "deploy.env")
+    -x, --contextFile [context.json]      Context JSON File
+    -M, --enableRunMultipleEvents [true]  Enable run multiple events
+    -h, --help                            output usage information
 ```
 
 #### package
