@@ -148,44 +148,44 @@ Bundles and deploys your application up to Amazon Lambda.
 ```
 $ node-lambda deploy --help
 
-  Usage: deploy [options]
+Usage: deploy [options]
 
-  Deploy your application to Amazon Lambda
+Deploy your application to Amazon Lambda
 
 
-  Options:
-    -h, --help                          output usage information
-    -e, --environment [development]     Choose environment {dev, staging, production}
-    -a, --accessKey [your_key]          AWS Access Key
-    -s, --secretKey [your_secret]       AWS Secret Key
-    -P, --profile []                    AWS Profile
-    -k, --sessionToken []               AWS Session Token
-    -r, --region [us-east-1]            AWS Region
-    -n, --functionName [node-lambda]    Lambda FunctionName
-    -H, --handler [index.handler]       Lambda Handler {index.handler}
-    -o, --role [your_amazon_role]       Amazon Role ARN
-    -m, --memorySize [128]              Lambda Memory Size
-    -t, --timeout [3]                   Lambda Timeout
-    -d, --description [missing]         Lambda Description
-    -u, --runtime [nodejs6.10]          Lambda Runtime
-    -p, --publish [false]               Lambda Publish
-    -L, --lambdaVersion []              Lambda Function Version
-    -b, --vpcSubnets []                 Lambda Function VPC Subnets
-    -g, --vpcSecurityGroups []          Lambda VPC Security Group
-    -K, --kmsKeyArn []                  Lambda KMS Key ARN
-    -Q, --deadLetterConfigTargetArn []  Lambda DLQ resource
-    -T, --tracingConfig []              Lambda tracing settings
-    -R, --retentionInDays []            CloudWatchLogs retentionInDays settings
-    -A, --packageDirectory [build]      Local Package Directory
-    -G, --sourceDirectory []            Path to lambda source Directory (e.g. "./some-lambda")
-    -I, --dockerImage []                Docker image for npm install
-    -f, --configFile []                 Path to file holding secret environment variables (e.g. "deploy.env")
-    -S, --eventSourceFile []            Path to file holding event source mapping variables (e.g. "event_sources.json")
-    -x, --excludeGlobs [event.json]     Space-separated glob pattern(s) for additional exclude files (e.g. "event.json dotenv.sample")
-    -D, --prebuiltDirectory []          Prebuilt directory
-    -T, --deployTimeout [120000]        Deploy Timeout
-    -z, --deployZipfile []              Deploy zipfile
-    -y, --proxy []                      Proxy server
+Options:
+  -h, --help                          output usage information
+  -e, --environment [development]     Choose environment {dev, staging, production}
+  -a, --accessKey [your_key]          AWS Access Key
+  -s, --secretKey [your_secret]       AWS Secret Key
+  -P, --profile []                    AWS Profile
+  -k, --sessionToken []               AWS Session Token
+  -r, --region [us-east-1]            AWS Region
+  -n, --functionName [node-lambda]    Lambda FunctionName
+  -H, --handler [index.handler]       Lambda Handler {index.handler}
+  -o, --role [your_amazon_role]       Amazon Role ARN
+  -m, --memorySize [128]              Lambda Memory Size
+  -t, --timeout [3]                   Lambda Timeout
+  -d, --description [missing]         Lambda Description
+  -u, --runtime [nodejs6.10]          Lambda Runtime
+  -p, --publish [false]               Lambda Publish
+  -L, --lambdaVersion []              Lambda Function Version
+  -b, --vpcSubnets []                 Lambda Function VPC Subnets
+  -g, --vpcSecurityGroups []          Lambda VPC Security Group
+  -K, --kmsKeyArn []                  Lambda KMS Key ARN
+  -Q, --deadLetterConfigTargetArn []  Lambda DLQ resource
+  -T, --tracingConfig []              Lambda tracing settings
+  -R, --retentionInDays []            CloudWatchLogs retentionInDays settings
+  -A, --packageDirectory [build]      Local Package Directory
+  -G, --sourceDirectory []            Path to lambda source Directory (e.g. "./some-lambda")
+  -I, --dockerImage []                Docker image for npm install
+  -f, --configFile []                 Path to file holding secret environment variables (e.g. "deploy.env")
+  -S, --eventSourceFile []            Path to file holding event source mapping variables (e.g. "event_sources.json")
+  -x, --excludeGlobs [event.json]     Space-separated glob pattern(s) for additional exclude files (e.g. "event.json dotenv.sample")
+  -D, --prebuiltDirectory []          Prebuilt directory
+  -T, --deployTimeout [120000]        Deploy Timeout
+  -z, --deployZipfile []              Deploy zipfile
+  -y, --proxy []                      Proxy server
 ```
 
 ## Custom Environment Variables
