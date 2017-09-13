@@ -41,11 +41,15 @@ Initializes the `event.json`, `context.json`, `.env`, `deploy.env` files, and `e
 ```
 $ node-lambda setup --help
 
-  Usage: setup [options]
+Usage: setup [options]
 
-  Options:
+Sets up the .env file.
 
-    -h, --help                     output usage information
+
+Options:
+  -h, --help                        output usage information
+  -j, --eventFile [event.json]      Event JSON File
+  -x, --contextFile [context.json]  Context JSON File
 ```
 
 After running setup, it's a good idea to gitignore the generated `event.json` and `.env` files, as well as `.lambda`.
@@ -121,19 +125,20 @@ Bundles your application into a local zip file.
 ```
 $ node-lambda package --help
 
-  Usage: package [options]
+Usage: package|zip [options]
 
-  Options:
+Create zipped package for Amazon Lambda deployment
 
-    -h, --help                          output usage information
-    -A, --packageDirectory [build]      Local Package Directory
-    -I, --dockerImage []                Docker image for npm install
-    -n, --functionName [node-lambda]    Lambda FunctionName
-    -H, --handler [index.handler]       Lambda Handler {index.handler}
-    -e, --environment [staging]         Choose environment {development, staging, production}
-    -x, --excludeGlobs []               Add a space separated list of file(type)s to ignore (e.g. "*.json .env")
-    -D, --prebuiltDirectory []          Prebuilt directory
 
+Options:
+  -h, --help                        output usage information
+  -A, --packageDirectory [build]    Local Package Directory
+  -I, --dockerImage []              Docker image for npm install
+  -n, --functionName [node-lambda]  Lambda FunctionName
+  -H, --handler [index.handler]     Lambda Handler {index.handler}
+  -e, --environment [development]   Choose environment {dev, staging, production}
+  -x, --excludeGlobs [event.json]   Space-separated glob pattern(s) for additional exclude files (e.g. "event.json dotenv.sample")
+  -D, --prebuiltDirectory []        Prebuilt directory
 ```
 
 #### deploy
@@ -145,38 +150,42 @@ $ node-lambda deploy --help
 
   Usage: deploy [options]
 
-  Options:
+  Deploy your application to Amazon Lambda
 
-    -h, --help                                 output usage information
-    -e, --environment [staging]                Choose environment {development, staging, production}
-    -a, --accessKey [your_key]                 AWS Access Key
-    -s, --secretKey [your_secret]              AWS Secret Key
-    -P, --profile [your_profile]               AWS Profile
-    -k, --sessionToken [your_token]            AWS Session Token
-    -r, --region [us-east-1]                   AWS Region(s)
-    -n, --functionName [node-lambda]           Lambda FunctionName
-    -H, --handler [index.handler]              Lambda Handler {index.handler}
-    -o, --role [your_role]                     Amazon Role ARN
-    -m, --memorySize [128]                     Lambda Memory Size
-    -t, --timeout [3]                          Lambda Timeout
-    -d, --description [missing]                Lambda Description
-    -u, --runtime [nodejs6.10]                 Lambda Runtime {nodejs6.10, nodejs4.3}
-    -p, --publish [false]                      This boolean parameter can be used to request AWS Lambda to create the Lambda function and publish a version as an atomic operation
-    -L, --lambdaVersion [custom-version]       Lambda Version
-    -f, --configFile []                        Path to file holding secret environment variables (e.g. "deploy.env")
-    -b, --vpcSubnets []                        VPC Subnet ID(s, comma separated list) for your Lambda Function, when using this, the below param is also required
-    -g, --vpcSecurityGroups []                 VPC Security Group ID(s, comma separated list) for your Lambda Function, when using this, the above param is also required
-    -Q, --deadLetterConfigTargetArn []         Lambda DLQ resource
-    -T, --tracingConfig []                     Lambda tracing settings
-    -R, --retentionInDays []                   CloudWatchLogs retentionInDays settings
-    -A, --packageDirectory []                  Local package directory
-    -I, --dockerImage []                       Docker image for npm install
-    -S, --eventSourceFile [event_sources.json] Path to file holding event source mapping variables (e.g. "event_sources.json")
-    -x, --excludeGlobs []                      Add a space separated list of file(type)s to ignore (e.g. "*.json .env")
-    -D, --prebuiltDirectory []                 Prebuilt directory
-    -z, --deployZipfile []                     Deploy zipfile
-    -T, --deployTimeout [120000]               Deploy Timeout
-    -G, --sourceDirectory [.]                  Path to lambda source Directory (e.g. "./some-lambda")
+
+  Options:
+    -h, --help                          output usage information
+    -e, --environment [development]     Choose environment {dev, staging, production}
+    -a, --accessKey [your_key]          AWS Access Key
+    -s, --secretKey [your_secret]       AWS Secret Key
+    -P, --profile []                    AWS Profile
+    -k, --sessionToken []               AWS Session Token
+    -r, --region [us-east-1]            AWS Region
+    -n, --functionName [node-lambda]    Lambda FunctionName
+    -H, --handler [index.handler]       Lambda Handler {index.handler}
+    -o, --role [your_amazon_role]       Amazon Role ARN
+    -m, --memorySize [128]              Lambda Memory Size
+    -t, --timeout [3]                   Lambda Timeout
+    -d, --description [missing]         Lambda Description
+    -u, --runtime [nodejs6.10]          Lambda Runtime
+    -p, --publish [false]               Lambda Publish
+    -L, --lambdaVersion []              Lambda Function Version
+    -b, --vpcSubnets []                 Lambda Function VPC Subnets
+    -g, --vpcSecurityGroups []          Lambda VPC Security Group
+    -K, --kmsKeyArn []                  Lambda KMS Key ARN
+    -Q, --deadLetterConfigTargetArn []  Lambda DLQ resource
+    -T, --tracingConfig []              Lambda tracing settings
+    -R, --retentionInDays []            CloudWatchLogs retentionInDays settings
+    -A, --packageDirectory [build]      Local Package Directory
+    -G, --sourceDirectory []            Path to lambda source Directory (e.g. "./some-lambda")
+    -I, --dockerImage []                Docker image for npm install
+    -f, --configFile []                 Path to file holding secret environment variables (e.g. "deploy.env")
+    -S, --eventSourceFile []            Path to file holding event source mapping variables (e.g. "event_sources.json")
+    -x, --excludeGlobs [event.json]     Space-separated glob pattern(s) for additional exclude files (e.g. "event.json dotenv.sample")
+    -D, --prebuiltDirectory []          Prebuilt directory
+    -T, --deployTimeout [120000]        Deploy Timeout
+    -z, --deployZipfile []              Deploy zipfile
+    -y, --proxy []                      Proxy server
 ```
 
 ## Custom Environment Variables
