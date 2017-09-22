@@ -251,3 +251,26 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [0.11.3] - 2017-07-07
 ### Features
 - Fix symlink at zip [#348](https://github.com/motdotla/node-lambda/pull/348)
+
+## [0.11.4] - 2017-09-22
+### Features
+- Remove configFile Option of package command in README [#350](https://github.com/motdotla/node-lambda/pull/350)
+- Remove configFile option in package command [#351](https://github.com/motdotla/node-lambda/pull/351)
+- Uprade chai [#352](https://github.com/motdotla/node-lambda/pull/352)
+- Add the ability to set KMSKeyArn to a Lambda function [#356](https://github.com/motdotla/node-lambda/pull/356)
+- Add appveyor.yml[#357](https://github.com/motdotla/node-lambda/pull/357)
+- Add function for setting CloudWatchLogs RetentionPolicy [#359](https://github.com/motdotla/node-lambda/pull/359)
+- Switch ScheduleEvents to class syntax [#360](https://github.com/motdotla/node-lambda/pull/360)
+- Add `_setLogsRetentionPolicy` to `lib/main.js` [#361](https://github.com/motdotla/node-lambda/pull/361)
+- Change `lib/main.js` to class syntax [#362](https://github.com/motdotla/node-lambda/pull/362)
+- Use stable node, at npm release. [#370](https://github.com/motdotla/node-lambda/pull/370)
+- Add option to disable run multiple [#372](https://github.com/motdotla/node-lambda/pull/372)
+
+### Bugfixes
+- Update repository url [#358](https://github.com/motdotla/node-lambda/pull/358)
+- Fix deploy command exit code [#366](https://github.com/motdotla/node-lambda/pull/366)
+- Add invalidation of log output to make the test result easier to read [#367](https://github.com/motdotla/node-lambda/pull/367)
+- Fix commandline version option [#368](https://github.com/motdotla/node-lambda/pull/368)
+- Change: Ensure dotenv.load called before AWS load [#369](https://github.com/motdotla/node-lambda/pull/369)
+- Update README with latest output for 'node-lambda run -h' [#373](https://github.com/motdotla/node-lambda/pull/373)
+- Update Usage of README [#374](https://github.com/motdotla/node-lambda/pull/374)
