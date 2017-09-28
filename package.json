@@ -1,6 +1,6 @@
 {
   "name": "node-lambda",
-  "version": "0.11.3",
+  "version": "0.11.4",
   "description": "Command line tool for locally running and remotely deploying your node.js applications to Amazon Lambda.",
   "main": "lib/main.js",
   "directories": {
@@ -31,18 +31,18 @@
   "license": "BSD-2-Clause",
   "devDependencies": {
     "aws-sdk-mock": "^1.6.1",
-    "chai": "^4.0.2",
+    "chai": "^4.1.2",
     "mocha": "",
-    "standard": "^10.0.2"
+    "node-zip": "^1.1.0",
+    "standard": "^10.0.3"
   },
   "dependencies": {
-    "archiver": "^2.0.0",
-    "aws-sdk": "^2.82.0",
+    "archiver": "^2.0.3",
+    "aws-sdk": "^2.124.0",
     "commander": "^2.11.0",
     "dotenv": "^0.4.0",
     "fs-extra": "^0.30.0",
     "minimatch": "^3.0.3",
-    "node-zip": "^1.1.0",
-    "proxy-agent": "^2.0.0"
+    "proxy-agent": "^2.1.0"
   }
 }
