@@ -108,8 +108,8 @@ $ node-lambda run --help
 
 
 
-    -a, --accessKey [undefined]           AWS Access Key
-    -s, --secretKey [undefined]           AWS Secret Key
+    -a, --accessKey [your_key]            AWS Access Key
+    -s, --secretKey [your_secret]         AWS Secret Key
     -P, --profile []                      AWS Profile
     -H, --handler [index.handler]         Lambda Handler {index.handler}
     -j, --eventFile [event.json]          Event JSON File
