@@ -121,15 +121,31 @@ describe('lib/schedule_events', () => {
   })
 
   describe('_putTargetsParams', () => {
-    it('correct value', () => {
+    it('correct value (No "Input" setting)', () => {
       const expected = {
         Rule: 'node-lambda-test-schedule',
         Targets: [{
           Arn: 'arn:aws:lambda:us-west-2:XXX:function:node-lambda-test-function',
-          Id: 'node-lambda-test-function'
+          Id: 'node-lambda-test-function',
+          Input: ''
         }]
       }
       assert.deepEqual(schedule._putTargetsParams(params), expected)
+    })
+
+    it('correct value ("Input" setting)', () => {
+      const expected = {
+        Rule: 'node-lambda-test-schedule',
+        Targets: [{
+          Arn: 'arn:aws:lambda:us-west-2:XXX:function:node-lambda-test-function',
+          Id: 'node-lambda-test-function',
+          Input: '{"key":"value"}'
+        }]
+      }
+      assert.deepEqual(
+        schedule._putTargetsParams(Object.assign({Input: {key: 'value'}}, params)),
+        expected
+      )
     })
   })
 
