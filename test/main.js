@@ -840,7 +840,11 @@ describe('lib/main', function () {
             ScheduleEvents: [{
               ScheduleName: 'node-lambda-test-schedule',
               ScheduleState: 'ENABLED',
-              ScheduleExpression: 'rate(1 hour)'
+              ScheduleExpression: 'rate(1 hour)',
+              Input: {
+                key1: 'value',
+                key2: 'value'
+              }
             }]
           }
           assert.deepEqual(lambda._eventSourceList(program), expected)
