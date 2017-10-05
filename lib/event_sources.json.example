@@ -14,7 +14,7 @@
       "ScheduleExpression": "rate(1 hour)",
       "Input":
         {
-          "key": "value",
+          "key1": "value",
           "key2": "value"
         }
     }
