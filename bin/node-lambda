@@ -82,7 +82,7 @@ program
   .option('-K, --kmsKeyArn [' + AWS_KMS_KEY_ARN + ']', 'Lambda KMS Key ARN', AWS_KMS_KEY_ARN)
   .option('-Q, --deadLetterConfigTargetArn [' + AWS_DLQ_TARGET_ARN + ']', 'Lambda DLQ resource',
     AWS_DLQ_TARGET_ARN)
-  .option('-T, --tracingConfig [' + AWS_TRACING_CONFIG + ']', 'Lambda tracing settings',
+  .option('-c, --tracingConfig [' + AWS_TRACING_CONFIG + ']', 'Lambda tracing settings',
     AWS_TRACING_CONFIG)
   .option('-R, --retentionInDays [' + AWS_LOGS_RETENTION_IN_DAYS + ']', 'CloudWatchLogs retentionInDays settings',
     AWS_LOGS_RETENTION_IN_DAYS)
