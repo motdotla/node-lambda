@@ -174,7 +174,7 @@ Options:
   -g, --vpcSecurityGroups []          Lambda VPC Security Group
   -K, --kmsKeyArn []                  Lambda KMS Key ARN
   -Q, --deadLetterConfigTargetArn []  Lambda DLQ resource
-  -T, --tracingConfig []              Lambda tracing settings
+  -c, --tracingConfig []              Lambda tracing settings
   -R, --retentionInDays []            CloudWatchLogs retentionInDays settings
   -A, --packageDirectory [build]      Local Package Directory
   -G, --sourceDirectory []            Path to lambda source Directory (e.g. "./some-lambda")
