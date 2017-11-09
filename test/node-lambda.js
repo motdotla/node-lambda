@@ -246,6 +246,37 @@ describe('bin/node-lambda', () => {
     })
   })
 
+  describe('node-lambda duplicate check of short option', () => {
+    const duplicateCheckTestFunc = (type, done) => {
+      const cmd = spawn('node', [nodeLambdaPath, type, '-h'])
+      let stdoutString = ''
+      cmd.stdout.on('data', (data) => {
+        stdoutString += data.toString()
+      })
+
+      cmd.on('exit', (code) => {
+        assert.equal(code, 0)
+
+        const shortOptions = stdoutString.split('\n').filter(line => {
+          return line.match(/^\s+-/)
+        }).map(line => {
+          return line.split(/\s+/)[1]
+        })
+        const uniqueShortOptions = shortOptions.filter((option, index, array) => {
+          return array.indexOf(option) === index
+        })
+        assert.equal(shortOptions.length, uniqueShortOptions.length)
+        done()
+      })
+    }
+
+    ['deploy', 'run', 'setup'].forEach(type => {
+      it(`cmd:${type}`, (done) => {
+        duplicateCheckTestFunc(type, done)
+      })
+    })
+  })
+
   describe('node-lambda --version', () => {
     const packageJson = require(path.join(__dirname, '..', 'package.json'))
     it('The current version is displayed', () => {
