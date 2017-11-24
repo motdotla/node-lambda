@@ -116,6 +116,7 @@ Options:
   -f, --configFile []                   Path to file holding secret environment variables (e.g. "deploy.env")
   -x, --contextFile [context.json]      Context JSON File
   -M, --enableRunMultipleEvents [true]  Enable run multiple events
+  -y, --proxy []                        Proxy server
 ```
 
 #### package

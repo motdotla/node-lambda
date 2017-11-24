@@ -129,6 +129,7 @@ program
   .option('-x, --contextFile [' + CONTEXT_FILE + ']', 'Context JSON File', CONTEXT_FILE)
   .option('-M, --enableRunMultipleEvents [' + ENABLE_RUN_MULTIPLE_EVENTS + ']', 'Enable run multiple events',
     ENABLE_RUN_MULTIPLE_EVENTS)
+  .option('-y, --proxy [' + PROXY + ']', 'Proxy server', PROXY)
   .action((prg) => lambda.run(prg))
 
 program
