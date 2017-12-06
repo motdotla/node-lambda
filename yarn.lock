@@ -130,7 +130,22 @@ aws-sdk-mock@^1.6.1:
     sinon "^1.17.3"
     traverse "^0.6.6"
 
-aws-sdk@^2.124.0, aws-sdk@^2.3.0:
+aws-sdk@^2.164.0:
+  version "2.164.0"
+  resolved "https://registry.yarnpkg.com/aws-sdk/-/aws-sdk-2.164.0.tgz#e3988657b7c7e96e7ca5a9ff52c90b96b4b229d9"
+  dependencies:
+    buffer "4.9.1"
+    crypto-browserify "1.0.9"
+    events "^1.1.1"
+    jmespath "0.15.0"
+    querystring "0.2.0"
+    sax "1.2.1"
+    url "0.10.3"
+    uuid "3.1.0"
+    xml2js "0.4.17"
+    xmlbuilder "4.2.1"
+
+aws-sdk@^2.3.0:
   version "2.124.0"
   resolved "https://registry.yarnpkg.com/aws-sdk/-/aws-sdk-2.124.0.tgz#52352b543723a2ab86d0fbd1a0cbe3e1cc16d7d2"
   dependencies:
@@ -261,9 +276,9 @@ commander@2.9.0:
   dependencies:
     graceful-readlink ">= 1.0.0"
 
-commander@^2.11.0:
-  version "2.11.0"
-  resolved "https://registry.yarnpkg.com/commander/-/commander-2.11.0.tgz#157152fd1e7a6c8d98a5b715cf376df928004563"
+commander@^2.12.2:
+  version "2.12.2"
+  resolved "https://registry.yarnpkg.com/commander/-/commander-2.12.2.tgz#0f5946c427ed9ec0d91a46bb9def53e54650e555"
 
 compress-commons@^1.2.0:
   version "1.2.0"
@@ -1777,6 +1792,10 @@ util-deprecate@~1.0.1:
 uuid@3.0.1:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-3.0.1.tgz#6544bba2dfda8c1cf17e629a3a305e2bb1fee6c1"
+
+uuid@3.1.0:
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/uuid/-/uuid-3.1.0.tgz#3dd3d3e790abc24d7b0d3a034ffababe28ebbc04"
 
 walkdir@^0.0.11:
   version "0.0.11"
