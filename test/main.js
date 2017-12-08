@@ -781,7 +781,11 @@ describe('lib/main', function () {
         program.eventSourceFile = ''
         assert.deepEqual(
           lambda._eventSourceList(program),
-          { EventSourceMappings: null, ScheduleEvents: null }
+          {
+            EventSourceMappings: null,
+            ScheduleEvents: null,
+            S3Events: null
+          }
         )
       })
 
@@ -803,18 +807,23 @@ describe('lib/main', function () {
           fs.writeFileSync('only_ScheduleEvents.json', JSON.stringify({
             ScheduleEvents: [{ test: 2 }]
           }))
+          fs.writeFileSync('only_S3Events.json', JSON.stringify({
+            S3Events: [{ test: 3 }]
+          }))
         })
 
         after(() => {
           fs.unlinkSync('only_EventSourceMappings.json')
           fs.unlinkSync('only_ScheduleEvents.json')
+          fs.unlinkSync('only_S3Events.json')
         })
 
         it('only EventSourceMappings', () => {
           program.eventSourceFile = 'only_EventSourceMappings.json'
           const expected = {
             EventSourceMappings: [{ test: 1 }],
-            ScheduleEvents: []
+            ScheduleEvents: [],
+            S3Events: []
           }
           assert.deepEqual(lambda._eventSourceList(program), expected)
         })
@@ -823,7 +832,18 @@ describe('lib/main', function () {
           program.eventSourceFile = 'only_ScheduleEvents.json'
           const expected = {
             EventSourceMappings: [],
-            ScheduleEvents: [{ test: 2 }]
+            ScheduleEvents: [{ test: 2 }],
+            S3Events: []
+          }
+          assert.deepEqual(lambda._eventSourceList(program), expected)
+        })
+
+        it('only S3Events', () => {
+          program.eventSourceFile = 'only_S3Events.json'
+          const expected = {
+            EventSourceMappings: [],
+            ScheduleEvents: [],
+            S3Events: [{ test: 3 }]
           }
           assert.deepEqual(lambda._eventSourceList(program), expected)
         })
@@ -844,6 +864,20 @@ describe('lib/main', function () {
               Input: {
                 key1: 'value',
                 key2: 'value'
+              }
+            }],
+            S3Events: [{
+              Bucket: 'BUCKET_NAME',
+              Events: [
+                's3:ObjectCreated:*'
+              ],
+              Filter: {
+                Key: {
+                  FilterRules: [{
+                    Name: 'prefix',
+                    Value: 'STRING_VALUE'
+                  }]
+                }
               }
             }]
           }
@@ -867,7 +901,8 @@ describe('lib/main', function () {
           program.eventSourceFile = fileName
           const expected = {
             EventSourceMappings: oldStyleValue,
-            ScheduleEvents: []
+            ScheduleEvents: [],
+            S3Events: []
           }
           assert.deepEqual(lambda._eventSourceList(program), expected)
         })
