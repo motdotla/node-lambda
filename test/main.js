@@ -97,6 +97,9 @@ const _mockSetting = () => {
   awsMock.mock('CloudWatchLogs', 'putRetentionPolicy', (params, callback) => {
     callback(null, {})
   })
+  awsMock.mock('S3', 'putBucketNotificationConfiguration', (params, callback) => {
+    callback(null, {})
+  })
 
   Object.keys(lambdaMockSettings).forEach((method) => {
     awsMock.mock('Lambda', method, (params, callback) => {
@@ -110,6 +113,7 @@ const _mockSetting = () => {
 const _awsRestore = () => {
   awsMock.restore('CloudWatchEvents')
   awsMock.restore('CloudWatchLogs')
+  awsMock.restore('S3')
   awsMock.restore('Lambda')
 }
 
@@ -1043,6 +1047,58 @@ describe('lib/main', function () {
       ).then((results) => {
         const expected = [Object.assign(
           eventSourcesJsonValue.ScheduleEvents[0],
+          { FunctionArn: functionArn }
+        )]
+        assert.deepEqual(results, expected)
+      })
+    })
+  })
+
+  describe('_updateS3Events', () => {
+    const S3Events = require(path.join('..', 'lib', 's3_events'))
+    const eventSourcesJsonValue = {
+      S3Events: [{
+        Bucket: 'node-lambda-test-bucket',
+        Events: ['s3:ObjectCreated:*'],
+        Filter: null
+      }]
+    }
+
+    let s3Events = null
+
+    before(() => {
+      fs.writeFileSync(
+        'event_sources.json',
+        JSON.stringify(eventSourcesJsonValue)
+      )
+      s3Events = new S3Events(aws)
+    })
+
+    after(() => fs.unlinkSync('event_sources.json'))
+
+    it('program.eventSourceFile is empty value', () => {
+      program.eventSourceFile = ''
+      const eventSourceList = lambda._eventSourceList(program)
+      return lambda._updateS3Events(
+        s3Events,
+        '',
+        eventSourceList.S3Events
+      ).then(results => {
+        assert.deepEqual(results, [])
+      })
+    })
+
+    it('simple test with mock', () => {
+      program.eventSourceFile = 'event_sources.json'
+      const eventSourceList = lambda._eventSourceList(program)
+      const functionArn = 'arn:aws:lambda:us-west-2:XXX:function:node-lambda-test-function'
+      return lambda._updateS3Events(
+        s3Events,
+        functionArn,
+        eventSourceList.S3Events
+      ).then(results => {
+        const expected = [Object.assign(
+          eventSourcesJsonValue.S3Events[0],
           { FunctionArn: functionArn }
         )]
         assert.deepEqual(results, expected)
