@@ -18,5 +18,19 @@
           "key2": "value"
         }
     }
-  ]
+  ],
+  "S3Events": [{
+    "Bucket": "BUCKET_NAME",
+    "Events": [
+      "s3:ObjectCreated:*"
+    ],
+    "Filter": {
+      "Key": {
+        "FilterRules": [{
+          "Name": "prefix",
+          "Value": "STRING_VALUE"
+        }]
+      }
+    }
+  }]
 }

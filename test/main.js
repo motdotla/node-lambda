@@ -97,6 +97,9 @@ const _mockSetting = () => {
   awsMock.mock('CloudWatchLogs', 'putRetentionPolicy', (params, callback) => {
     callback(null, {})
   })
+  awsMock.mock('S3', 'putBucketNotificationConfiguration', (params, callback) => {
+    callback(null, {})
+  })
 
   Object.keys(lambdaMockSettings).forEach((method) => {
     awsMock.mock('Lambda', method, (params, callback) => {
@@ -110,6 +113,7 @@ const _mockSetting = () => {
 const _awsRestore = () => {
   awsMock.restore('CloudWatchEvents')
   awsMock.restore('CloudWatchLogs')
+  awsMock.restore('S3')
   awsMock.restore('Lambda')
 }
 
@@ -781,7 +785,11 @@ describe('lib/main', function () {
         program.eventSourceFile = ''
         assert.deepEqual(
           lambda._eventSourceList(program),
-          { EventSourceMappings: null, ScheduleEvents: null }
+          {
+            EventSourceMappings: null,
+            ScheduleEvents: null,
+            S3Events: null
+          }
         )
       })
 
@@ -803,18 +811,23 @@ describe('lib/main', function () {
           fs.writeFileSync('only_ScheduleEvents.json', JSON.stringify({
             ScheduleEvents: [{ test: 2 }]
           }))
+          fs.writeFileSync('only_S3Events.json', JSON.stringify({
+            S3Events: [{ test: 3 }]
+          }))
         })
 
         after(() => {
           fs.unlinkSync('only_EventSourceMappings.json')
           fs.unlinkSync('only_ScheduleEvents.json')
+          fs.unlinkSync('only_S3Events.json')
         })
 
         it('only EventSourceMappings', () => {
           program.eventSourceFile = 'only_EventSourceMappings.json'
           const expected = {
             EventSourceMappings: [{ test: 1 }],
-            ScheduleEvents: []
+            ScheduleEvents: [],
+            S3Events: []
           }
           assert.deepEqual(lambda._eventSourceList(program), expected)
         })
@@ -823,7 +836,18 @@ describe('lib/main', function () {
           program.eventSourceFile = 'only_ScheduleEvents.json'
           const expected = {
             EventSourceMappings: [],
-            ScheduleEvents: [{ test: 2 }]
+            ScheduleEvents: [{ test: 2 }],
+            S3Events: []
+          }
+          assert.deepEqual(lambda._eventSourceList(program), expected)
+        })
+
+        it('only S3Events', () => {
+          program.eventSourceFile = 'only_S3Events.json'
+          const expected = {
+            EventSourceMappings: [],
+            ScheduleEvents: [],
+            S3Events: [{ test: 3 }]
           }
           assert.deepEqual(lambda._eventSourceList(program), expected)
         })
@@ -844,6 +868,20 @@ describe('lib/main', function () {
               Input: {
                 key1: 'value',
                 key2: 'value'
+              }
+            }],
+            S3Events: [{
+              Bucket: 'BUCKET_NAME',
+              Events: [
+                's3:ObjectCreated:*'
+              ],
+              Filter: {
+                Key: {
+                  FilterRules: [{
+                    Name: 'prefix',
+                    Value: 'STRING_VALUE'
+                  }]
+                }
               }
             }]
           }
@@ -867,7 +905,8 @@ describe('lib/main', function () {
           program.eventSourceFile = fileName
           const expected = {
             EventSourceMappings: oldStyleValue,
-            ScheduleEvents: []
+            ScheduleEvents: [],
+            S3Events: []
           }
           assert.deepEqual(lambda._eventSourceList(program), expected)
         })
@@ -1008,6 +1047,58 @@ describe('lib/main', function () {
       ).then((results) => {
         const expected = [Object.assign(
           eventSourcesJsonValue.ScheduleEvents[0],
+          { FunctionArn: functionArn }
+        )]
+        assert.deepEqual(results, expected)
+      })
+    })
+  })
+
+  describe('_updateS3Events', () => {
+    const S3Events = require(path.join('..', 'lib', 's3_events'))
+    const eventSourcesJsonValue = {
+      S3Events: [{
+        Bucket: 'node-lambda-test-bucket',
+        Events: ['s3:ObjectCreated:*'],
+        Filter: null
+      }]
+    }
+
+    let s3Events = null
+
+    before(() => {
+      fs.writeFileSync(
+        'event_sources.json',
+        JSON.stringify(eventSourcesJsonValue)
+      )
+      s3Events = new S3Events(aws)
+    })
+
+    after(() => fs.unlinkSync('event_sources.json'))
+
+    it('program.eventSourceFile is empty value', () => {
+      program.eventSourceFile = ''
+      const eventSourceList = lambda._eventSourceList(program)
+      return lambda._updateS3Events(
+        s3Events,
+        '',
+        eventSourceList.S3Events
+      ).then(results => {
+        assert.deepEqual(results, [])
+      })
+    })
+
+    it('simple test with mock', () => {
+      program.eventSourceFile = 'event_sources.json'
+      const eventSourceList = lambda._eventSourceList(program)
+      const functionArn = 'arn:aws:lambda:us-west-2:XXX:function:node-lambda-test-function'
+      return lambda._updateS3Events(
+        s3Events,
+        functionArn,
+        eventSourceList.S3Events
+      ).then(results => {
+        const expected = [Object.assign(
+          eventSourcesJsonValue.S3Events[0],
           { FunctionArn: functionArn }
         )]
         assert.deepEqual(results, expected)
