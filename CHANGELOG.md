@@ -274,3 +274,18 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Change: Ensure dotenv.load called before AWS load [#369](https://github.com/motdotla/node-lambda/pull/369)
 - Update README with latest output for 'node-lambda run -h' [#373](https://github.com/motdotla/node-lambda/pull/373)
 - Update Usage of README [#374](https://github.com/motdotla/node-lambda/pull/374)
+
+## [0.11.5] - 2017-12-11
+### Features
+- Move node-zip to devDependencies [#378](https://github.com/motdotla/node-lambda/pull/378)
+- Added the ability to set constants when scheduling a Lambda function Cloudwatch event [#380](https://github.com/motdotla/node-lambda/pull/380)
+- Update CI's Node.js to LTS and latest version [#386](https://github.com/motdotla/node-lambda/pull/386)
+- Update packages [#392](https://github.com/motdotla/node-lambda/pull/392)
+- Added class to set S3 events [#393](https://github.com/motdotla/node-lambda/pull/393)
+- Add updateS3Events to main [#394](https://github.com/motdotla/node-lambda/pull/394)
+- Refactoring lib/schedule_events.js [#395](https://github.com/motdotla/node-lambda/pull/395)
+
+### Bugfixes
+- Set docker run working directory so npm install works [#381](https://github.com/motdotla/node-lambda/pull/381)
+- Change short option of `--tracingConfig` to `-c` [#385](https://github.com/motdotla/node-lambda/pull/385)
+- Fix to use Proxy when run locally [#389](https://github.com/motdotla/node-lambda/pull/389)
