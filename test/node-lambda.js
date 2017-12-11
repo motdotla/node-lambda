@@ -19,14 +19,14 @@ describe('bin/node-lambda', () => {
       ])
       let stdoutString = ''
       let stderrString = ''
-      run.stdout.on('data', (data) => {
+      run.stdout.on('data', data => {
         stdoutString += data.toString().replace(/\r|\n/g, '')
       })
-      run.stderr.on('data', (data) => {
+      run.stderr.on('data', data => {
         stderrString += data.toString().replace(/\r|\n/g, '')
       })
 
-      run.on('exit', (code) => {
+      run.on('exit', code => {
         if (expectedValues.stdoutRegExp) {
           assert.match(stdoutString, expectedValues.stdoutRegExp)
         }
@@ -38,7 +38,7 @@ describe('bin/node-lambda', () => {
       })
     }
 
-    const _generateEventFile = (eventObj) => {
+    const _generateEventFile = eventObj => {
       fs.writeFileSync('event.json', JSON.stringify(eventObj))
     }
 
@@ -55,7 +55,7 @@ describe('bin/node-lambda', () => {
         'deploy.env',
         'event_sources.json',
         '__test.js'
-      ].forEach((file) => fs.unlinkSync(file))
+      ].forEach(file => fs.unlinkSync(file))
     })
 
     describe('node-lambda run (Handler only sync processing)', () => {
@@ -64,21 +64,21 @@ describe('bin/node-lambda', () => {
         callbackWaitsForEmptyEventLoop: true // True is the default value of Lambda
       }
 
-      it('`node-lambda run` exitCode is `0` (callback(null))', (done) => {
+      it('`node-lambda run` exitCode is `0` (callback(null))', done => {
         _generateEventFile(Object.assign(eventObj, {
           callbackCode: 'callback(null);'
         }))
         _testMain({ stdoutRegExp: /Success:$/, exitCode: 0 }, done)
       })
 
-      it('`node-lambda run` exitCode is `0` (callback(null, "text"))', (done) => {
+      it('`node-lambda run` exitCode is `0` (callback(null, "text"))', done => {
         _generateEventFile(Object.assign(eventObj, {
           callbackCode: 'callback(null, "text");'
         }))
         _testMain({ stdoutRegExp: /Success:"text"$/, exitCode: 0 }, done)
       })
 
-      it('`node-lambda run` exitCode is `255` (callback(new Error("e")))', (done) => {
+      it('`node-lambda run` exitCode is `255` (callback(new Error("e")))', done => {
         _generateEventFile(Object.assign(eventObj, {
           callbackCode: 'callback(new Error("e"));'
         }))
@@ -95,21 +95,21 @@ describe('bin/node-lambda', () => {
           callbackWaitsForEmptyEventLoop: true
         }
 
-        it('`node-lambda run` exitCode is `0` (callback(null))', (done) => {
+        it('`node-lambda run` exitCode is `0` (callback(null))', done => {
           _generateEventFile(Object.assign(eventObj, {
             callbackCode: 'callback(null);'
           }))
           _testMain({ stdoutRegExp: /Success:sleep 3500 msec$/, exitCode: 0 }, done)
         })
 
-        it('`node-lambda run` exitCode is `0` (callback(null, "text"))', (done) => {
+        it('`node-lambda run` exitCode is `0` (callback(null, "text"))', done => {
           _generateEventFile(Object.assign(eventObj, {
             callbackCode: 'callback(null, "text");'
           }))
           _testMain({ stdoutRegExp: /Success:"text"sleep 3500 msec$/, exitCode: 0 }, done)
         })
 
-        it('`node-lambda run` exitCode is `255` (callback(new Error("e")))', (done) => {
+        it('`node-lambda run` exitCode is `255` (callback(new Error("e")))', done => {
           _generateEventFile(Object.assign(eventObj, {
             callbackCode: 'callback(new Error("e"));'
           }))
@@ -123,21 +123,21 @@ describe('bin/node-lambda', () => {
           callbackWaitsForEmptyEventLoop: false
         }
 
-        it('`node-lambda run` exitCode is `0` (callback(null))', (done) => {
+        it('`node-lambda run` exitCode is `0` (callback(null))', done => {
           _generateEventFile(Object.assign(eventObj, {
             callbackCode: 'callback(null);'
           }))
           _testMain({ stdoutRegExp: /Success:$/, exitCode: 0 }, done)
         })
 
-        it('`node-lambda run` exitCode is `0` (callback(null, "text"))', (done) => {
+        it('`node-lambda run` exitCode is `0` (callback(null, "text"))', done => {
           _generateEventFile(Object.assign(eventObj, {
             callbackCode: 'callback(null, "text");'
           }))
           _testMain({ stdoutRegExp: /Success:"text"$/, exitCode: 0 }, done)
         })
 
-        it('`node-lambda run` exitCode is `255` (callback(new Error("e")))', (done) => {
+        it('`node-lambda run` exitCode is `255` (callback(new Error("e")))', done => {
           _generateEventFile(Object.assign(eventObj, {
             callbackCode: 'callback(new Error("e"));'
           }))
@@ -159,7 +159,7 @@ describe('bin/node-lambda', () => {
         process.env.AWS_RUNTIME = 'nodejs6.10'
       })
 
-      it('`node-lambda run` exitCode is `254` (callback(null))', (done) => {
+      it('`node-lambda run` exitCode is `254` (callback(null))', done => {
         _generateEventFile(Object.assign(eventObj, {
           callbackCode: 'callback(null);'
         }))
@@ -227,11 +227,11 @@ describe('bin/node-lambda', () => {
           '-M', 'false'
         ])
         let stdoutString = ''
-        run.stdout.on('data', (data) => {
+        run.stdout.on('data', data => {
           stdoutString += data.toString().replace(/\r|\n/g, '')
         })
 
-        run.on('exit', (code) => {
+        run.on('exit', code => {
           const expected = 'Running index.handler==================================event ' +
             '[ { asyncTest: false,    callbackWaitsForEmptyEventLoop: true,    callbackCode: \'callback(null);\',    no: 1 },  ' +
             '{ asyncTest: false,    callbackWaitsForEmptyEventLoop: true,    callbackCode: \'callback(null);\',    no: 2 },  ' +
@@ -250,11 +250,11 @@ describe('bin/node-lambda', () => {
     const duplicateCheckTestFunc = (type, done) => {
       const cmd = spawn('node', [nodeLambdaPath, type, '-h'])
       let stdoutString = ''
-      cmd.stdout.on('data', (data) => {
+      cmd.stdout.on('data', data => {
         stdoutString += data.toString()
       })
 
-      cmd.on('exit', (code) => {
+      cmd.on('exit', code => {
         assert.equal(code, 0)
 
         const shortOptions = stdoutString.split('\n').filter(line => {
@@ -271,7 +271,7 @@ describe('bin/node-lambda', () => {
     }
 
     ['deploy', 'run', 'setup'].forEach(type => {
-      it(`cmd:${type}`, (done) => {
+      it(`cmd:${type}`, done => {
         duplicateCheckTestFunc(type, done)
       })
     })

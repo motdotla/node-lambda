@@ -49,7 +49,7 @@ describe('lib/cloudwatch_logs', () => {
 
   describe('_createLogGroup', () => {
     it('using mock', () => {
-      return logs._createLogGroup(params).then((data) => {
+      return logs._createLogGroup(params).then(data => {
         assert.deepEqual(data, mockResponse.createLogGroup)
       })
     })
@@ -57,7 +57,7 @@ describe('lib/cloudwatch_logs', () => {
 
   describe('_putRetentionPolicy', () => {
     it('using mock', () => {
-      return logs._putRetentionPolicy(params).then((data) => {
+      return logs._putRetentionPolicy(params).then(data => {
         assert.deepEqual(data, mockResponse.putRetentionPolicy)
       })
     })
@@ -65,7 +65,7 @@ describe('lib/cloudwatch_logs', () => {
 
   describe('setLogsRetentionPolicy', () => {
     it('using mock', () => {
-      return logs.setLogsRetentionPolicy(params).then((data) => {
+      return logs.setLogsRetentionPolicy(params).then(data => {
         assert.deepEqual(data, mockResponse.putRetentionPolicy)
       })
     })

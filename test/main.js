@@ -101,7 +101,7 @@ const _mockSetting = () => {
     callback(null, {})
   })
 
-  Object.keys(lambdaMockSettings).forEach((method) => {
+  Object.keys(lambdaMockSettings).forEach(method => {
     awsMock.mock('Lambda', method, (params, callback) => {
       callback(null, lambdaMockSettings[method])
     })
@@ -118,13 +118,13 @@ const _awsRestore = () => {
 }
 
 const disableLog = () => {
-  ['log', 'warn', 'info'].forEach((f) => {
+  ['log', 'warn', 'info'].forEach(f => {
     console[f] = () => {}
   })
 }
 
 const enableLog = () => {
-  ['log', 'warn', 'info'].forEach((f) => {
+  ['log', 'warn', 'info'].forEach(f => {
     if (String(console[f]) === '() => {}') delete console[f]
   })
 }
@@ -160,7 +160,7 @@ describe('lib/main', function () {
   })
 
   describe('_runHandler', () => {
-    it('context methods is a function', (done) => {
+    it('context methods is a function', done => {
       const handler = (event, context, callback) => {
         assert.isFunction(context.succeed)
         assert.isFunction(context.fail)
@@ -221,7 +221,7 @@ describe('lib/main', function () {
     })
 
     it('appends KMSKeyArn to params when KMS params set', () => {
-      ['', 'arn:aws:kms:test'].forEach((v) => {
+      ['', 'arn:aws:kms:test'].forEach(v => {
         program.kmsKeyArn = v
         const params = lambda._params(program)
         assert.equal(params.KMSKeyArn, v, v)
@@ -234,7 +234,7 @@ describe('lib/main', function () {
     })
 
     it('appends DeadLetterConfig to params when DLQ params set', () => {
-      ['', 'arn:aws:sqs:test'].forEach((v) => {
+      ['', 'arn:aws:sqs:test'].forEach(v => {
         program.deadLetterConfigTargetArn = v
         const params = lambda._params(program)
         assert.equal(params.DeadLetterConfig.TargetArn, v, v)
@@ -352,7 +352,7 @@ describe('lib/main', function () {
       fs.writeFileSync('fuga')
     })
     after(() => {
-      ['build', 'fuga', '__unittest'].forEach((path) => {
+      ['build', 'fuga', '__unittest'].forEach(path => {
         fs.removeSync(path)
       })
     })
@@ -362,17 +362,17 @@ describe('lib/main', function () {
     it('_fileCopy an index.js as well as other files', () => {
       return lambda._fileCopy(program, '.', codeDirectory, true).then(() => {
         const contents = fs.readdirSync(codeDirectory);
-        ['index.js', 'package.json'].forEach((needle) => {
+        ['index.js', 'package.json'].forEach(needle => {
           assert.include(contents, needle, `Target: "${needle}"`)
         });
-        ['node_modules', 'build'].forEach((needle) => {
+        ['node_modules', 'build'].forEach(needle => {
           assert.notInclude(contents, needle, `Target: "${needle}"`)
         })
       })
     })
 
     describe('when there are excluded files', () => {
-      beforeEach((done) => {
+      beforeEach(done => {
         // *main* => lib/main.js
         // In case of specifying files under the directory with wildcards
         program.excludeGlobs = [
@@ -388,7 +388,7 @@ describe('lib/main', function () {
       it('_fileCopy an index.js as well as other files', () => {
         return lambda._fileCopy(program, '.', codeDirectory, true).then(() => {
           const contents = fs.readdirSync(codeDirectory);
-          ['index.js', 'package.json'].forEach((needle) => {
+          ['index.js', 'package.json'].forEach(needle => {
             assert.include(contents, needle, `Target: "${needle}"`)
           })
         })
@@ -397,11 +397,11 @@ describe('lib/main', function () {
       it('_fileCopy excludes files matching excludeGlobs', () => {
         return lambda._fileCopy(program, '.', codeDirectory, true).then(() => {
           let contents = fs.readdirSync(codeDirectory);
-          ['__unittest', 'fuga'].forEach((needle) => {
+          ['__unittest', 'fuga'].forEach(needle => {
             assert.include(contents, needle, `Target: "${needle}"`)
           });
 
-          ['node-lambda.png', 'test'].forEach((needle) => {
+          ['node-lambda.png', 'test'].forEach(needle => {
             assert.notInclude(contents, needle, `Target: "${needle}"`)
           })
 
@@ -525,7 +525,7 @@ describe('lib/main', function () {
 
     it('should not throw any errors if no script', () => {
       disableLog()
-      return lambda._postInstallScript(program, codeDirectory).then((dummy) => {
+      return lambda._postInstallScript(program, codeDirectory).then(dummy => {
         enableLog()
         assert.isUndefined(dummy)
       })
@@ -534,7 +534,7 @@ describe('lib/main', function () {
     it('should throw any errors if script fails', () => {
       fs.writeFileSync(postInstallScriptPath, '___fails___')
       disableLog()
-      return lambda._postInstallScript(program, codeDirectory).catch((err) => {
+      return lambda._postInstallScript(program, codeDirectory).catch(err => {
         enableLog()
         assert.instanceOf(err, Error)
         assert.match(err.message, /^Error: Command failed:/)
@@ -547,9 +547,9 @@ describe('lib/main', function () {
         fs.readFileSync(path.join('test', 'post_install.sh'))
       )
       fs.chmodSync(path.join(codeDirectory, 'post_install.sh'), '755')
-      return lambda._postInstallScript(program, codeDirectory).then((dummy) => {
+      return lambda._postInstallScript(program, codeDirectory).then(dummy => {
         assert.isUndefined(dummy)
-      }).catch((err) => {
+      }).catch(err => {
         assert.isNull(err)
         assert.equal(
           `=> Running post install script post_install.sh\n\t\tYour environment is ${program.environment}\n`,
@@ -582,7 +582,7 @@ describe('lib/main', function () {
       _timeout({ this: this, sec: 30 }) // give it time to zip
 
       disableLog()
-      return lambda._zip(program, codeDirectory).then((data) => {
+      return lambda._zip(program, codeDirectory).then(data => {
         enableLog()
         const archive = new Zip(data)
         assert.include(archive.files['index.js'].name, 'index.js')
@@ -618,10 +618,10 @@ describe('lib/main', function () {
       _timeout({ this: this, sec: 30 }) // give it time to zip
 
       disableLog()
-      return lambda._archive(program).then((data) => {
+      return lambda._archive(program).then(data => {
         enableLog()
         const archive = new Zip(data)
-        const contents = Object.keys(archive.files).map((k) => {
+        const contents = Object.keys(archive.files).map(k => {
           return archive.files[k].name.toString()
         })
         assert.include(contents, 'index.js')
@@ -643,17 +643,17 @@ describe('lib/main', function () {
 
       program.prebuiltDirectory = buildDir
       disableLog()
-      return lambda._archive(program).then((data) => {
+      return lambda._archive(program).then(data => {
         enableLog()
         const archive = new Zip(data)
-        const contents = Object.keys(archive.files).map((k) => {
+        const contents = Object.keys(archive.files).map(k => {
           return archive.files[k].name.toString()
         });
         [
           'testa',
           'd/testb',
           'node_modules/a'
-        ].forEach((needle) => {
+        ].forEach(needle => {
           assert.include(contents, needle, `Target: "${needle}"`)
         })
       })
@@ -667,7 +667,7 @@ describe('lib/main', function () {
       _timeout({ this: this, sec: 30 }) // give it time to zip
 
       disableLog()
-      return lambda._zip(program, codeDirectory).then((data) => {
+      return lambda._zip(program, codeDirectory).then(data => {
         enableLog()
         bufferExpected = data
         fs.writeFileSync(testZipFile, data)
@@ -677,9 +677,9 @@ describe('lib/main', function () {
     after(() => fs.unlinkSync(testZipFile))
 
     it('_readArchive fails (undefined)', () => {
-      return lambda._readArchive(program).then((data) => {
+      return lambda._readArchive(program).then(data => {
         assert.isUndefined(data)
-      }).catch((err) => {
+      }).catch(err => {
         assert.instanceOf(err, Error)
         assert.equal(err.message, 'No such Zipfile [undefined]')
       })
@@ -688,9 +688,9 @@ describe('lib/main', function () {
     it('_readArchive fails (does not exists file)', () => {
       const filePath = path.join(path.resolve('/aaaa'), 'bbbb')
       const _program = Object.assign({ deployZipfile: filePath }, program)
-      return lambda._readArchive(_program).then((data) => {
+      return lambda._readArchive(_program).then(data => {
         assert.isUndefined(data)
-      }).catch((err) => {
+      }).catch(err => {
         assert.instanceOf(err, Error)
         assert.equal(err.message, `No such Zipfile [${filePath}]`)
       })
@@ -698,7 +698,7 @@ describe('lib/main', function () {
 
     it('_readArchive reads the contents of the zipfile', () => {
       const _program = Object.assign({ deployZipfile: testZipFile }, program)
-      return lambda._readArchive(_program).then((data) => {
+      return lambda._readArchive(_program).then(data => {
         assert.deepEqual(data, bufferExpected)
       })
     })
@@ -709,11 +709,11 @@ describe('lib/main', function () {
         const _program = Object.assign({ deployZipfile: filePath }, program)
         _timeout({ this: this, sec: 30 }) // give it time to zip
         disableLog()
-        return lambda._archive(_program).then((data) => {
+        return lambda._archive(_program).then(data => {
           enableLog()
           // same test as "installs and zips with an index.js file and node_modules/aws-sdk"
           const archive = new Zip(data)
-          const contents = Object.keys(archive.files).map((k) => {
+          const contents = Object.keys(archive.files).map(k => {
             return archive.files[k].name.toString()
           })
           assert.include(contents, 'index.js')
@@ -723,7 +723,7 @@ describe('lib/main', function () {
 
       it('`deployZipfile` is a valid value._archive reads the contents of the zipfile', () => {
         const _program = Object.assign({ deployZipfile: testZipFile }, program)
-        return lambda._archive(_program).then((data) => {
+        return lambda._archive(_program).then(data => {
           assert.deepEqual(data, bufferExpected)
         })
       })
@@ -759,7 +759,7 @@ describe('lib/main', function () {
     ]
 
     after(() => {
-      targetFiles.forEach((file) => fs.unlinkSync(file))
+      targetFiles.forEach(file => fs.unlinkSync(file))
       program.eventSourceFile = ''
     })
 
@@ -769,7 +769,7 @@ describe('lib/main', function () {
       enableLog()
 
       const libPath = path.join(__dirname, '..', 'lib')
-      targetFiles.forEach((targetFile) => {
+      targetFiles.forEach(targetFile => {
         const boilerplateFile = path.join(libPath, `${targetFile}.example`)
 
         assert.equal(
@@ -919,7 +919,7 @@ describe('lib/main', function () {
       return lambda._listEventSourceMappings(
         awsLambda,
         { FunctionName: 'test-func' }
-      ).then((results) => {
+      ).then(results => {
         assert.deepEqual(
           results,
           lambdaMockSettings.listEventSourceMappings.EventSourceMappings
@@ -958,7 +958,7 @@ describe('lib/main', function () {
         '',
         [],
         eventSourceList.EventSourceMappings
-      ).then((results) => {
+      ).then(results => {
         assert.deepEqual(results, [])
       })
     })
@@ -971,7 +971,7 @@ describe('lib/main', function () {
         'functionName',
         [],
         eventSourceList.EventSourceMappings
-      ).then((results) => {
+      ).then(results => {
         assert.deepEqual(results, [lambdaMockSettings.createEventSourceMapping])
       })
     })
@@ -982,7 +982,7 @@ describe('lib/main', function () {
         'functionName',
         lambdaMockSettings.listEventSourceMappings.EventSourceMappings,
         {}
-      ).then((results) => {
+      ).then(results => {
         assert.deepEqual(results, [lambdaMockSettings.deleteEventSourceMapping])
       })
     })
@@ -995,7 +995,7 @@ describe('lib/main', function () {
         'functionName',
         lambdaMockSettings.listEventSourceMappings.EventSourceMappings,
         eventSourceList.EventSourceMappings
-      ).then((results) => {
+      ).then(results => {
         assert.deepEqual(results, [lambdaMockSettings.updateEventSourceMapping])
       })
     })
@@ -1031,7 +1031,7 @@ describe('lib/main', function () {
         schedule,
         '',
         eventSourceList.ScheduleEvents
-      ).then((results) => {
+      ).then(results => {
         assert.deepEqual(results, [])
       })
     })
@@ -1044,7 +1044,7 @@ describe('lib/main', function () {
         schedule,
         functionArn,
         eventSourceList.ScheduleEvents
-      ).then((results) => {
+      ).then(results => {
         const expected = [Object.assign(
           eventSourcesJsonValue.ScheduleEvents[0],
           { FunctionArn: functionArn }
@@ -1109,7 +1109,7 @@ describe('lib/main', function () {
   describe('_uploadNew', () => {
     it('simple test with mock', () => {
       const params = lambda._params(program, null)
-      return lambda._uploadNew(awsLambda, params, (results) => {
+      return lambda._uploadNew(awsLambda, params, results => {
         assert.deepEqual(results, lambdaMockSettings.createFunction)
       })
     })
@@ -1118,7 +1118,7 @@ describe('lib/main', function () {
   describe('_uploadExisting', () => {
     it('simple test with mock', () => {
       const params = lambda._params(program, null)
-      return lambda._uploadExisting(awsLambda, params).then((results) => {
+      return lambda._uploadExisting(awsLambda, params).then(results => {
         assert.deepEqual(results, lambdaMockSettings.updateFunctionConfiguration)
       })
     })
@@ -1132,7 +1132,7 @@ describe('lib/main', function () {
         new CloudWatchLogs(aws),
         program,
         params.FunctionName
-      ).then((results) => {
+      ).then(results => {
         assert.deepEqual(results, { retentionInDays: program.retentionInDays })
       })
     })
@@ -1153,7 +1153,7 @@ describe('lib/main', function () {
     afterEach(() => {
       fs.unlinkSync('newContext.json')
       fs.unlinkSync('newEvent.json')
-      filesCreatedBySetup.forEach((file) => fs.unlinkSync(file))
+      filesCreatedBySetup.forEach(file => fs.unlinkSync(file))
     })
 
     it('should use existing sample files', () => {
@@ -1168,7 +1168,7 @@ describe('lib/main', function () {
       assert.equal(fs.readFileSync('newEvent.json').toString(), '{"FOO"="bar"}')
 
       const libPath = path.join(__dirname, '..', 'lib')
-      filesCreatedBySetup.forEach((targetFile) => {
+      filesCreatedBySetup.forEach(targetFile => {
         const boilerplateFile = path.join(libPath, `${targetFile}.example`)
 
         assert.equal(
