@@ -151,7 +151,7 @@ describe('lib/schedule_events', () => {
 
   describe('_putRule', () => {
     it('using mock', () => {
-      return schedule._putRule(params).then((data) => {
+      return schedule._putRule(params).then(data => {
         assert.deepEqual(data, mockResponse.putRule)
       })
     })
@@ -160,7 +160,7 @@ describe('lib/schedule_events', () => {
   describe('_addPermission', () => {
     it('using mock', () => {
       const _params = Object.assign(params, mockResponse.putTargets)
-      return schedule._addPermission(_params).then((data) => {
+      return schedule._addPermission(_params).then(data => {
         assert.deepEqual(data, mockResponse.addPermission)
       })
     })
@@ -168,7 +168,7 @@ describe('lib/schedule_events', () => {
 
   describe('_putTargets', () => {
     it('using mock', () => {
-      return schedule._putTargets(params).then((data) => {
+      return schedule._putTargets(params).then(data => {
         assert.deepEqual(data, mockResponse.putTargets)
       })
     })
@@ -176,7 +176,7 @@ describe('lib/schedule_events', () => {
 
   describe('add', () => {
     it('using mock', () => {
-      return schedule.add(params).then((data) => {
+      return schedule.add(params).then(data => {
         assert.deepEqual(data, mockResponse.putTargets)
       })
     })
