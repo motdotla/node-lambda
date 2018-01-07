@@ -289,3 +289,13 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Set docker run working directory so npm install works [#381](https://github.com/motdotla/node-lambda/pull/381)
 - Change short option of `--tracingConfig` to `-c` [#385](https://github.com/motdotla/node-lambda/pull/385)
 - Fix to use Proxy when run locally [#389](https://github.com/motdotla/node-lambda/pull/389)
+
+## [0.11.6] - 2018-01-07
+### Features
+- Refactoring lib/main.js [#398](https://github.com/motdotla/node-lambda/pull/398)
+- Remove unnecessary `return this` for constructor [#399](https://github.com/motdotla/node-lambda/pull/399)
+- Remove unnecessary try-cache [#401](https://github.com/motdotla/node-lambda/pull/401)
+- Add event_sources.json to setup message [#402](https://github.com/motdotla/node-lambda/pull/402)
+- Modify using template literals [#403](https://github.com/motdotla/node-lambda/pull/403)
+- Remove unnecessary promise chain [#404](https://github.com/motdotla/node-lambda/pull/404)
+- Local/Cloud flag [#405](https://github.com/motdotla/node-lambda/pull/405)
