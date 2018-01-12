@@ -60,83 +60,83 @@ const ENABLE_RUN_MULTIPLE_EVENTS = true
 program
   .command('deploy')
   .description('Deploy your application to Amazon Lambda')
-  .option('-e, --environment [' + AWS_ENVIRONMENT + ']', 'Choose environment {dev, staging, production}',
-    AWS_ENVIRONMENT)
-  .option('-a, --accessKey [' + AWS_ACCESS_KEY_ID + ']', 'AWS Access Key', AWS_ACCESS_KEY_ID)
-  .option('-s, --secretKey [' + AWS_SECRET_ACCESS_KEY + ']', 'AWS Secret Key', AWS_SECRET_ACCESS_KEY)
-  .option('-P, --profile [' + AWS_PROFILE + ']', 'AWS Profile', AWS_PROFILE)
-  .option('-k, --sessionToken [' + AWS_SESSION_TOKEN + ']', 'AWS Session Token', AWS_SESSION_TOKEN)
-  .option('-r, --region [' + AWS_REGION + ']', 'AWS Region', AWS_REGION)
-  .option('-n, --functionName [' + AWS_FUNCTION_NAME + ']', 'Lambda FunctionName', AWS_FUNCTION_NAME)
-  .option('-H, --handler [' + AWS_HANDLER + ']', 'Lambda Handler {index.handler}', AWS_HANDLER)
-  .option('-o, --role [' + AWS_ROLE + ']', 'Amazon Role ARN', AWS_ROLE)
-  .option('-m, --memorySize [' + AWS_MEMORY_SIZE + ']', 'Lambda Memory Size', AWS_MEMORY_SIZE)
-  .option('-t, --timeout [' + AWS_TIMEOUT + ']', 'Lambda Timeout', AWS_TIMEOUT)
-  .option('-d, --description [' + AWS_DESCRIPTION + ']', 'Lambda Description', AWS_DESCRIPTION)
-  .option('-u, --runtime [' + AWS_RUNTIME + ']', 'Lambda Runtime', AWS_RUNTIME)
-  .option('-p, --publish [' + AWS_PUBLISH + ']', 'Lambda Publish', AWS_PUBLISH)
-  .option('-L, --lambdaVersion [' + AWS_FUNCTION_VERSION + ']', 'Lambda Function Version', AWS_FUNCTION_VERSION)
-  .option('-b, --vpcSubnets [' + AWS_VPC_SUBNETS + ']', 'Lambda Function VPC Subnets', AWS_VPC_SUBNETS)
-  .option('-g, --vpcSecurityGroups [' + AWS_VPC_SECURITY_GROUPS + ']', 'Lambda VPC Security Group',
+  .option('-e, --environment [AWS_ENVIRONMENT]', 'Choose environment {dev, staging, production}',
+  AWS_ENVIRONMENT)
+  .option('-a, --accessKey [AWS_ACCESS_KEY_ID]', 'AWS Access Key', AWS_ACCESS_KEY_ID)
+  .option('-s, --secretKey [AWS_SECRET_ACCESS_KEY]', 'AWS Secret Key', AWS_SECRET_ACCESS_KEY)
+  .option('-P, --profile [AWS_PROFILE]', 'AWS Profile', AWS_PROFILE)
+  .option('-k, --sessionToken [AWS_SESSION_TOKEN]', 'AWS Session Token', AWS_SESSION_TOKEN)
+  .option('-r, --region [AWS_REGION]', 'AWS Region', AWS_REGION)
+  .option('-n, --functionName [AWS_FUNCTION_NAME]', 'Lambda FunctionName', AWS_FUNCTION_NAME)
+  .option('-H, --handler [AWS_HANDLER]', 'Lambda Handler {index.handler}', AWS_HANDLER)
+  .option('-o, --role [AWS_ROLE]', 'Amazon Role ARN', AWS_ROLE)
+  .option('-m, --memorySize [AWS_MEMORY_SIZE]', 'Lambda Memory Size', AWS_MEMORY_SIZE)
+  .option('-t, --timeout [AWS_TIMEOUT]', 'Lambda Timeout', AWS_TIMEOUT)
+  .option('-d, --description [AWS_DESCRIPTION]', 'Lambda Description', AWS_DESCRIPTION)
+  .option('-u, --runtime [AWS_RUNTIME]', 'Lambda Runtime', AWS_RUNTIME)
+  .option('-p, --publish [AWS_PUBLISH]', 'Lambda Publish', AWS_PUBLISH)
+  .option('-L, --lambdaVersion [AWS_FUNCTION_VERSION]', 'Lambda Function Version', AWS_FUNCTION_VERSION)
+  .option('-b, --vpcSubnets [AWS_VPC_SUBNETS]', 'Lambda Function VPC Subnets', AWS_VPC_SUBNETS)
+  .option('-g, --vpcSecurityGroups [AWS_VPC_SECURITY_GROUPS]', 'Lambda VPC Security Group',
     AWS_VPC_SECURITY_GROUPS)
-  .option('-K, --kmsKeyArn [' + AWS_KMS_KEY_ARN + ']', 'Lambda KMS Key ARN', AWS_KMS_KEY_ARN)
-  .option('-Q, --deadLetterConfigTargetArn [' + AWS_DLQ_TARGET_ARN + ']', 'Lambda DLQ resource',
+  .option('-K, --kmsKeyArn [AWS_KMS_KEY_ARN]', 'Lambda KMS Key ARN', AWS_KMS_KEY_ARN)
+  .option('-Q, --deadLetterConfigTargetArn [AWS_DLQ_TARGET_ARN]', 'Lambda DLQ resource',
     AWS_DLQ_TARGET_ARN)
-  .option('-c, --tracingConfig [' + AWS_TRACING_CONFIG + ']', 'Lambda tracing settings',
+  .option('-c, --tracingConfig [AWS_TRACING_CONFIG]', 'Lambda tracing settings',
     AWS_TRACING_CONFIG)
-  .option('-R, --retentionInDays [' + AWS_LOGS_RETENTION_IN_DAYS + ']', 'CloudWatchLogs retentionInDays settings',
+  .option('-R, --retentionInDays [AWS_LOGS_RETENTION_IN_DAYS]', 'CloudWatchLogs retentionInDays settings',
     AWS_LOGS_RETENTION_IN_DAYS)
-  .option('-A, --packageDirectory [' + PACKAGE_DIRECTORY + ']', 'Local Package Directory', PACKAGE_DIRECTORY)
-  .option('-G, --sourceDirectory [' + SRC_DIRECTORY + ']', 'Path to lambda source Directory (e.g. "./some-lambda")', SRC_DIRECTORY)
-  .option('-I, --dockerImage [' + DOCKER_IMAGE + ']', 'Docker image for npm install', DOCKER_IMAGE)
-  .option('-f, --configFile [' + CONFIG_FILE + ']',
+  .option('-A, --packageDirectory [PACKAGE_DIRECTORY]', 'Local Package Directory', PACKAGE_DIRECTORY)
+  .option('-G, --sourceDirectory [SRC_DIRECTORY]', 'Path to lambda source Directory (e.g. "./some-lambda")', SRC_DIRECTORY)
+  .option('-I, --dockerImage [DOCKER_IMAGE]', 'Docker image for npm install', DOCKER_IMAGE)
+  .option('-f, --configFile [CONFIG_FILE]',
     'Path to file holding secret environment variables (e.g. "deploy.env")', CONFIG_FILE)
-  .option('-S, --eventSourceFile [' + EVENT_SOURCE_FILE + ']',
+  .option('-S, --eventSourceFile [EVENT_SOURCE_FILE]',
     'Path to file holding event source mapping variables (e.g. "event_sources.json")', EVENT_SOURCE_FILE)
-  .option('-x, --excludeGlobs [' + EXCLUDE_GLOBS + ']',
+  .option('-x, --excludeGlobs [EXCLUDE_GLOBS]',
     'Space-separated glob pattern(s) for additional exclude files (e.g. "event.json dotenv.sample")', EXCLUDE_GLOBS)
-  .option('-D, --prebuiltDirectory [' + PREBUILT_DIRECTORY + ']', 'Prebuilt directory', PREBUILT_DIRECTORY)
-  .option('-T, --deployTimeout [' + DEPLOY_TIMEOUT + ']', 'Deploy Timeout', DEPLOY_TIMEOUT)
-  .option('-z, --deployZipfile [' + DEPLOY_ZIPFILE + ']', 'Deploy zipfile', DEPLOY_ZIPFILE)
-  .option('-y, --proxy [' + PROXY + ']', 'Proxy server', PROXY)
+  .option('-D, --prebuiltDirectory [PREBUILT_DIRECTORY]', 'Prebuilt directory', PREBUILT_DIRECTORY)
+  .option('-T, --deployTimeout [DEPLOY_TIMEOUT]', 'Deploy Timeout', DEPLOY_TIMEOUT)
+  .option('-z, --deployZipfile [DEPLOY_ZIPFILE]', 'Deploy zipfile', DEPLOY_ZIPFILE)
+  .option('-y, --proxy [PROXY]', 'Proxy server', PROXY)
   .action((prg) => lambda.deploy(prg))
 
 program
   .command('package')
   .alias('zip')
   .description('Create zipped package for Amazon Lambda deployment')
-  .option('-A, --packageDirectory [' + PACKAGE_DIRECTORY + ']', 'Local Package Directory', PACKAGE_DIRECTORY)
-  .option('-I, --dockerImage [' + DOCKER_IMAGE + ']', 'Docker image for npm install', DOCKER_IMAGE)
-  .option('-n, --functionName [' + AWS_FUNCTION_NAME + ']', 'Lambda FunctionName', AWS_FUNCTION_NAME)
-  .option('-H, --handler [' + AWS_HANDLER + ']', 'Lambda Handler {index.handler}', AWS_HANDLER)
-  .option('-e, --environment [' + AWS_ENVIRONMENT + ']', 'Choose environment {dev, staging, production}',
+  .option('-A, --packageDirectory [PACKAGE_DIRECTORY]', 'Local Package Directory', PACKAGE_DIRECTORY)
+  .option('-I, --dockerImage [DOCKER_IMAGE]', 'Docker image for npm install', DOCKER_IMAGE)
+  .option('-n, --functionName [AWS_FUNCTION_NAME]', 'Lambda FunctionName', AWS_FUNCTION_NAME)
+  .option('-H, --handler [AWS_HANDLER]', 'Lambda Handler {index.handler}', AWS_HANDLER)
+  .option('-e, --environment [AWS_ENVIRONMENT]', 'Choose environment {dev, staging, production}',
     AWS_ENVIRONMENT)
-  .option('-x, --excludeGlobs [' + EXCLUDE_GLOBS + ']',
+  .option('-x, --excludeGlobs [EXCLUDE_GLOBS]',
     'Space-separated glob pattern(s) for additional exclude files (e.g. "event.json dotenv.sample")', EXCLUDE_GLOBS)
-  .option('-D, --prebuiltDirectory [' + PREBUILT_DIRECTORY + ']', 'Prebuilt directory', PREBUILT_DIRECTORY)
+  .option('-D, --prebuiltDirectory [PREBUILT_DIRECTORY]', 'Prebuilt directory', PREBUILT_DIRECTORY)
   .action((prg) => lambda.package(prg))
 
 program
   .command('run')
   .alias('execute')
   .description('Run your Amazon Lambda application locally')
-  .option('-H, --handler [' + AWS_HANDLER + ']', 'Lambda Handler {index.handler}', AWS_HANDLER)
-  .option('-j, --eventFile [' + EVENT_FILE + ']', 'Event JSON File', EVENT_FILE)
-  .option('-u, --runtime [' + AWS_RUNTIME + ']', 'Lambda Runtime', AWS_RUNTIME)
-  .option('-t, --timeout [' + AWS_RUN_TIMEOUT + ']', 'Lambda Timeout', AWS_RUN_TIMEOUT)
-  .option('-f, --configFile [' + CONFIG_FILE + ']',
+  .option('-H, --handler [AWS_HANDLER]', 'Lambda Handler {index.handler}', AWS_HANDLER)
+  .option('-j, --eventFile [EVENT_FILE]', 'Event JSON File', EVENT_FILE)
+  .option('-u, --runtime [AWS_RUNTIME]', 'Lambda Runtime', AWS_RUNTIME)
+  .option('-t, --timeout [AWS_RUN_TIMEOUT]', 'Lambda Timeout', AWS_RUN_TIMEOUT)
+  .option('-f, --configFile [CONFIG_FILE]',
     'Path to file holding secret environment variables (e.g. "deploy.env")', CONFIG_FILE)
-  .option('-x, --contextFile [' + CONTEXT_FILE + ']', 'Context JSON File', CONTEXT_FILE)
-  .option('-M, --enableRunMultipleEvents [' + ENABLE_RUN_MULTIPLE_EVENTS + ']', 'Enable run multiple events',
+  .option('-x, --contextFile [CONTEXT_FILE]', 'Context JSON File', CONTEXT_FILE)
+  .option('-M, --enableRunMultipleEvents [ENABLE_RUN_MULTIPLE_EVENTS]', 'Enable run multiple events',
     ENABLE_RUN_MULTIPLE_EVENTS)
-  .option('-y, --proxy [' + PROXY + ']', 'Proxy server', PROXY)
+  .option('-y, --proxy [PROXY]', 'Proxy server', PROXY)
   .action((prg) => lambda.run(prg))
 
 program
   .command('setup')
   .description('Sets up the .env file.')
-  .option('-j, --eventFile [' + EVENT_FILE + ']', 'Event JSON File', EVENT_FILE)
-  .option('-x, --contextFile [' + CONTEXT_FILE + ']', 'Context JSON File', CONTEXT_FILE)
+  .option('-j, --eventFile [EVENT_FILE]', 'Event JSON File', EVENT_FILE)
+  .option('-x, --contextFile [CONTEXT_FILE]', 'Context JSON File', CONTEXT_FILE)
   .action((prg) => lambda.setup(prg))
 
 program
