@@ -39,14 +39,14 @@
     "standard": "^10.0.3"
   },
   "dependencies": {
-    "archiver": "^2.0.3",
-    "aws-sdk": "^2.164.0",
+    "archiver": "^2.1.1",
+    "aws-sdk": "^2.203.0",
     "aws-xray-sdk-core": "^1.2.0",
-    "commander": "^2.12.2",
+    "commander": "^2.14.1",
     "continuation-local-storage": "^3.2.1",
     "dotenv": "^0.4.0",
     "fs-extra": "^0.30.0",
     "minimatch": "^3.0.3",
-    "proxy-agent": "^2.1.0"
+    "proxy-agent": "^2.2.0"
   }
 }
