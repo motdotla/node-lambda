@@ -62,6 +62,7 @@ $ echo -e ".env\ndeploy.env\nevent.json\n.lambda" >> .gitignore
 
 ```
 AWS_ENVIRONMENT            // (default: '')
+AWS_ENDPOINT               // (default: '')
 CONFIG_FILE                // (default: '')
 EVENT_SOURCE_FILE          // (default: '')
 EXCLUDE_GLOBS              // (default: '')
@@ -117,6 +118,7 @@ Options:
   -x, --contextFile [context.json]      Context JSON File
   -M, --enableRunMultipleEvents [true]  Enable run multiple events
   -y, --proxy []                        Proxy server
+  -E, --endpoint []                     Use different endpoint (e.g. localstack, "http://127.0.0.1:4574")
 ```
 
 #### package
@@ -187,6 +189,12 @@ Options:
   -T, --deployTimeout [120000]        Deploy Timeout
   -z, --deployZipfile []              Deploy zipfile
   -y, --proxy []                      Proxy server
+```
+
+If you are deploying to a custom endpoint you may also need to pass in an access key/secret. For localstack these can be anything, but cannot be blank:
+
+```
+node-lambda deploy --endpoint http://localhost:4574 --accessKey '1234' --secretKey '1234'
 ```
 
 ## Custom Environment Variables
