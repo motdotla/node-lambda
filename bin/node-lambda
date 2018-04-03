@@ -15,6 +15,7 @@ const packageJson = fs.existsSync(path.join(process.cwd(), 'package.json'))
 const packageJsonName = packageJson.name || 'UnnamedFunction'
 
 const AWS_ENVIRONMENT = process.env.AWS_ENVIRONMENT || ''
+const AWS_ENDPOINT = process.env.AWS_ENDPOINT || ''
 const CONFIG_FILE = process.env.CONFIG_FILE || ''
 const EVENT_SOURCE_FILE = process.env.EVENT_SOURCE_FILE || ''
 const EXCLUDE_GLOBS = process.env.EXCLUDE_GLOBS || ''
@@ -62,6 +63,8 @@ program
   .description('Deploy your application to Amazon Lambda')
   .option('-e, --environment [AWS_ENVIRONMENT]', 'Choose environment {dev, staging, production}',
     AWS_ENVIRONMENT)
+  .option('-E, --endpoint [AWS_ENDPOINT]', 'Choose endpoint (e.g. localstack, "http://127.0.0.1:4574")',
+    AWS_ENDPOINT)
   .option('-a, --accessKey [AWS_ACCESS_KEY_ID]', 'AWS Access Key', AWS_ACCESS_KEY_ID)
   .option('-s, --secretKey [AWS_SECRET_ACCESS_KEY]', 'AWS Secret Key', AWS_SECRET_ACCESS_KEY)
   .option('-P, --profile [AWS_PROFILE]', 'AWS Profile', AWS_PROFILE)
