@@ -299,3 +299,13 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Modify using template literals [#403](https://github.com/motdotla/node-lambda/pull/403)
 - Remove unnecessary promise chain [#404](https://github.com/motdotla/node-lambda/pull/404)
 - Local/Cloud flag [#405](https://github.com/motdotla/node-lambda/pull/405)
+
+## [0.11.7] - 2018-04-12
+### Features
+- AWS X-Ray SDK Support [#414](https://github.com/motdotla/node-lambda/pull/414)
+- Upgrade `standard` [#416](https://github.com/motdotla/node-lambda/pull/416)
+- Added support for using custom endpoints like localstack [#417](https://github.com/motdotla/node-lambda/pull/417)
+- NodeJS 8.10 runtime now available [#419](https://github.com/motdotla/node-lambda/pull/419)
+
+### Bugfixes
+- remove env var value from commanderjs flag definition [#409](https://github.com/motdotla/node-lambda/pull/409)
