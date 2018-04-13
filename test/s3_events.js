@@ -70,39 +70,29 @@ describe('lib/s3_events', () => {
     })
   })
 
-  describe('_putBucketNotificationConfigurationParams', () => {
-    it('Return parameters for s3.putBucketNotificationConfiguration(). No Filter', () => {
+  describe('_lambdaFunctionConfiguration', () => {
+    it('Return parameters for s3._lambdaFunctionConfiguration(). No Filter', () => {
       const expected = {
-        Bucket: 'node-lambda-test-bucket',
-        NotificationConfiguration: {
-          LambdaFunctionConfigurations: [{
-            Events: ['s3:ObjectCreated:*'],
-            LambdaFunctionArn: 'arn:aws:lambda:us-west-2:XXX:function:node-lambda-test-function'
-          }]
-        }
+        Events: ['s3:ObjectCreated:*'],
+        LambdaFunctionArn: 'arn:aws:lambda:us-west-2:XXX:function:node-lambda-test-function'
       }
       assert.deepEqual(
-        s3Events._putBucketNotificationConfigurationParams(params),
+        s3Events._lambdaFunctionConfiguration(params),
         expected
       )
     })
 
     it('Return parameters for s3.putBucketNotificationConfiguration(). Use Filter', () => {
       const expected = {
-        Bucket: 'node-lambda-test-bucket',
-        NotificationConfiguration: {
-          LambdaFunctionConfigurations: [{
-            Events: ['s3:ObjectCreated:*'],
-            LambdaFunctionArn: 'arn:aws:lambda:us-west-2:XXX:function:node-lambda-test-function',
-            Filter: {
-              Key: {
-                FilterRules: [{
-                  Name: 'prefix',
-                  Value: 'test-prefix'
-                }]
-              }
-            }
-          }]
+        Events: ['s3:ObjectCreated:*'],
+        LambdaFunctionArn: 'arn:aws:lambda:us-west-2:XXX:function:node-lambda-test-function',
+        Filter: {
+          Key: {
+            FilterRules: [{
+              Name: 'prefix',
+              Value: 'test-prefix'
+            }]
+          }
         }
       }
       const _params = Object.assign({}, params)
@@ -115,9 +105,86 @@ describe('lib/s3_events', () => {
         }
       }
       assert.deepEqual(
-        s3Events._putBucketNotificationConfigurationParams(_params),
+        s3Events._lambdaFunctionConfiguration(_params),
         expected
       )
+    })
+  })
+
+  describe('_paramsListToBucketNotificationConfigurations', () => {
+    describe('The number of elements of paramsList is 1', () => {
+      it('Return parameter list of putBucketNotificationConfiguration', () => {
+        const expected = [{
+          Bucket: 'node-lambda-test-bucket',
+          NotificationConfiguration: {
+            LambdaFunctionConfigurations: [{
+              Events: ['s3:ObjectCreated:*'],
+              LambdaFunctionArn: 'arn:aws:lambda:us-west-2:XXX:function:node-lambda-test-function'
+            }]
+          }
+        }]
+        assert.deepEqual(
+          s3Events._paramsListToBucketNotificationConfigurations([params]),
+          expected
+        )
+      })
+    })
+    describe('The number of elements of paramsList is 2. Same bucket', () => {
+      it('Return parameter list of putBucketNotificationConfiguration', () => {
+        const expected = [{
+          Bucket: 'node-lambda-test-bucket',
+          NotificationConfiguration: {
+            LambdaFunctionConfigurations: [{
+              Events: ['s3:ObjectCreated:*'],
+              LambdaFunctionArn: 'arn:aws:lambda:us-west-2:XXX:function:node-lambda-test-function'
+            }, {
+              Events: ['s3:ObjectDelete:*'],
+              LambdaFunctionArn: 'arn:aws:lambda:us-west-2:XXX:function:node-lambda-test-function'
+            }]
+          }
+        }]
+
+        const paramsDeleteEvent = Object.assign({}, params)
+        paramsDeleteEvent.Events = ['s3:ObjectDelete:*']
+        assert.deepEqual(
+          s3Events._paramsListToBucketNotificationConfigurations([
+            params,
+            paramsDeleteEvent
+          ]),
+          expected
+        )
+      })
+    })
+    describe('The number of elements of paramsList is 2. Different bucket', () => {
+      it('Return parameter list of putBucketNotificationConfiguration', () => {
+        const expected = [{
+          Bucket: 'node-lambda-test-bucket',
+          NotificationConfiguration: {
+            LambdaFunctionConfigurations: [{
+              Events: ['s3:ObjectCreated:*'],
+              LambdaFunctionArn: 'arn:aws:lambda:us-west-2:XXX:function:node-lambda-test-function'
+            }]
+          }
+        }, {
+          Bucket: 'node-lambda-test-bucket2',
+          NotificationConfiguration: {
+            LambdaFunctionConfigurations: [{
+              Events: ['s3:ObjectCreated:*'],
+              LambdaFunctionArn: 'arn:aws:lambda:us-west-2:XXX:function:node-lambda-test-function'
+            }]
+          }
+        }]
+
+        const paramsDifferentBucket = Object.assign({}, params)
+        paramsDifferentBucket.Bucket = 'node-lambda-test-bucket2'
+        assert.deepEqual(
+          s3Events._paramsListToBucketNotificationConfigurations([
+            params,
+            paramsDifferentBucket
+          ]),
+          expected
+        )
+      })
     })
   })
 
@@ -131,7 +198,9 @@ describe('lib/s3_events', () => {
 
   describe('_putBucketNotificationConfiguration', () => {
     it('using mock', () => {
-      return s3Events._putBucketNotificationConfiguration(params).then(data => {
+      const putBucketNotificationConfigurationParams =
+        s3Events._paramsListToBucketNotificationConfigurations([params])[0]
+      return s3Events._putBucketNotificationConfiguration(putBucketNotificationConfigurationParams).then(data => {
         assert.deepEqual(data, mockResponse.putBucketNotificationConfiguration)
       })
     })
@@ -139,7 +208,7 @@ describe('lib/s3_events', () => {
 
   describe('add', () => {
     it('using mock', () => {
-      return s3Events.add(params).then(data => {
+      return s3Events.add([params]).then(data => {
         assert.deepEqual(data, mockResponse.putBucketNotificationConfiguration)
       })
     })
