@@ -46,6 +46,7 @@
     "continuation-local-storage": "^3.2.1",
     "dotenv": "^0.4.0",
     "fs-extra": "^0.30.0",
+    "klaw": "^2.1.1",
     "minimatch": "^3.0.3",
     "proxy-agent": "^2.2.0"
   }
