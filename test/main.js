@@ -155,8 +155,8 @@ describe('lib/main', function () {
   })
 
   describe('_codeDirectory', () => {
-    it('.lambda in the current directory', () => {
-      assert.equal(lambda._codeDirectory(), path.resolve('.', '.lambda'))
+    it('Working directory in the /tmp directory', () => {
+      assert.equal(lambda._codeDirectory(), path.join(os.tmpdir(), 'node-lambda-lambda'))
     })
   })
 
