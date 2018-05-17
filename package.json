@@ -49,5 +49,8 @@
     "klaw": "^2.1.1",
     "minimatch": "^3.0.3",
     "proxy-agent": "^2.2.0"
+  },
+  "engines": {
+    "node": ">= 6.0.0"
   }
 }
