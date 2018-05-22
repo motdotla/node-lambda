@@ -1,4 +1,3 @@
-/* eslint node/no-deprecated-api: [error, {ignoreModuleItems: ["constants"]}] */
 'use strict'
 
 const path = require('path')
@@ -604,9 +603,7 @@ describe('lib/main', function () {
           // isSymbolicLink
           assert.include(archive.files['node-lambda-link'].name, 'node-lambda-link')
 
-          // 'constants' module was deprecated since v6.3. Use 'constants' property of each module instead.
-          // We use 'constants' to support Node.js 4.
-          const fsConstants = process.binding('constants').fs || require('constants')
+          const fsConstants = process.binding('constants').fs
           assert.equal(
             archive.files['node-lambda-link'].unixPermissions & fsConstants.S_IFMT,
             fsConstants.S_IFLNK
