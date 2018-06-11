@@ -6,6 +6,10 @@ node_js:
   - 9
   - 10
 
+cache:
+  directories:
+    - node_modules
+
 jobs:
   include:
     - stage: npm release
