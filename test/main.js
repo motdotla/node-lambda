@@ -5,7 +5,7 @@ const os = require('os')
 const fs = require('fs-extra')
 const lambda = require(path.join(__dirname, '..', 'lib', 'main'))
 const Zip = require('node-zip')
-const assert = require('chai').assert
+const {assert} = require('chai')
 const awsMock = require('aws-sdk-mock')
 awsMock.setSDK(path.resolve('node_modules/aws-sdk'))
 
