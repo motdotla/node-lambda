@@ -33,7 +33,7 @@ const originalProgram = {
   proxy: ''
 }
 
-var program = require('commander')
+var program = {}
 var codeDirectory = lambda._codeDirectory()
 
 const _timeout = function (params) {
