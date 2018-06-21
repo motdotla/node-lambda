@@ -32,7 +32,7 @@
   "author": "motdotla",
   "license": "BSD-2-Clause",
   "devDependencies": {
-    "aws-sdk-mock": "^1.6.1",
+    "aws-sdk-mock": "^3.1.0",
     "chai": "^4.1.2",
     "mocha": "",
     "node-zip": "^1.1.0",
