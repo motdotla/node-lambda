@@ -1182,10 +1182,31 @@ describe('lib/main', function () {
   })
 
   describe('Lambda.prototype._deployToRegion()', () => {
-    it('Since `aws-mock` does not correspond to `request.on`, it is impossible to test with Mock')
+    it('simple test with mock', () => {
+      const params = lambda._params(program, null)
+      disableLog()
+      return lambda._deployToRegion(program, params, 'us-east-1').then((result) => {
+        enableLog()
+        assert.deepEqual(
+          result,
+          [
+            [[], []],
+            [],
+            { retentionInDays: 30 }
+          ]
+        )
+      })
+    })
   })
 
   describe('Lambda.prototype.deploy()', () => {
-    it('Since `aws-mock` does not correspond to `request.on`, it is impossible to test with Mock')
+    it('simple test with mock', function () {
+      _timeout({ this: this, sec: 30 }) // give it time to zip
+      disableLog()
+      return lambda.deploy(program).then((result) => {
+        enableLog()
+        assert.isUndefined(result)
+      })
+    })
   })
 })
