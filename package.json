@@ -35,20 +35,20 @@
     "aws-sdk-mock": "^4.0.0",
     "chai": "^4.1.2",
     "mocha": "",
-    "node-zip": "^1.1.0",
+    "node-zip": "^1.1.1",
     "standard": "^11.0.1"
   },
   "dependencies": {
     "archiver": "^2.1.1",
-    "aws-sdk": "^2.203.0",
+    "aws-sdk": "^2.267.1",
     "aws-xray-sdk-core": "^1.2.0",
-    "commander": "^2.14.1",
+    "commander": "^2.16.0",
     "continuation-local-storage": "^3.2.1",
-    "dotenv": "^0.4.0",
+    "dotenv": "^6.0.0",
     "fs-extra": "^6.0.1",
     "klaw": "^2.1.1",
-    "minimatch": "^3.0.3",
-    "proxy-agent": "^2.2.0"
+    "minimatch": "^3.0.4",
+    "proxy-agent": "^3.0.0"
   },
   "engines": {
     "node": ">= 6.0.0"
