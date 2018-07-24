@@ -100,6 +100,9 @@ const _mockSetting = () => {
   awsMock.mock('S3', 'putBucketNotificationConfiguration', (params, callback) => {
     callback(null, {})
   })
+  awsMock.mock('S3', 'putObject', (params, callback) => {
+    callback(null, {'test': 'putObject'})
+  })
 
   Object.keys(lambdaMockSettings).forEach((method) => {
     awsMock.mock('Lambda', method, (params, callback) => {
@@ -1221,6 +1224,20 @@ describe('lib/main', function () {
           fs.readFileSync(boilerplateFile).toString(),
           targetFile
         )
+      })
+    })
+  })
+
+  describe('Lambda.prototype._s3PutObject()', () => {
+    it('simple test with mock', () => {
+      disableLog()
+      const params = {
+        deployS3Bucket: 'test',
+        deployS3Key: 'test'
+      }
+      return lambda._s3PutObject(params, 'us-east-1', 'buffer').then((result) => {
+        enableLog()
+        assert.deepEqual(result, {'test': 'putObject'})
       })
     })
   })
