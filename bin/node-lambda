@@ -46,6 +46,8 @@ const SRC_DIRECTORY = process.env.SRC_DIRECTORY || ''
 const DEPLOY_TIMEOUT = process.env.DEPLOY_TIMEOUT || 120000
 const DOCKER_IMAGE = process.env.DOCKER_IMAGE || ''
 const DEPLOY_ZIPFILE = process.env.DEPLOY_ZIPFILE || ''
+const DEPLOY_S3_BUCKET = process.env.DEPLOY_S3_BUCKET || ''
+const DEPLOY_S3_KEY = process.env.DEPLOY_S3_KEY || ''
 const AWS_KMS_KEY_ARN = process.env.AWS_KMS_KEY_ARN || ''
 const AWS_DLQ_TARGET_ARN = (() => {
   // You can clear the setting by passing an empty string
@@ -101,6 +103,10 @@ program
   .option('-D, --prebuiltDirectory [PREBUILT_DIRECTORY]', 'Prebuilt directory', PREBUILT_DIRECTORY)
   .option('-T, --deployTimeout [DEPLOY_TIMEOUT]', 'Deploy Timeout', DEPLOY_TIMEOUT)
   .option('-z, --deployZipfile [DEPLOY_ZIPFILE]', 'Deploy zipfile', DEPLOY_ZIPFILE)
+  .option('-B, --deployS3Bucket [DEPLOY_S3_BUCKET]',
+    'Use S3 to deploy. Specify it with `--deployS3Key`.', DEPLOY_S3_BUCKET)
+  .option('-O, --deployS3Key [DEPLOY_S3_KEY]',
+    'Use S3 to deploy. Specify it with `--deployS3Bucket`.', DEPLOY_S3_KEY)
   .option('-y, --proxy [PROXY]', 'Proxy server', PROXY)
   .action((prg) => lambda.deploy(prg))
 
