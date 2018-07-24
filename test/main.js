@@ -100,6 +100,9 @@ const _mockSetting = () => {
   awsMock.mock('S3', 'putBucketNotificationConfiguration', (params, callback) => {
     callback(null, {})
   })
+  awsMock.mock('S3', 'putObject', (params, callback) => {
+    callback(null, {'test': 'putObject'})
+  })
 
   Object.keys(lambdaMockSettings).forEach((method) => {
     awsMock.mock('Lambda', method, (params, callback) => {
@@ -168,6 +171,26 @@ describe('lib/main', function () {
         done()
       }
       lambda._runHandler(handler, {}, program, {})
+    })
+  })
+
+  describe('_isUseS3', () => {
+    it('=== true', () => {
+      assert.isTrue(lambda._isUseS3({
+        deployS3Bucket: 'bucket',
+        deployS3Key: 'key'
+      }))
+    })
+
+    it('=== false', () => {
+      [
+        {},
+        {deployS3Bucket: '', deployS3Key: ''},
+        {deployS3Bucket: 'bucket'},
+        {deployS3Key: 'key'}
+      ].forEach((params) => {
+        assert.isFalse(lambda._isUseS3(params), params)
+      })
     })
   })
 
@@ -257,6 +280,30 @@ describe('lib/main', function () {
       program.tracingConfig = ''
       const params = lambda._params(program)
       assert.isNull(params.TracingConfig.Mode)
+    })
+
+    describe('S3 deploy', () => {
+      it('Do not use S3 deploy', () => {
+        const params = lambda._params(program, 'Buffer')
+        assert.deepEqual(
+          params.Code,
+          { ZipFile: 'Buffer' }
+        )
+      })
+
+      it('Use S3 deploy', () => {
+        const params = lambda._params(Object.assign({
+          deployS3Bucket: 'S3Bucket-value',
+          deployS3Key: 'S3Key-value'
+        }, program), 'Buffer')
+        assert.deepEqual(
+          params.Code,
+          {
+            S3Bucket: 'S3Bucket-value',
+            S3Key: 'S3Key-value'
+          }
+        )
+      })
     })
 
     describe('params.Publish', () => {
@@ -1177,6 +1224,20 @@ describe('lib/main', function () {
           fs.readFileSync(boilerplateFile).toString(),
           targetFile
         )
+      })
+    })
+  })
+
+  describe('Lambda.prototype._s3PutObject()', () => {
+    it('simple test with mock', () => {
+      disableLog()
+      const params = {
+        deployS3Bucket: 'test',
+        deployS3Key: 'test'
+      }
+      return lambda._s3PutObject(params, 'us-east-1', 'buffer').then((result) => {
+        enableLog()
+        assert.deepEqual(result, {'test': 'putObject'})
       })
     })
   })
