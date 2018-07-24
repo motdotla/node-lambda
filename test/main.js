@@ -171,6 +171,26 @@ describe('lib/main', function () {
     })
   })
 
+  describe('_isUseS3', () => {
+    it('=== true', () => {
+      assert.isTrue(lambda._isUseS3({
+        deployS3Bucket: 'bucket',
+        deployS3Key: 'key'
+      }))
+    })
+
+    it('=== false', () => {
+      [
+        {},
+        {deployS3Bucket: '', deployS3Key: ''},
+        {deployS3Bucket: 'bucket'},
+        {deployS3Key: 'key'}
+      ].forEach((params) => {
+        assert.isFalse(lambda._isUseS3(params), params)
+      })
+    })
+  })
+
   describe('_params', () => {
     // http://docs.aws.amazon.com/lambda/latest/dg/API_CreateFunction.html#SSS-CreateFunction-request-FunctionName
     const functionNamePattern =
