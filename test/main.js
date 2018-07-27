@@ -174,6 +174,24 @@ describe('lib/main', function () {
     })
   })
 
+  describe('_isFunctionDoesNotExist', () => {
+    it('=== true', () => {
+      const err = {
+        code: 'ResourceNotFoundException',
+        message: 'Function not found: arn:aws:lambda:XXX'
+      }
+      assert.isTrue(lambda._isFunctionDoesNotExist(err))
+    })
+
+    it('=== false', () => {
+      const err = {
+        code: 'MissingRequiredParameter',
+        message: 'Missing required key \'FunctionName\' in params'
+      }
+      assert.isFalse(lambda._isFunctionDoesNotExist(err))
+    })
+  })
+
   describe('_isUseS3', () => {
     it('=== true', () => {
       assert.isTrue(lambda._isUseS3({
