@@ -57,6 +57,22 @@ describe('lib/s3_events', () => {
     })
   })
 
+  describe('_statementId', () => {
+    it('StatementId that matches /[a-zA-Z0-9-_]+/.', () => {
+      [{
+        params: params,
+        expected: 'node-lambda-test-bucket'
+      }, {
+        params: {Bucket: 'example.com'},
+        expected: 'example_com'
+      }].forEach((test) => {
+        const actual = s3Events._statementId(test.params)
+        assert.equal(actual, test.expected, test)
+        assert.match(actual, /[a-zA-Z0-9-_]+/, test)
+      })
+    })
+  })
+
   describe('_addPermissionParams', () => {
     it('Return parameters for lambda.addPermission()', () => {
       const expected = {
