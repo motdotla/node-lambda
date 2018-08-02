@@ -93,8 +93,7 @@ SRC_DIRECTORY              // (default: '')
 DEPLOY_TIMEOUT             // (default: '120000')
 DOCKER_IMAGE               // (default: '')
 DEPLOY_ZIPFILE             // (default: '')
-DEPLOY_S3_BUCKET           // (default: '')
-DEPLOY_S3_KEY              // (default: '')
+DEPLOY_USE_S3              // (default: false)
 AWS_DLQ_TARGET_ARN         // (default: not set)
 ```
 
@@ -190,8 +189,7 @@ Options:
   -D, --prebuiltDirectory []          Prebuilt directory
   -T, --deployTimeout [120000]        Deploy Timeout
   -z, --deployZipfile []              Deploy zipfile
-  -B, --deployS3Bucket []             Use S3 to deploy. Specify it with `--deployS3Key`. (default: )
-  -O, --deployS3Key []                Use S3 to deploy. Specify it with `--deployS3Bucket`. (default: )
+  -B, --deployUseS3 []                Use S3 to deploy.
   -y, --proxy []                      Proxy server
 ```
 
