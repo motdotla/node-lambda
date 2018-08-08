@@ -36,7 +36,65 @@ describe('lib/s3_deploy', () => {
     })
   })
 
+  describe('_convertRegionStringToEnvVarName', () => {
+    it('Upper case. Replace "-" with "_".', () => {
+      [{
+        value: 'us-west-1',
+        expected: 'US_WEST_1'
+      }, {
+        value: 'ap-southeast-2',
+        expected: 'AP_SOUTHEAST_2'
+      }].forEach((test) => {
+        assert.equal(
+          s3Deploy._convertRegionStringToEnvVarName(test.value),
+          test.expected,
+          test
+        )
+      })
+    })
+  })
+
+  describe('_getBucketNameFromEnvVar', () => {
+    after(() => {
+      delete process.env.S3_US_WEST_1_BUCKET
+    })
+
+    it('is undefined', () => {
+      assert.isUndefined(s3Deploy._getBucketNameFromEnvVar('us-west-1'))
+    })
+
+    it('Get values from environment variables', () => {
+      process.env.S3_US_WEST_1_BUCKET = 'bucketName'
+      assert.equal(
+        s3Deploy._getBucketNameFromEnvVar('us-west-1'),
+        'bucketName'
+      )
+    })
+  })
+
+  describe('_getS3KeyPrefixFromEnvVar', () => {
+    after(() => {
+      delete process.env.S3_US_WEST_1_PREFIX
+    })
+
+    it('is undefined', () => {
+      assert.isUndefined(s3Deploy._getS3KeyPrefixFromEnvVar('us-west-1'))
+    })
+
+    it('Get values from environment variables', () => {
+      process.env.S3_US_WEST_1_PREFIX = 's3KeyPrefix'
+      assert.equal(
+        s3Deploy._getS3KeyPrefixFromEnvVar('us-west-1'),
+        's3KeyPrefix'
+      )
+    })
+  })
+
   describe('_bucketName', () => {
+    after(() => {
+      delete process.env.S3_TEST_REGION_BUCKET
+    })
+
     it('FunctionName + region + md5()', () => {
       const params = {
         FunctionName: 'node-lambda-name',
@@ -47,14 +105,42 @@ describe('lib/s3_deploy', () => {
         'node-lambda-name-test_region-aac849d59d2be828b793609e03d8241d'
       )
     })
+
+    it('Use environment variables', () => {
+      process.env.S3_TEST_REGION_BUCKET = 's3-test-region-bucket'
+      const params = {
+        FunctionName: 'node-lambda-name',
+        region: 'test_region'
+      }
+      assert.equal(s3Deploy._bucketName(params), 's3-test-region-bucket')
+    })
   })
 
   describe('_s3Key', () => {
+    after(() => {
+      delete process.env.S3_TEST_REGION_PREFIX
+    })
+
     it('"deploy-package" + FunctionName + ".zip"', () => {
-      const params = {FunctionName: 'node-lambda-name'}
+      const params = {
+        FunctionName: 'node-lambda-name',
+        region: 'test_region'
+      }
       assert.equal(
         s3Deploy._s3Key(params),
         'deploy-package-node-lambda-name.zip'
+      )
+    })
+
+    it('Use environment variables', () => {
+      process.env.S3_TEST_REGION_PREFIX = 's3-test-region-prefix/'
+      const params = {
+        FunctionName: 'node-lambda-name',
+        region: 'test_region'
+      }
+      assert.equal(
+        s3Deploy._s3Key(params),
+        's3-test-region-prefix/deploy-package-node-lambda-name.zip'
       )
     })
   })
