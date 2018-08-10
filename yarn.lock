@@ -159,9 +159,9 @@ atomic-batcher@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/atomic-batcher/-/atomic-batcher-1.0.2.tgz#d16901d10ccec59516c197b9ccd8930689b813b4"
 
-aws-sdk-mock@^4.0.0:
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/aws-sdk-mock/-/aws-sdk-mock-4.0.0.tgz#759d938f5df5eda4ef90b0535059a61b2e57f4dd"
+aws-sdk-mock@^4.1.0:
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/aws-sdk-mock/-/aws-sdk-mock-4.1.0.tgz#e156de7010640f0a399072c852146fbfea9ad4aa"
   dependencies:
     aws-sdk "^2.260.1"
     sinon "^6.0.0"
@@ -181,9 +181,9 @@ aws-sdk@^2.260.1:
     uuid "3.1.0"
     xml2js "0.4.17"
 
-aws-sdk@^2.279.1:
-  version "2.279.1"
-  resolved "https://registry.yarnpkg.com/aws-sdk/-/aws-sdk-2.279.1.tgz#3a4fd4167932e4361dbdcfcb174ce4840ffcbf20"
+aws-sdk@^2.290.0:
+  version "2.290.0"
+  resolved "https://registry.yarnpkg.com/aws-sdk/-/aws-sdk-2.290.0.tgz#e0e4777a62ad29df3b86521a103b3f02189a30f5"
   dependencies:
     buffer "4.9.1"
     events "1.1.1"
@@ -349,9 +349,9 @@ commander@2.9.0:
   dependencies:
     graceful-readlink ">= 1.0.0"
 
-commander@^2.16.0:
-  version "2.16.0"
-  resolved "https://registry.yarnpkg.com/commander/-/commander-2.16.0.tgz#f16390593996ceb4f3eeb020b31d78528f7f8a50"
+commander@^2.17.1:
+  version "2.17.1"
+  resolved "https://registry.yarnpkg.com/commander/-/commander-2.17.1.tgz#bd77ab7de6de94205ceacc72f1716d29f20a77bf"
 
 compress-commons@^1.2.0:
   version "1.2.0"

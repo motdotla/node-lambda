@@ -309,3 +309,31 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Bugfixes
 - remove env var value from commanderjs flag definition [#409](https://github.com/motdotla/node-lambda/pull/409)
+
+## [0.12.0] - 2018-08-10
+### Features
+- Implemente to specify bucket name of S3 [#458](https://github.com/motdotla/node-lambda/pull/458)
+- Implement deployment using S3 (Create a bucket for each region.) [#455](https://github.com/motdotla/node-lambda/pull/455)
+- Add class for uploading deploy package to S3 [#454](https://github.com/motdotla/node-lambda/pull/454)
+- Fix to throw an error except ResourceNotFoundException [#452](https://github.com/motdotla/node-lambda/pull/452)
+- Feature upload to s3 and deploy from bucket [#446](https://github.com/motdotla/node-lambda/pull/446)
+- npm update [#445](https://github.com/motdotla/node-lambda/pull/445)
+- Upgrade dependent packages [#441](https://github.com/motdotla/node-lambda/pull/441)
+- Add simple test of `_deployToRegion()` and `deploy()` [#439](https://github.com/motdotla/node-lambda/pull/439)
+- Remove unnecessary package load in `test/main.js` [#438](https://github.com/motdotla/node-lambda/pull/438)
+- Add cache of `node modules` to CI setting [#436](https://github.com/motdotla/node-lambda/pull/436)
+- Modify `require` to `{ }` statement [#435](https://github.com/motdotla/node-lambda/pull/435)
+- Fix to use `includes` instead of `indexOf` [#433](https://github.com/motdotla/node-lambda/pull/433)
+- Remove test code for Node.js4 [#432](https://github.com/motdotla/node-lambda/pull/432)
+- Upgrade `fs-extra` [#431](https://github.com/motdotla/node-lambda/pull/431)
+- Stop supporting Node.js 4 [#430](https://github.com/motdotla/node-lambda/pull/430)
+- Fix using `klaw` instead of `fs.walk` [#424](https://github.com/motdotla/node-lambda/pull/424)
+- Add Node.js10 to CI setting [#428](https://github.com/motdotla/node-lambda/pull/428)
+
+### Bugfixes
+- Fix StatementId [#451](https://github.com/motdotla/node-lambda/pull/451)
+- Bugfix of initialValue of recude in s3events [#447](https://github.com/motdotla/node-lambda/pull/447)
+- Added handling to catch and log error return from async lambda [#443](https://github.com/motdotla/node-lambda/pull/443)
+- Log result of an async handler method by resolving promise if a promise [#440](https://github.com/motdotla/node-lambda/pull/440)
+- Fix to display return value of handler [#427](https://github.com/motdotla/node-lambda/pull/427)
+- Fix to set array when same bucket [#423](https://github.com/motdotla/node-lambda/pull/423)
