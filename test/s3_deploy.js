@@ -1,14 +1,14 @@
 'use strict'
 
-const {assert} = require('chai')
+const { assert } = require('chai')
 const path = require('path')
 const aws = require('aws-sdk-mock')
 aws.setSDK(path.resolve('node_modules/aws-sdk'))
 const S3Deploy = require('../lib/s3_deploy')
 
 const mockResponse = {
-  createBucket: {'Location': 'createBucket'},
-  putObject: {'ETag': 'putObject'}
+  createBucket: { 'Location': 'createBucket' },
+  putObject: { 'ETag': 'putObject' }
 }
 
 var s3Deploy = null
@@ -181,7 +181,7 @@ describe('lib/s3_deploy', () => {
 
   describe('putPackage', () => {
     it('using mock', () => {
-      const params = {FunctionName: 'node-lambda-test-bucket-20180801'}
+      const params = { FunctionName: 'node-lambda-test-bucket-20180801' }
       return s3Deploy.putPackage(params, 'ap-southeast-1', 'buffer').then((result) => {
         assert.deepEqual(result, {
           S3Bucket: 'node-lambda-test-bucket-20180801-ap-southeast-1-6c696118a497125',
