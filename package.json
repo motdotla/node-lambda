@@ -36,7 +36,7 @@
     "chai": "^4.1.2",
     "mocha": "",
     "node-zip": "^1.1.1",
-    "standard": "^11.0.1"
+    "standard": "^12.0.1"
   },
   "dependencies": {
     "archiver": "^3.0.0",

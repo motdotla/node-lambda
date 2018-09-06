@@ -63,7 +63,7 @@ describe('lib/s3_events', () => {
         params: params,
         expected: 'node-lambda-test-bucket'
       }, {
-        params: {Bucket: 'example.com'},
+        params: { Bucket: 'example.com' },
         expected: 'example_com'
       }].forEach((test) => {
         const actual = s3Events._statementId(test.params)

@@ -5,7 +5,7 @@ const os = require('os')
 const fs = require('fs-extra')
 const lambda = require(path.join(__dirname, '..', 'lib', 'main'))
 const Zip = require('node-zip')
-const {assert} = require('chai')
+const { assert } = require('chai')
 const awsMock = require('aws-sdk-mock')
 awsMock.setSDK(path.resolve('node_modules/aws-sdk'))
 
@@ -101,7 +101,7 @@ const _mockSetting = () => {
     callback(null, {})
   })
   awsMock.mock('S3', 'putObject', (params, callback) => {
-    callback(null, {'test': 'putObject'})
+    callback(null, { 'test': 'putObject' })
   })
 
   Object.keys(lambdaMockSettings).forEach((method) => {
@@ -194,16 +194,16 @@ describe('lib/main', function () {
 
   describe('_isUseS3', () => {
     it('=== true', () => {
-      assert.isTrue(lambda._isUseS3({deployUseS3: true}))
-      assert.isTrue(lambda._isUseS3({deployUseS3: 'true'}))
+      assert.isTrue(lambda._isUseS3({ deployUseS3: true }))
+      assert.isTrue(lambda._isUseS3({ deployUseS3: 'true' }))
     })
 
     it('=== false', () => {
       [
         {},
-        {deployUseS3: false},
-        {deployUseS3: 'false'},
-        {deployUseS3: 'foo'}
+        { deployUseS3: false },
+        { deployUseS3: 'false' },
+        { deployUseS3: 'foo' }
       ].forEach((params) => {
         assert.isFalse(lambda._isUseS3(params), params)
       })
@@ -308,7 +308,7 @@ describe('lib/main', function () {
       })
 
       it('Use S3 deploy', () => {
-        const params = lambda._params(Object.assign({deployUseS3: true}, program), 'Buffer')
+        const params = lambda._params(Object.assign({ deployUseS3: true }, program), 'Buffer')
         assert.deepEqual(
           params.Code,
           {

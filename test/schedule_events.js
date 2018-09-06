@@ -143,7 +143,7 @@ describe('lib/schedule_events', () => {
         }]
       }
       assert.deepEqual(
-        schedule._putTargetsParams(Object.assign({Input: {key: 'value'}}, params)),
+        schedule._putTargetsParams(Object.assign({ Input: { key: 'value' } }, params)),
         expected
       )
     })
