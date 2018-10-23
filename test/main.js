@@ -989,6 +989,33 @@ describe('lib/main', function () {
     })
   })
 
+  describe('_getStartingPosition', () => {
+    it('null in SQS', () => {
+      assert.isNull(lambda._getStartingPosition({
+        EventSourceArn: 'arn:aws:sqs:us-east-1:sqs-queuename1'
+      }))
+    })
+
+    it('When there is no setting', () => {
+      assert.equal(
+        lambda._getStartingPosition({
+          EventSourceArn: 'arn:aws:kinesis:test'
+        }),
+        'LATEST'
+      )
+    })
+
+    it('With StartingPosition', () => {
+      assert.equal(
+        lambda._getStartingPosition({
+          EventSourceArn: 'arn:aws:kinesis:test',
+          StartingPosition: 'test position'
+        }),
+        'test position'
+      )
+    })
+  })
+
   describe('_updateEventSources', () => {
     const eventSourcesJsonValue = {
       EventSourceMappings: [{
