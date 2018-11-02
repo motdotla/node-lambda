@@ -205,7 +205,7 @@ AWS Lambda will let you set environment variables for your function. Use the sam
 
 ## Node.js Runtime Configuration
 
-AWS Lambda now supports Node.js 8.10, 6.10 and Node.js 4.3. Please also check the [Programming Model (Node.js)](http://docs.aws.amazon.com/lambda/latest/dg/programming-model.html) page.
+AWS Lambda now supports Node.js 8.10 and Node.js 6.10. Please also check the [Programming Model (Node.js)](http://docs.aws.amazon.com/lambda/latest/dg/programming-model.html) page.
 
 ## Post install script
 When running `node-lambda deploy` if you need to do some action after `npm install --production` and before deploying to AWS Lambda (e.g. replace some modules with precompiled ones or download some libraries, replace some config file depending on environment) you can create `post_install.sh` script. If the file exists the script will be executed (and output shown after execution) if not it is skipped. Environment string is passed to script as first parameter so you can use it if needed. Make sure that the script is executable.
