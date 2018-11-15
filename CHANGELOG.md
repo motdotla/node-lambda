@@ -337,3 +337,15 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Log result of an async handler method by resolving promise if a promise [#440](https://github.com/motdotla/node-lambda/pull/440)
 - Fix to display return value of handler [#427](https://github.com/motdotla/node-lambda/pull/427)
 - Fix to set array when same bucket [#423](https://github.com/motdotla/node-lambda/pull/423)
+
+## [0.13.0] - 2018-11-15
+### Features
+- Drop nodejs4.3 [#469](https://github.com/motdotla/node-lambda/pull/469)
+- Update maximum timeout value from 300 to 900 [#465](https://github.com/motdotla/node-lambda/pull/465)
+- Modify to follow the rules of the new 'standard' [#463](https://github.com/motdotla/node-lambda/pull/463)
+- Add 'osx' to CI os [#464](https://github.com/motdotla/node-lambda/pull/464)
+- Update CI test to LTS version [#462](https://github.com/motdotla/node-lambda/pull/462)
+- Upgrade `archiver` [#460](https://github.com/motdotla/node-lambda/pull/460)
+
+### Bugfixes
+- Fix value of StartingPosition [#467](https://github.com/motdotla/node-lambda/pull/467)
