@@ -143,6 +143,7 @@ Options:
   -e, --environment [development]   Choose environment {dev, staging, production}
   -x, --excludeGlobs [event.json]   Space-separated glob pattern(s) for additional exclude files (e.g. "event.json dotenv.sample")
   -D, --prebuiltDirectory []        Prebuilt directory
+  -m, --keepNodeModules [false]     Keep the current node_modules and skip the npm install step
 ```
 
 #### deploy
