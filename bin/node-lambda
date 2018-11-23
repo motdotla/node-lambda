@@ -58,6 +58,7 @@ const AWS_DLQ_TARGET_ARN = (() => {
 })()
 const PROXY = process.env.PROXY || process.env.http_proxy || ''
 const ENABLE_RUN_MULTIPLE_EVENTS = true
+const DOCKER_VOLUMES = process.env.DOCKER_VOLUMES || ''
 
 program
   .command('deploy')
@@ -119,6 +120,7 @@ program
   .option('-x, --excludeGlobs [EXCLUDE_GLOBS]',
     'Space-separated glob pattern(s) for additional exclude files (e.g. "event.json dotenv.sample")', EXCLUDE_GLOBS)
   .option('-D, --prebuiltDirectory [PREBUILT_DIRECTORY]', 'Prebuilt directory', PREBUILT_DIRECTORY)
+  .option('-v, --dockerVolumes [DOCKER_VOLUMES]', 'Additional docker volumes to mount. Each volume definition has to be separated by a space (e.g. "$HOME/.gitconfig:/etc/gitconfig $HOME/.ssh:/root/.ssh")', DOCKER_VOLUMES)
   .action((prg) => lambda.package(prg))
 
 program

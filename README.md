@@ -143,6 +143,7 @@ Options:
   -e, --environment [development]   Choose environment {dev, staging, production}
   -x, --excludeGlobs [event.json]   Space-separated glob pattern(s) for additional exclude files (e.g. "event.json dotenv.sample")
   -D, --prebuiltDirectory []        Prebuilt directory
+  -v, --dockerVolumes []            Additional docker volumes to mount. Each volume definition has to be separated by a space (e.g. "$HOME/.gitconfig:/etc/gitconfig $HOME/.ssh:/root/.ssh"
 ```
 
 #### deploy
