@@ -23,6 +23,7 @@ const originalProgram = {
   runtime: 'nodejs8.10',
   deadLetterConfigTargetArn: '',
   tracingConfig: '',
+  Layers: '',
   retentionInDays: 30,
   region: 'us-east-1,us-west-2,eu-west-1',
   eventFile: 'event.json',
@@ -296,6 +297,18 @@ describe('lib/main', function () {
       program.tracingConfig = ''
       const params = lambda._params(program)
       assert.isNull(params.TracingConfig.Mode)
+    })
+
+    it('appends Layers to params when params set', () => {
+      program.layers = 'Layer1,Layer2'
+      const params = lambda._params(program)
+      assert.deepEqual(params.Layers, ['Layer1', 'Layer2'])
+    })
+
+    it('does not append Layers when params are not set', () => {
+      program.layers = ''
+      const params = lambda._params(program)
+      assert.deepEqual(params.Layers, [])
     })
 
     describe('S3 deploy', () => {
