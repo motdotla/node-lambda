@@ -37,6 +37,7 @@ const AWS_FUNCTION_VERSION = process.env.AWS_FUNCTION_VERSION || ''
 const AWS_VPC_SUBNETS = process.env.AWS_VPC_SUBNETS || ''
 const AWS_VPC_SECURITY_GROUPS = process.env.AWS_VPC_SECURITY_GROUPS || ''
 const AWS_TRACING_CONFIG = process.env.AWS_TRACING_CONFIG || ''
+const AWS_LAYERS = process.env.AWS_LAYERS || ''
 const AWS_LOGS_RETENTION_IN_DAYS = process.env.AWS_LOGS_RETENTION_IN_DAYS || ''
 const EVENT_FILE = process.env.EVENT_FILE || 'event.json'
 const PACKAGE_DIRECTORY = process.env.PACKAGE_DIRECTORY
@@ -90,6 +91,7 @@ program
     AWS_DLQ_TARGET_ARN)
   .option('-c, --tracingConfig [AWS_TRACING_CONFIG]', 'Lambda tracing settings',
     AWS_TRACING_CONFIG)
+  .option('-l, --layers [AWS_LAYERS]', 'Lambda Layers settings', AWS_LAYERS)
   .option('-R, --retentionInDays [AWS_LOGS_RETENTION_IN_DAYS]', 'CloudWatchLogs retentionInDays settings',
     AWS_LOGS_RETENTION_IN_DAYS)
   .option('-A, --packageDirectory [PACKAGE_DIRECTORY]', 'Local Package Directory', PACKAGE_DIRECTORY)
