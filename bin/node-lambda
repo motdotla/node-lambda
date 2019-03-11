@@ -91,7 +91,7 @@ program
     AWS_DLQ_TARGET_ARN)
   .option('-c, --tracingConfig [AWS_TRACING_CONFIG]', 'Lambda tracing settings',
     AWS_TRACING_CONFIG)
-  .option('-l, --layers [AWS_LAYERS]', 'Lambda Layers settings', AWS_LAYERS)
+  .option('-l, --layers [AWS_LAYERS]', 'Lambda Layers settings (e.g. "ARN1,ARN2[,..])"', AWS_LAYERS)
   .option('-R, --retentionInDays [AWS_LOGS_RETENTION_IN_DAYS]', 'CloudWatchLogs retentionInDays settings',
     AWS_LOGS_RETENTION_IN_DAYS)
   .option('-A, --packageDirectory [PACKAGE_DIRECTORY]', 'Local Package Directory', PACKAGE_DIRECTORY)
