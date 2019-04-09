@@ -184,7 +184,6 @@ Options:
   -c, --tracingConfig []              Lambda tracing settings
   -l, --layers []                     Lambda Layers settings (e.g. "ARN1,ARN2[,..])" (default: "")
   -R, --retentionInDays []            CloudWatchLogs retentionInDays settings
-  -A, --packageDirectory [build]      Local Package Directory
   -G, --sourceDirectory []            Path to lambda source Directory (e.g. "./some-lambda")
   -I, --dockerImage []                Docker image for npm install
   -f, --configFile []                 Path to file holding secret environment variables (e.g. "deploy.env")
