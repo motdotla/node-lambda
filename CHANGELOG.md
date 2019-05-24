@@ -349,3 +349,19 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Bugfixes
 - Fix value of StartingPosition [#467](https://github.com/motdotla/node-lambda/pull/467)
+
+## [0.14.0] - 2019-05-25
+### Features
+- Support Node.js 10.x [#487](https://github.com/motdotla/node-lambda/pull/487)
+- Add Node.js 12 to CI setting [#486](https://github.com/motdotla/node-lambda/pull/486)
+- Add file to configure aws authentication settings [#482](https://github.com/motdotla/node-lambda/pull/482)
+- Add layers option to readme [#481](https://github.com/motdotla/node-lambda/pull/481)
+- Add option to specify Lambda Layers [#480](https://github.com/motdotla/node-lambda/pull/480)
+- Upgrade packages [#479](https://github.com/motdotla/node-lambda/pull/479)
+- Add dockerVolumes option in package in order to mount additional volumes [#473](https://github.com/motdotla/node-lambda/pull/473)
+- Add keepNodeModules option in package [#472](https://github.com/motdotla/node-lambda/pull/472)
+
+### Bugfixes
+- Remove 'packageDirectory' option from 'deploy' [#484](https://github.com/motdotla/node-lambda/pull/484)
+- Update s3deploy bucket handling [#475](https://github.com/motdotla/node-lambda/pull/475)
+- Fix Docker volume mount from OSX - #461 [#471](https://github.com/motdotla/node-lambda/pull/471)
