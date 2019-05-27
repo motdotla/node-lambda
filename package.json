@@ -1,6 +1,6 @@
 {
   "name": "node-lambda",
-  "version": "0.13.0",
+  "version": "0.14.0",
   "description": "Command line tool for locally running and remotely deploying your node.js applications to Amazon Lambda.",
   "main": "lib/main.js",
   "directories": {
@@ -40,7 +40,7 @@
   },
   "dependencies": {
     "archiver": "^3.0.0",
-    "aws-sdk": "^2.454.0",
+    "aws-sdk": "^2.463.0",
     "aws-xray-sdk-core": "^2.3.3",
     "commander": "^2.20.0",
     "continuation-local-storage": "^3.2.1",
