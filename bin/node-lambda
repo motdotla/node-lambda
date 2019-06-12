@@ -149,6 +149,12 @@ program
   .option('-x, --contextFile [CONTEXT_FILE]', 'Context JSON File', CONTEXT_FILE)
   .action((prg) => lambda.setup(prg))
 
+program.on('command:*', (cmd) => {
+  console.log(`Unknown command ${cmd}`)
+  console.log()
+  program.help()
+})
+
 program
   .version(lambda.version)
   .parse(process.argv)
