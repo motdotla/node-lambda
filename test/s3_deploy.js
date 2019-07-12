@@ -7,8 +7,8 @@ aws.setSDK(path.resolve('node_modules/aws-sdk'))
 const S3Deploy = require('../lib/s3_deploy')
 
 const mockResponse = {
-  createBucket: { 'Location': 'createBucket' },
-  putObject: { 'ETag': 'putObject' }
+  createBucket: { Location: 'createBucket' },
+  putObject: { ETag: 'putObject' }
 }
 
 var s3Deploy = null

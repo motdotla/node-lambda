@@ -102,7 +102,7 @@ const _mockSetting = () => {
     callback(null, {})
   })
   awsMock.mock('S3', 'putObject', (params, callback) => {
-    callback(null, { 'test': 'putObject' })
+    callback(null, { test: 'putObject' })
   })
 
   Object.keys(lambdaMockSettings).forEach((method) => {
@@ -572,7 +572,7 @@ describe('lib/main', function () {
      * Capture console output
      */
     const captureStream = function (stream) {
-      let oldWrite = stream.write
+      const oldWrite = stream.write
       let buf = ''
       stream.write = function (chunk, encoding, callback) {
         buf += chunk.toString() // chunk is a String or Buffer
@@ -675,11 +675,9 @@ describe('lib/main', function () {
 
           // isSymbolicLink
           assert.include(archive.files['node-lambda-link'].name, 'node-lambda-link')
-
-          const fsConstants = process.binding('constants').fs
           assert.equal(
-            archive.files['node-lambda-link'].unixPermissions & fsConstants.S_IFMT,
-            fsConstants.S_IFLNK
+            archive.files['node-lambda-link'].unixPermissions & fs.constants.S_IFMT,
+            fs.constants.S_IFLNK
           )
         }
       })
@@ -705,7 +703,7 @@ describe('lib/main', function () {
 
     it('packages a prebuilt module without installing (It is also a test of `_archivePrebuilt`)', function () {
       _timeout({ this: this, sec: 30 }) // give it time to zip
-      let buildDir = '.build_' + Date.now()
+      const buildDir = '.build_' + Date.now()
       after(() => fs.removeSync(buildDir))
 
       fs.mkdirSync(buildDir)

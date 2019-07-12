@@ -20,7 +20,7 @@ const mockResponse = {
       Resource: 'arn:aws:lambda:node-lambda-test-function',
       Effect: 'Allow',
       Principal: { Service: 's3.amazonaws.com' },
-      Action: [ 'lambda:InvokeFunction' ],
+      Action: ['lambda:InvokeFunction'],
       Condition: { ArnLike: { 'AWS:SourceArn': 'arn:aws:s3:::node-lambda-test-bucket' } }
     })
   },
