@@ -25,7 +25,7 @@ const mockResponse = {
       Resource: 'arn:aws:lambda:piyo',
       Effect: 'Allow',
       Principal: { Service: 'events.amazonaws.com' },
-      Action: [ 'lambda:InvokeFunction' ],
+      Action: ['lambda:InvokeFunction'],
       Condition: { ArnLike: { 'AWS:SourceArn': 'arn:aws:events:hoge:fuga' } }
     })
   },
