@@ -19,7 +19,9 @@ $ npm install -g node-lambda
 
 ## Example App
 
-The [node-lambda-template](https://github.com/RebelMail/node-lambda-template) example app makes it easy to get up and running.
+Example apps make it easy to get up and running
+* [JavaScript example](https://github.com/motdotla/node-lambda-template).
+* [TypeScript example](https://github.com/fogfish/node-lambda-typescript-template).
 
 ## Usage
 
