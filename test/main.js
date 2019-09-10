@@ -364,8 +364,8 @@ describe('lib/main', function () {
       it('adds variables when configFile param is set', () => {
         program.configFile = 'tmp.env'
         const params = lambda._params(program)
-        assert.equal(params.Environment.Variables['FOO'], 'bar')
-        assert.equal(params.Environment.Variables['BAZ'], 'bing')
+        assert.equal(params.Environment.Variables.FOO, 'bar')
+        assert.equal(params.Environment.Variables.BAZ, 'bing')
       })
 
       it('when configFile param is set but it is an empty file', () => {
