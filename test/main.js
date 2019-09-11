@@ -121,18 +121,6 @@ const _awsRestore = () => {
   awsMock.restore('Lambda')
 }
 
-const disableLog = () => {
-  ['log', 'warn', 'info'].forEach((f) => {
-    console[f] = () => {}
-  })
-}
-
-const enableLog = () => {
-  ['log', 'warn', 'info'].forEach((f) => {
-    if (String(console[f]) === '() => {}') delete console[f]
-  })
-}
-
 /* global before, after, beforeEach, afterEach, describe, it */
 describe('lib/main', function () {
   if (process.platform === 'win32') {
@@ -597,18 +585,14 @@ describe('lib/main', function () {
     })
 
     it('should not throw any errors if no script', () => {
-      disableLog()
       return lambda._postInstallScript(program, codeDirectory).then((dummy) => {
-        enableLog()
         assert.isUndefined(dummy)
       })
     })
 
     it('should throw any errors if script fails', () => {
       fs.writeFileSync(postInstallScriptPath, '___fails___')
-      disableLog()
       return lambda._postInstallScript(program, codeDirectory).catch((err) => {
-        enableLog()
         assert.instanceOf(err, Error)
         assert.match(err.message, /^Error: Command failed:/)
       })
@@ -654,9 +638,7 @@ describe('lib/main', function () {
     it('Compress the file. `index.js` and `bin/node-lambda` are included and the permission is also preserved.', function () {
       _timeout({ this: this, sec: 30 }) // give it time to zip
 
-      disableLog()
       return lambda._zip(program, codeDirectory).then((data) => {
-        enableLog()
         const archive = new Zip(data)
         assert.include(archive.files['index.js'].name, 'index.js')
         assert.include(archive.files['bin/node-lambda'].name, 'bin/node-lambda')
@@ -689,9 +671,7 @@ describe('lib/main', function () {
     it('installs and zips with an index.js file and node_modules/aws-sdk (It is also a test of `_buildAndArchive`)', function () {
       _timeout({ this: this, sec: 30 }) // give it time to zip
 
-      disableLog()
       return lambda._archive(program).then((data) => {
-        enableLog()
         const archive = new Zip(data)
         const contents = Object.keys(archive.files).map((k) => {
           return archive.files[k].name.toString()
@@ -714,9 +694,7 @@ describe('lib/main', function () {
       fs.writeFileSync(path.join(buildDir, 'd', 'testb'), '...')
 
       program.prebuiltDirectory = buildDir
-      disableLog()
       return lambda._archive(program).then((data) => {
-        enableLog()
         const archive = new Zip(data)
         const contents = Object.keys(archive.files).map((k) => {
           return archive.files[k].name.toString()
@@ -738,9 +716,7 @@ describe('lib/main', function () {
     before(function () {
       _timeout({ this: this, sec: 30 }) // give it time to zip
 
-      disableLog()
       return lambda._zip(program, codeDirectory).then((data) => {
-        enableLog()
         bufferExpected = data
         fs.writeFileSync(testZipFile, data)
       })
@@ -780,9 +756,7 @@ describe('lib/main', function () {
         const filePath = path.join(path.resolve('/aaaa'), 'bbbb')
         const _program = Object.assign({ deployZipfile: filePath }, program)
         _timeout({ this: this, sec: 30 }) // give it time to zip
-        disableLog()
         return lambda._archive(_program).then((data) => {
-          enableLog()
           // same test as "installs and zips with an index.js file and node_modules/aws-sdk"
           const archive = new Zip(data)
           const contents = Object.keys(archive.files).map((k) => {
@@ -836,9 +810,7 @@ describe('lib/main', function () {
     })
 
     it('should create sample files', () => {
-      disableLog()
       lambda.setup(program)
-      enableLog()
 
       const libPath = path.join(__dirname, '..', 'lib')
       targetFiles.forEach((targetFile) => {
@@ -1259,9 +1231,7 @@ describe('lib/main', function () {
       program.eventFile = 'newEvent.json'
       program.contextFile = 'newContext.json'
 
-      disableLog()
       lambda.setup(program)
-      enableLog()
 
       assert.equal(fs.readFileSync('newContext.json').toString(), '{"FOO"="bar"\n"BAZ"="bing"\n}')
       assert.equal(fs.readFileSync('newEvent.json').toString(), '{"FOO"="bar"}')
@@ -1282,9 +1252,7 @@ describe('lib/main', function () {
   describe('Lambda.prototype._deployToRegion()', () => {
     it('simple test with mock', () => {
       const params = lambda._params(program, null)
-      disableLog()
       return lambda._deployToRegion(program, params, 'us-east-1').then((result) => {
-        enableLog()
         assert.deepEqual(
           result,
           [
@@ -1300,9 +1268,7 @@ describe('lib/main', function () {
   describe('Lambda.prototype.deploy()', () => {
     it('simple test with mock', function () {
       _timeout({ this: this, sec: 30 }) // give it time to zip
-      disableLog()
       return lambda.deploy(program).then((result) => {
-        enableLog()
         assert.isUndefined(result)
       })
     })
