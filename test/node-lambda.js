@@ -192,7 +192,7 @@ describe('bin/node-lambda', () => {
         this.timeout(10000) // give it time to multiple executions
         _generateEventFile(eventObj)
         _testMain({
-          stdoutRegExp: / no: 1 .+ no: 2 .+ no: 3 .+Success:/,
+          stdoutRegExp: /no: 1.+no: 2.+no: 3.+Success:/,
           exitCode: 0
         }, done)
       })
@@ -228,15 +228,15 @@ describe('bin/node-lambda', () => {
         ])
         let stdoutString = ''
         run.stdout.on('data', (data) => {
-          stdoutString += data.toString().replace(/\r|\n/g, '')
+          stdoutString += data.toString().replace(/\r|\n|\s/g, '')
         })
 
         run.on('exit', (code) => {
-          const expected = 'Running index.handler==================================event ' +
-            '[ { asyncTest: false,    callbackWaitsForEmptyEventLoop: true,    callbackCode: \'callback(null);\',    no: 1 },  ' +
-            '{ asyncTest: false,    callbackWaitsForEmptyEventLoop: true,    callbackCode: \'callback(null);\',    no: 2 },  ' +
-            '{ asyncTest: false,    callbackWaitsForEmptyEventLoop: true,    callbackCode: \'callback(null);\',    no: 3 } ]' +
-            '==================================Stopping index.handlerSuccess:'
+          const expected = 'Runningindex.handler==================================event' +
+            '[{asyncTest:false,callbackWaitsForEmptyEventLoop:true,callbackCode:\'callback(null);\',no:1},' +
+            '{asyncTest:false,callbackWaitsForEmptyEventLoop:true,callbackCode:\'callback(null);\',no:2},' +
+            '{asyncTest:false,callbackWaitsForEmptyEventLoop:true,callbackCode:\'callback(null);\',no:3}]' +
+            '==================================Stoppingindex.handlerSuccess:'
 
           assert.equal(stdoutString, expected)
           assert.equal(code, 0)
