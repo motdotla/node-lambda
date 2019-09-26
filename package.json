@@ -32,21 +32,21 @@
   "author": "motdotla",
   "license": "BSD-2-Clause",
   "devDependencies": {
-    "aws-sdk-mock": "^4.4.0",
+    "aws-sdk-mock": "^4.5.0",
     "chai": "^4.2.0",
     "mocha": "",
     "node-zip": "^1.1.1",
-    "standard": "^13.0.1"
+    "standard": "^14.1.0"
   },
   "dependencies": {
-    "archiver": "^3.0.0",
-    "aws-sdk": "^2.463.0",
-    "aws-xray-sdk-core": "^2.3.3",
-    "commander": "^2.20.0",
+    "archiver": "^3.1.1",
+    "aws-sdk": "^2.525.0",
+    "aws-xray-sdk-core": "^2.3.6",
+    "commander": "^3.0.1",
     "continuation-local-storage": "^3.2.1",
-    "dotenv": "^6.2.0",
-    "fs-extra": "^7.0.1",
-    "klaw": "^2.1.1",
+    "dotenv": "^8.1.0",
+    "fs-extra": "^8.1.0",
+    "klaw": "^3.0.0",
     "minimatch": "^3.0.4",
     "proxy-agent": "^3.1.0"
   },
