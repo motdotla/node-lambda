@@ -518,18 +518,42 @@ describe('lib/main', function () {
   })
 
   describe('_npmInstall', () => {
+    const nodeModulesFile = path.join(codeDirectory, 'node_modules', 'file')
+
     beforeEach(() => {
       return lambda._cleanDirectory(codeDirectory).then(() => {
+        // put our own file in node_modules so we can verify installs
+        fs.mkdirSync(path.join(codeDirectory, 'node_modules'))
+        fs.writeFileSync(nodeModulesFile, 'hello world')
+
         return lambda._fileCopy(program, '.', codeDirectory, true)
       })
     })
 
-    it('_npm adds node_modules', function () {
-      _timeout({ this: this, sec: 30 }) // give it time to build the node modules
+    describe('when there is a package-lock.json', () => {
+      it('should use "ci"', () => {
+        _timeout({ this: this, sec: 30 }) // ci should be faster than install
 
-      return lambda._npmInstall(program, codeDirectory).then(() => {
-        const contents = fs.readdirSync(codeDirectory)
-        assert.include(contents, 'node_modules')
+        return lambda._npmInstall(program, codeDirectory).then(() => {
+          const contents = fs.readdirSync(codeDirectory)
+          assert.include(contents, 'node_modules')
+          assert.isNotTrue(fs.existsSync(nodeModulesFile))
+        })
+      })
+    })
+    describe('when there is no package-lock.json', () => {
+      beforeEach(() => {
+        fs.removeSync(path.join(codeDirectory, 'package-lock.json'))
+      })
+
+      it('should use "install"', () => {
+        _timeout({ this: this, sec: 60 }) // install should be slower than ci
+
+        return lambda._npmInstall(program, codeDirectory).then(() => {
+          const contents = fs.readdirSync(codeDirectory)
+          assert.include(contents, 'node_modules')
+          assert.isTrue(fs.existsSync(nodeModulesFile))
+        })
       })
     })
   })
