@@ -497,6 +497,13 @@ describe('lib/main', function () {
           assert.include(contents, 'package.json')
         })
       })
+      it('_fileCopy should not exclude package-lock.json, even when excluded by excludeGlobs', () => {
+        program.excludeGlobs = '*.json'
+        return lambda._fileCopy(program, '.', codeDirectory, true).then(() => {
+          const contents = fs.readdirSync(codeDirectory)
+          assert.include(contents, 'package-lock.json')
+        })
+      })
 
       it('_fileCopy should not include package.json when --prebuiltDirectory is set', () => {
         const buildDir = '.build_' + Date.now()
