@@ -544,7 +544,7 @@ describe('lib/main', function () {
         return lambda._npmInstall(program, codeDirectory).then(() => {
           const contents = fs.readdirSync(codeDirectory)
           assert.include(contents, 'node_modules')
-          assert.isNotTrue(fs.existsSync(nodeModulesFile))
+          assert.isFalse(fs.existsSync(nodeModulesFile))
         })
       })
     })
