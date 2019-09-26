@@ -564,7 +564,7 @@ describe('lib/main', function () {
     })
 
     describe('when package-lock.json does exist', () => {
-      it('should use "npm ci"', () => {
+      it('should use "npm ci"', function () {
         _timeout({ this: this, sec: 30 }) // ci should be faster than install
 
         return lambda._npmInstall(program, codeDirectory).then(() => {
@@ -579,7 +579,7 @@ describe('lib/main', function () {
         fs.removeSync(path.join(codeDirectory, 'package-lock.json'))
       })
 
-      it('should use "npm install"', () => {
+      it('should use "npm install"', function () {
         _timeout({ this: this, sec: 60 }) // install should be slower than ci
 
         return lambda._npmInstall(program, codeDirectory).then(() => {
