@@ -524,6 +524,32 @@ describe('lib/main', function () {
     })
   })
 
+  describe('_shouldUseNpmCi', () => {
+    beforeEach(() => {
+      return lambda._cleanDirectory(codeDirectory)
+    })
+
+    describe('when package-lock.json exists', () => {
+      beforeEach(() => {
+        fs.writeFileSync(path.join(codeDirectory, 'package-lock.json'), JSON.stringify({}))
+      })
+
+      it('returns true', () => {
+        assert.isTrue(lambda._shouldUseNpmCi(codeDirectory))
+      })
+    })
+
+    describe('when package-lock.json does not exist', () => {
+      beforeEach(() => {
+        fs.removeSync(path.join(codeDirectory, 'package-lock.json'))
+      })
+
+      it('returns false', () => {
+        assert.isFalse(lambda._shouldUseNpmCi(codeDirectory))
+      })
+    })
+  })
+
   describe('_npmInstall', () => {
     const nodeModulesFile = path.join(codeDirectory, 'node_modules', 'file')
 
