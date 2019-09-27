@@ -551,13 +551,14 @@ describe('lib/main', function () {
   })
 
   describe('_npmInstall', () => {
-    const nodeModulesFile = path.join(codeDirectory, 'node_modules', 'file')
+    // npm treats files as packages when installing, and so removes them - hence hide in .bin
+    const nodeModulesFile = path.join(codeDirectory, 'node_modules', '.bin', 'file')
 
     beforeEach(() => {
       return lambda._cleanDirectory(codeDirectory).then(() => {
         // put our own file in node_modules so we can verify installs
         fs.mkdirSync(path.join(codeDirectory, 'node_modules'))
-        fs.writeFileSync(nodeModulesFile, 'hello world')
+        fs.ensureFileSync(nodeModulesFile)
 
         return lambda._fileCopy(program, '.', codeDirectory, true)
       })
