@@ -93,7 +93,7 @@ program
   .option('-R, --retentionInDays [AWS_LOGS_RETENTION_IN_DAYS]', 'CloudWatchLogs retentionInDays settings',
     AWS_LOGS_RETENTION_IN_DAYS)
   .option('-G, --sourceDirectory [SRC_DIRECTORY]', 'Path to lambda source Directory (e.g. "./some-lambda")', SRC_DIRECTORY)
-  .option('-I, --dockerImage [DOCKER_IMAGE]', 'Docker image for npm install', DOCKER_IMAGE)
+  .option('-I, --dockerImage [DOCKER_IMAGE]', 'Docker image for npm ci', DOCKER_IMAGE)
   .option('-f, --configFile [CONFIG_FILE]',
     'Path to file holding secret environment variables (e.g. "deploy.env")', CONFIG_FILE)
   .option('-S, --eventSourceFile [EVENT_SOURCE_FILE]',
@@ -112,7 +112,7 @@ program
   .alias('zip')
   .description('Create zipped package for Amazon Lambda deployment')
   .option('-A, --packageDirectory [PACKAGE_DIRECTORY]', 'Local Package Directory', PACKAGE_DIRECTORY)
-  .option('-I, --dockerImage [DOCKER_IMAGE]', 'Docker image for npm install', DOCKER_IMAGE)
+  .option('-I, --dockerImage [DOCKER_IMAGE]', 'Docker image for npm ci', DOCKER_IMAGE)
   .option('-n, --functionName [AWS_FUNCTION_NAME]', 'Lambda FunctionName', AWS_FUNCTION_NAME)
   .option('-H, --handler [AWS_HANDLER]', 'Lambda Handler {index.handler}', AWS_HANDLER)
   .option('-e, --environment [AWS_ENVIRONMENT]', 'Choose environment {dev, staging, production}',

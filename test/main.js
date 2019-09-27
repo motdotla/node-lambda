@@ -485,6 +485,13 @@ describe('lib/main', function () {
           assert.include(contents, 'package.json')
         })
       })
+      it('_fileCopy should not exclude package-lock.json, even when excluded by excludeGlobs', () => {
+        program.excludeGlobs = '*.json'
+        return lambda._fileCopy(program, '.', codeDirectory, true).then(() => {
+          const contents = fs.readdirSync(codeDirectory)
+          assert.include(contents, 'package-lock.json')
+        })
+      })
 
       it('_fileCopy should not include package.json when --prebuiltDirectory is set', () => {
         const buildDir = '.build_' + Date.now()
@@ -505,19 +512,69 @@ describe('lib/main', function () {
     })
   })
 
+  describe('_shouldUseNpmCi', () => {
+    beforeEach(() => {
+      return lambda._cleanDirectory(codeDirectory)
+    })
+
+    describe('when package-lock.json exists', () => {
+      beforeEach(() => {
+        fs.writeFileSync(path.join(codeDirectory, 'package-lock.json'), JSON.stringify({}))
+      })
+
+      it('returns true', () => {
+        assert.isTrue(lambda._shouldUseNpmCi(codeDirectory))
+      })
+    })
+
+    describe('when package-lock.json does not exist', () => {
+      beforeEach(() => {
+        fs.removeSync(path.join(codeDirectory, 'package-lock.json'))
+      })
+
+      it('returns false', () => {
+        assert.isFalse(lambda._shouldUseNpmCi(codeDirectory))
+      })
+    })
+  })
+
   describe('_npmInstall', () => {
+    // npm treats files as packages when installing, and so removes them - hence hide in .bin
+    const nodeModulesFile = path.join(codeDirectory, 'node_modules', '.bin', 'file')
+
     beforeEach(() => {
       return lambda._cleanDirectory(codeDirectory).then(() => {
+        // hide our own file in node_modules to verify installs
+        fs.ensureFileSync(nodeModulesFile)
+
         return lambda._fileCopy(program, '.', codeDirectory, true)
       })
     })
 
-    it('_npm adds node_modules', function () {
-      _timeout({ this: this, sec: 30 }) // give it time to build the node modules
+    describe('when package-lock.json does exist', () => {
+      it('should use "npm ci"', function () {
+        _timeout({ this: this, sec: 30 }) // ci should be faster than install
 
-      return lambda._npmInstall(program, codeDirectory).then(() => {
-        const contents = fs.readdirSync(codeDirectory)
-        assert.include(contents, 'node_modules')
+        return lambda._npmInstall(program, codeDirectory).then(() => {
+          const contents = fs.readdirSync(codeDirectory)
+          assert.include(contents, 'node_modules')
+          assert.isFalse(fs.existsSync(nodeModulesFile))
+        })
+      })
+    })
+    describe('when package-lock.json does not exist', () => {
+      beforeEach(() => {
+        return fs.removeSync(path.join(codeDirectory, 'package-lock.json'))
+      })
+
+      it('should use "npm install"', function () {
+        _timeout({ this: this, sec: 60 }) // install should be slower than ci
+
+        return lambda._npmInstall(program, codeDirectory).then(() => {
+          const contents = fs.readdirSync(codeDirectory)
+          assert.include(contents, 'node_modules')
+          assert.isTrue(fs.existsSync(nodeModulesFile))
+        })
       })
     })
   })
