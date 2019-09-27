@@ -576,7 +576,7 @@ describe('lib/main', function () {
     })
     describe('when package-lock.json does not exist', () => {
       beforeEach(() => {
-        fs.removeSync(path.join(codeDirectory, 'package-lock.json'))
+        return fs.removeSync(path.join(codeDirectory, 'package-lock.json'))
       })
 
       it('should use "npm install"', function () {
