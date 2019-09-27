@@ -556,8 +556,7 @@ describe('lib/main', function () {
 
     beforeEach(() => {
       return lambda._cleanDirectory(codeDirectory).then(() => {
-        // put our own file in node_modules so we can verify installs
-        fs.mkdirSync(path.join(codeDirectory, 'node_modules'))
+        // hide our own file in node_modules to verify installs
         fs.ensureFileSync(nodeModulesFile)
 
         return lambda._fileCopy(program, '.', codeDirectory, true)
