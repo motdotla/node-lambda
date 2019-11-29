@@ -83,8 +83,14 @@ const lambdaMockSettings = {
   deleteEventSourceMapping: {
     EventSourceArn: 'Lambda.deleteEventSourceMapping.mock.EventSourceArn',
     FunctionName: 'Lambda.deleteEventSourceMapping.mock.EventSourceArn'
-  }
+  },
+  listTags: {
+    Tags: { tag1: 'key1' }
+  },
+  untagResource: {},
+  tagResource: {}
 }
+
 const _mockSetting = () => {
   awsMock.mock('CloudWatchEvents', 'putRule', (params, callback) => {
     callback(null, {})
@@ -1327,6 +1333,19 @@ describe('lib/main', function () {
       _timeout({ this: this, sec: 30 }) // give it time to zip
       return lambda.deploy(program).then((result) => {
         assert.isUndefined(result)
+      })
+    })
+  })
+
+  describe('Lambda.prototype._updateTags()', () => {
+    it('simple test with mock', () => {
+      return lambda._updateTags(
+        awsLambda,
+        'arn:aws:lambda:eu-central-1:1234567:function:test',
+        { tagKey: 'tagValue' }).then((result) => {
+        assert.deepEqual(
+          result, {}
+        )
       })
     })
   })
