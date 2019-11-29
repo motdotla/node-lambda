@@ -1319,7 +1319,7 @@ describe('lib/main', function () {
         assert.deepEqual(
           result,
           [
-            [[], []],
+            [[], [], []],
             [],
             { retentionInDays: 30 }
           ]
