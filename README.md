@@ -80,7 +80,7 @@ AWS_MEMORY_SIZE            // (default: 128)
 AWS_TIMEOUT                // (default: 60)
 AWS_RUN_TIMEOUT            // (default: 3)
 AWS_DESCRIPTION            // (default: package.json.description or '')
-AWS_RUNTIME                // (default: 'nodejs10.x')
+AWS_RUNTIME                // (default: 'nodejs12.x')
 AWS_PUBLISH                // (default: false)
 AWS_FUNCTION_VERSION       // (default: '')
 AWS_VPC_SUBNETS            // (default: '')
@@ -116,7 +116,7 @@ Options:
   -h, --help                            output usage information
   -H, --handler [index.handler]         Lambda Handler {index.handler}
   -j, --eventFile [event.json]          Event JSON File
-  -u, --runtime [nodejs10.x]            Lambda Runtime
+  -u, --runtime [nodejs12.x]            Lambda Runtime
   -t, --timeout [3]                     Lambda Timeout
   -f, --configFile []                   Path to file holding secret environment variables (e.g. "deploy.env")
   -x, --contextFile [context.json]      Context JSON File
@@ -176,7 +176,7 @@ Options:
   -m, --memorySize [128]              Lambda Memory Size
   -t, --timeout [3]                   Lambda Timeout
   -d, --description [missing]         Lambda Description
-  -u, --runtime [nodejs10.x]          Lambda Runtime
+  -u, --runtime [nodejs12.x]          Lambda Runtime
   -p, --publish [false]               Lambda Publish
   -L, --lambdaVersion []              Lambda Function Version
   -b, --vpcSubnets []                 Lambda Function VPC Subnets
@@ -210,7 +210,7 @@ AWS Lambda will let you set environment variables for your function. Use the sam
 
 ## Node.js Runtime Configuration
 
-AWS Lambda now supports Node.js 10, Node.js 8.10 and Node.js 6.10. Please also check the [Programming Model (Node.js)](http://docs.aws.amazon.com/lambda/latest/dg/programming-model.html) page.
+AWS Lambda now supports Node.js 12, Node.js 10 and Node.js 8.10. Please also check the [Programming Model (Node.js)](http://docs.aws.amazon.com/lambda/latest/dg/programming-model.html) page.
 
 ## Post install script
 When running `node-lambda deploy` if you need to do some action after `npm install --production` and before deploying to AWS Lambda (e.g. replace some modules with precompiled ones or download some libraries, replace some config file depending on environment) you can create `post_install.sh` script. If the file exists the script will be executed (and output shown after execution) if not it is skipped. Environment string is passed to script as first parameter so you can use it if needed. Make sure that the script is executable.
