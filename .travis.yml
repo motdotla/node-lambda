@@ -1,12 +1,8 @@
 language: node_js
-os:
-  - linux
-  - osx
 
 node_js:
-  - 8
-  - 10
-  - 12
+  - "lts/*"
+  - "node"
 
 cache:
   directories:
@@ -15,7 +11,7 @@ cache:
 jobs:
   include:
     - stage: npm release
-      node_js: 10
+      node_js: node
       script: echo "Deploying to npm ..."
       deploy:
         provider: npm
