@@ -545,6 +545,7 @@ describe('lib/main', function () {
 
     beforeEach(() => {
       return lambda._cleanDirectory(codeDirectory).then(() => {
+        fs.ensureDirSync(nodeModulesMocha)
         return lambda._fileCopy(program, '.', codeDirectory, true)
       })
     })
