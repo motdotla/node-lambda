@@ -20,7 +20,7 @@ const originalProgram = {
   memorySize: 128,
   timeout: 3,
   description: '',
-  runtime: 'nodejs10.x',
+  runtime: 'nodejs12.x',
   deadLetterConfigTargetArn: '',
   tracingConfig: '',
   Layers: '',
@@ -539,14 +539,13 @@ describe('lib/main', function () {
   })
 
   describe('_npmInstall', () => {
-    // npm treats files as packages when installing, and so removes them - hence hide in .bin
-    const nodeModulesFile = path.join(codeDirectory, 'node_modules', '.bin', 'file')
+    // npm treats files as packages when installing, and so removes them.
+    // Test with `devDependencies` packages that are not installed with the `--production` option.
+    const nodeModulesMocha = path.join(codeDirectory, 'node_modules', 'mocha')
 
     beforeEach(() => {
       return lambda._cleanDirectory(codeDirectory).then(() => {
-        // hide our own file in node_modules to verify installs
-        fs.ensureFileSync(nodeModulesFile)
-
+        fs.ensureDirSync(nodeModulesMocha)
         return lambda._fileCopy(program, '.', codeDirectory, true)
       })
     })
@@ -558,10 +557,13 @@ describe('lib/main', function () {
         return lambda._npmInstall(program, codeDirectory).then(() => {
           const contents = fs.readdirSync(codeDirectory)
           assert.include(contents, 'node_modules')
-          assert.isFalse(fs.existsSync(nodeModulesFile))
+
+          // Not installed with the `--production` option.
+          assert.isFalse(fs.existsSync(nodeModulesMocha))
         })
       })
     })
+
     describe('when package-lock.json does not exist', () => {
       beforeEach(() => {
         return fs.removeSync(path.join(codeDirectory, 'package-lock.json'))
@@ -573,7 +575,9 @@ describe('lib/main', function () {
         return lambda._npmInstall(program, codeDirectory).then(() => {
           const contents = fs.readdirSync(codeDirectory)
           assert.include(contents, 'node_modules')
-          assert.isTrue(fs.existsSync(nodeModulesFile))
+
+          // It remains because it is not erased before installation.
+          assert.isTrue(fs.existsSync(nodeModulesMocha))
         })
       })
     })
