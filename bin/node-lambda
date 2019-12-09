@@ -59,6 +59,7 @@ const PROXY = process.env.PROXY || process.env.http_proxy || ''
 const ENABLE_RUN_MULTIPLE_EVENTS = true
 const KEEP_NODE_MODULES = process.env.KEEP_NODE_MODULES || false
 const DOCKER_VOLUMES = process.env.DOCKER_VOLUMES || ''
+const AWS_TAGS = process.env.AWS_TAGS || ''
 
 program
   .command('deploy')
@@ -105,6 +106,7 @@ program
   .option('-z, --deployZipfile [DEPLOY_ZIPFILE]', 'Deploy zipfile', DEPLOY_ZIPFILE)
   .option('-B, --deployUseS3 [DEPLOY_USE_S3]', 'Use S3 to deploy.', DEPLOY_USE_S3)
   .option('-y, --proxy [PROXY]', 'Proxy server', PROXY)
+  .option('-A, --tags [AWS_TAGS]', 'Tags as key value pairs (e.g. "tagname1=tagvalue1,tagname2=tagvalue2)"', AWS_TAGS)
   .action((prg) => lambda.deploy(prg))
 
 program
