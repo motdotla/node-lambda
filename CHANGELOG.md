@@ -365,3 +365,20 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Remove 'packageDirectory' option from 'deploy' [#484](https://github.com/motdotla/node-lambda/pull/484)
 - Update s3deploy bucket handling [#475](https://github.com/motdotla/node-lambda/pull/475)
 - Fix Docker volume mount from OSX - #461 [#471](https://github.com/motdotla/node-lambda/pull/471)
+
+## [0.15.0] - 2019-12-11
+### Features
+- adds tagging on new and updated functions [#508](https://github.com/motdotla/node-lambda/pull/508)
+- Add nodejs12.x to runtime [#510](https://github.com/motdotla/node-lambda/pull/510)
+- Don't audit packages when installing [#505](https://github.com/motdotla/node-lambda/pull/505)
+- Use `ci` instead of `install` when installing packages [#502](https://github.com/motdotla/node-lambda/pull/502)
+- Add reference to TypeScript example/template [#497](https://github.com/motdotla/node-lambda/pull/497)
+- Drop nodejs6.10 [#495](https://github.com/motdotla/node-lambda/pull/495)
+- Warn on providing unknown commands [#494](https://github.com/motdotla/node-lambda/pull/494)
+- Fix tests
+    - Fix GitHub Actions workflow [#506](https://github.com/motdotla/node-lambda/pull/506)
+    - Fix `npm ci` test. [#509](https://github.com/motdotla/node-lambda/pull/509)
+    - Remove appveyor.yml [#504](https://github.com/motdotla/node-lambda/pull/504)
+    - Modify unit tests [#501](https://github.com/motdotla/node-lambda/pull/501)
+    - Fix GitHub Actions workflow [#500](https://github.com/motdotla/node-lambda/pull/500)
+    - Add GitHub Actions workflow [#499](https://github.com/motdotla/node-lambda/pull/499)
