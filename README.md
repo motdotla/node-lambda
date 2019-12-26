@@ -123,7 +123,6 @@ Options:
   -x, --contextFile [context.json]      Context JSON File
   -M, --enableRunMultipleEvents [true]  Enable run multiple events
   -y, --proxy []                        Proxy server
-  -E, --endpoint []                     Use different endpoint (e.g. localstack, "http://127.0.0.1:4574")
 ```
 
 #### package
