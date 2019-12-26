@@ -161,42 +161,41 @@ Usage: deploy [options]
 
 Deploy your application to Amazon Lambda
 
-
 Options:
-  -h, --help                          output usage information
-  -e, --environment [development]     Choose environment {dev, staging, production}
-  -a, --accessKey [your_key]          AWS Access Key
-  -s, --secretKey [your_secret]       AWS Secret Key
-  -P, --profile []                    AWS Profile
-  -k, --sessionToken []               AWS Session Token
-  -r, --region [us-east-1]            AWS Region
-  -n, --functionName [node-lambda]    Lambda FunctionName
-  -H, --handler [index.handler]       Lambda Handler {index.handler}
-  -o, --role [your_amazon_role]       Amazon Role ARN
-  -m, --memorySize [128]              Lambda Memory Size
-  -t, --timeout [3]                   Lambda Timeout
-  -d, --description [missing]         Lambda Description
-  -u, --runtime [nodejs12.x]          Lambda Runtime
-  -p, --publish [false]               Lambda Publish
-  -L, --lambdaVersion []              Lambda Function Version
-  -b, --vpcSubnets []                 Lambda Function VPC Subnets
-  -g, --vpcSecurityGroups []          Lambda VPC Security Group
-  -K, --kmsKeyArn []                  Lambda KMS Key ARN
-  -Q, --deadLetterConfigTargetArn []  Lambda DLQ resource
-  -c, --tracingConfig []              Lambda tracing settings
-  -l, --layers []                     Lambda Layers settings (e.g. "ARN1,ARN2[,..])" (default: "")
-  -R, --retentionInDays []            CloudWatchLogs retentionInDays settings
-  -G, --sourceDirectory []            Path to lambda source Directory (e.g. "./some-lambda")
-  -I, --dockerImage []                Docker image for npm install
-  -f, --configFile []                 Path to file holding secret environment variables (e.g. "deploy.env")
-  -S, --eventSourceFile []            Path to file holding event source mapping variables (e.g. "event_sources.json")
-  -x, --excludeGlobs [event.json]     Space-separated glob pattern(s) for additional exclude files (e.g. "event.json dotenv.sample")
-  -D, --prebuiltDirectory []          Prebuilt directory
-  -T, --deployTimeout [120000]        Deploy Timeout
-  -z, --deployZipfile []              Deploy zipfile
-  -B, --deployUseS3 []                Use S3 to deploy.
-  -y, --proxy []                      Proxy server
-  -A, --tags []                      'Tags as key value pairs (e.g. "tagname1=tagvalue1,tagname2=tagvalue2") (default: "")
+  -e, --environment [AWS_ENVIRONMENT]                   Choose environment {dev, staging, production} (default: "")
+  -E, --endpoint [AWS_ENDPOINT]                         Choose endpoint (e.g. localstack, "http://127.0.0.1:4574") (default: "")
+  -a, --accessKey [AWS_ACCESS_KEY_ID]                   AWS Access Key (default: "")
+  -s, --secretKey [AWS_SECRET_ACCESS_KEY]               AWS Secret Key (default: "")
+  -P, --profile [AWS_PROFILE]                           AWS Profile (default: "yamap-kawahara.yohei")
+  -k, --sessionToken [AWS_SESSION_TOKEN]                AWS Session Token (default: "")
+  -r, --region [AWS_REGION]                             AWS Region (default: "ap-northeast-1")
+  -n, --functionName [AWS_FUNCTION_NAME]                Lambda FunctionName (default: "lambda-cloudwatch-slack")
+  -H, --handler [AWS_HANDLER]                           Lambda Handler {index.handler} (default: "index.handler")
+  -o, --role [AWS_ROLE]                                 Amazon Role ARN (default: "your_amazon_role")
+  -m, --memorySize [AWS_MEMORY_SIZE]                    Lambda Memory Size (default: "128")
+  -t, --timeout [AWS_TIMEOUT]                           Lambda Timeout (default: "3")
+  -d, --description [AWS_DESCRIPTION]                   Lambda Description (default: "Better Slack notifications for AWS CloudWatch")
+  -u, --runtime [AWS_RUNTIME]                           Lambda Runtime (default: "nodejs10.x")
+  -p, --publish [AWS_PUBLISH]                           Lambda Publish (default: false)
+  -L, --lambdaVersion [AWS_FUNCTION_VERSION]            Lambda Function Version (default: "")
+  -b, --vpcSubnets [AWS_VPC_SUBNETS]                    Lambda Function VPC Subnets (default: "")
+  -g, --vpcSecurityGroups [AWS_VPC_SECURITY_GROUPS]     Lambda VPC Security Group (default: "")
+  -K, --kmsKeyArn [AWS_KMS_KEY_ARN]                     Lambda KMS Key ARN (default: "")
+  -Q, --deadLetterConfigTargetArn [AWS_DLQ_TARGET_ARN]  Lambda DLQ resource
+  -c, --tracingConfig [AWS_TRACING_CONFIG]              Lambda tracing settings (default: "")
+  -l, --layers [AWS_LAYERS]                             Lambda Layers settings (e.g. "ARN1,ARN2[,..])" (default: "")
+  -R, --retentionInDays [AWS_LOGS_RETENTION_IN_DAYS]    CloudWatchLogs retentionInDays settings (default: "")
+  -G, --sourceDirectory [SRC_DIRECTORY]                 Path to lambda source Directory (e.g. "./some-lambda") (default: "")
+  -I, --dockerImage [DOCKER_IMAGE]                      Docker image for npm install (default: "")
+  -f, --configFile [CONFIG_FILE]                        Path to file holding secret environment variables (e.g. "deploy.env") (default: "")
+  -S, --eventSourceFile [EVENT_SOURCE_FILE]             Path to file holding event source mapping variables (e.g. "event_sources.json") (default: "")
+  -x, --excludeGlobs [EXCLUDE_GLOBS]                    Space-separated glob pattern(s) for additional exclude files (e.g. "event.json dotenv.sample") (default: "event.json")
+  -D, --prebuiltDirectory [PREBUILT_DIRECTORY]          Prebuilt directory (default: "")
+  -T, --deployTimeout [DEPLOY_TIMEOUT]                  Deploy Timeout (default: 120000)
+  -z, --deployZipfile [DEPLOY_ZIPFILE]                  Deploy zipfile (default: "")
+  -B, --deployUseS3 [DEPLOY_USE_S3]                     Use S3 to deploy. (default: false)
+  -y, --proxy [PROXY]                                   Proxy server (default: "")
+  -h, --help                                            output usage information
 ```
 
 If you are deploying to a custom endpoint you may also need to pass in an access key/secret. For localstack these can be anything, but cannot be blank:
