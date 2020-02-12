@@ -123,7 +123,6 @@ Options:
   -x, --contextFile [context.json]      Context JSON File
   -M, --enableRunMultipleEvents [true]  Enable run multiple events
   -y, --proxy []                        Proxy server
-  -E, --endpoint []                     Use different endpoint (e.g. localstack, "http://127.0.0.1:4574")
 ```
 
 #### package
@@ -166,6 +165,7 @@ Deploy your application to Amazon Lambda
 Options:
   -h, --help                          output usage information
   -e, --environment [development]     Choose environment {dev, staging, production}
+  -E, --endpoint [AWS_ENDPOINT]       Choose endpoint (e.g. localstack, "http://127.0.0.1:4574") (default: "")
   -a, --accessKey [your_key]          AWS Access Key
   -s, --secretKey [your_secret]       AWS Secret Key
   -P, --profile []                    AWS Profile
