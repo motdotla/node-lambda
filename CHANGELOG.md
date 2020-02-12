@@ -382,3 +382,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
     - Modify unit tests [#501](https://github.com/motdotla/node-lambda/pull/501)
     - Fix GitHub Actions workflow [#500](https://github.com/motdotla/node-lambda/pull/500)
     - Add GitHub Actions workflow [#499](https://github.com/motdotla/node-lambda/pull/499)
+
+## [0.16.0] - 2020-02-12
+### Features
+- Remove osx from travis [#513](https://github.com/motdotla/node-lambda/pull/513)
+- Drop nodejs8.10 from runtime [#516](https://github.com/motdotla/node-lambda/pull/516)
