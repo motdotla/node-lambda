@@ -775,6 +775,24 @@ describe('lib/main', function () {
         })
       })
     })
+
+    it('cleans the temporary directory before running `_archivePrebuilt`', function () {
+      _timeout({ this: this, sec: 30 }) // give it time to zip
+      const buildDir = '.build_' + Date.now()
+      const codeDir = lambda._codeDirectory()
+      const tmpFile = path.join(codeDir, 'deleteme')
+      after(() => fs.removeSync(buildDir))
+
+      fs.mkdirSync(codeDir, { recursive: true })
+      fs.writeFileSync(tmpFile, '...')
+      fs.mkdirSync(buildDir)
+      fs.writeFileSync(path.join(buildDir, 'test'), '...')
+
+      program.prebuiltDirectory = buildDir
+      return lambda._archive(program).then((_data) => {
+        assert.isNotTrue(fs.existsSync(tmpFile))
+      })
+    })
   })
 
   describe('_readArchive', () => {
