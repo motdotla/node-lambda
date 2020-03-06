@@ -198,6 +198,7 @@ Options:
   -B, --deployUseS3 []                Use S3 to deploy.
   -y, --proxy []                      Proxy server
   -A, --tags []                       Tags as key value pairs (e.g. "tagname1=tagvalue1,tagname2=tagvalue2") (default: "")
+  --silent                            Silent  or  quiet mode (default: false)
 ```
 
 If you are deploying to a custom endpoint you may also need to pass in an access key/secret. For localstack these can be anything, but cannot be blank:
