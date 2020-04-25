@@ -414,9 +414,9 @@ describe('lib/main', function () {
       fs.mkdirSync('build')
       fs.mkdirsSync(path.join('__unittest', 'hoge'))
       fs.mkdirsSync(path.join('__unittest', 'fuga'))
-      fs.writeFileSync(path.join('__unittest', 'hoge', 'piyo'))
-      fs.writeFileSync(path.join('__unittest', 'hoge', 'package.json'))
-      fs.writeFileSync('fuga')
+      fs.writeFileSync(path.join('__unittest', 'hoge', 'piyo'), '')
+      fs.writeFileSync(path.join('__unittest', 'hoge', 'package.json'), '')
+      fs.writeFileSync('fuga', '')
     })
     after(() => {
       ['build', 'fuga', '__unittest'].forEach((path) => {
@@ -504,8 +504,8 @@ describe('lib/main', function () {
         after(() => fs.removeSync(buildDir))
 
         fs.mkdirSync(buildDir)
-        fs.writeFileSync(path.join(buildDir, 'testa'))
-        fs.writeFileSync(path.join(buildDir, 'package.json'))
+        fs.writeFileSync(path.join(buildDir, 'testa'), '')
+        fs.writeFileSync(path.join(buildDir, 'package.json'), '')
 
         program.excludeGlobs = '*.json'
         program.prebuiltDirectory = buildDir
