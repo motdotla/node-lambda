@@ -34,15 +34,15 @@
   "devDependencies": {
     "aws-sdk-mock": "^5.1.0",
     "chai": "^4.2.0",
-    "mocha": "^7.1.1",
+    "mocha": "^7.1.2",
     "node-zip": "^1.1.1",
     "standard": "^14.3.3"
   },
   "dependencies": {
     "archiver": "^4.0.1",
-    "aws-sdk": "^2.656.0",
-    "aws-xray-sdk-core": "^2.5.0",
-    "commander": "^5.0.0",
+    "aws-sdk": "^2.671.0",
+    "aws-xray-sdk-core": "^3.0.1",
+    "commander": "^5.1.0",
     "continuation-local-storage": "^3.2.1",
     "dotenv": "^8.2.0",
     "fs-extra": "^9.0.0",
