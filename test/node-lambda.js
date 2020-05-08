@@ -244,6 +244,38 @@ describe('bin/node-lambda', () => {
         })
       })
     })
+
+    describe('node-lambda run (API Gateway events))', () => {
+      const eventObj = {
+        asyncTest: false,
+        callbackWaitsForEmptyEventLoop: true,
+        callbackCode: 'callback(null);'
+      }
+
+      it('`node-lambda run` exitCode is `0`', function (done) {
+        _generateEventFile(eventObj)
+        const run = spawn('node', [
+          nodeLambdaPath, 'run',
+          '--handler', 'index.handler',
+          '--eventFile', 'event.json',
+          '--apiGateway'
+        ])
+        let stdoutString = ''
+        run.stdout.on('data', (data) => {
+          stdoutString += data.toString().replace(/\r|\n|\s/g, '')
+        })
+
+        run.on('exit', (code) => {
+          const expected = '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!EmulateonlythebodyoftheAPIGatewayevent.' +
+            '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!Runningindex.handler==================================event' +
+            '{body:\'{"asyncTest":false,"callbackWaitsForEmptyEventLoop":true,"callbackCode":"callback(null);"}\'}' +
+            '==================================Stoppingindex.handlerSuccess:'
+          assert.equal(stdoutString, expected)
+          assert.equal(code, 0)
+          done()
+        })
+      })
+    })
   })
 
   describe('node-lambda duplicate check of short option', () => {

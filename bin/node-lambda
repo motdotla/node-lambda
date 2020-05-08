@@ -146,6 +146,7 @@ program
   .option('-M, --enableRunMultipleEvents [ENABLE_RUN_MULTIPLE_EVENTS]', 'Enable run multiple events',
     ENABLE_RUN_MULTIPLE_EVENTS)
   .option('-y, --proxy [PROXY]', 'Proxy server', PROXY)
+  .option('--apiGateway', 'Convert to API Gateway events', false)
   .action((prg) => lambda.run(prg))
 
 program
