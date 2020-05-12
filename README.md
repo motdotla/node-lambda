@@ -123,6 +123,7 @@ Options:
   -x, --contextFile [context.json]      Context JSON File
   -M, --enableRunMultipleEvents [true]  Enable run multiple events
   -y, --proxy []                        Proxy server
+  --apiGateway                          Convert to API Gateway events
 ```
 
 #### package
