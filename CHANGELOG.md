@@ -387,3 +387,19 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Features
 - Remove osx from travis [#513](https://github.com/motdotla/node-lambda/pull/513)
 - Drop nodejs8.10 from runtime [#516](https://github.com/motdotla/node-lambda/pull/516)
+
+## [0.17.0] - 2020-05-14
+### Features
+- Implement a simple API Gateway event [#530](https://github.com/motdotla/node-lambda/pull/530)
+    - [README] Add the 'apiGateway' option to the run command [#532](https://github.com/motdotla/node-lambda/pull/532)
+- Add Node.js 14 to CI settings [#524](https://github.com/motdotla/node-lambda/pull/524)
+- Drop old Node support  [#523](https://github.com/motdotla/node-lambda/pull/523)
+- Bump acorn from 7.0.0 to 7.1.1 [#522](https://github.com/motdotla/node-lambda/pull/522)
+- Add Silent or quiet mode when deploying [#520](https://github.com/motdotla/node-lambda/pull/520)
+    - [README update] Add silent option to deploy command [#521](https://github.com/motdotla/node-lambda/pull/521)
+- Update README (remove --endpoint of run subcommand, add --endpoint of deploy subcommand) [#514](https://github.com/motdotla/node-lambda/pull/514)
+
+### Bugfixes
+- Upgrade "aws-xray-sdk-core" [#529](https://github.com/motdotla/node-lambda/pull/529)
+- Fix Lambda update failure [#526](https://github.com/motdotla/node-lambda/pull/526)
+    - Fix typo [#527](https://github.com/motdotla/node-lambda/pull/527)
