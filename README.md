@@ -4,6 +4,7 @@
 
 Command line tool to locally run and deploy your node.js application to [Amazon Lambda](http://aws.amazon.com/lambda/).
 
+![Node CI](https://github.com/motdotla/node-lambda/workflows/Node%20CI/badge.svg)
 [![BuildStatus](https://travis-ci.org/motdotla/node-lambda.svg?branch=master)](https://travis-ci.org/motdotla/node-lambda)
 [![NPM version](https://badge.fury.io/js/node-lambda.svg)](http://badge.fury.io/js/node-lambda)
 
