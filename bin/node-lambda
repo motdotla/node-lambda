@@ -62,6 +62,10 @@ const DOCKER_VOLUMES = process.env.DOCKER_VOLUMES || ''
 const AWS_TAGS = process.env.AWS_TAGS || ''
 
 program
+  .storeOptionsAsProperties(false)
+  .passCommandToAction(false)
+
+program
   .command('deploy')
   .description('Deploy your application to Amazon Lambda')
   .option('-e, --environment [AWS_ENVIRONMENT]', 'Choose environment {dev, staging, production}',
