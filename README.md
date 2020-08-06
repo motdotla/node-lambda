@@ -182,8 +182,8 @@ Options:
   -u, --runtime [nodejs12.x]          Lambda Runtime
   -p, --publish [false]               Lambda Publish
   -L, --lambdaVersion []              Lambda Function Version
-  -b, --vpcSubnets []                 Lambda Function VPC Subnets
-  -g, --vpcSecurityGroups []          Lambda VPC Security Group
+  -b, --vpcSubnets []                 Lambda Function VPC Subnet IDs (comma delimited)
+  -g, --vpcSecurityGroups []          Lambda VPC Security Group IDs (comma delimited)
   -K, --kmsKeyArn []                  Lambda KMS Key ARN
   -Q, --deadLetterConfigTargetArn []  Lambda DLQ resource
   -c, --tracingConfig []              Lambda tracing settings

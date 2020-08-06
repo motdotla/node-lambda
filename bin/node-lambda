@@ -86,8 +86,8 @@ program
   .option('-u, --runtime [AWS_RUNTIME]', 'Lambda Runtime', AWS_RUNTIME)
   .option('-p, --publish [AWS_PUBLISH]', 'Lambda Publish', AWS_PUBLISH)
   .option('-L, --lambdaVersion [AWS_FUNCTION_VERSION]', 'Lambda Function Version', AWS_FUNCTION_VERSION)
-  .option('-b, --vpcSubnets [AWS_VPC_SUBNETS]', 'Lambda Function VPC Subnets', AWS_VPC_SUBNETS)
-  .option('-g, --vpcSecurityGroups [AWS_VPC_SECURITY_GROUPS]', 'Lambda VPC Security Group',
+  .option('-b, --vpcSubnets [AWS_VPC_SUBNETS]', 'Lambda Function VPC Subnet IDs (comma delimited)', AWS_VPC_SUBNETS)
+  .option('-g, --vpcSecurityGroups [AWS_VPC_SECURITY_GROUPS]', 'Lambda VPC Security Group IDs (comma delimited)',
     AWS_VPC_SECURITY_GROUPS)
   .option('-K, --kmsKeyArn [AWS_KMS_KEY_ARN]', 'Lambda KMS Key ARN', AWS_KMS_KEY_ARN)
   .option('-Q, --deadLetterConfigTargetArn [AWS_DLQ_TARGET_ARN]', 'Lambda DLQ resource',
