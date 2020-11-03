@@ -11,7 +11,7 @@ const mockResponse = {
   putObject: { ETag: 'putObject' }
 }
 
-var s3Deploy = null
+let s3Deploy = null
 
 /* global describe, it, before, after */
 describe('lib/s3_deploy', () => {

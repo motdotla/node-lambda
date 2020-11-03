@@ -8,8 +8,7 @@ const path = require('path')
 const lambda = require(path.join(__dirname, '..', 'lib', 'main.js'))
 const program = require('commander')
 const fs = require('fs')
-const packageJson = fs.existsSync(path.join(process.cwd(), 'package.json'))
-  ? require(path.join(process.cwd(), 'package.json')) : {}
+const packageJson = fs.existsSync(path.join(process.cwd(), 'package.json')) ? require(path.join(process.cwd(), 'package.json')) : {}
 const packageJsonName = packageJson.name || 'UnnamedFunction'
 
 const AWS_ENVIRONMENT = process.env.AWS_ENVIRONMENT || ''

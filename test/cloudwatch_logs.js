@@ -21,7 +21,7 @@ const params = {
   retentionInDays: 14
 }
 
-var logs = null
+let logs = null
 
 /* global before, after, describe, it */
 describe('lib/cloudwatch_logs', () => {
