@@ -36,7 +36,7 @@ const mockResponse = {
   }
 }
 
-var schedule = null
+let schedule = null
 
 /* global before, after, describe, it */
 describe('lib/schedule_events', () => {

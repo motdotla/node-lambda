@@ -34,8 +34,8 @@ const originalProgram = {
   proxy: ''
 }
 
-var program = {}
-var codeDirectory = lambda._codeDirectory()
+let program = {}
+let codeDirectory = lambda._codeDirectory()
 
 const _timeout = function (params) {
   // Even if timeout is set for the whole test for Windows,

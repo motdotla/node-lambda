@@ -28,7 +28,7 @@ const mockResponse = {
   putBucketNotificationConfiguration: {}
 }
 
-var s3Events = null
+let s3Events = null
 
 /* global before, after, describe, it */
 describe('lib/s3_events', () => {
