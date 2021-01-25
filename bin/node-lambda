@@ -6,7 +6,7 @@ require('dotenv').config()
 const path = require('path')
 
 const lambda = require(path.join(__dirname, '..', 'lib', 'main.js'))
-const program = require('commander')
+const { program } = require('commander')
 const fs = require('fs')
 const packageJson = fs.existsSync(path.join(process.cwd(), 'package.json')) ? require(path.join(process.cwd(), 'package.json')) : {}
 const packageJsonName = packageJson.name || 'UnnamedFunction'
@@ -59,10 +59,6 @@ const ENABLE_RUN_MULTIPLE_EVENTS = true
 const KEEP_NODE_MODULES = process.env.KEEP_NODE_MODULES || false
 const DOCKER_VOLUMES = process.env.DOCKER_VOLUMES || ''
 const AWS_TAGS = process.env.AWS_TAGS || ''
-
-program
-  .storeOptionsAsProperties(false)
-  .passCommandToAction(false)
 
 program
   .command('deploy')
