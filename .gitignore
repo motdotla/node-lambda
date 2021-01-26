@@ -33,5 +33,8 @@ node_modules
 !.env.example
 .env
 event.json
+context.json
+deploy.env
+event_sources.json
 npm-debug.log*
 .lambda

@@ -205,6 +205,22 @@ describe('lib/main', function () {
     })
   })
 
+  describe('_useECR', () => {
+    it('=== true', () => {
+      assert.isTrue(lambda._useECR({ imageUri: 'xxx' }))
+    })
+
+    it('=== false', () => {
+      [
+        {},
+        { imageUri: null },
+        { imageUri: '' }
+      ].forEach((params) => {
+        assert.isFalse(lambda._useECR(params), params)
+      })
+    })
+  })
+
   describe('_params', () => {
     // http://docs.aws.amazon.com/lambda/latest/dg/API_CreateFunction.html#SSS-CreateFunction-request-FunctionName
     const functionNamePattern =
@@ -322,6 +338,32 @@ describe('lib/main', function () {
             S3Bucket: null,
             S3Key: null
           }
+        )
+      })
+    })
+
+    describe('PackageType: Zip|Image', () => {
+      it('PackageType: Zip', () => {
+        const params = lambda._params(program, 'Buffer')
+        assert.equal(params.PackageType, 'Zip')
+        assert.deepEqual(
+          params.Code,
+          { ZipFile: 'Buffer' }
+        )
+      })
+
+      it('PackageType: Image', () => {
+        program.imageUri = 'xxx'
+        const params = lambda._params(program, 'Buffer')
+        assert.equal(params.PackageType, 'Image')
+
+        assert.isUndefined(params.Handler)
+        assert.isUndefined(params.Runtime)
+        assert.isUndefined(params.KMSKeyArn)
+
+        assert.deepEqual(
+          params.Code,
+          { ImageUri: 'xxx' }
         )
       })
     })
