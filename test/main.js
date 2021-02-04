@@ -589,25 +589,34 @@ describe('lib/main', function () {
     })
   })
 
-  describe('_npmInstall', () => {
+  describe('_npmInstall', function () {
+    _timeout({ this: this, sec: 30 }) // ci should be faster than install
+
     // npm treats files as packages when installing, and so removes them.
     // Test with `devDependencies` packages that are not installed with the `--production` option.
     const nodeModulesMocha = path.join(codeDirectory, 'node_modules', 'mocha')
 
     beforeEach(() => {
       return lambda._cleanDirectory(codeDirectory).then(() => {
-        fs.ensureDirSync(nodeModulesMocha)
+        fs.copySync(
+          path.join('node_modules', 'aws-sdk'),
+          path.join(codeDirectory, 'node_modules', 'aws-sdk')
+        )
         return lambda._fileCopy(program, '.', codeDirectory, true)
       })
     })
 
     describe('when package-lock.json does exist', () => {
-      it('should use "npm ci"', function () {
-        _timeout({ this: this, sec: 30 }) // ci should be faster than install
-
+      it('should use "npm ci"', () => {
+        const beforeAwsSdkStat = fs.statSync(path.join(codeDirectory, 'node_modules', 'aws-sdk'))
         return lambda._npmInstall(program, codeDirectory).then(() => {
-          const contents = fs.readdirSync(codeDirectory)
-          assert.include(contents, 'node_modules')
+          const contents = fs.readdirSync(path.join(codeDirectory, 'node_modules'))
+          assert.include(contents, 'dotenv')
+
+          // To remove and then install.
+          // beforeAwsSdkStat.ctimeMs < afterAwsSdkStat.ctimeMs
+          const afterAwsSdkStat = fs.statSync(path.join(codeDirectory, 'node_modules', 'aws-sdk'))
+          assert.isBelow(beforeAwsSdkStat.ctimeMs, afterAwsSdkStat.ctimeMs)
 
           // Not installed with the `--production` option.
           assert.isFalse(fs.existsSync(nodeModulesMocha))
@@ -620,15 +629,19 @@ describe('lib/main', function () {
         return fs.removeSync(path.join(codeDirectory, 'package-lock.json'))
       })
 
-      it('should use "npm install"', function () {
-        _timeout({ this: this, sec: 60 }) // install should be slower than ci
-
+      it('should use "npm install"', () => {
+        const beforeAwsSdkStat = fs.statSync(path.join(codeDirectory, 'node_modules', 'aws-sdk'))
         return lambda._npmInstall(program, codeDirectory).then(() => {
-          const contents = fs.readdirSync(codeDirectory)
-          assert.include(contents, 'node_modules')
+          const contents = fs.readdirSync(path.join(codeDirectory, 'node_modules'))
+          assert.include(contents, 'dotenv')
 
-          // It remains because it is not erased before installation.
-          assert.isTrue(fs.existsSync(nodeModulesMocha))
+          // Installed packages will remain intact.
+          // beforeAwsSdkStat.ctimeMs === afterAwsSdkStat.ctimeMs
+          const afterAwsSdkStat = fs.statSync(path.join(codeDirectory, 'node_modules', 'aws-sdk'))
+          assert.equal(beforeAwsSdkStat.ctimeMs, afterAwsSdkStat.ctimeMs)
+
+          // Not installed with the `--production` option.
+          assert.isFalse(fs.existsSync(nodeModulesMocha))
         })
       })
     })
