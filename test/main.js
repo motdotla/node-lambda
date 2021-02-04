@@ -153,7 +153,10 @@ describe('lib/main', function () {
 
   describe('_codeDirectory', () => {
     it('Working directory in the /tmp directory', () => {
-      assert.equal(lambda._codeDirectory(), path.join(os.tmpdir(), 'node-lambda-lambda'))
+      assert.equal(
+        lambda._codeDirectory(),
+        path.join(fs.realpathSync(os.tmpdir()), 'node-lambda-lambda')
+      )
     })
   })
 
