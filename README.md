@@ -98,6 +98,7 @@ DEPLOY_TIMEOUT             // (default: '120000')
 DOCKER_IMAGE               // (default: '')
 DEPLOY_ZIPFILE             // (default: '')
 DEPLOY_USE_S3              // (default: false)
+IMAGE_URI                  // (default: '')
 AWS_DLQ_TARGET_ARN         // (default: not set)
 AWS_TAGS                   // (default: '')
 ```
@@ -198,6 +199,7 @@ Options:
   -T, --deployTimeout [120000]        Deploy Timeout
   -z, --deployZipfile []              Deploy zipfile
   -B, --deployUseS3 []                Use S3 to deploy.
+  -i, --imageUri []                   URI of a container image in the Amazon ECR registry. (default: "")
   -y, --proxy []                      Proxy server
   -A, --tags []                       Tags as key value pairs (e.g. "tagname1=tagvalue1,tagname2=tagvalue2") (default: "")
   --silent                            Silent  or  quiet mode (default: false)
@@ -216,6 +218,11 @@ AWS Lambda will let you set environment variables for your function. Use the sam
 ## Node.js Runtime Configuration
 
 AWS Lambda now supports Node.js 12 and Node.js 10. Please also check the [Programming Model (Node.js)](http://docs.aws.amazon.com/lambda/latest/dg/programming-model.html) page.
+
+## To deploy a container image to Lambda
+
+1. [Pushing a Docker image to ECR](https://docs.aws.amazon.com/AmazonECR/latest/userguide/docker-push-ecr-image.html)
+2. Specify the Image URI of the ECR with the environment variable:`IMAGE_URI` or `--imageUri` option, and deploy.
 
 ## Post install script
 When running `node-lambda deploy` if you need to do some action after `npm install --production` and before deploying to AWS Lambda (e.g. replace some modules with precompiled ones or download some libraries, replace some config file depending on environment) you can create `post_install.sh` script. If the file exists the script will be executed (and output shown after execution) if not it is skipped. Environment string is passed to script as first parameter so you can use it if needed. Make sure that the script is executable.
