@@ -81,7 +81,7 @@ AWS_MEMORY_SIZE            // (default: 128)
 AWS_TIMEOUT                // (default: 60)
 AWS_RUN_TIMEOUT            // (default: 3)
 AWS_DESCRIPTION            // (default: package.json.description or '')
-AWS_RUNTIME                // (default: 'nodejs12.x')
+AWS_RUNTIME                // (default: 'nodejs14.x')
 AWS_PUBLISH                // (default: false)
 AWS_FUNCTION_VERSION       // (default: '')
 AWS_VPC_SUBNETS            // (default: '')
@@ -119,7 +119,7 @@ Options:
   -h, --help                            output usage information
   -H, --handler [index.handler]         Lambda Handler {index.handler}
   -j, --eventFile [event.json]          Event JSON File
-  -u, --runtime [nodejs12.x]            Lambda Runtime
+  -u, --runtime [nodejs14.x]            Lambda Runtime
   -t, --timeout [3]                     Lambda Timeout
   -f, --configFile []                   Path to file holding secret environment variables (e.g. "deploy.env")
   -x, --contextFile [context.json]      Context JSON File
@@ -180,7 +180,7 @@ Options:
   -m, --memorySize [128]              Lambda Memory Size
   -t, --timeout [3]                   Lambda Timeout
   -d, --description [missing]         Lambda Description
-  -u, --runtime [nodejs12.x]          Lambda Runtime
+  -u, --runtime [nodejs14.x]          Lambda Runtime
   -p, --publish [false]               Lambda Publish
   -L, --lambdaVersion []              Lambda Function Version
   -b, --vpcSubnets []                 Lambda Function VPC Subnet IDs (comma delimited)
@@ -217,7 +217,7 @@ AWS Lambda will let you set environment variables for your function. Use the sam
 
 ## Node.js Runtime Configuration
 
-AWS Lambda now supports Node.js 12 and Node.js 10. Please also check the [Programming Model (Node.js)](http://docs.aws.amazon.com/lambda/latest/dg/programming-model.html) page.
+AWS Lambda now supports Node.js14, Node.js 12 and Node.js 10. Please also check the [Building Lambda functions with Node.js](https://docs.aws.amazon.com/lambda/latest/dg/lambda-nodejs.html) page.
 
 ## To deploy a container image to Lambda
 
