@@ -403,3 +403,21 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Upgrade "aws-xray-sdk-core" [#529](https://github.com/motdotla/node-lambda/pull/529)
 - Fix Lambda update failure [#526](https://github.com/motdotla/node-lambda/pull/526)
     - Fix typo [#527](https://github.com/motdotla/node-lambda/pull/527)
+
+## [0.18.0] - 2021-02-19
+### Features
+- feat: support nodejs14.x runtime [#553](https://github.com/motdotla/node-lambda/pull/553)
+- Upgrade Mocha to fix high sev vulnerability. [#551](https://github.com/motdotla/node-lambda/pull/551)
+- docs: add a note to the README about deploying container image [#549](https://github.com/motdotla/node-lambda/pull/549)
+- Support npm7 #[550](https://github.com/motdotla/node-lambda/pull/550)
+- feat: support for 'ImageUri' parameter [#548](https://github.com/motdotla/node-lambda/pull/548)
+- upgrade 'commander' to 7 [#547](https://github.com/motdotla/node-lambda/pull/547)
+- ci: add 'fail-fast: false' setting #[546](https://github.com/motdotla/node-lambda/pull/546)
+- use starsWith instead of indexOf [#545](https://github.com/motdotla/node-lambda/pull/545)
+- Upgrade 'standard' [#543](https://github.com/motdotla/node-lambda/pull/543)
+- Update S3_LOCATION_POSSIBLE_VALUES [#542](https://github.com/motdotla/node-lambda/pull/542)
+- Bump bl from 4.0.2 to 4.0.3 [#541](https://github.com/motdotla/node-lambda/pull/541)
+- Add description of vpc options [#540](https://github.com/motdotla/node-lambda/pull/540)
+- Upgrade packages [#538](https://github.com/motdotla/node-lambda/pull/538)
+- Bump lodash from 4.17.15 to 4.17.19 [#536](https://github.com/motdotla/node-lambda/pull/536)
+- Add build badge in README [#534](https://github.com/motdotla/node-lambda/pull/534)
