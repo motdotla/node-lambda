@@ -109,6 +109,7 @@ program
   .option('-y, --proxy [PROXY]', 'Proxy server', PROXY)
   .option('-A, --tags [AWS_TAGS]', 'Tags as key value pairs (e.g. "tagname1=tagvalue1,tagname2=tagvalue2)"', AWS_TAGS)
   .option('--silent', 'Silent  or  quiet mode', false)
+  .option('--no-optionalDependencies', 'Run `npm install` with `--no-optional`')
   .action((prg) => {
     if (prg.silent) {
       console.log = () => {}
@@ -131,6 +132,7 @@ program
   .option('-D, --prebuiltDirectory [PREBUILT_DIRECTORY]', 'Prebuilt directory', PREBUILT_DIRECTORY)
   .option('-m, --keepNodeModules [KEEP_NODE_MODULES]', 'Keep the current node_modules directory.', KEEP_NODE_MODULES)
   .option('-v, --dockerVolumes [DOCKER_VOLUMES]', 'Additional docker volumes to mount. Each volume definition has to be separated by a space (e.g. "$HOME/.gitconfig:/etc/gitconfig $HOME/.ssh:/root/.ssh")', DOCKER_VOLUMES)
+  .option('--no-optionalDependencies', 'Run `npm install` with `--no-optional`')
   .action((prg) => lambda.package(prg))
 
 program

@@ -31,7 +31,8 @@ const originalProgram = {
   contextFile: 'context.json',
   deployTimeout: 120000,
   prebuiltDirectory: '',
-  proxy: ''
+  proxy: '',
+  optionalDependencies: true
 }
 
 let program = {}
@@ -642,6 +643,37 @@ describe('lib/main', function () {
 
           // Not installed with the `--production` option.
           assert.isFalse(fs.existsSync(nodeModulesMocha))
+        })
+      })
+    })
+
+    describe('optionalDependencies', () => {
+      beforeEach(() => {
+        const packageJsonPath = path.join(codeDirectory, 'package.json')
+        const packageJson = require(packageJsonPath)
+        packageJson.optionalDependencies = { npm: '*' }
+        fs.writeFileSync(packageJsonPath, JSON.stringify(packageJson))
+      })
+
+      describe('No `--no-optionalDependencies`', () => {
+        it('optionalDependencies is installed', () => {
+          return lambda._npmInstall(program, codeDirectory).then(() => {
+            const contents = fs.readdirSync(path.join(codeDirectory, 'node_modules'))
+            assert.include(contents, 'npm')
+          })
+        })
+      })
+
+      describe('With `--no-optionalDependencies`', () => {
+        it('optionalDependency is NOT installed', () => {
+          const params = {
+            ...program,
+            optionalDependencies: false
+          }
+          return lambda._npmInstall(params, codeDirectory).then(() => {
+            const contents = fs.readdirSync(path.join(codeDirectory, 'node_modules'))
+            assert.notInclude(contents, 'npm')
+          })
         })
       })
     })
