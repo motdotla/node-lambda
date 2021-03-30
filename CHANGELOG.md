@@ -421,3 +421,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Upgrade packages [#538](https://github.com/motdotla/node-lambda/pull/538)
 - Bump lodash from 4.17.15 to 4.17.19 [#536](https://github.com/motdotla/node-lambda/pull/536)
 - Add build badge in README [#534](https://github.com/motdotla/node-lambda/pull/534)
+
+## [0.19.0] - 2021-03-30
+### Features
+- feat: support `--no-optional` option in npm install [#557](https://github.com/motdotla/node-lambda/pull/557)
