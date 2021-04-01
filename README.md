@@ -151,6 +151,7 @@ Options:
   -D, --prebuiltDirectory []        Prebuilt directory
   -m, --keepNodeModules [false]     Keep the current node_modules and skip the npm install step
   -v, --dockerVolumes []            Additional docker volumes to mount. Each volume definition has to be separated by a space (e.g. "$HOME/.gitconfig:/etc/gitconfig $HOME/.ssh:/root/.ssh"
+  --no-optionalDependencies         Run `npm install` with `--no-optional`
 ```
 
 #### deploy
@@ -203,6 +204,7 @@ Options:
   -y, --proxy []                      Proxy server
   -A, --tags []                       Tags as key value pairs (e.g. "tagname1=tagvalue1,tagname2=tagvalue2") (default: "")
   --silent                            Silent  or  quiet mode (default: false)
+  --no-optionalDependencies           Run `npm install` with `--no-optional`
 ```
 
 If you are deploying to a custom endpoint you may also need to pass in an access key/secret. For localstack these can be anything, but cannot be blank:
