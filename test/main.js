@@ -39,10 +39,10 @@ let program = {}
 let codeDirectory = lambda._codeDirectory()
 
 const _timeout = function (params) {
-  // Even if timeout is set for the whole test for Windows,
+  // Even if timeout is set for the whole test for Windows and Mac,
   // if it is set in local it will be valid.
-  // For Windows, do not set it with local.
-  if (process.platform !== 'win32') {
+  // For Windows and Mac, do not set it with local.
+  if (!['win32', 'darwin'].includes(process.platform)) {
     params.this.timeout(params.sec * 1000)
   }
 }
@@ -130,8 +130,8 @@ const _awsRestore = () => {
 
 /* global before, after, beforeEach, afterEach, describe, it */
 describe('lib/main', function () {
-  if (process.platform === 'win32') {
-    // It seems that it takes time for file operation in Windows.
+  if (['win32', 'darwin'].includes(process.platform)) {
+    // It seems that it takes time for file operation in Windows and Mac.
     // So set `timeout(60000)` for the whole test.
     this.timeout(60000)
   }
