@@ -425,3 +425,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [0.19.0] - 2021-03-30
 ### Features
 - feat: support `--no-optional` option in npm install [#557](https://github.com/motdotla/node-lambda/pull/557)
+
+## [0.19.1] - 2021-04-24
+### Bugfixes
+- Fix errors caused by old proxy-agent [#564](https://github.com/motdotla/node-lambda/pull/564)
