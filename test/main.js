@@ -591,20 +591,15 @@ describe('lib/main', function () {
   })
 
   describe('_npmInstall', function () {
-    _timeout({ this: this, sec: 30 }) // ci should be faster than install
+    _timeout({ this: this, sec: 60 }) // ci should be faster than install
 
     // npm treats files as packages when installing, and so removes them.
     // Test with `devDependencies` packages that are not installed with the `--production` option.
     const nodeModulesMocha = path.join(codeDirectory, 'node_modules', 'mocha')
 
-    beforeEach(() => {
-      return lambda._cleanDirectory(codeDirectory).then(() => {
-        fs.copySync(
-          path.join('node_modules', 'aws-sdk'),
-          path.join(codeDirectory, 'node_modules', 'aws-sdk')
-        )
-        return lambda._fileCopy(program, '.', codeDirectory, true)
-      })
+    beforeEach(async () => {
+      await lambda._cleanDirectory(codeDirectory)
+      await lambda._fileCopy(program, '.', codeDirectory, false)
     })
 
     describe('when package-lock.json does exist', () => {
