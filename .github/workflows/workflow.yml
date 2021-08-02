@@ -12,10 +12,11 @@ jobs:
         node-version: [10.x, 12.x, 14.x, 16.x]
         os: [ubuntu-latest, windows-latest, macos-latest]
     steps:
-    - uses: actions/checkout@master
-    - uses: actions/setup-node@master
+    - uses: actions/checkout@v2
+    - uses: actions/setup-node@v2
       with:
         node-version: ${{ matrix.node-version }}
+        cache: 'npm'
     - run: npm i -g npm
     - run: node -v
     - run: npm -v
