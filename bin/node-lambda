@@ -61,6 +61,8 @@ const DOCKER_VOLUMES = process.env.DOCKER_VOLUMES || ''
 const AWS_TAGS = process.env.AWS_TAGS || ''
 const IMAGE_URI = process.env.IMAGE_URI || ''
 
+program.showSuggestionAfterError()
+
 program
   .command('deploy')
   .description('Deploy your application to Amazon Lambda')
@@ -158,12 +160,6 @@ program
   .option('-j, --eventFile [EVENT_FILE]', 'Event JSON File', EVENT_FILE)
   .option('-x, --contextFile [CONTEXT_FILE]', 'Context JSON File', CONTEXT_FILE)
   .action((prg) => lambda.setup(prg))
-
-program.on('command:*', (cmd) => {
-  console.log(`Unknown command ${cmd}`)
-  console.log()
-  program.help()
-})
 
 program
   .version(lambda.version)
