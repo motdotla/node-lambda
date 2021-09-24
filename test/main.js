@@ -52,7 +52,7 @@ const lambdaMockSettings = {
   addPermission: {},
   getFunction: {
     Code: {},
-    Configuration: {},
+    Configuration: { LastUpdateStatus: 'Successful' },
     FunctionArn: 'Lambda.getFunction.mock.FunctionArn'
   },
   createFunction: {
