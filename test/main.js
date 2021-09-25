@@ -149,7 +149,7 @@ describe('lib/main', function () {
   })
 
   it('version should be set', () => {
-    assert.equal(lambda.version, '0.19.1')
+    assert.equal(lambda.version, '0.20.0')
   })
 
   describe('_codeDirectory', () => {

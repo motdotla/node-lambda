@@ -1,6 +1,6 @@
 {
   "name": "node-lambda",
-  "version": "0.19.1",
+  "version": "0.20.0",
   "description": "Command line tool for locally running and remotely deploying your node.js applications to Amazon Lambda.",
   "main": "lib/main.js",
   "directories": {
