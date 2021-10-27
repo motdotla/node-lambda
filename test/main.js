@@ -590,7 +590,83 @@ describe('lib/main', function () {
     })
   })
 
-  describe('_npmInstall', function () {
+  describe('_getNpmInstallCommand', () => {
+    describe('when package-lock.json exists', () => {
+      const codeDirectory = '.'
+
+      it('npm ci', () => {
+        const { packageManager, installOptions } = lambda._getNpmInstallCommand(program, codeDirectory)
+        assert.equal(packageManager, 'npm')
+        assert.deepEqual(installOptions, ['-s', 'ci', '--production', '--no-audit', '--prefix', codeDirectory])
+      })
+
+      it('npm ci with "--no-optional"', () => {
+        const { packageManager, installOptions } = lambda._getNpmInstallCommand(
+          {
+            ...program,
+            optionalDependencies: false
+          },
+          codeDirectory
+        )
+        assert.equal(packageManager, 'npm')
+        assert.deepEqual(
+          installOptions,
+          ['-s', 'ci', '--production', '--no-audit', '--no-optional', '--prefix', codeDirectory]
+        )
+      })
+
+      it('npm ci on docker', () => {
+        const { packageManager, installOptions } = lambda._getNpmInstallCommand(
+          {
+            ...program,
+            dockerImage: 'test'
+          },
+          codeDirectory
+        )
+        assert.equal(packageManager, 'npm')
+        assert.deepEqual(installOptions, ['-s', 'ci', '--production', '--no-audit'])
+      })
+    })
+
+    describe('when package-lock.json does not exist', () => {
+      const codeDirectory = './test'
+
+      it('npm install', () => {
+        const { packageManager, installOptions } = lambda._getNpmInstallCommand(program, './test')
+        assert.equal(packageManager, 'npm')
+        assert.deepEqual(installOptions, ['-s', 'install', '--production', '--no-audit', '--prefix', './test'])
+      })
+
+      it('npm install with "--no-optional"', () => {
+        const { packageManager, installOptions } = lambda._getNpmInstallCommand(
+          {
+            ...program,
+            optionalDependencies: false
+          },
+          codeDirectory
+        )
+        assert.equal(packageManager, 'npm')
+        assert.deepEqual(
+          installOptions,
+          ['-s', 'install', '--production', '--no-audit', '--no-optional', '--prefix', codeDirectory]
+        )
+      })
+
+      it('npm install on docker', () => {
+        const { packageManager, installOptions } = lambda._getNpmInstallCommand(
+          {
+            ...program,
+            dockerImage: 'test'
+          },
+          codeDirectory
+        )
+        assert.equal(packageManager, 'npm')
+        assert.deepEqual(installOptions, ['-s', 'install', '--production', '--no-audit'])
+      })
+    })
+  })
+
+  describe('_packageInstall using "npm"', function () {
     _timeout({ this: this, sec: 60 }) // ci should be faster than install
 
     // npm treats files as packages when installing, and so removes them.
@@ -605,7 +681,7 @@ describe('lib/main', function () {
     describe('when package-lock.json does exist', () => {
       it('should use "npm ci"', () => {
         const beforeAwsSdkStat = fs.statSync(path.join(codeDirectory, 'node_modules', 'aws-sdk'))
-        return lambda._npmInstall(program, codeDirectory).then(() => {
+        return lambda._packageInstall(program, codeDirectory).then(() => {
           const contents = fs.readdirSync(path.join(codeDirectory, 'node_modules'))
           assert.include(contents, 'dotenv')
 
@@ -627,7 +703,7 @@ describe('lib/main', function () {
 
       it('should use "npm install"', () => {
         const beforeAwsSdkStat = fs.statSync(path.join(codeDirectory, 'node_modules', 'aws-sdk'))
-        return lambda._npmInstall(program, codeDirectory).then(() => {
+        return lambda._packageInstall(program, codeDirectory).then(() => {
           const contents = fs.readdirSync(path.join(codeDirectory, 'node_modules'))
           assert.include(contents, 'dotenv')
 
@@ -652,7 +728,7 @@ describe('lib/main', function () {
 
       describe('No `--no-optionalDependencies`', () => {
         it('optionalDependencies is installed', () => {
-          return lambda._npmInstall(program, codeDirectory).then(() => {
+          return lambda._packageInstall(program, codeDirectory).then(() => {
             const contents = fs.readdirSync(path.join(codeDirectory, 'node_modules'))
             assert.include(contents, 'npm')
           })
@@ -665,7 +741,7 @@ describe('lib/main', function () {
             ...program,
             optionalDependencies: false
           }
-          return lambda._npmInstall(params, codeDirectory).then(() => {
+          return lambda._packageInstall(params, codeDirectory).then(() => {
             const contents = fs.readdirSync(path.join(codeDirectory, 'node_modules'))
             assert.notInclude(contents, 'npm')
           })
@@ -674,7 +750,7 @@ describe('lib/main', function () {
     })
   })
 
-  describe('_npmInstall (When codeDirectory contains characters to be escaped)', () => {
+  describe('_packageInstall using "npm" (When codeDirectory contains characters to be escaped)', () => {
     beforeEach(() => {
       // Since '\' can not be included in the file or directory name in Windows
       const directoryName = process.platform === 'win32'
@@ -694,7 +770,7 @@ describe('lib/main', function () {
     it('_npm adds node_modules', function () {
       _timeout({ this: this, sec: 30 }) // give it time to build the node modules
 
-      return lambda._npmInstall(program, codeDirectory).then(() => {
+      return lambda._packageInstall(program, codeDirectory).then(() => {
         const contents = fs.readdirSync(codeDirectory)
         assert.include(contents, 'node_modules')
       })
@@ -768,7 +844,7 @@ describe('lib/main', function () {
     })
   })
 
-  describe('_zip', () => {
+  describe('_zip using "npm"', () => {
     beforeEach(function () {
       _timeout({ this: this, sec: 30 }) // give it time to build the node modules
       return Promise.resolve().then(() => {
@@ -776,7 +852,7 @@ describe('lib/main', function () {
       }).then(() => {
         return lambda._fileCopy(program, '.', codeDirectory, true)
       }).then(() => {
-        return lambda._npmInstall(program, codeDirectory)
+        return lambda._packageInstall(program, codeDirectory)
       }).then(() => {
         if (process.platform !== 'win32') {
           fs.symlinkSync(
