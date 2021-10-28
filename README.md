@@ -151,7 +151,7 @@ Options:
   -D, --prebuiltDirectory []        Prebuilt directory
   -m, --keepNodeModules [false]     Keep the current node_modules and skip the npm install step
   -v, --dockerVolumes []            Additional docker volumes to mount. Each volume definition has to be separated by a space (e.g. "$HOME/.gitconfig:/etc/gitconfig $HOME/.ssh:/root/.ssh"
-  --no-optionalDependencies         Run `npm install` with `--no-optional
+  --no-optionalDependencies         Run `npm install` with `--no-optional`
   --packageManager [npm]            Package manager use to install dependencies
 ```
 
