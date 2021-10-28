@@ -11,6 +11,7 @@ const fs = require('fs')
 const packageJson = fs.existsSync(path.join(process.cwd(), 'package.json')) ? require(path.join(process.cwd(), 'package.json')) : {}
 const packageJsonName = packageJson.name || 'UnnamedFunction'
 
+const PACKAGE_MANAGER = process.env.PACKAGE_MANAGER || 'npm'
 const AWS_ENVIRONMENT = process.env.AWS_ENVIRONMENT || ''
 const AWS_ENDPOINT = process.env.AWS_ENDPOINT || ''
 const CONFIG_FILE = process.env.CONFIG_FILE || ''
@@ -66,6 +67,7 @@ program.showSuggestionAfterError()
 program
   .command('deploy')
   .description('Deploy your application to Amazon Lambda')
+  .option('--packageManager [PACKAGE_MANAGER]', 'Package manager', PACKAGE_MANAGER)
   .option('-e, --environment [AWS_ENVIRONMENT]', 'Choose environment {dev, staging, production}',
     AWS_ENVIRONMENT)
   .option('-E, --endpoint [AWS_ENDPOINT]', 'Choose endpoint (e.g. localstack, "http://127.0.0.1:4574")',
@@ -123,6 +125,7 @@ program
   .command('package')
   .alias('zip')
   .description('Create zipped package for Amazon Lambda deployment')
+  .option('--packageManager [PACKAGE_MANAGER]', 'Package manager', PACKAGE_MANAGER)
   .option('-A, --packageDirectory [PACKAGE_DIRECTORY]', 'Local Package Directory', PACKAGE_DIRECTORY)
   .option('-I, --dockerImage [DOCKER_IMAGE]', 'Docker image for npm ci', DOCKER_IMAGE)
   .option('-n, --functionName [AWS_FUNCTION_NAME]', 'Lambda FunctionName', AWS_FUNCTION_NAME)
