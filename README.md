@@ -138,7 +138,7 @@ Usage: node-lambda package|zip [options]
 Create zipped package for Amazon Lambda deployment
 
 Options:
-  --packageManager [PACKAGE_MANAGER]            Package manager used to install dependencies (default: "npm")
+  --packageManager [PACKAGE_MANAGER]            Package manager used to install dependencies (default: "npm", options: "npm", "yarn")
   -A, --packageDirectory [PACKAGE_DIRECTORY]    Local Package Directory
   -I, --dockerImage [DOCKER_IMAGE]              Docker image for npm ci (default: "")
   -n, --functionName [AWS_FUNCTION_NAME]        Lambda FunctionName (default: "node-lambda")
@@ -166,7 +166,7 @@ Usage: node-lambda deploy [options]
 Deploy your application to Amazon Lambda
 
 Options:
-  --packageManager [PACKAGE_MANAGER]                    Package manager used to install dependencies (default: "npm")
+  --packageManager [PACKAGE_MANAGER]                    Package manager used to install dependencies (default: "npm", options: "npm", "yarn")
   -e, --environment [AWS_ENVIRONMENT]                   Choose environment {dev, staging, production} (default: "")
   -E, --endpoint [AWS_ENDPOINT]                         Choose endpoint (e.g. localstack, "http://127.0.0.1:4574") (default: "")
   -a, --accessKey [AWS_ACCESS_KEY_ID]                   AWS Access Key
