@@ -64,6 +64,7 @@ $ echo -e ".env\ndeploy.env\nevent.json\n.lambda" >> .gitignore
 ##### Deploy env variables
 
 ```
+PACKAGE_MANAGER            // (default: 'npm')
 AWS_ENVIRONMENT            // (default: '')
 AWS_ENDPOINT               // (default: '')
 CONFIG_FILE                // (default: '')
@@ -109,23 +110,21 @@ Runs your Amazon Lambda index.js file locally. Passes `event.json` data to the A
 
 ```
 $ node-lambda run --help
-
-Usage: run|execute [options]
+Usage: node-lambda run|execute [options]
 
 Run your Amazon Lambda application locally
 
-
 Options:
-  -h, --help                            output usage information
-  -H, --handler [index.handler]         Lambda Handler {index.handler}
-  -j, --eventFile [event.json]          Event JSON File
-  -u, --runtime [nodejs14.x]            Lambda Runtime
-  -t, --timeout [3]                     Lambda Timeout
-  -f, --configFile []                   Path to file holding secret environment variables (e.g. "deploy.env")
-  -x, --contextFile [context.json]      Context JSON File
-  -M, --enableRunMultipleEvents [true]  Enable run multiple events
-  -y, --proxy []                        Proxy server
-  --apiGateway                          Convert to API Gateway events
+  -H, --handler [AWS_HANDLER]                                 Lambda Handler {index.handler} (default: "index.handler")
+  -j, --eventFile [EVENT_FILE]                                Event JSON File (default: "event.json")
+  -u, --runtime [AWS_RUNTIME]                                 Lambda Runtime (default: "nodejs14.x")
+  -t, --timeout [AWS_RUN_TIMEOUT]                             Lambda Timeout (default: 3)
+  -f, --configFile [CONFIG_FILE]                              Path to file holding secret environment variables (e.g. "deploy.env") (default: "")
+  -x, --contextFile [CONTEXT_FILE]                            Context JSON File (default: "context.json")
+  -M, --enableRunMultipleEvents [ENABLE_RUN_MULTIPLE_EVENTS]  Enable run multiple events (default: true)
+  -y, --proxy [PROXY]                                         Proxy server (default: "")
+  --apiGateway                                                Convert to API Gateway events (default: false)
+  -h, --help                                                  display help for command
 ```
 
 #### package
@@ -134,25 +133,26 @@ Bundles your application into a local zip file.
 
 ```
 $ node-lambda package --help
-
-Usage: package|zip [options]
+Usage: node-lambda package|zip [options]
 
 Create zipped package for Amazon Lambda deployment
 
-
 Options:
-  -h, --help                        output usage information
-  -A, --packageDirectory [build]    Local Package Directory
-  -I, --dockerImage []              Docker image for npm install
-  -n, --functionName [node-lambda]  Lambda FunctionName
-  -H, --handler [index.handler]     Lambda Handler {index.handler}
-  -e, --environment [development]   Choose environment {dev, staging, production}
-  -x, --excludeGlobs [event.json]   Space-separated glob pattern(s) for additional exclude files (e.g. "event.json dotenv.sample")
-  -D, --prebuiltDirectory []        Prebuilt directory
-  -m, --keepNodeModules [false]     Keep the current node_modules and skip the npm install step
-  -v, --dockerVolumes []            Additional docker volumes to mount. Each volume definition has to be separated by a space (e.g. "$HOME/.gitconfig:/etc/gitconfig $HOME/.ssh:/root/.ssh"
-  --no-optionalDependencies         Run `npm install` with `--no-optional`
-  --packageManager [npm]            Package manager use to install dependencies. (options: npm, yarn)
+  --packageManager [PACKAGE_MANAGER]            Package manager used to install dependencies (default: "npm", options: "npm", "yarn")
+  -A, --packageDirectory [PACKAGE_DIRECTORY]    Local Package Directory
+  -I, --dockerImage [DOCKER_IMAGE]              Docker image for npm ci (default: "")
+  -n, --functionName [AWS_FUNCTION_NAME]        Lambda FunctionName (default: "node-lambda")
+  -H, --handler [AWS_HANDLER]                   Lambda Handler {index.handler} (default: "index.handler")
+  -e, --environment [AWS_ENVIRONMENT]           Choose environment {dev, staging, production} (default: "")
+  -x, --excludeGlobs [EXCLUDE_GLOBS]            Space-separated glob pattern(s) for additional exclude files (e.g.
+                                                "event.json dotenv.sample") (default: "")
+  -D, --prebuiltDirectory [PREBUILT_DIRECTORY]  Prebuilt directory (default: "")
+  -m, --keepNodeModules [KEEP_NODE_MODULES]     Keep the current node_modules directory. (default: false)
+  -v, --dockerVolumes [DOCKER_VOLUMES]          Additional docker volumes to mount. Each volume definition has to be
+                                                separated by a space (e.g. "$HOME/.gitconfig:/etc/gitconfig
+                                                $HOME/.ssh:/root/.ssh") (default: "")
+  --no-optionalDependencies                     Run `npm install` with `--no-optional`
+  -h, --help                                    display help for command
 ```
 
 #### deploy
@@ -161,52 +161,50 @@ Bundles and deploys your application up to Amazon Lambda.
 
 ```
 $ node-lambda deploy --help
-
-Usage: deploy [options]
+Usage: node-lambda deploy [options]
 
 Deploy your application to Amazon Lambda
 
-
 Options:
-  -h, --help                          output usage information
-  -e, --environment [development]     Choose environment {dev, staging, production}
-  -E, --endpoint [AWS_ENDPOINT]       Choose endpoint (e.g. localstack, "http://127.0.0.1:4574") (default: "")
-  -a, --accessKey [your_key]          AWS Access Key
-  -s, --secretKey [your_secret]       AWS Secret Key
-  -P, --profile []                    AWS Profile
-  -k, --sessionToken []               AWS Session Token
-  -r, --region [us-east-1]            AWS Region
-  -n, --functionName [node-lambda]    Lambda FunctionName
-  -H, --handler [index.handler]       Lambda Handler {index.handler}
-  -o, --role [your_amazon_role]       Amazon Role ARN
-  -m, --memorySize [128]              Lambda Memory Size
-  -t, --timeout [3]                   Lambda Timeout
-  -d, --description [missing]         Lambda Description
-  -u, --runtime [nodejs14.x]          Lambda Runtime
-  -p, --publish [false]               Lambda Publish
-  -L, --lambdaVersion []              Lambda Function Version
-  -b, --vpcSubnets []                 Lambda Function VPC Subnet IDs (comma delimited)
-  -g, --vpcSecurityGroups []          Lambda VPC Security Group IDs (comma delimited)
-  -K, --kmsKeyArn []                  Lambda KMS Key ARN
-  -Q, --deadLetterConfigTargetArn []  Lambda DLQ resource
-  -c, --tracingConfig []              Lambda tracing settings
-  -l, --layers []                     Lambda Layers settings (e.g. "ARN1,ARN2[,..])" (default: "")
-  -R, --retentionInDays []            CloudWatchLogs retentionInDays settings
-  -G, --sourceDirectory []            Path to lambda source Directory (e.g. "./some-lambda")
-  -I, --dockerImage []                Docker image for npm install
-  -f, --configFile []                 Path to file holding secret environment variables (e.g. "deploy.env")
-  -S, --eventSourceFile []            Path to file holding event source mapping variables (e.g. "event_sources.json")
-  -x, --excludeGlobs [event.json]     Space-separated glob pattern(s) for additional exclude files (e.g. "event.json dotenv.sample")
-  -D, --prebuiltDirectory []          Prebuilt directory
-  -T, --deployTimeout [120000]        Deploy Timeout
-  -z, --deployZipfile []              Deploy zipfile
-  -B, --deployUseS3 []                Use S3 to deploy.
-  -i, --imageUri []                   URI of a container image in the Amazon ECR registry. (default: "")
-  -y, --proxy []                      Proxy server
-  -A, --tags []                       Tags as key value pairs (e.g. "tagname1=tagvalue1,tagname2=tagvalue2") (default: "")
-  --silent                            Silent  or  quiet mode (default: false)
-  --no-optionalDependencies           Run `npm install` with `--no-optional`
-  --packageManager [npm]              Package manager use to install dependencies. (options: npm, yarn)
+  --packageManager [PACKAGE_MANAGER]                    Package manager used to install dependencies (default: "npm", options: "npm", "yarn")
+  -e, --environment [AWS_ENVIRONMENT]                   Choose environment {dev, staging, production} (default: "")
+  -E, --endpoint [AWS_ENDPOINT]                         Choose endpoint (e.g. localstack, "http://127.0.0.1:4574") (default: "")
+  -a, --accessKey [AWS_ACCESS_KEY_ID]                   AWS Access Key
+  -s, --secretKey [AWS_SECRET_ACCESS_KEY]               AWS Secret Key
+  -P, --profile [AWS_PROFILE]                           AWS Profile (default: "")
+  -k, --sessionToken [AWS_SESSION_TOKEN]                AWS Session Token (default: "")
+  -r, --region [AWS_REGION]                             AWS Region (default: "us-east-1,us-west-2,eu-west-1")
+  -n, --functionName [AWS_FUNCTION_NAME]                Lambda FunctionName (default: "node-lambda")
+  -H, --handler [AWS_HANDLER]                           Lambda Handler {index.handler} (default: "index.handler")
+  -o, --role [AWS_ROLE]                                 Amazon Role ARN (default: "missing")
+  -m, --memorySize [AWS_MEMORY_SIZE]                    Lambda Memory Size (default: 128)
+  -t, --timeout [AWS_TIMEOUT]                           Lambda Timeout (default: 60)
+  -d, --description [AWS_DESCRIPTION]                   Lambda Description (default: "Command line tool for locally running and remotely deploying your node.js applications to Amazon Lambda.")
+  -u, --runtime [AWS_RUNTIME]                           Lambda Runtime (default: "nodejs14.x")
+  -p, --publish [AWS_PUBLISH]                           Lambda Publish (default: false)
+  -L, --lambdaVersion [AWS_FUNCTION_VERSION]            Lambda Function Version (default: "")
+  -b, --vpcSubnets [AWS_VPC_SUBNETS]                    Lambda Function VPC Subnet IDs (comma delimited) (default: "")
+  -g, --vpcSecurityGroups [AWS_VPC_SECURITY_GROUPS]     Lambda VPC Security Group IDs (comma delimited) (default: "")
+  -K, --kmsKeyArn [AWS_KMS_KEY_ARN]                     Lambda KMS Key ARN (default: "")
+  -Q, --deadLetterConfigTargetArn [AWS_DLQ_TARGET_ARN]  Lambda DLQ resource
+  -c, --tracingConfig [AWS_TRACING_CONFIG]              Lambda tracing settings (default: "")
+  -l, --layers [AWS_LAYERS]                             Lambda Layers settings (e.g. "ARN1,ARN2[,..])" (default: "")
+  -R, --retentionInDays [AWS_LOGS_RETENTION_IN_DAYS]    CloudWatchLogs retentionInDays settings (default: "")
+  -G, --sourceDirectory [SRC_DIRECTORY]                 Path to lambda source Directory (e.g. "./some-lambda") (default: "")
+  -I, --dockerImage [DOCKER_IMAGE]                      Docker image for npm ci (default: "")
+  -f, --configFile [CONFIG_FILE]                        Path to file holding secret environment variables (e.g. "deploy.env") (default: "")
+  -S, --eventSourceFile [EVENT_SOURCE_FILE]             Path to file holding event source mapping variables (e.g. "event_sources.json") (default: "")
+  -x, --excludeGlobs [EXCLUDE_GLOBS]                    Space-separated glob pattern(s) for additional exclude files (e.g. "event.json dotenv.sample") (default: "")
+  -D, --prebuiltDirectory [PREBUILT_DIRECTORY]          Prebuilt directory (default: "")
+  -T, --deployTimeout [DEPLOY_TIMEOUT]                  Deploy Timeout (default: 120000)
+  -z, --deployZipfile [DEPLOY_ZIPFILE]                  Deploy zipfile (default: "")
+  -B, --deployUseS3 [DEPLOY_USE_S3]                     Use S3 to deploy. (default: false)
+  -i, --imageUri [IMAGE_URI]                            URI of a container image in the Amazon ECR registry. (default: "")
+  -y, --proxy [PROXY]                                   Proxy server (default: "")
+  -A, --tags [AWS_TAGS]                                 Tags as key value pairs (e.g. "tagname1=tagvalue1,tagname2=tagvalue2)" (default: "")
+  --silent                                              Silent  or  quiet mode (default: false)
+  --no-optionalDependencies                             Run `npm install` with `--no-optional`
+  -h, --help                                            display help for command
 ```
 
 If you are deploying to a custom endpoint you may also need to pass in an access key/secret. For localstack these can be anything, but cannot be blank:
