@@ -440,3 +440,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - fix(_uploadExisting): fix function update errors [#575](https://github.com/motdotla/node-lambda/pull/575)
 - test: fix npm install test failing in some cases [#569](https://github.com/motdotla/node-lambda/pull/569)
 - Clean the tmp dir during `_archivePrebuilt` to match `_buildAndArchive` behavior [#518](https://github.com/motdotla/node-lambda/pull/518)
+
+## [0.21.0] - 2021-11-10
+### Features
+- feat: support for yarn [#581](https://github.com/motdotla/node-lambda/pull/581)
