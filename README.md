@@ -221,6 +221,31 @@ AWS Lambda will let you set environment variables for your function. Use the sam
 
 AWS Lambda now supports Node.js14 and Node.js 12. Please also check the [Lambda runtimes](https://docs.aws.amazon.com/lambda/latest/dg/lambda-runtimes.html) page.
 
+## Use S3 to deploy
+
+Use the command line argument `--deployUseS3` or `-B`.  (This option is true/false.)
+Example: `% node-lambda deploy -B`
+
+You can also set the environment variable `DEPLOY_USE_S3`.
+Example: `DEPLOY_USE_S3=true`
+
+Use the environment variable to set the bucket name or S3 key prefix.
+The environment variable name is different for each region. Please set it to the environment variable you want to deploy.
+It can be set in `.env`.
+
+Example:
+
+```sh
+# S3_<region>_BUCKET
+S3_US_WEST_1_BUCKET=test_aaa
+
+# S3_<region>_PREFIX
+S3_US_WEST_1_PREFIX=bbb
+```
+
+In this case, the S3 key:
+`test_aaa/bbb/deploy-package-${FunctionName}.zip`
+
 ## To deploy a container image to Lambda
 
 1. [Pushing a Docker image to ECR](https://docs.aws.amazon.com/AmazonECR/latest/userguide/docker-push-ecr-image.html)
