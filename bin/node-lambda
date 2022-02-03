@@ -3,6 +3,7 @@
 'use strict'
 
 require('dotenv').config()
+const process = require('process')
 const path = require('path')
 
 const lambda = require(path.join(__dirname, '..', 'lib', 'main.js'))
