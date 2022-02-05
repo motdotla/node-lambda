@@ -28,6 +28,7 @@ const AWS_ROLE = process.env.AWS_ROLE_ARN || process.env.AWS_ROLE || 'missing'
 const AWS_MEMORY_SIZE = process.env.AWS_MEMORY_SIZE || 128
 const AWS_TIMEOUT = process.env.AWS_TIMEOUT || 60
 const AWS_RUN_TIMEOUT = process.env.AWS_RUN_TIMEOUT || 3
+const AWS_ARCHITECTURE = process.env.AWS_ARCHITECTURE || 'x86_64'
 const AWS_DESCRIPTION = process.env.AWS_DESCRIPTION || packageJson.description || ''
 const AWS_RUNTIME = process.env.AWS_RUNTIME || 'nodejs14.x'
 const AWS_PUBLISH = process.env.AWS_PUBLISH || false
@@ -82,6 +83,7 @@ program
   .option('-o, --role [AWS_ROLE]', 'Amazon Role ARN', AWS_ROLE)
   .option('-m, --memorySize [AWS_MEMORY_SIZE]', 'Lambda Memory Size', AWS_MEMORY_SIZE)
   .option('-t, --timeout [AWS_TIMEOUT]', 'Lambda Timeout', AWS_TIMEOUT)
+  .option('--architecture [AWS_ARCHITECTURE]', 'The instruction set architecture that the function supports. (x86_64|arm64)', AWS_ARCHITECTURE)
   .option('-d, --description [AWS_DESCRIPTION]', 'Lambda Description', AWS_DESCRIPTION)
   .option('-u, --runtime [AWS_RUNTIME]', 'Lambda Runtime', AWS_RUNTIME)
   .option('-p, --publish [AWS_PUBLISH]', 'Lambda Publish', AWS_PUBLISH)
