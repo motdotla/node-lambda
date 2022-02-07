@@ -133,8 +133,8 @@ const _awsRestore = () => {
 describe('lib/main', function () {
   if (['win32', 'darwin'].includes(process.platform)) {
     // It seems that it takes time for file operation in Windows and Mac.
-    // So set `timeout(60000)` for the whole test.
-    this.timeout(60000)
+    // So set `timeout(120000)` for the whole test.
+    this.timeout(120000)
   }
 
   let aws = null // mock
