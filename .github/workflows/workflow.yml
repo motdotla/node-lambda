@@ -3,19 +3,37 @@ name: Node CI
 on: [push, pull_request]
 
 jobs:
-  test:
-    name: Test on node ${{ matrix.node-version }} and ${{ matrix.os }}
-    runs-on: ${{ matrix.os }}
+  ubuntu-test:
+    name: Test on node ${{ matrix.node-version }} and Ubuntu
+    runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
         node-version: [12.x, 14.x, 16.x, 17.x]
-        os: [ubuntu-latest, windows-latest, macos-latest]
     steps:
     - uses: actions/checkout@v2
     - uses: actions/setup-node@v2
       with:
         node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+    - run: npm i -g npm
+    - run: node -v
+    - run: npm -v
+    - run: npm ci
+    - run: npm test
+
+  mac-and-windows-test:
+    name: Test on node latest and ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest, macos-latest]
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-node@v2
+      with:
+        node-version: 16.x
         cache: 'npm'
     - run: npm i -g npm
     - run: node -v
