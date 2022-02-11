@@ -1,6 +1,7 @@
 'use strict'
 
 const { assert } = require('chai')
+const process = require('process')
 const path = require('path')
 const aws = require('aws-sdk-mock')
 aws.setSDK(path.resolve('node_modules/aws-sdk'))
