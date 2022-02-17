@@ -444,3 +444,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [0.21.0] - 2021-11-10
 ### Features
 - feat: support for yarn [#581](https://github.com/motdotla/node-lambda/pull/581)
+
+## [0.22.0] - 2022-02-17
+### Features
+- Support for Architectures parameter [#591](https://github.com/motdotla/node-lambda/pull/591)
+### Bugfixes
+- fix: skip installing the package, when there is no `package.json` [#589](https://github.com/motdotla/node-lambda/pull/589)
