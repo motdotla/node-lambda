@@ -60,7 +60,7 @@ describe('lib/s3_events', () => {
   describe('_statementId', () => {
     it('StatementId that matches /[a-zA-Z0-9-_]+/.', () => {
       [{
-        params: params,
+        params,
         expected: 'node-lambda-test-bucket'
       }, {
         params: { Bucket: 'example.com' },
