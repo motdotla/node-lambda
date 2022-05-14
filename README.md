@@ -83,7 +83,7 @@ AWS_TIMEOUT                // (default: 60)
 AWS_RUN_TIMEOUT            // (default: 3)
 AWS_ARCHITECTURE           // (default: 'x86_64')
 AWS_DESCRIPTION            // (default: package.json.description or '')
-AWS_RUNTIME                // (default: 'nodejs14.x')
+AWS_RUNTIME                // (default: 'nodejs16.x')
 AWS_PUBLISH                // (default: false)
 AWS_FUNCTION_VERSION       // (default: '')
 AWS_VPC_SUBNETS            // (default: '')
@@ -118,7 +118,7 @@ Run your Amazon Lambda application locally
 Options:
   -H, --handler [AWS_HANDLER]                                 Lambda Handler {index.handler} (default: "index.handler")
   -j, --eventFile [EVENT_FILE]                                Event JSON File (default: "event.json")
-  -u, --runtime [AWS_RUNTIME]                                 Lambda Runtime (default: "nodejs14.x")
+  -u, --runtime [AWS_RUNTIME]                                 Lambda Runtime (default: "nodejs16.x")
   -t, --timeout [AWS_RUN_TIMEOUT]                             Lambda Timeout (default: 3)
   -f, --configFile [CONFIG_FILE]                              Path to file holding secret environment variables (e.g. "deploy.env") (default: "")
   -x, --contextFile [CONTEXT_FILE]                            Context JSON File (default: "context.json")
@@ -182,7 +182,7 @@ Options:
   -t, --timeout [AWS_TIMEOUT]                           Lambda Timeout (default: 60)
   --architecture [AWS_ARCHITECTURE]                     The instruction set architecture that the function supports.  (x86_64|arm64) (default: "x86_64")
   -d, --description [AWS_DESCRIPTION]                   Lambda Description (default: "Command line tool for locally running and remotely deploying your node.js applications to Amazon Lambda.")
-  -u, --runtime [AWS_RUNTIME]                           Lambda Runtime (default: "nodejs14.x")
+  -u, --runtime [AWS_RUNTIME]                           Lambda Runtime (default: "nodejs16.x")
   -p, --publish [AWS_PUBLISH]                           Lambda Publish (default: false)
   -L, --lambdaVersion [AWS_FUNCTION_VERSION]            Lambda Function Version (default: "")
   -b, --vpcSubnets [AWS_VPC_SUBNETS]                    Lambda Function VPC Subnet IDs (comma delimited) (default: "")
@@ -221,7 +221,7 @@ AWS Lambda will let you set environment variables for your function. Use the sam
 
 ## Node.js Runtime Configuration
 
-AWS Lambda now supports Node.js14 and Node.js 12. Please also check the [Lambda runtimes](https://docs.aws.amazon.com/lambda/latest/dg/lambda-runtimes.html) page.
+AWS Lambda now supports Node.js 16, Node.js 14 and Node.js 12. Please also check the [Lambda runtimes](https://docs.aws.amazon.com/lambda/latest/dg/lambda-runtimes.html) page.
 
 ## Use S3 to deploy
 

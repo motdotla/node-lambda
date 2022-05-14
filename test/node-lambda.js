@@ -157,7 +157,7 @@ describe('bin/node-lambda', () => {
         process.env.AWS_RUNTIME = 'test'
       })
       after(() => {
-        process.env.AWS_RUNTIME = 'nodejs14.x'
+        process.env.AWS_RUNTIME = 'nodejs16.x'
       })
 
       it('`node-lambda run` exitCode is `254` (callback(null))', (done) => {
