@@ -36,7 +36,7 @@
   },
   "dependencies": {
     "archiver": "^5.3.0",
-    "aws-sdk": "^2.1074.0",
+    "aws-sdk": "^2.1135.0",
     "aws-xray-sdk-core": "^3.3.4",
     "commander": "^9.0.0",
     "continuation-local-storage": "^3.2.1",
