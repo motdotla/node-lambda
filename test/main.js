@@ -459,7 +459,6 @@ describe('lib/main', function () {
 
   describe('_fileCopy', () => {
     before(() => {
-      fs.mkdirSync('build')
       fs.mkdirsSync(path.join('__unittest', 'hoge'))
       fs.mkdirsSync(path.join('__unittest', 'fuga'))
       fs.writeFileSync(path.join('__unittest', 'hoge', 'piyo'), '')
@@ -467,7 +466,7 @@ describe('lib/main', function () {
       fs.writeFileSync('fuga', '')
     })
     after(() => {
-      ['build', 'fuga', '__unittest'].forEach((path) => {
+      ['fuga', '__unittest'].forEach((path) => {
         fs.removeSync(path)
       })
     })
