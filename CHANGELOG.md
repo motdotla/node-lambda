@@ -450,3 +450,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Support for Architectures parameter [#591](https://github.com/motdotla/node-lambda/pull/591)
 ### Bugfixes
 - fix: skip installing the package, when there is no `package.json` [#589](https://github.com/motdotla/node-lambda/pull/589)
+
+## [1.0.0] - 2022-05-19
+### Features
+- feat: remove BUILD from the exclusion list [#607](https://github.com/motdotla/node-lambda/pull/607)
+    - BREAKING CHANGES
+- add nodejs16.x to runtime [#605](https://github.com/motdotla/node-lambda/pull/605)
