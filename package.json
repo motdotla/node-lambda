@@ -43,7 +43,7 @@
     "dotenv": "^16.0.0",
     "fs-extra": "^10.0.0",
     "klaw": "^4.0.1",
-    "minimatch": "^5.0.0",
+    "minimatch": "^5.1.0",
     "proxy-agent": "^5.0.0"
   },
   "devDependencies": {

@@ -1655,10 +1655,10 @@
   dependencies:
     "brace-expansion" "^1.1.7"
 
-"minimatch@^5.0.0":
-  "integrity" "sha512-EU+GCVjXD00yOUf1TwAHVP7v3fBD3A8RkkPYsWWKGWesxM/572sL53wJQnHxquHlRhYUV36wHkqrN8cdikKc2g=="
-  "resolved" "https://registry.npmjs.org/minimatch/-/minimatch-5.0.0.tgz"
-  "version" "5.0.0"
+"minimatch@^5.1.0":
+  "integrity" "sha512-9TPBGGak4nHfGZsPBohm9AWg6NoT7QTCehS3BIJABslyZbzxfV78QM2Y6+i741OPZIafFAaiiEMh5OyIrJPgtg=="
+  "resolved" "https://registry.npmjs.org/minimatch/-/minimatch-5.1.0.tgz"
+  "version" "5.1.0"
   dependencies:
     "brace-expansion" "^2.0.1"
 
