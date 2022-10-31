@@ -456,3 +456,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - feat: remove BUILD from the exclusion list [#607](https://github.com/motdotla/node-lambda/pull/607)
     - BREAKING CHANGES
 - add nodejs16.x to runtime [#605](https://github.com/motdotla/node-lambda/pull/605)
+
+## [1.1.0] - 2022-10-26
+### Features
+- feat: support esm [#613](https://github.com/motdotla/node-lambda/pull/613)
+
+### Bugfixes
+- fix the bug in `excludeGlobs` in `_fileCopy` [#609](https://github.com/motdotla/node-lambda/pull/609)
