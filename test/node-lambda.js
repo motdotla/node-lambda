@@ -171,6 +171,27 @@ describe('bin/node-lambda', () => {
       })
     })
 
+    describe('node-lambda run (Runtime nodejs18.x is supported)', () => {
+      const eventObj = {
+        asyncTest: false,
+        callbackWaitsForEmptyEventLoop: true // True is the default value of Lambda
+      }
+
+      before(() => {
+        process.env.AWS_RUNTIME = 'nodejs18.x'
+      })
+      after(() => {
+        process.env.AWS_RUNTIME = 'nodejs16.x'
+      })
+
+      it('`node-lambda run` exitCode is not `254` (callback(null))', (done) => {
+        _generateEventFile(Object.assign(eventObj, {
+          callbackCode: 'callback(null);'
+        }))
+        _testMain({ stdoutRegExp: /Success:$/, exitCode: 0 }, done)
+      })
+    })
+
     describe('node-lambda run (Multiple events))', () => {
       const eventObj = [{
         asyncTest: false,
