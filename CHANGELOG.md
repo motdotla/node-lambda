@@ -463,3 +463,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Bugfixes
 - fix the bug in `excludeGlobs` in `_fileCopy` [#609](https://github.com/motdotla/node-lambda/pull/609)
+
+## [1.2.0] - 2022-12-21
+### Features
+- Add support for nodejs18x [#616](https://github.com/motdotla/node-lambda/pull/616)
