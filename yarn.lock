@@ -2236,8 +2236,8 @@ uuid@8.0.0:
   resolved "https://registry.npmjs.org/uuid/-/uuid-8.0.0.tgz"
 
 vm2@^3.9.3:
-  version "3.9.16"
-  resolved "https://registry.yarnpkg.com/vm2/-/vm2-3.9.16.tgz#0fbc2a265f7bf8b837cea6f4a908f88a3f93b8e6"
+  version "3.9.17"
+  resolved "https://registry.yarnpkg.com/vm2/-/vm2-3.9.17.tgz#251b165ff8a0e034942b5181057305e39570aeab"
   dependencies:
     acorn "^8.7.0"
     acorn-walk "^8.2.0"
