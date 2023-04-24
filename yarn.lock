@@ -266,15 +266,15 @@ aws-sdk@^2.1231.0, aws-sdk@^2.1238.0:
     xml2js "0.5.0"
 
 aws-xray-sdk-core@^3.3.8:
-  version "3.3.8"
-  resolved "https://registry.npmjs.org/aws-xray-sdk-core/-/aws-xray-sdk-core-3.3.8.tgz"
+  version "3.5.0"
+  resolved "https://registry.yarnpkg.com/aws-xray-sdk-core/-/aws-xray-sdk-core-3.5.0.tgz#72ec1f5215477b5e04a745cb638a6e0f8c91a707"
   dependencies:
     "@aws-sdk/service-error-classification" "^3.4.1"
     "@aws-sdk/types" "^3.4.1"
     "@types/cls-hooked" "^4.3.3"
     atomic-batcher "^1.0.2"
     cls-hooked "^4.2.2"
-    semver "^5.3.0"
+    semver "^7.3.8"
 
 balanced-match@^1.0.0:
   version "1.0.2"
@@ -1933,9 +1933,9 @@ semver@^6.3.0:
   version "6.3.0"
   resolved "https://registry.npmjs.org/semver/-/semver-6.3.0.tgz"
 
-semver@^7.0.0, semver@^7.3.7:
-  version "7.3.8"
-  resolved "https://registry.npmjs.org/semver/-/semver-7.3.8.tgz"
+semver@^7.0.0, semver@^7.3.7, semver@^7.3.8:
+  version "7.5.0"
+  resolved "https://registry.yarnpkg.com/semver/-/semver-7.5.0.tgz#ed8c5dc8efb6c629c88b23d41dc9bf40c1d96cd0"
   dependencies:
     lru-cache "^6.0.0"
 
