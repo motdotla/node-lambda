@@ -1351,8 +1351,8 @@ just-extend@^4.0.2:
   resolved "https://registry.npmjs.org/just-extend/-/just-extend-4.2.1.tgz"
 
 klaw@^4.0.1:
-  version "4.0.1"
-  resolved "https://registry.npmjs.org/klaw/-/klaw-4.0.1.tgz"
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/klaw/-/klaw-4.1.0.tgz#5df608067d8cb62bbfb24374f8e5d956323338f3"
 
 lazystream@^1.0.0:
   version "1.0.1"
