@@ -38,7 +38,7 @@
     "archiver": "^5.3.1",
     "aws-sdk": "^2.1238.0",
     "aws-xray-sdk-core": "^3.3.8",
-    "commander": "^9.4.1",
+    "commander": "^10.0.1",
     "continuation-local-storage": "^3.2.1",
     "dotenv": "^16.0.3",
     "fs-extra": "^10.1.0",
