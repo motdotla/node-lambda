@@ -251,8 +251,8 @@ aws-sdk-mock@^5.8.0:
     traverse "^0.6.6"
 
 aws-sdk@^2.1231.0, aws-sdk@^2.1238.0:
-  version "2.1363.0"
-  resolved "https://registry.yarnpkg.com/aws-sdk/-/aws-sdk-2.1363.0.tgz#30c3b7fe999ee2ba1103a533ea27e1b0f5708e1f"
+  version "2.1368.0"
+  resolved "https://registry.yarnpkg.com/aws-sdk/-/aws-sdk-2.1368.0.tgz#8c7a4c899f3a983bfee25e485545c657ce53aad3"
   dependencies:
     buffer "4.9.2"
     events "1.1.1"
