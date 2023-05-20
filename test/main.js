@@ -22,7 +22,7 @@ const originalProgram = {
   memorySize: 128,
   timeout: 3,
   description: '',
-  runtime: 'nodejs16.x',
+  runtime: 'nodejs18.x',
   deadLetterConfigTargetArn: '',
   tracingConfig: '',
   Layers: '',
