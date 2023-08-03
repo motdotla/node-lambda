@@ -9,7 +9,7 @@
   "scripts": {
     "lint": "standard && standard bin/node-lambda",
     "test": "npm run lint && npm run unit",
-    "unit": "mocha"
+    "unit": "NODE_OPTIONS=--max-old-space-size=8192 mocha"
   },
   "bin": {
     "node-lambda": "./bin/node-lambda"
