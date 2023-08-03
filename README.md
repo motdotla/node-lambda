@@ -299,11 +299,6 @@ When setting ScheduleState to `ENABLED` or `DISABLED` for ScheduleEvents, it is 
 ###### Duplicate ScheduleEvent Triggers
 If you are adding a trigger via the `eventSourceFile` for the first time, remove preexisting triggers from the Lambda console before deploying. Deploying a Lambda with the `--eventSourceFile` flag will *NOT* overwrite the same triggers created from the AWS console and may result in a duplicate triggers for the same rule.
 
-## Other AWS Lambda Tools Projects
-
-+ [lambdaws](https://github.com/mentum/lambdaws)
-+ [lambdaws-instant-api](https://github.com/mentum/lambdaws-instant-api)
-
 ## Contributing
 
 1. Fork it
