@@ -820,12 +820,10 @@ describe('lib/main', function () {
     })
 
     describe('Use yarn', () => {
-      it('should use "yarn install"', (done) => {
+      it('should use "yarn install"', () => {
         this.timeout(300000)
 
         testCleanAndInstall('yarn')
-
-        done()
       })
 
       describe('optionalDependencies', () => {
