@@ -13,6 +13,14 @@ $ node-lambda run
 
 ## Installation
 
+With `npx`:
+
+```
+$ npx node-lambda@latest [COMMAND]
+```
+
+Globally installed:
+
 ```
 $ npm install -g node-lambda
 ```
@@ -28,10 +36,10 @@ Example apps make it easy to get up and running
 There are 4 available commands.
 
 ```
-$ node-lambda setup
-$ node-lambda run
-$ node-lambda package
-$ node-lambda deploy
+$ npx node-lambda@latest setup
+$ npx node-lambda@latest run
+$ npx node-lambda@latest package
+$ npx node-lambda@latest deploy
 ```
 
 ### Commands
@@ -41,7 +49,7 @@ $ node-lambda deploy
 Initializes the `event.json`, `context.json`, `.env`, `deploy.env` files, and `event_sources.json` files. `event.json` is where you mock your event. `context.json` is where you can add additional mock data to the context passed to your lambda function. `.env` is where you place your deployment configuration. `deploy.env` has the same format as `.env`, but is used for holding any environment/config variables that you need to be deployed with your code to Lambda but you don't want in version control (e.g. DB connection info). `event_sources.json` is used to set the event source of the Lambda function (Not all event sources available in Lambda are supported).
 
 ```
-$ node-lambda setup --help
+$ npx node-lambda@latest setup --help
 
 Usage: setup [options]
 
@@ -109,7 +117,7 @@ AWS_TAGS                   // (default: '')
 Runs your Amazon Lambda index.js file locally. Passes `event.json` data to the Amazon Lambda event object.
 
 ```
-$ node-lambda run --help
+$ npx node-lambda@latest run --help
 Usage: node-lambda run|execute [options]
 
 Run your Amazon Lambda application locally
@@ -132,7 +140,7 @@ Options:
 Bundles your application into a local zip file.
 
 ```
-$ node-lambda package --help
+$ npx node-lambda@latest package --help
 Usage: node-lambda package|zip [options]
 
 Create zipped package for Amazon Lambda deployment
@@ -160,7 +168,7 @@ Options:
 Bundles and deploys your application up to Amazon Lambda.
 
 ```
-$ node-lambda deploy --help
+$ npx node-lambda@latest deploy --help
 Usage: node-lambda deploy [options]
 
 Deploy your application to Amazon Lambda
@@ -211,7 +219,7 @@ Options:
 If you are deploying to a custom endpoint you may also need to pass in an access key/secret. For localstack these can be anything, but cannot be blank:
 
 ```
-node-lambda deploy --endpoint http://localhost:4574 --accessKey '1234' --secretKey '1234'
+npx node-lambda@latest deploy --endpoint http://localhost:4574 --accessKey '1234' --secretKey '1234'
 ```
 
 ## Custom Environment Variables
@@ -225,7 +233,7 @@ AWS Lambda now supports Node.js 18, Node.js 16 and Node.js 14. Please also check
 ## Use S3 to deploy
 
 Use the command line argument `--deployUseS3` or `-B`.  (This option is true/false.)
-Example: `% node-lambda deploy -B`
+Example: `% npx node-lambda@latest deploy -B`
 
 You can also set the environment variable `DEPLOY_USE_S3`.
 Example: `DEPLOY_USE_S3=true`
