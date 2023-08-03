@@ -1,3 +1,5 @@
+If you found this useful, consider also checking out [dotenv-vault](https://github.com/dotenv-org/dotenv-vault). Thank you! 😇
+
 # node-lambda
 
 ![node-lambda](../master/node-lambda.png?raw=true)
