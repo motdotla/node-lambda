@@ -820,9 +820,9 @@ describe('lib/main', function () {
     })
 
     describe('Use yarn', () => {
-      it('should use "yarn install"', () => {
-        this.timeout(300000)
+      _timeout({ this: this, sec: 30 }) // give it time to build the node modules
 
+      it('should use "yarn install"', () => {
         testCleanAndInstall('yarn')
       })
 
