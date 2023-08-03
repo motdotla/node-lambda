@@ -38,3 +38,4 @@ deploy.env
 event_sources.json
 npm-debug.log*
 .lambda
+.build*
