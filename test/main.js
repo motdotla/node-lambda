@@ -4,6 +4,7 @@ const process = require('process')
 const path = require('path')
 const os = require('os')
 const fs = require('fs-extra')
+const { execFileSync } = require('child_process')
 const lambda = require(path.join(__dirname, '..', 'lib', 'main'))
 const Zip = require('node-zip')
 const { assert } = require('chai')
@@ -707,12 +708,20 @@ describe('lib/main', function () {
   describe('_packageInstall', function () {
     _timeout({ this: this, sec: 60 }) // ci should be faster than install
 
+    before(() => {
+      if (process.platform === 'win32') {
+        execFileSync('cmd.exe', ['/c', 'npm', 'ci'], { cwd: path.join('.', 'test', 'testPj') })
+        return
+      }
+      execFileSync('npm', ['ci'], { cwd: path.join('.', 'test', 'testPj') })
+    })
+
     // npm treats files as packages when installing, and so removes them.
     // Test with `devDependencies` packages that are not installed with the `--production` option.
-    const nodeModulesMocha = path.join(codeDirectory, 'node_modules', 'mocha')
+    const nodeModulesMocha = path.join(codeDirectory, 'node_modules', 'chai')
 
     const testCleanAndInstall = async (packageManager) => {
-      const beforeAwsSdkStat = fs.statSync(path.join(codeDirectory, 'node_modules', 'aws-sdk'))
+      const beforeDotenvStat = fs.statSync(path.join(codeDirectory, 'node_modules', 'dotenv'))
 
       const usedPackageManager = await lambda._packageInstall(
         {
@@ -727,9 +736,9 @@ describe('lib/main', function () {
       assert.include(contents, 'dotenv')
 
       // To remove and then install.
-      // beforeAwsSdkStat.ctimeMs < afterAwsSdkStat.ctimeMs
-      const afterAwsSdkStat = fs.statSync(path.join(codeDirectory, 'node_modules', 'aws-sdk'))
-      assert.isBelow(beforeAwsSdkStat.ctimeMs, afterAwsSdkStat.ctimeMs)
+      // beforeDotenvStat.ctimeMs < afterDotenvStat.ctimeMs
+      const afterDotenvStat = fs.statSync(path.join(codeDirectory, 'node_modules', 'dotenv'))
+      assert.isBelow(beforeDotenvStat.ctimeMs, afterDotenvStat.ctimeMs)
 
       // Not installed with the `--production` option.
       assert.isFalse(fs.existsSync(nodeModulesMocha))
@@ -774,7 +783,7 @@ describe('lib/main', function () {
 
     beforeEach(async () => {
       await lambda._cleanDirectory(codeDirectory)
-      await lambda._fileCopy(program, '.', codeDirectory, false)
+      await lambda._fileCopy(program, path.join('.', 'test', 'testPj'), codeDirectory, false)
     })
 
     describe('Use npm', () => {
@@ -788,7 +797,7 @@ describe('lib/main', function () {
         })
 
         it('should use "npm install"', () => {
-          const beforeAwsSdkStat = fs.statSync(path.join(codeDirectory, 'node_modules', 'aws-sdk'))
+          const beforeDotenvStat = fs.statSync(path.join(codeDirectory, 'node_modules', 'dotenv'))
           return lambda._packageInstall(program, codeDirectory).then((usedPackageManager) => {
             assert.equal(usedPackageManager, 'npm')
 
@@ -796,9 +805,9 @@ describe('lib/main', function () {
             assert.include(contents, 'dotenv')
 
             // Installed packages will remain intact.
-            // beforeAwsSdkStat.ctimeMs === afterAwsSdkStat.ctimeMs
-            const afterAwsSdkStat = fs.statSync(path.join(codeDirectory, 'node_modules', 'aws-sdk'))
-            assert.equal(beforeAwsSdkStat.ctimeMs, afterAwsSdkStat.ctimeMs)
+            // beforeDotenvStat.ctimeMs === afterDotenvStat.ctimeMs
+            const afterDotenvStat = fs.statSync(path.join(codeDirectory, 'node_modules', 'dotenv'))
+            assert.equal(beforeDotenvStat.ctimeMs, afterDotenvStat.ctimeMs)
 
             // Not installed with the `--production` option.
             assert.isFalse(fs.existsSync(nodeModulesMocha))
