@@ -1635,7 +1635,7 @@ describe('lib/main', function () {
   describe('Lambda.prototype.deploy()', () => {
     it('simple test with mock', function () {
       _timeout({ this: this, sec: 30 }) // give it time to zip
-      return lambda.deploy(program).then((result) => {
+      return lambda.deploy({ ...program, sourceDirectory: path.join('.', 'test', 'testPj') }).then((result) => {
         assert.isUndefined(result)
       })
     })
