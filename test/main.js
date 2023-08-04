@@ -747,7 +747,7 @@ describe('lib/main', function () {
     const beforeEachOptionalDependencies = () => {
       const packageJsonPath = path.join(codeDirectory, 'package.json')
       const packageJson = require(packageJsonPath)
-      packageJson.optionalDependencies = { npm: '*' }
+      packageJson.optionalDependencies = { commander: '*' }
       fs.writeFileSync(packageJsonPath, JSON.stringify(packageJson))
 
       // Remove package-lock.json because it does not match the package.json to which optionalDependencies was added.
@@ -765,7 +765,7 @@ describe('lib/main', function () {
       assert.equal(usedPackageManager, packageManager)
 
       const contents = fs.readdirSync(path.join(codeDirectory, 'node_modules'))
-      assert.include(contents, 'npm')
+      assert.include(contents, 'commander')
     }
 
     const testOptionalDependenciesIsNotInstalled = async (packageManager) => {
