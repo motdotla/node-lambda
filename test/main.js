@@ -134,8 +134,8 @@ const _awsRestore = () => {
 describe('lib/main', function () {
   if (['win32', 'darwin'].includes(process.platform)) {
     // It seems that it takes time for file operation in Windows and Mac.
-    // So set `timeout(120000)` for the whole test.
-    this.timeout(120000)
+    // So set `timeout(240000)` for the whole test.
+    this.timeout(240000)
   }
 
   let aws = null // mock
@@ -820,8 +820,6 @@ describe('lib/main', function () {
     })
 
     describe('Use yarn', () => {
-      _timeout({ this: this, sec: 30 }) // give it time to build the node modules
-
       it('should use "yarn install"', () => {
         testCleanAndInstall('yarn')
       })
