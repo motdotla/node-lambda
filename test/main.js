@@ -41,6 +41,8 @@ const originalProgram = {
 let program = {}
 let codeDirectory = lambda._codeDirectory()
 
+const sourceDirectoryForTest = path.join('.', 'test', 'testPj')
+
 const _timeout = function (params) {
   // Even if timeout is set for the whole test for Windows and Mac,
   // if it is set in local it will be valid.
@@ -144,6 +146,12 @@ describe('lib/main', function () {
   before(() => {
     aws = _mockSetting()
     awsLambda = new aws.Lambda({ apiVersion: '2015-03-31' })
+
+    if (process.platform === 'win32') {
+      execFileSync('cmd.exe', ['/c', 'npm', 'ci'], { cwd: sourceDirectoryForTest })
+      return
+    }
+    execFileSync('npm', ['ci'], { cwd: sourceDirectoryForTest })
   })
   after(() => _awsRestore())
 
@@ -708,14 +716,6 @@ describe('lib/main', function () {
   describe('_packageInstall', function () {
     _timeout({ this: this, sec: 60 }) // ci should be faster than install
 
-    before(() => {
-      if (process.platform === 'win32') {
-        execFileSync('cmd.exe', ['/c', 'npm', 'ci'], { cwd: path.join('.', 'test', 'testPj') })
-        return
-      }
-      execFileSync('npm', ['ci'], { cwd: path.join('.', 'test', 'testPj') })
-    })
-
     // npm treats files as packages when installing, and so removes them.
     // Test with `devDependencies` packages that are not installed with the `--production` option.
     const nodeModulesMocha = path.join(codeDirectory, 'node_modules', 'chai')
@@ -783,7 +783,7 @@ describe('lib/main', function () {
 
     beforeEach(async () => {
       await lambda._cleanDirectory(codeDirectory)
-      await lambda._fileCopy(program, path.join('.', 'test', 'testPj'), codeDirectory, false)
+      await lambda._fileCopy(program, sourceDirectoryForTest, codeDirectory, false)
     })
 
     describe('Use npm', () => {
@@ -953,7 +953,8 @@ describe('lib/main', function () {
 
     const beforeTask = async (packageManager) => {
       await lambda._cleanDirectory(codeDirectory)
-      await lambda._fileCopy(program, '.', codeDirectory, true)
+      await lambda._fileCopy(program, sourceDirectoryForTest, codeDirectory, true)
+      fs.copySync(path.join(__dirname, '..', 'bin', 'node-lambda'), path.join(codeDirectory, 'bin', 'node-lambda'))
       const usedPackageManager = await lambda._packageInstall(
         {
           ...program,
@@ -1017,16 +1018,16 @@ describe('lib/main', function () {
 
   describe('_archive', () => {
     // archive.files's name is a slash delimiter regardless of platform.
-    it('installs and zips with an index.js file and node_modules/aws-sdk (It is also a test of `_buildAndArchive`)', function () {
+    it('installs and zips with an index.js file and node_modules/dotenv (It is also a test of `_buildAndArchive`)', function () {
       _timeout({ this: this, sec: 30 }) // give it time to zip
 
-      return lambda._archive(program).then((data) => {
+      return lambda._archive({ ...program, sourceDirectory: sourceDirectoryForTest }).then((data) => {
         const archive = new Zip(data)
         const contents = Object.keys(archive.files).map((k) => {
           return archive.files[k].name.toString()
         })
         assert.include(contents, 'index.js')
-        assert.include(contents, 'node_modules/aws-sdk/lib/aws.js')
+        assert.include(contents, 'node_modules/dotenv/lib/main.js')
       })
     })
 
@@ -1121,16 +1122,20 @@ describe('lib/main', function () {
     describe('If value is set in `deployZipfile`, _readArchive is executed in _archive', () => {
       it('`deployZipfile` is a invalid value. Process from creation of zip file', function () {
         const filePath = path.join(path.resolve('/aaaa'), 'bbbb')
-        const _program = Object.assign({ deployZipfile: filePath }, program)
+        const _program = {
+          program,
+          deployZipfile: filePath,
+          sourceDirectory: sourceDirectoryForTest
+        }
         _timeout({ this: this, sec: 30 }) // give it time to zip
         return lambda._archive(_program).then((data) => {
-          // same test as "installs and zips with an index.js file and node_modules/aws-sdk"
+          // same test as "installs and zips with an index.js file and node_modules/dotenv"
           const archive = new Zip(data)
           const contents = Object.keys(archive.files).map((k) => {
             return archive.files[k].name.toString()
           })
           assert.include(contents, 'index.js')
-          assert.include(contents, 'node_modules/aws-sdk/lib/aws.js')
+          assert.include(contents, 'node_modules/dotenv/lib/main.js')
         })
       })
 
@@ -1635,7 +1640,7 @@ describe('lib/main', function () {
   describe('Lambda.prototype.deploy()', () => {
     it('simple test with mock', function () {
       _timeout({ this: this, sec: 30 }) // give it time to zip
-      return lambda.deploy({ ...program, sourceDirectory: path.join('.', 'test', 'testPj') }).then((result) => {
+      return lambda.deploy({ ...program, sourceDirectory: sourceDirectoryForTest }).then((result) => {
         assert.isUndefined(result)
       })
     })
