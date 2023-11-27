@@ -467,3 +467,16 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [1.2.0] - 2022-12-21
 ### Features
 - Add support for nodejs18x [#616](https://github.com/motdotla/node-lambda/pull/616)
+
+## [1.2.1] - 2023-11-28
+### Features
+- Add 'ap-southeast-3' to S3_LOCATION_POSSIBLE_VALUES [#621](https://github.com/motdotla/node-lambda/pull/621)
+
+### Bugfixes
+- Fix minimatch import [#640](https://github.com/motdotla/node-lambda/pull/640)
+- Fix typo [#654](https://github.com/motdotla/node-lambda/pull/654)
+
+### Minor changes
+- Improve testing
+- Update dependencies
+- Update README
