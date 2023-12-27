@@ -189,7 +189,7 @@ describe('bin/node-lambda', () => {
       })
     })
 
-    describe('node-lambda run (Multiple events))', () => {
+    describe('node-lambda run (Multiple events)', () => {
       const eventObj = [{
         asyncTest: false,
         callbackWaitsForEmptyEventLoop: true,
@@ -217,7 +217,7 @@ describe('bin/node-lambda', () => {
       })
     })
 
-    describe('node-lambda run (disable Multiple events))', () => {
+    describe('node-lambda run (disable Multiple events)', () => {
       const eventObj = [{
         asyncTest: false,
         callbackWaitsForEmptyEventLoop: true,
@@ -264,7 +264,7 @@ describe('bin/node-lambda', () => {
       })
     })
 
-    describe('node-lambda run (API Gateway events))', () => {
+    describe('node-lambda run (API Gateway events)', () => {
       const eventObj = {
         asyncTest: false,
         callbackWaitsForEmptyEventLoop: true,
