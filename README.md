@@ -230,7 +230,7 @@ AWS Lambda will let you set environment variables for your function. Use the sam
 
 ## Node.js Runtime Configuration
 
-AWS Lambda now supports Node.js 18, Node.js 16 and Node.js 14. Please also check the [Lambda runtimes](https://docs.aws.amazon.com/lambda/latest/dg/lambda-runtimes.html) page.
+AWS Lambda now supports Node.js 20, Node.js 18 and Node.js 16. Please also check the [Lambda runtimes](https://docs.aws.amazon.com/lambda/latest/dg/lambda-runtimes.html) page.
 
 ## Use S3 to deploy
 
