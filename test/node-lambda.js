@@ -295,6 +295,54 @@ describe('bin/node-lambda', () => {
         })
       })
     })
+
+    describe('node-lambda run (by *.mjs)', () => {
+      it('`node-lambda run` by index.mjs', function (done) {
+        const run = spawn('node', [
+          nodeLambdaPath, 'run',
+          '--handler', 'index_mjs.handler'
+        ])
+        let stdoutString = ''
+        run.stdout.on('data', (data) => {
+          stdoutString += data.toString().replace(/\r|\n|\s/g, '')
+        })
+
+        run.on('exit', (code) => {
+          const expected = 'Runningindex.handler(mjs)' +
+            '==================================' +
+            'event{asyncTest:false,callbackWaitsForEmptyEventLoop:true,callbackCode:\'callback(null);\'}' +
+            '==================================' +
+            'Stoppingindex.handler(mjs)Success:'
+          assert.equal(stdoutString, expected)
+          assert.equal(code, 0)
+          done()
+        })
+      })
+    })
+
+    describe('node-lambda run (handler file not found)', () => {
+      it('`node-lambda run` Invalid handler specification.', function (done) {
+        const run = spawn('node', [
+          nodeLambdaPath, 'run',
+          '--handler', 'not_found.handler'
+        ])
+        let stdoutString = ''
+        run.stdout.on('data', (data) => {
+          stdoutString += data.toString().replace(/\r|\n|\s/g, '')
+        })
+        let stderrString = ''
+        run.stderr.on('data', (data) => {
+          stderrString += data.toString()
+        })
+
+        run.on('exit', (code) => {
+          assert.equal(stdoutString, '')
+          assert.match(stderrString, /Handler file not found\./)
+          assert.equal(code, 255)
+          done()
+        })
+      })
+    })
   })
 
   describe('node-lambda duplicate check of short option', () => {
