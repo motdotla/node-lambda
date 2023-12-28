@@ -157,7 +157,7 @@ describe('bin/node-lambda', () => {
         process.env.AWS_RUNTIME = 'test'
       })
       after(() => {
-        process.env.AWS_RUNTIME = 'nodejs18.x'
+        process.env.AWS_RUNTIME = 'nodejs20.x'
       })
 
       it('`node-lambda run` exitCode is `254` (callback(null))', (done) => {
@@ -171,14 +171,14 @@ describe('bin/node-lambda', () => {
       })
     })
 
-    describe('node-lambda run (Runtime nodejs18.x is supported)', () => {
+    describe('node-lambda run (Runtime nodejs20.x is supported)', () => {
       const eventObj = {
         asyncTest: false,
         callbackWaitsForEmptyEventLoop: true // True is the default value of Lambda
       }
 
       before(() => {
-        process.env.AWS_RUNTIME = 'nodejs18.x'
+        process.env.AWS_RUNTIME = 'nodejs20.x'
       })
 
       it('`node-lambda run` exitCode is not `254` (callback(null))', (done) => {
