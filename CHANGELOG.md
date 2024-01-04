@@ -480,3 +480,11 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Improve testing
 - Update dependencies
 - Update README
+
+## [1.3.0] - 2024-01-04
+### Features
+- Support .mjs [#701](https://github.com/motdotla/node-lambda/pull/701)
+- Update lambda runtime list [#702](https://github.com/motdotla/node-lambda/pull/702)
+
+### Minor changes
+- Update dependencies
