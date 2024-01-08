@@ -7,7 +7,10 @@ const fs = require('fs-extra')
 const { execFileSync } = require('child_process')
 const lambda = require(path.join(__dirname, '..', 'lib', 'main'))
 const Zip = require('node-zip')
-const { assert } = require('chai')
+let assert
+import('chai').then(chai => {
+  assert = chai.assert
+})
 const awsMock = require('aws-sdk-mock')
 awsMock.setSDK(path.resolve('node_modules/aws-sdk'))
 
