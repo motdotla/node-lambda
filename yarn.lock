@@ -370,10 +370,10 @@ available-typed-arrays@^1.0.5:
   resolved "https://registry.npmjs.org/available-typed-arrays/-/available-typed-arrays-1.0.5.tgz"
   integrity sha512-DMD0KiN46eipeziST1LPP/STfDU0sufISXmjSgvVsoU2tqxctQeASejWcfNtxYKqETM1UxQ8sp2OrSBWpHY6sw==
 
-aws-sdk-mock@^5.8.0:
-  version "5.9.0"
-  resolved "https://registry.yarnpkg.com/aws-sdk-mock/-/aws-sdk-mock-5.9.0.tgz#80e5cdef33a8357899c77d1378316e9ed777b4fa"
-  integrity sha512-kTUXaQQ1CTn3Cwxa2g1XqtCDq+FTEbPl/zgaYCok357f7gbWkeYEegqa5RziTRb11oNIUHrLp9DSHwZT3XdBkA==
+aws-sdk-mock@^6.0.1:
+  version "6.0.1"
+  resolved "https://registry.yarnpkg.com/aws-sdk-mock/-/aws-sdk-mock-6.0.1.tgz#4f3c249f9c3c6eacee159d9bde1f89e5a8d48679"
+  integrity sha512-QpOGjTixFsl2EtCR7DBNCjgllYyJGO0FRSRTWISfyi08ItddxOkked/cBMdHEFMR3SIpK6pQTe7pe6tyoVh23A==
   dependencies:
     aws-sdk "^2.1231.0"
     sinon "^17.0.0"
