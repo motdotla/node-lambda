@@ -6,7 +6,7 @@ import('chai').then(chai => {
 })
 const process = require('process')
 const path = require('path')
-const aws = require('aws-sdk-mock')
+const aws = require('aws-sdk-mock').default
 aws.setSDK(path.resolve('node_modules/aws-sdk'))
 const S3Deploy = require('../lib/s3_deploy')
 

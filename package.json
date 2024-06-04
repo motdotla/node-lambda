@@ -47,7 +47,7 @@
     "proxy-agent": "^6.2.0"
   },
   "devDependencies": {
-    "aws-sdk-mock": "^5.8.0",
+    "aws-sdk-mock": "^6.0.2",
     "chai": "^5.0.0",
     "mocha": "^10.1.0",
     "node-zip": "^1.1.1",
