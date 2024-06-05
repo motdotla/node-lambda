@@ -5,7 +5,7 @@ import('chai').then(chai => {
   assert = chai.assert
 })
 const path = require('path')
-const aws = require('aws-sdk-mock')
+const aws = require('aws-sdk-mock').default
 aws.setSDK(path.resolve('node_modules/aws-sdk'))
 const CloudWatchLogs = require(path.join('..', 'lib', 'cloudwatch_logs'))
 
