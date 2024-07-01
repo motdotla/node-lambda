@@ -369,9 +369,9 @@ aws-sdk-mock@^6.0.2:
     traverse "^0.6.6"
 
 aws-sdk@^2.1231.0, aws-sdk@^2.1377.0:
-  version "2.1632.0"
-  resolved "https://registry.npmjs.org/aws-sdk/-/aws-sdk-2.1632.0.tgz"
-  integrity sha512-doNHUxto00r7r9qWb5RcIsQHUTHdGiPPyJoXxmsmQW6aOr69BqYeuFl8SicNS1YzP6s5sFFnDNKq9KB7jA2fyA==
+  version "2.1651.0"
+  resolved "https://registry.yarnpkg.com/aws-sdk/-/aws-sdk-2.1651.0.tgz#1b3cd731dbbfd08072793c5d3e480953b689c0eb"
+  integrity sha512-MZjQvvOPkKcx1N428ejUjqSfhm4TAIcgPIgpniiDMw1LjB1yA8JBZvrWer6J6MACAXQ99v0uKE4BSvtYn+AT3g==
   dependencies:
     buffer "4.9.2"
     events "1.1.1"
@@ -1366,12 +1366,12 @@ https-proxy-agent@^7.0.2, https-proxy-agent@^7.0.3:
     agent-base "^7.0.2"
     debug "4"
 
-ieee754@1.1.13, ieee754@^1.1.4:
+ieee754@1.1.13:
   version "1.1.13"
   resolved "https://registry.npmjs.org/ieee754/-/ieee754-1.1.13.tgz"
   integrity sha512-4vf7I2LYV/HaWerSo3XmlMkp5eZ83i+/CDluXi/IGTs/O1sejBNhTtnxzmRZfvOUqj7lZjqHkeTvpgSFDlWZTg==
 
-ieee754@^1.2.1:
+ieee754@^1.1.4, ieee754@^1.2.1:
   version "1.2.1"
   resolved "https://registry.npmjs.org/ieee754/-/ieee754-1.2.1.tgz"
   integrity sha512-dcyqhDvX1C46lXZcVqCpK+FtMRQVdIMN6/Df5js2zouUsqG7I6sFxitIC+7KYK29KdXOLHdu9zL4sFnoVQnqaA==
