@@ -1,4 +1,4 @@
-If you found this useful, consider also checking out [dotenv-vault](https://github.com/dotenv-org/dotenv-vault). Thank you! 😇
+> If you found this useful, consider also checking out [dotenvx](https://github.com/dotenvx/dotenvx). Thank you! 😇
 
 # node-lambda
 
