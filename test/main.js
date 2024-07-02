@@ -11,7 +11,7 @@ let assert
 import('chai').then(chai => {
   assert = chai.assert
 })
-const awsMock = require('aws-sdk-mock').default
+const awsMock = require('aws-sdk-mock')
 awsMock.setSDK(path.resolve('node_modules/aws-sdk'))
 
 const originalProgram = {
