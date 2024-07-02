@@ -103,7 +103,7 @@
   dependencies:
     type-detect "4.0.8"
 
-"@sinonjs/commons@^3.0.0":
+"@sinonjs/commons@^3.0.0", "@sinonjs/commons@^3.0.1":
   version "3.0.1"
   resolved "https://registry.npmjs.org/@sinonjs/commons/-/commons-3.0.1.tgz"
   integrity sha512-K3mCHKQ9sVh8o1C9cxkwxaOmXoAMlDxC1mYyHrjqOWEcBjYr76t96zL2zlj5dUGZ3HSw240X1qgH3Mjf1yJWpQ==
@@ -360,12 +360,12 @@ available-typed-arrays@^1.0.5:
   integrity sha512-DMD0KiN46eipeziST1LPP/STfDU0sufISXmjSgvVsoU2tqxctQeASejWcfNtxYKqETM1UxQ8sp2OrSBWpHY6sw==
 
 aws-sdk-mock@^6.0.2:
-  version "6.0.2"
-  resolved "https://registry.npmjs.org/aws-sdk-mock/-/aws-sdk-mock-6.0.2.tgz"
-  integrity sha512-vXuC4j0/dxExM/bt//iqyuB9ix0vjzfG4vxmMPzBT3D0XLGrawtyh3QmioAlP0aHKKidR+b2Fu2htQbtJAGJWQ==
+  version "6.0.4"
+  resolved "https://registry.yarnpkg.com/aws-sdk-mock/-/aws-sdk-mock-6.0.4.tgz#e8607fb0d948eec28bf10523e80d79c4bba50716"
+  integrity sha512-xcvjYQ548cOAoHWKLk6VKS6U1KjeJdBY/vFPROk+kktMUzRfVkb9PnUzcZdBitohbRFg2fWj2OBW9xcwKbESmA==
   dependencies:
     aws-sdk "^2.1231.0"
-    sinon "^17.0.0"
+    sinon "^18.0.0"
     traverse "^0.6.6"
 
 aws-sdk@^2.1231.0, aws-sdk@^2.1377.0:
@@ -676,10 +676,10 @@ diff@5.0.0:
   resolved "https://registry.npmjs.org/diff/-/diff-5.0.0.tgz"
   integrity sha512-/VTCrvm5Z0JGty/BWHljh+BAiw3IK+2j87NGMu8Nwc/f48WoDAC395uomO9ZD117ZOBaHmkX1oyLvkVM/aIT3w==
 
-diff@^5.1.0:
-  version "5.1.0"
-  resolved "https://registry.npmjs.org/diff/-/diff-5.1.0.tgz"
-  integrity sha512-D+mk+qE8VC/PAUrlAU34N+VfXev0ghe5ywmpqrawphmVZc1bEfn56uo9qpyGp1p4xpzOHkSW4ztBd6L7Xx4ACw==
+diff@^5.2.0:
+  version "5.2.0"
+  resolved "https://registry.yarnpkg.com/diff/-/diff-5.2.0.tgz#26ded047cd1179b78b9537d5ef725503ce1ae531"
+  integrity sha512-uIFDxqpRZGZ6ThOk84hEfqWoHx2devRFvpTZcTHur85vImfaxUbTW9Ryh4CpCuDnToOP1CEtXKIgytHBPVff5A==
 
 doctrine@^2.1.0:
   version "2.1.0"
@@ -1875,10 +1875,10 @@ netmask@^2.0.2:
   resolved "https://registry.npmjs.org/netmask/-/netmask-2.0.2.tgz"
   integrity sha512-dBpDMdxv9Irdq66304OLfEmQ9tbNRFnFTuZiLo+bD+r332bBmMJ8GBLXklIXXgxd3+v9+KUnZaUR5PJMa75Gsg==
 
-nise@^5.1.5:
-  version "5.1.9"
-  resolved "https://registry.npmjs.org/nise/-/nise-5.1.9.tgz"
-  integrity sha512-qOnoujW4SV6e40dYxJOb3uvuoPHtmLzIk4TFo+j0jPJoC+5Z9xja5qH5JZobEPsa8+YYphMrOSwnrshEhG2qww==
+nise@^6.0.0:
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/nise/-/nise-6.0.0.tgz#ae56fccb5d912037363c3b3f29ebbfa28bde8b48"
+  integrity sha512-K8ePqo9BFvN31HXwEtTNGzgrPpmvgciDsFz8aztFjt4LqKO/JeFD8tBOeuDiCMXrIl/m1YvfH8auSpxfaD09wg==
   dependencies:
     "@sinonjs/commons" "^3.0.0"
     "@sinonjs/fake-timers" "^11.2.2"
@@ -2372,17 +2372,17 @@ signal-exit@^4.0.1:
   resolved "https://registry.npmjs.org/signal-exit/-/signal-exit-4.1.0.tgz"
   integrity sha512-bzyZ1e88w9O1iNJbKnOlvYTrWPDl46O1bG0D3XInv+9tkPrxrN8jUUTiFlDkkmKWgn1M6CfIA13SuGqOa9Korw==
 
-sinon@^17.0.0:
-  version "17.0.1"
-  resolved "https://registry.npmjs.org/sinon/-/sinon-17.0.1.tgz"
-  integrity sha512-wmwE19Lie0MLT+ZYNpDymasPHUKTaZHUH/pKEubRXIzySv9Atnlw+BUMGCzWgV7b7wO+Hw6f1TEOr0IUnmU8/g==
+sinon@^18.0.0:
+  version "18.0.0"
+  resolved "https://registry.yarnpkg.com/sinon/-/sinon-18.0.0.tgz#69ca293dbc3e82590a8b0d46c97f63ebc1e5fc01"
+  integrity sha512-+dXDXzD1sBO6HlmZDd7mXZCR/y5ECiEiGCBSGuFD/kZ0bDTofPYc6JaeGmPSF+1j1MejGUWkORbYOLDyvqCWpA==
   dependencies:
-    "@sinonjs/commons" "^3.0.0"
+    "@sinonjs/commons" "^3.0.1"
     "@sinonjs/fake-timers" "^11.2.2"
     "@sinonjs/samsam" "^8.0.0"
-    diff "^5.1.0"
-    nise "^5.1.5"
-    supports-color "^7.2.0"
+    diff "^5.2.0"
+    nise "^6.0.0"
+    supports-color "^7"
 
 smart-buffer@^4.2.0:
   version "4.2.0"
@@ -2569,7 +2569,7 @@ supports-color@8.1.1:
   dependencies:
     has-flag "^4.0.0"
 
-supports-color@^7.1.0, supports-color@^7.2.0:
+supports-color@^7, supports-color@^7.1.0:
   version "7.2.0"
   resolved "https://registry.npmjs.org/supports-color/-/supports-color-7.2.0.tgz"
   integrity sha512-qpCAvRl9stuOHveKsn7HncJRvv501qIacKzQlO/+Lwxc9+0q2wLyv4Dfvt80/DPn2pqOBsJdDiogXGR9+OvwRw==
