@@ -11,6 +11,10 @@ const spawn = require('child_process').spawn
 const execSync = require('child_process').execSync
 const nodeLambdaPath = path.join(__dirname, '..', 'bin', 'node-lambda')
 
+const removeDotenvLog = (str) => {
+  return str.replace(/^\[dotenvx@.+\]injectingenv\(.+\)from.env/, '')
+}
+
 /* global before, after, describe, it */
 // The reason for specifying the node command in this test is to support Windows.
 describe('bin/node-lambda', () => {
@@ -260,7 +264,7 @@ describe('bin/node-lambda', () => {
             '{asyncTest:false,callbackWaitsForEmptyEventLoop:true,callbackCode:\'callback(null);\',no:3}]' +
             '==================================Stoppingindex.handlerSuccess:'
 
-          assert.equal(stdoutString, expected)
+          assert.equal(removeDotenvLog(stdoutString), expected)
           assert.equal(code, 0)
           done()
         })
@@ -292,7 +296,7 @@ describe('bin/node-lambda', () => {
             '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!Runningindex.handler==================================event' +
             '{body:\'{"asyncTest":false,"callbackWaitsForEmptyEventLoop":true,"callbackCode":"callback(null);"}\'}' +
             '==================================Stoppingindex.handlerSuccess:'
-          assert.equal(stdoutString, expected)
+          assert.equal(removeDotenvLog(stdoutString), expected)
           assert.equal(code, 0)
           done()
         })
@@ -316,7 +320,7 @@ describe('bin/node-lambda', () => {
             'event{asyncTest:false,callbackWaitsForEmptyEventLoop:true,callbackCode:\'callback(null);\'}' +
             '==================================' +
             'Stoppingindex.handler(mjs)Success:'
-          assert.equal(stdoutString, expected)
+          assert.equal(removeDotenvLog(stdoutString), expected)
           assert.equal(code, 0)
           done()
         })
@@ -339,7 +343,7 @@ describe('bin/node-lambda', () => {
         })
 
         run.on('exit', (code) => {
-          assert.equal(stdoutString, '')
+          assert.equal(removeDotenvLog(stdoutString), '')
           assert.match(stderrString, /Handler file not found\./)
           assert.equal(code, 255)
           done()
@@ -383,7 +387,10 @@ describe('bin/node-lambda', () => {
     const packageJson = require(path.join(__dirname, '..', 'package.json'))
     it('The current version is displayed', () => {
       const ret = execSync(`node ${nodeLambdaPath} --version`)
-      assert.equal(ret.toString().trim(), packageJson.version)
+      assert.equal(
+        ret.toString().trim().split('\n').pop(),
+        packageJson.version
+      )
     })
   })
 })

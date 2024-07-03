@@ -2,7 +2,7 @@
 
 'use strict'
 
-require('dotenv').config()
+require('@dotenvx/dotenvx').config()
 const process = require('process')
 const path = require('path')
 
