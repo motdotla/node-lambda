@@ -35,7 +35,7 @@
     "node": ">= 18.0.0"
   },
   "dependencies": {
-    "@dotenvx/dotenvx": "^1.5.0",
+    "@dotenvx/dotenvx": "^1.14.0",
     "archiver": "^7.0.0",
     "aws-sdk": "^2.1377.0",
     "aws-xray-sdk-core": "^3.5.0",

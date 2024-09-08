@@ -12,7 +12,8 @@ const execSync = require('child_process').execSync
 const nodeLambdaPath = path.join(__dirname, '..', 'bin', 'node-lambda')
 
 const removeDotenvLog = (str) => {
-  return str.replace(/^\[dotenvx@.+\]injectingenv\(.+\)from.env/, '')
+  // eslint-disable-next-line no-control-regex
+  return str.replace(/^\u001b\[38;5;142m\[dotenvx@.+\]injectingenv\(.+\)from.env\u001b\[39m/, '')
 }
 
 /* global before, after, describe, it */
