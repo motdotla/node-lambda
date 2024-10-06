@@ -8,9 +8,9 @@
   integrity sha512-ANj9L+lR4NWWSLPkr5tRdFaw0kW0BjlDgnyNWyFrGVOHqT0MYjhCjPsH2y45G59z+b2qe+v/VsKuTyNmSvoZCA==
 
 "@dotenvx/dotenvx@^1.14.0":
-  version "1.14.0"
-  resolved "https://registry.npmjs.org/@dotenvx/dotenvx/-/dotenvx-1.14.0.tgz"
-  integrity sha512-ujWncblsqokvW8w6tCW35hjwlD3FHySMdrC5OPMYqfcGR96B/H6xK9xSu5F/SyZ8uk8USoPZynsXxB24IGvfmQ==
+  version "1.14.2"
+  resolved "https://registry.yarnpkg.com/@dotenvx/dotenvx/-/dotenvx-1.14.2.tgz#f8b74e5e8143063b963c3dc9284436e9f50134f5"
+  integrity sha512-88lviNO27WUGpZ/ya1VF7AseiWsCl1YRnm9pNYp7pIOZyu/gXM11wpJ8/DViV6oxSkrF4mi3ZalmaukHj5F8Ow==
   dependencies:
     commander "^11.1.0"
     dotenv "^16.4.5"
