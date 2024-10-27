@@ -11,8 +11,14 @@ let assert
 import('chai').then(chai => {
   assert = chai.assert
 })
+const sinon = require('sinon')
+
 const awsMock = require('aws-sdk-mock')
 awsMock.setSDK(path.resolve('node_modules/aws-sdk'))
+
+// Migrating to v3.
+const { LambdaClient } = require('@aws-sdk/client-lambda')
+const lambdaClient = new LambdaClient({ region: 'us-east-1' })
 
 const originalProgram = {
   packageManager: 'npm',
@@ -22,7 +28,7 @@ const originalProgram = {
   sessionToken: 'token',
   functionName: '___node-lambda',
   handler: 'index.handler',
-  role: 'some:arn:aws:iam::role',
+  role: 'arn:aws:iam::999999999999:role/test',
   memorySize: 128,
   timeout: 3,
   description: '',
@@ -155,8 +161,15 @@ describe('lib/main', function () {
       return
     }
     execFileSync('npm', ['ci'], { cwd: sourceDirectoryForTest })
+
+    // for sdk v3
+    const stub = sinon.stub(lambdaClient, 'send')
+    stub.returns(lambdaMockSettings.createFunction)
   })
-  after(() => _awsRestore())
+  after(() => {
+    _awsRestore()
+    sinon.restore() // for sdk v3
+  })
 
   beforeEach(() => {
     program = Object.assign({}, originalProgram) // clone
@@ -1555,7 +1568,7 @@ describe('lib/main', function () {
   describe('_uploadNew', () => {
     it('simple test with mock', () => {
       const params = lambda._params(program, null)
-      return lambda._uploadNew(awsLambda, params, (results) => {
+      return lambda._uploadNew(lambdaClient, params, (results) => {
         assert.deepEqual(results, lambdaMockSettings.createFunction)
       })
     })
