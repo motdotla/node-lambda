@@ -8,19 +8,24 @@
   integrity sha512-ANj9L+lR4NWWSLPkr5tRdFaw0kW0BjlDgnyNWyFrGVOHqT0MYjhCjPsH2y45G59z+b2qe+v/VsKuTyNmSvoZCA==
 
 "@dotenvx/dotenvx@^1.14.0":
-  version "1.14.2"
-  resolved "https://registry.yarnpkg.com/@dotenvx/dotenvx/-/dotenvx-1.14.2.tgz#f8b74e5e8143063b963c3dc9284436e9f50134f5"
-  integrity sha512-88lviNO27WUGpZ/ya1VF7AseiWsCl1YRnm9pNYp7pIOZyu/gXM11wpJ8/DViV6oxSkrF4mi3ZalmaukHj5F8Ow==
+  version "1.21.1"
+  resolved "https://registry.yarnpkg.com/@dotenvx/dotenvx/-/dotenvx-1.21.1.tgz#70101fe2da7ee29db882cf92f391d9cacc16768f"
+  integrity sha512-ER9oBUtcFgDB/hwhJ0eg7xvR/8EtXkFm8J6nGo0rvLLMZKBpmvMtgTIQ8hDSjnboOaELOdUXTpa7WgoRZR6g3A==
   dependencies:
     commander "^11.1.0"
     dotenv "^16.4.5"
-    eciesjs "^0.4.6"
+    eciesjs "^0.4.10"
     execa "^5.1.1"
     fdir "^6.2.0"
     ignore "^5.3.0"
     object-treeify "1.1.33"
     picomatch "^4.0.2"
     which "^4.0.0"
+
+"@ecies/ciphers@^0.2.0":
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/@ecies/ciphers/-/ciphers-0.2.1.tgz#a3119516fb55d27ed2d21c497b1c4988f0b4ca02"
+  integrity sha512-ezMihhjW24VNK/2qQR7lH8xCQY24nk0XHF/kwJ1OuiiY5iEwQXOcKVSy47fSoHPRG8gVGXcK5SgtONDk5xMwtQ==
 
 "@eslint-community/eslint-utils@^4.2.0":
   version "4.4.0"
@@ -85,22 +90,22 @@
     wrap-ansi "^8.1.0"
     wrap-ansi-cjs "npm:wrap-ansi@^7.0.0"
 
-"@noble/ciphers@^0.5.3":
-  version "0.5.3"
-  resolved "https://registry.npmjs.org/@noble/ciphers/-/ciphers-0.5.3.tgz"
-  integrity sha512-B0+6IIHiqEs3BPMT0hcRmHvEj2QHOLu+uwt+tqDDeVd0oyVzh7BPrDcPjRnV1PV/5LaknXJJQvOuRGR0zQJz+w==
+"@noble/ciphers@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@noble/ciphers/-/ciphers-1.0.0.tgz#34758a1cbfcd4126880f83e6b1cdeb88785b7970"
+  integrity sha512-wH5EHOmLi0rEazphPbecAzmjd12I6/Yv/SiHdkA9LSycsQk7RuuTp7am5/o62qYr0RScE7Pc9icXGBbsr6cesA==
 
-"@noble/curves@^1.4.0":
-  version "1.4.2"
-  resolved "https://registry.npmjs.org/@noble/curves/-/curves-1.4.2.tgz"
-  integrity sha512-TavHr8qycMChk8UwMld0ZDRvatedkzWfH8IiaeGCfymOP5i0hSCozz9vHOL0nkwk7HRMlFnAiKpS2jrUmSybcw==
+"@noble/curves@^1.6.0":
+  version "1.6.0"
+  resolved "https://registry.yarnpkg.com/@noble/curves/-/curves-1.6.0.tgz#be5296ebcd5a1730fccea4786d420f87abfeb40b"
+  integrity sha512-TlaHRXDehJuRNR9TfZDNQ45mMEd5dwUwmicsafcIX4SsNiqnCHKjE/1alYPd/lDRVhxdhUAlv8uEhMCI5zjIJQ==
   dependencies:
-    "@noble/hashes" "1.4.0"
+    "@noble/hashes" "1.5.0"
 
-"@noble/hashes@1.4.0", "@noble/hashes@^1.4.0":
-  version "1.4.0"
-  resolved "https://registry.npmjs.org/@noble/hashes/-/hashes-1.4.0.tgz"
-  integrity sha512-V1JJ1WTRUqHHrOSh597hURcMqVKVGL/ea3kv0gSnEdsEZ0/+VyPghM1lMNGc00z7CIQorSvbKpuJkxvuHbvdbg==
+"@noble/hashes@1.5.0", "@noble/hashes@^1.5.0":
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/@noble/hashes/-/hashes-1.5.0.tgz#abadc5ca20332db2b1b2aa3e496e9af1213570b0"
+  integrity sha512-1j6kQFb7QRru7eKN3ZDvRcP13rugwdxZqCjbiAVZfIJwgj2A65UmT4TgARXGlXgnRkORLTDTrO19ZErt7+QXgA==
 
 "@nodelib/fs.scandir@2.1.5":
   version "2.1.5"
@@ -856,14 +861,15 @@ eastasianwidth@^0.2.0:
   resolved "https://registry.npmjs.org/eastasianwidth/-/eastasianwidth-0.2.0.tgz"
   integrity sha512-I88TYZWc9XiYHRQ4/3c5rjjfgkjhLyW2luGIheGERbNQ6OY7yTybanSpDXZa8y7VUP9YmDcYa+eyq4ca7iLqWA==
 
-eciesjs@^0.4.6:
-  version "0.4.7"
-  resolved "https://registry.npmjs.org/eciesjs/-/eciesjs-0.4.7.tgz"
-  integrity sha512-4JQahOkBdDy27jjW4q3FJQigHlcwZXx28sCtBQkBamF2XUdcNXrInpgrr8h205MtVIS0CMHufyIKGVjtjxQ2ZA==
+eciesjs@^0.4.10:
+  version "0.4.10"
+  resolved "https://registry.yarnpkg.com/eciesjs/-/eciesjs-0.4.10.tgz#7548ae8385809d1b81529ebe48b87d8549941270"
+  integrity sha512-dYAgdXAC7/d9fEC0w6kpRWj5vHah2BQgMM639g78JI0FUUffMN2Mq60HEHPkyH8ah+FX+cQd6ouDK4kWiatzyw==
   dependencies:
-    "@noble/ciphers" "^0.5.3"
-    "@noble/curves" "^1.4.0"
-    "@noble/hashes" "^1.4.0"
+    "@ecies/ciphers" "^0.2.0"
+    "@noble/ciphers" "^1.0.0"
+    "@noble/curves" "^1.6.0"
+    "@noble/hashes" "^1.5.0"
 
 emitter-listener@^1.0.1, emitter-listener@^1.1.1:
   version "1.1.2"
