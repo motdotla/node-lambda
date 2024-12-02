@@ -485,9 +485,9 @@ aws-sdk@^2.1231.0, aws-sdk@^2.1377.0:
     xml2js "0.6.2"
 
 aws-xray-sdk-core@^3.5.0:
-  version "3.10.1"
-  resolved "https://registry.yarnpkg.com/aws-xray-sdk-core/-/aws-xray-sdk-core-3.10.1.tgz#2fd0bf9405b694c62c6f8d41a6e213dfe64506d5"
-  integrity sha512-Eb1Iy5WEjRqRi8G+gi32QjR7t/9xTDore8EKasXsPMXCLMlYunslxJAvT2PDLXQ7ohEC/mKT9+7tUyUt6CGruw==
+  version "3.10.2"
+  resolved "https://registry.yarnpkg.com/aws-xray-sdk-core/-/aws-xray-sdk-core-3.10.2.tgz#59cb76dedb17cd9ec94bc47206a5410531029480"
+  integrity sha512-hAFEB+Stqm4FoQmIuyw5AzGVJh3BSfvLjK7IK4YYRXXLt1Oq9KS6pv2samYgRTTTXsxhmVpDjiYF3Xo/gfXIXA==
   dependencies:
     "@aws-sdk/types" "^3.4.1"
     "@smithy/service-error-classification" "^2.0.4"
