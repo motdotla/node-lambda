@@ -11,13 +11,14 @@ let assert
 import('chai').then(chai => {
   assert = chai.assert
 })
-const sinon = require('sinon')
 
 const awsMock = require('aws-sdk-mock')
 awsMock.setSDK(path.resolve('node_modules/aws-sdk'))
 
 // Migrating to v3.
-const { LambdaClient } = require('@aws-sdk/client-lambda')
+const { mockClient } = require('aws-sdk-client-mock')
+const { LambdaClient, CreateFunctionCommand } = require('@aws-sdk/client-lambda')
+const mockLambdaClient = mockClient(LambdaClient)
 const lambdaClient = new LambdaClient({ region: 'us-east-1' })
 
 const originalProgram = {
@@ -163,12 +164,11 @@ describe('lib/main', function () {
     execFileSync('npm', ['ci'], { cwd: sourceDirectoryForTest })
 
     // for sdk v3
-    const stub = sinon.stub(lambdaClient, 'send')
-    stub.returns(lambdaMockSettings.createFunction)
+    mockLambdaClient.reset()
+    mockLambdaClient.on(CreateFunctionCommand).resolves(lambdaMockSettings.createFunction)
   })
   after(() => {
     _awsRestore()
-    sinon.restore() // for sdk v3
   })
 
   beforeEach(() => {
