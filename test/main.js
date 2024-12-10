@@ -17,7 +17,13 @@ awsMock.setSDK(path.resolve('node_modules/aws-sdk'))
 
 // Migrating to v3.
 const { mockClient } = require('aws-sdk-client-mock')
-const { LambdaClient, CreateFunctionCommand } = require('@aws-sdk/client-lambda')
+const {
+  LambdaClient,
+  CreateFunctionCommand,
+  GetFunctionCommand,
+  UpdateFunctionCodeCommand,
+  UpdateFunctionConfigurationCommand
+} = require('@aws-sdk/client-lambda')
 const mockLambdaClient = mockClient(LambdaClient)
 const lambdaClient = new LambdaClient({ region: 'us-east-1' })
 
@@ -166,6 +172,9 @@ describe('lib/main', function () {
     // for sdk v3
     mockLambdaClient.reset()
     mockLambdaClient.on(CreateFunctionCommand).resolves(lambdaMockSettings.createFunction)
+    mockLambdaClient.on(GetFunctionCommand).resolves(lambdaMockSettings.getFunction)
+    mockLambdaClient.on(UpdateFunctionCodeCommand).resolves(lambdaMockSettings.updateFunctionCode)
+    mockLambdaClient.on(UpdateFunctionConfigurationCommand).resolves(lambdaMockSettings.updateFunctionConfiguration)
   })
   after(() => {
     _awsRestore()
@@ -1577,7 +1586,7 @@ describe('lib/main', function () {
   describe('_uploadExisting', () => {
     it('simple test with mock', () => {
       const params = lambda._params(program, null)
-      return lambda._uploadExisting(awsLambda, params).then((results) => {
+      return lambda._uploadExisting(lambdaClient, params).then((results) => {
         assert.deepEqual(results, lambdaMockSettings.updateFunctionConfiguration)
       })
     })
