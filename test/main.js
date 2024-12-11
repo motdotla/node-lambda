@@ -20,6 +20,7 @@ const { mockClient } = require('aws-sdk-client-mock')
 const {
   LambdaClient,
   CreateFunctionCommand,
+  ListEventSourceMappingsCommand,
   GetFunctionCommand,
   UpdateFunctionCodeCommand,
   UpdateFunctionConfigurationCommand
@@ -175,6 +176,7 @@ describe('lib/main', function () {
     mockLambdaClient.on(GetFunctionCommand).resolves(lambdaMockSettings.getFunction)
     mockLambdaClient.on(UpdateFunctionCodeCommand).resolves(lambdaMockSettings.updateFunctionCode)
     mockLambdaClient.on(UpdateFunctionConfigurationCommand).resolves(lambdaMockSettings.updateFunctionConfiguration)
+    mockLambdaClient.on(ListEventSourceMappingsCommand).resolves(lambdaMockSettings.listEventSourceMappings)
   })
   after(() => {
     _awsRestore()
@@ -1358,7 +1360,7 @@ describe('lib/main', function () {
   describe('_listEventSourceMappings', () => {
     it('simple test with mock', () => {
       return lambda._listEventSourceMappings(
-        awsLambda,
+        lambdaClient,
         { FunctionName: 'test-func' }
       ).then((results) => {
         assert.deepEqual(
