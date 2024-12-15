@@ -19,9 +19,12 @@ awsMock.setSDK(path.resolve('node_modules/aws-sdk'))
 const { mockClient } = require('aws-sdk-client-mock')
 const {
   LambdaClient,
+  CreateEventSourceMappingCommand,
   CreateFunctionCommand,
-  ListEventSourceMappingsCommand,
+  DeleteEventSourceMappingCommand,
   GetFunctionCommand,
+  ListEventSourceMappingsCommand,
+  UpdateEventSourceMappingCommand,
   UpdateFunctionCodeCommand,
   UpdateFunctionConfigurationCommand
 } = require('@aws-sdk/client-lambda')
@@ -172,11 +175,14 @@ describe('lib/main', function () {
 
     // for sdk v3
     mockLambdaClient.reset()
+    mockLambdaClient.on(CreateEventSourceMappingCommand).resolves(lambdaMockSettings.createEventSourceMapping)
     mockLambdaClient.on(CreateFunctionCommand).resolves(lambdaMockSettings.createFunction)
+    mockLambdaClient.on(DeleteEventSourceMappingCommand).resolves(lambdaMockSettings.deleteEventSourceMapping)
     mockLambdaClient.on(GetFunctionCommand).resolves(lambdaMockSettings.getFunction)
+    mockLambdaClient.on(ListEventSourceMappingsCommand).resolves(lambdaMockSettings.listEventSourceMappings)
+    mockLambdaClient.on(UpdateEventSourceMappingCommand).resolves(lambdaMockSettings.updateEventSourceMapping)
     mockLambdaClient.on(UpdateFunctionCodeCommand).resolves(lambdaMockSettings.updateFunctionCode)
     mockLambdaClient.on(UpdateFunctionConfigurationCommand).resolves(lambdaMockSettings.updateFunctionConfiguration)
-    mockLambdaClient.on(ListEventSourceMappingsCommand).resolves(lambdaMockSettings.listEventSourceMappings)
   })
   after(() => {
     _awsRestore()
@@ -1424,7 +1430,7 @@ describe('lib/main', function () {
       program.eventSourceFile = ''
       const eventSourceList = lambda._eventSourceList(program)
       return lambda._updateEventSources(
-        awsLambda,
+        lambdaClient,
         '',
         [],
         eventSourceList.EventSourceMappings
@@ -1437,7 +1443,7 @@ describe('lib/main', function () {
       program.eventSourceFile = 'event_sources.json'
       const eventSourceList = lambda._eventSourceList(program)
       return lambda._updateEventSources(
-        awsLambda,
+        lambdaClient,
         'functionName',
         [],
         eventSourceList.EventSourceMappings
@@ -1448,7 +1454,7 @@ describe('lib/main', function () {
 
     it('simple test with mock (In case of deletion)', () => {
       return lambda._updateEventSources(
-        awsLambda,
+        lambdaClient,
         'functionName',
         lambdaMockSettings.listEventSourceMappings.EventSourceMappings,
         {}
@@ -1461,7 +1467,7 @@ describe('lib/main', function () {
       program.eventSourceFile = 'event_sources.json'
       const eventSourceList = lambda._eventSourceList(program)
       return lambda._updateEventSources(
-        awsLambda,
+        lambdaClient,
         'functionName',
         lambdaMockSettings.listEventSourceMappings.EventSourceMappings,
         eventSourceList.EventSourceMappings
