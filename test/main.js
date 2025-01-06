@@ -24,6 +24,9 @@ const {
   DeleteEventSourceMappingCommand,
   GetFunctionCommand,
   ListEventSourceMappingsCommand,
+  ListTagsCommand,
+  TagResourceCommand,
+  UntagResourceCommand,
   UpdateEventSourceMappingCommand,
   UpdateFunctionCodeCommand,
   UpdateFunctionConfigurationCommand
@@ -162,10 +165,8 @@ describe('lib/main', function () {
   }
 
   let aws = null // mock
-  let awsLambda = null // mock
   before(() => {
     aws = _mockSetting()
-    awsLambda = new aws.Lambda({ apiVersion: '2015-03-31' })
 
     if (process.platform === 'win32') {
       execFileSync('cmd.exe', ['/c', 'npm', 'ci'], { cwd: sourceDirectoryForTest })
@@ -180,6 +181,9 @@ describe('lib/main', function () {
     mockLambdaClient.on(DeleteEventSourceMappingCommand).resolves(lambdaMockSettings.deleteEventSourceMapping)
     mockLambdaClient.on(GetFunctionCommand).resolves(lambdaMockSettings.getFunction)
     mockLambdaClient.on(ListEventSourceMappingsCommand).resolves(lambdaMockSettings.listEventSourceMappings)
+    mockLambdaClient.on(ListTagsCommand).resolves(lambdaMockSettings.listTags)
+    mockLambdaClient.on(TagResourceCommand).resolves(lambdaMockSettings.tagResource)
+    mockLambdaClient.on(UntagResourceCommand).resolves(lambdaMockSettings.untagResource)
     mockLambdaClient.on(UpdateEventSourceMappingCommand).resolves(lambdaMockSettings.updateEventSourceMapping)
     mockLambdaClient.on(UpdateFunctionCodeCommand).resolves(lambdaMockSettings.updateFunctionCode)
     mockLambdaClient.on(UpdateFunctionConfigurationCommand).resolves(lambdaMockSettings.updateFunctionConfiguration)
@@ -1682,7 +1686,7 @@ describe('lib/main', function () {
   describe('Lambda.prototype._updateTags()', () => {
     it('simple test with mock', () => {
       return lambda._updateTags(
-        awsLambda,
+        lambdaClient,
         'arn:aws:lambda:eu-central-1:1234567:function:test',
         { tagKey: 'tagValue' }).then((result) => {
         assert.deepEqual(
