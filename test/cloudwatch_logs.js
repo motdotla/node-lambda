@@ -5,9 +5,15 @@ import('chai').then(chai => {
   assert = chai.assert
 })
 const path = require('path')
-const aws = require('aws-sdk-mock')
-aws.setSDK(path.resolve('node_modules/aws-sdk'))
 const CloudWatchLogs = require(path.join('..', 'lib', 'cloudwatch_logs'))
+
+const {
+  CloudWatchLogsClient,
+  CreateLogGroupCommand,
+  PutRetentionPolicyCommand
+} = require('@aws-sdk/client-cloudwatch-logs')
+const { mockClient } = require('aws-sdk-client-mock')
+const mockCloudWatchLogsClient = mockClient(CloudWatchLogsClient)
 
 const mockResponse = {
   createLogGroup: {
@@ -26,20 +32,15 @@ const params = {
 
 let logs = null
 
-/* global before, after, describe, it */
+/* global before, describe, it */
 describe('lib/cloudwatch_logs', () => {
   before(() => {
-    aws.mock('CloudWatchLogs', 'createLogGroup', (params, callback) => {
-      callback(null, mockResponse.createLogGroup)
-    })
-    aws.mock('CloudWatchLogs', 'putRetentionPolicy', (params, callback) => {
-      callback(null, mockResponse.putRetentionPolicy)
-    })
+    mockCloudWatchLogsClient.reset()
+    mockCloudWatchLogsClient.on(CreateLogGroupCommand).resolves(mockResponse.createLogGroup)
+    mockCloudWatchLogsClient.on(PutRetentionPolicyCommand).resolves(mockResponse.putRetentionPolicy)
 
-    logs = new CloudWatchLogs(require('aws-sdk'))
+    logs = new CloudWatchLogs({ region: 'us-east-1' })
   })
-
-  after(() => aws.restore('CloudWatchLogs'))
 
   describe('_logGroupName', () => {
     it('correct value', () => {
