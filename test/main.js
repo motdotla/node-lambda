@@ -33,6 +33,12 @@ const {
 } = require('@aws-sdk/client-lambda')
 const mockLambdaClient = mockClient(LambdaClient)
 const lambdaClient = new LambdaClient({ region: 'us-east-1' })
+const {
+  CloudWatchLogsClient,
+  CreateLogGroupCommand,
+  PutRetentionPolicyCommand
+} = require('@aws-sdk/client-cloudwatch-logs')
+const mockCloudWatchLogsClient = mockClient(CloudWatchLogsClient)
 
 const originalProgram = {
   packageManager: 'npm',
@@ -127,12 +133,6 @@ const _mockSetting = () => {
   awsMock.mock('CloudWatchEvents', 'putTargets', (params, callback) => {
     callback(null, {})
   })
-  awsMock.mock('CloudWatchLogs', 'createLogGroup', (params, callback) => {
-    callback(null, {})
-  })
-  awsMock.mock('CloudWatchLogs', 'putRetentionPolicy', (params, callback) => {
-    callback(null, {})
-  })
   awsMock.mock('S3', 'putBucketNotificationConfiguration', (params, callback) => {
     callback(null, {})
   })
@@ -151,7 +151,6 @@ const _mockSetting = () => {
 
 const _awsRestore = () => {
   awsMock.restore('CloudWatchEvents')
-  awsMock.restore('CloudWatchLogs')
   awsMock.restore('S3')
   awsMock.restore('Lambda')
 }
@@ -187,6 +186,10 @@ describe('lib/main', function () {
     mockLambdaClient.on(UpdateEventSourceMappingCommand).resolves(lambdaMockSettings.updateEventSourceMapping)
     mockLambdaClient.on(UpdateFunctionCodeCommand).resolves(lambdaMockSettings.updateFunctionCode)
     mockLambdaClient.on(UpdateFunctionConfigurationCommand).resolves(lambdaMockSettings.updateFunctionConfiguration)
+
+    mockCloudWatchLogsClient.reset()
+    mockCloudWatchLogsClient.on(CreateLogGroupCommand).resolves({})
+    mockCloudWatchLogsClient.on(PutRetentionPolicyCommand).resolves({})
   })
   after(() => {
     _awsRestore()
@@ -1609,7 +1612,7 @@ describe('lib/main', function () {
     it('simple test with mock', () => {
       const params = lambda._params(program, null)
       return lambda._setLogsRetentionPolicy(
-        new CloudWatchLogs(aws),
+        new CloudWatchLogs({ region: 'us-east-1' }),
         program,
         params.FunctionName
       ).then((results) => {
