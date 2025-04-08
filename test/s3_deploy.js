@@ -5,9 +5,13 @@ import('chai').then(chai => {
   assert = chai.assert
 })
 const process = require('process')
-const path = require('path')
-const aws = require('aws-sdk-mock')
-aws.setSDK(path.resolve('node_modules/aws-sdk'))
+const {
+  S3Client,
+  CreateBucketCommand,
+  PutObjectCommand
+} = require('@aws-sdk/client-s3')
+const { mockClient } = require('aws-sdk-client-mock')
+const mockS3Client = mockClient(S3Client)
 const S3Deploy = require('../lib/s3_deploy')
 
 const mockResponse = {
@@ -20,18 +24,11 @@ let s3Deploy = null
 /* global describe, it, before, after */
 describe('lib/s3_deploy', () => {
   before(() => {
-    aws.mock('S3', 'putObject', (params, callback) => {
-      callback(null, mockResponse.putObject)
-    })
-    aws.mock('S3', 'createBucket', (params, callback) => {
-      callback(null, mockResponse.createBucket)
-    })
+    mockS3Client.reset()
+    mockS3Client.on(CreateBucketCommand).resolves(mockResponse.createBucket)
+    mockS3Client.on(PutObjectCommand).resolves(mockResponse.putObject)
 
-    s3Deploy = new S3Deploy(require('aws-sdk'))
-  })
-
-  after(() => {
-    aws.restore('S3')
+    s3Deploy = new S3Deploy({ region: 'us-west-1' })
   })
 
   describe('_md5', () => {
