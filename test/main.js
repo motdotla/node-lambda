@@ -17,6 +17,7 @@ awsMock.setSDK(path.resolve('node_modules/aws-sdk'))
 
 // Migrating to v3.
 const { mockClient } = require('aws-sdk-client-mock')
+
 const {
   LambdaClient,
   CreateEventSourceMappingCommand,
@@ -33,12 +34,20 @@ const {
 } = require('@aws-sdk/client-lambda')
 const mockLambdaClient = mockClient(LambdaClient)
 const lambdaClient = new LambdaClient({ region: 'us-east-1' })
+
 const {
   CloudWatchLogsClient,
   CreateLogGroupCommand,
   PutRetentionPolicyCommand
 } = require('@aws-sdk/client-cloudwatch-logs')
 const mockCloudWatchLogsClient = mockClient(CloudWatchLogsClient)
+
+const {
+  S3Client,
+  CreateBucketCommand,
+  PutObjectCommand
+} = require('@aws-sdk/client-s3')
+const mockS3Client = mockClient(S3Client)
 
 const originalProgram = {
   packageManager: 'npm',
@@ -136,9 +145,6 @@ const _mockSetting = () => {
   awsMock.mock('S3', 'putBucketNotificationConfiguration', (params, callback) => {
     callback(null, {})
   })
-  awsMock.mock('S3', 'putObject', (params, callback) => {
-    callback(null, { test: 'putObject' })
-  })
 
   Object.keys(lambdaMockSettings).forEach((method) => {
     awsMock.mock('Lambda', method, (params, callback) => {
@@ -190,6 +196,10 @@ describe('lib/main', function () {
     mockCloudWatchLogsClient.reset()
     mockCloudWatchLogsClient.on(CreateLogGroupCommand).resolves({})
     mockCloudWatchLogsClient.on(PutRetentionPolicyCommand).resolves({})
+
+    mockS3Client.reset()
+    mockS3Client.on(CreateBucketCommand).resolves({})
+    mockS3Client.on(PutObjectCommand).resolves({})
   })
   after(() => {
     _awsRestore()
