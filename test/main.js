@@ -20,6 +20,7 @@ const { mockClient } = require('aws-sdk-client-mock')
 
 const {
   LambdaClient,
+  AddPermissionCommand,
   CreateEventSourceMappingCommand,
   CreateFunctionCommand,
   DeleteEventSourceMappingCommand,
@@ -45,6 +46,7 @@ const mockCloudWatchLogsClient = mockClient(CloudWatchLogsClient)
 const {
   S3Client,
   CreateBucketCommand,
+  PutBucketNotificationConfigurationCommand,
   PutObjectCommand
 } = require('@aws-sdk/client-s3')
 const mockS3Client = mockClient(S3Client)
@@ -142,9 +144,6 @@ const _mockSetting = () => {
   awsMock.mock('CloudWatchEvents', 'putTargets', (params, callback) => {
     callback(null, {})
   })
-  awsMock.mock('S3', 'putBucketNotificationConfiguration', (params, callback) => {
-    callback(null, {})
-  })
 
   Object.keys(lambdaMockSettings).forEach((method) => {
     awsMock.mock('Lambda', method, (params, callback) => {
@@ -181,6 +180,7 @@ describe('lib/main', function () {
 
     // for sdk v3
     mockLambdaClient.reset()
+    mockLambdaClient.on(AddPermissionCommand).resolves(lambdaMockSettings.addPermission)
     mockLambdaClient.on(CreateEventSourceMappingCommand).resolves(lambdaMockSettings.createEventSourceMapping)
     mockLambdaClient.on(CreateFunctionCommand).resolves(lambdaMockSettings.createFunction)
     mockLambdaClient.on(DeleteEventSourceMappingCommand).resolves(lambdaMockSettings.deleteEventSourceMapping)
@@ -199,6 +199,7 @@ describe('lib/main', function () {
 
     mockS3Client.reset()
     mockS3Client.on(CreateBucketCommand).resolves({})
+    mockS3Client.on(PutBucketNotificationConfigurationCommand).resolves({})
     mockS3Client.on(PutObjectCommand).resolves({})
   })
   after(() => {
