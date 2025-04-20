@@ -4,9 +4,11 @@ let assert
 import('chai').then(chai => {
   assert = chai.assert
 })
-const path = require('path')
-const aws = require('aws-sdk-mock')
-aws.setSDK(path.resolve('node_modules/aws-sdk'))
+const { S3Client, PutBucketNotificationConfigurationCommand } = require('@aws-sdk/client-s3')
+const { LambdaClient, AddPermissionCommand } = require('@aws-sdk/client-lambda')
+const { mockClient } = require('aws-sdk-client-mock')
+const mockS3Client = mockClient(S3Client)
+const mockLambdaClient = mockClient(LambdaClient)
 const S3Events = require('../lib/s3_events')
 
 const params = {
@@ -33,22 +35,15 @@ const mockResponse = {
 
 let s3Events = null
 
-/* global before, after, describe, it */
+/* global before, describe, it */
 describe('lib/s3_events', () => {
   before(() => {
-    aws.mock('Lambda', 'addPermission', (params, callback) => {
-      callback(null, mockResponse.addPermission)
-    })
-    aws.mock('S3', 'putBucketNotificationConfiguration', (params, callback) => {
-      callback(null, mockResponse.putBucketNotificationConfiguration)
-    })
+    mockS3Client.reset()
+    mockS3Client.on(PutBucketNotificationConfigurationCommand).resolves(mockResponse.putBucketNotificationConfiguration)
+    mockLambdaClient.reset()
+    mockLambdaClient.on(AddPermissionCommand).resolves(mockResponse.addPermission)
 
-    s3Events = new S3Events(require('aws-sdk'))
-  })
-
-  after(() => {
-    aws.restore('Lambda')
-    aws.restore('S3')
+    s3Events = new S3Events({ region: 'us-west-1' })
   })
 
   describe('_functionName', () => {
