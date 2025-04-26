@@ -44,6 +44,13 @@ const {
 const mockCloudWatchLogsClient = mockClient(CloudWatchLogsClient)
 
 const {
+  CloudWatchEventsClient,
+  PutRuleCommand,
+  PutTargetsCommand
+} = require('@aws-sdk/client-cloudwatch-events')
+const mockCloudWatchEventsClient = mockClient(CloudWatchEventsClient)
+
+const {
   S3Client,
   CreateBucketCommand,
   PutBucketNotificationConfigurationCommand,
@@ -138,13 +145,6 @@ const lambdaMockSettings = {
 }
 
 const _mockSetting = () => {
-  awsMock.mock('CloudWatchEvents', 'putRule', (params, callback) => {
-    callback(null, {})
-  })
-  awsMock.mock('CloudWatchEvents', 'putTargets', (params, callback) => {
-    callback(null, {})
-  })
-
   Object.keys(lambdaMockSettings).forEach((method) => {
     awsMock.mock('Lambda', method, (params, callback) => {
       callback(null, lambdaMockSettings[method])
@@ -155,7 +155,6 @@ const _mockSetting = () => {
 }
 
 const _awsRestore = () => {
-  awsMock.restore('CloudWatchEvents')
   awsMock.restore('S3')
   awsMock.restore('Lambda')
 }
@@ -196,6 +195,10 @@ describe('lib/main', function () {
     mockCloudWatchLogsClient.reset()
     mockCloudWatchLogsClient.on(CreateLogGroupCommand).resolves({})
     mockCloudWatchLogsClient.on(PutRetentionPolicyCommand).resolves({})
+
+    mockCloudWatchEventsClient.reset()
+    mockCloudWatchEventsClient.on(PutRuleCommand).resolves({})
+    mockCloudWatchEventsClient.on(PutTargetsCommand).resolves({})
 
     mockS3Client.reset()
     mockS3Client.on(CreateBucketCommand).resolves({})
