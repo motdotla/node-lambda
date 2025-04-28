@@ -5,8 +5,11 @@ import('chai').then(chai => {
   assert = chai.assert
 })
 const path = require('path')
-const aws = require('aws-sdk-mock')
-aws.setSDK(path.resolve('node_modules/aws-sdk'))
+const { CloudWatchEventsClient, PutRuleCommand, PutTargetsCommand } = require('@aws-sdk/client-cloudwatch-events')
+const { LambdaClient, AddPermissionCommand } = require('@aws-sdk/client-lambda')
+const { mockClient } = require('aws-sdk-client-mock')
+const mockCloudWatchEventsClient = mockClient(CloudWatchEventsClient)
+const mockLambdaClient = mockClient(LambdaClient)
 const ScheduleEvents = require(path.join('..', 'lib', 'schedule_events'))
 
 const params = {
@@ -44,22 +47,14 @@ let schedule = null
 /* global before, after, describe, it */
 describe('lib/schedule_events', () => {
   before(() => {
-    aws.mock('CloudWatchEvents', 'putRule', (params, callback) => {
-      callback(null, mockResponse.putRule)
-    })
-    aws.mock('CloudWatchEvents', 'putTargets', (params, callback) => {
-      callback(null, mockResponse.putTargets)
-    })
-    aws.mock('Lambda', 'addPermission', (params, callback) => {
-      callback(null, mockResponse.addPermission)
-    })
+    mockCloudWatchEventsClient.reset()
+    mockCloudWatchEventsClient.on(PutRuleCommand).resolves(mockResponse.putRule)
+    mockCloudWatchEventsClient.on(PutTargetsCommand).resolves(mockResponse.putTargets)
 
-    schedule = new ScheduleEvents(require('aws-sdk'))
-  })
+    mockLambdaClient.reset()
+    mockLambdaClient.on(AddPermissionCommand).resolves(mockResponse.addPermission)
 
-  after(() => {
-    aws.restore('CloudWatchEvents')
-    aws.restore('Lambda')
+    schedule = new ScheduleEvents({ region: 'us-west-1' })
   })
 
   describe('_ruleDescription (default)', () => {
