@@ -12,10 +12,6 @@ import('chai').then(chai => {
   assert = chai.assert
 })
 
-const awsMock = require('aws-sdk-mock')
-awsMock.setSDK(path.resolve('node_modules/aws-sdk'))
-
-// Migrating to v3.
 const { mockClient } = require('aws-sdk-client-mock')
 
 const {
@@ -144,21 +140,6 @@ const lambdaMockSettings = {
   tagResource: {}
 }
 
-const _mockSetting = () => {
-  Object.keys(lambdaMockSettings).forEach((method) => {
-    awsMock.mock('Lambda', method, (params, callback) => {
-      callback(null, lambdaMockSettings[method])
-    })
-  })
-
-  return require('aws-sdk')
-}
-
-const _awsRestore = () => {
-  awsMock.restore('S3')
-  awsMock.restore('Lambda')
-}
-
 /* global before, after, beforeEach, afterEach, describe, it */
 describe('lib/main', function () {
   if (['win32', 'darwin'].includes(process.platform)) {
@@ -167,10 +148,7 @@ describe('lib/main', function () {
     this.timeout(120000)
   }
 
-  let aws = null // mock
   before(() => {
-    aws = _mockSetting()
-
     if (process.platform === 'win32') {
       execFileSync('cmd.exe', ['/c', 'npm', 'ci'], { cwd: sourceDirectoryForTest })
       return
@@ -204,9 +182,6 @@ describe('lib/main', function () {
     mockS3Client.on(CreateBucketCommand).resolves({})
     mockS3Client.on(PutBucketNotificationConfigurationCommand).resolves({})
     mockS3Client.on(PutObjectCommand).resolves({})
-  })
-  after(() => {
-    _awsRestore()
   })
 
   beforeEach(() => {
@@ -1516,7 +1491,7 @@ describe('lib/main', function () {
         'event_sources.json',
         JSON.stringify(eventSourcesJsonValue)
       )
-      schedule = new ScheduleEvents(aws)
+      schedule = new ScheduleEvents({ region: 'us-east-1' })
     })
 
     after(() => fs.unlinkSync('event_sources.json'))
@@ -1568,7 +1543,7 @@ describe('lib/main', function () {
         'event_sources.json',
         JSON.stringify(eventSourcesJsonValue)
       )
-      s3Events = new S3Events(aws)
+      s3Events = new S3Events({ region: 'us-east-1' })
     })
 
     after(() => fs.unlinkSync('event_sources.json'))
