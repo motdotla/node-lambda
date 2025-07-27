@@ -142,8 +142,12 @@ const lambdaMockSettings = {
 
 /* global before, after, beforeEach, afterEach, describe, it */
 describe('lib/main', function () {
-  if (['win32', 'darwin'].includes(process.platform)) {
-    // It seems that it takes time for file operation in Windows and Mac.
+  if (process.platform === 'win32') {
+    // It seems that it takes very long time for file operation in Windows.
+    // So set `timeout(300000)` for the whole test.
+    this.timeout(300000)
+  } else if (process.platform === 'darwin') {
+    // It seems that it takes time for file operation in Mac.
     // So set `timeout(120000)` for the whole test.
     this.timeout(120000)
   }
@@ -154,8 +158,11 @@ describe('lib/main', function () {
       return
     }
     execFileSync('npm', ['ci'], { cwd: sourceDirectoryForTest })
+  })
 
-    // for sdk v3
+  beforeEach(() => {
+    program = Object.assign({}, originalProgram) // clone
+
     mockLambdaClient.reset()
     mockLambdaClient.on(AddPermissionCommand).resolves(lambdaMockSettings.addPermission)
     mockLambdaClient.on(CreateEventSourceMappingCommand).resolves(lambdaMockSettings.createEventSourceMapping)
@@ -182,10 +189,6 @@ describe('lib/main', function () {
     mockS3Client.on(CreateBucketCommand).resolves({})
     mockS3Client.on(PutBucketNotificationConfigurationCommand).resolves({})
     mockS3Client.on(PutObjectCommand).resolves({})
-  })
-
-  beforeEach(() => {
-    program = Object.assign({}, originalProgram) // clone
   })
 
   it('version should be set', () => {
