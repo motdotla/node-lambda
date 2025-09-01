@@ -48,7 +48,7 @@
   },
   "devDependencies": {
     "aws-sdk-mock": "^6.0.4",
-    "chai": "^5.0.0",
+    "chai": "^6.0.1",
     "mocha": "^11.0.1",
     "node-zip": "^1.1.1",
     "standard": "^17.0.0"
