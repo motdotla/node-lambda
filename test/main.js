@@ -60,6 +60,8 @@ const forceRemoveSync = (targetPath) => {
     fs.rmSync(targetPath, { recursive: true, force: true })
     return
   }
+  // fs-extra's removeSync always removes recursively and handles non-existent paths gracefully,
+  // so no options are needed here. This is functionally equivalent to the rmSync call above.
   fs.removeSync(targetPath)
 }
 
@@ -148,7 +150,7 @@ const _awsRestore = () => {
 describe('lib/main', function () {
   if (['win32', 'darwin'].includes(process.platform)) {
     // It seems that it takes time for file operation in Windows and Mac.
-    // So set `timeout(180000)` for the whole test.
+    // So set timeout(180000) (sec: 180) for the whole test.
     this.timeout(180000)
   }
 
