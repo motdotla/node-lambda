@@ -55,6 +55,14 @@ const _timeout = function (params) {
   }
 }
 
+const forceRemoveSync = (targetPath) => {
+  if (typeof fs.rmSync === 'function') {
+    fs.rmSync(targetPath, { recursive: true, force: true })
+    return
+  }
+  fs.removeSync(targetPath)
+}
+
 // It does not completely reproduce the response of the actual API.
 const lambdaMockSettings = {
   addPermission: {},
@@ -140,8 +148,8 @@ const _awsRestore = () => {
 describe('lib/main', function () {
   if (['win32', 'darwin'].includes(process.platform)) {
     // It seems that it takes time for file operation in Windows and Mac.
-    // So set `timeout(120000)` for the whole test.
-    this.timeout(120000)
+    // So set `timeout(180000)` for the whole test.
+    this.timeout(180000)
   }
 
   let aws = null // mock
@@ -478,8 +486,8 @@ describe('lib/main', function () {
       fs.writeFileSync('fuga', '')
     })
     after(() => {
-      ['fuga', '__unittest'].forEach((path) => {
-        fs.removeSync(path)
+      ['fuga', '__unittest'].forEach((targetPath) => {
+        forceRemoveSync(targetPath)
       })
     })
 
@@ -560,7 +568,7 @@ describe('lib/main', function () {
 
       it('_fileCopy should not include package.json when --prebuiltDirectory is set', () => {
         const buildDir = '.build_' + Date.now()
-        after(() => fs.removeSync(buildDir))
+        after(() => forceRemoveSync(buildDir))
 
         fs.mkdirSync(buildDir)
         fs.writeFileSync(path.join(buildDir, 'testa'), '')
@@ -594,7 +602,7 @@ describe('lib/main', function () {
 
     describe('when package-lock.json does not exist', () => {
       beforeEach(() => {
-        fs.removeSync(path.join(codeDirectory, 'package-lock.json'))
+        forceRemoveSync(path.join(codeDirectory, 'package-lock.json'))
       })
 
       it('returns false', () => {
@@ -717,7 +725,7 @@ describe('lib/main', function () {
   })
 
   describe('_packageInstall', function () {
-    _timeout({ this: this, sec: 60 }) // ci should be faster than install
+    _timeout({ this: this, sec: 180 }) // ci should be faster than install
 
     // npm treats files as packages when installing, and so removes them.
     // Test with `devDependencies` packages that are not installed with the `--production` option.
@@ -754,7 +762,7 @@ describe('lib/main', function () {
       fs.writeFileSync(packageJsonPath, JSON.stringify(packageJson))
 
       // Remove package-lock.json because it does not match the package.json to which optionalDependencies was added.
-      fs.removeSync(path.join(codeDirectory, 'package-lock.json'))
+      forceRemoveSync(path.join(codeDirectory, 'package-lock.json'))
     }
 
     const testOptionalDependenciesIsInstalled = async (packageManager) => {
@@ -796,7 +804,7 @@ describe('lib/main', function () {
 
       describe('when package-lock.json does not exist', () => {
         beforeEach(() => {
-          return fs.removeSync(path.join(codeDirectory, 'package-lock.json'))
+          forceRemoveSync(path.join(codeDirectory, 'package-lock.json'))
         })
 
         it('should use "npm install"', () => {
@@ -849,7 +857,7 @@ describe('lib/main', function () {
   })
 
   describe('_packageInstall (When codeDirectory contains characters to be escaped)', function () {
-    _timeout({ this: this, sec: 30 }) // give it time to build the node modules
+    _timeout({ this: this, sec: 180 }) // give it time to build the node modules
 
     beforeEach(() => {
       // Since '\' can not be included in the file or directory name in Windows
@@ -863,7 +871,7 @@ describe('lib/main', function () {
     })
 
     afterEach(() => {
-      fs.removeSync(codeDirectory)
+      forceRemoveSync(codeDirectory)
       codeDirectory = lambda._codeDirectory()
     })
 
@@ -952,7 +960,7 @@ describe('lib/main', function () {
   })
 
   describe('_zip', function () {
-    _timeout({ this: this, sec: 60 }) // give it time to zip
+    _timeout({ this: this, sec: 180 }) // give it time to zip
 
     const beforeTask = async (packageManager) => {
       await lambda._cleanDirectory(codeDirectory)
@@ -1022,7 +1030,7 @@ describe('lib/main', function () {
   describe('_archive', () => {
     // archive.files's name is a slash delimiter regardless of platform.
     it('installs and zips with an index.js file and node_modules/dotenv (It is also a test of `_buildAndArchive`)', function () {
-      _timeout({ this: this, sec: 30 }) // give it time to zip
+      _timeout({ this: this, sec: 180 }) // give it time to zip
 
       return lambda._archive({ ...program, sourceDirectory: sourceDirectoryForTest }).then((data) => {
         const archive = new Zip(data)
@@ -1035,9 +1043,9 @@ describe('lib/main', function () {
     })
 
     it('packages a prebuilt module without installing (It is also a test of `_archivePrebuilt`)', function () {
-      _timeout({ this: this, sec: 30 }) // give it time to zip
+      _timeout({ this: this, sec: 180 }) // give it time to zip
       const buildDir = '.build_' + Date.now()
-      after(() => fs.removeSync(buildDir))
+      after(() => forceRemoveSync(buildDir))
 
       fs.mkdirSync(buildDir)
       fs.mkdirSync(path.join(buildDir, 'd'))
@@ -1063,11 +1071,11 @@ describe('lib/main', function () {
     })
 
     it('cleans the temporary directory before running `_archivePrebuilt`', function () {
-      _timeout({ this: this, sec: 30 }) // give it time to zip
+      _timeout({ this: this, sec: 180 }) // give it time to zip
       const buildDir = '.build_' + Date.now()
       const codeDir = lambda._codeDirectory()
       const tmpFile = path.join(codeDir, 'deleteme')
-      after(() => fs.removeSync(buildDir))
+      after(() => forceRemoveSync(buildDir))
 
       fs.mkdirSync(codeDir, { recursive: true })
       fs.writeFileSync(tmpFile, '...')
@@ -1085,7 +1093,7 @@ describe('lib/main', function () {
     const testZipFile = path.join(os.tmpdir(), 'node-lambda-test.zip')
     let bufferExpected = null
     before(function () {
-      _timeout({ this: this, sec: 30 }) // give it time to zip
+      _timeout({ this: this, sec: 180 }) // give it time to zip
 
       return lambda._zip(program, codeDirectory).then((data) => {
         bufferExpected = data
@@ -1130,7 +1138,7 @@ describe('lib/main', function () {
           deployZipfile: filePath,
           sourceDirectory: sourceDirectoryForTest
         }
-        _timeout({ this: this, sec: 30 }) // give it time to zip
+        _timeout({ this: this, sec: 180 }) // give it time to zip
         return lambda._archive(_program).then((data) => {
           // same test as "installs and zips with an index.js file and node_modules/dotenv"
           const archive = new Zip(data)
@@ -1642,7 +1650,7 @@ describe('lib/main', function () {
 
   describe('Lambda.prototype.deploy()', () => {
     it('simple test with mock', function () {
-      _timeout({ this: this, sec: 30 }) // give it time to zip
+      _timeout({ this: this, sec: 180 }) // give it time to zip
       return lambda.deploy({ ...program, sourceDirectory: sourceDirectoryForTest }).then((result) => {
         assert.isUndefined(result)
       })
@@ -1654,10 +1662,9 @@ describe('lib/main', function () {
       return lambda._updateTags(
         awsLambda,
         'arn:aws:lambda:eu-central-1:1234567:function:test',
-        { tagKey: 'tagValue' }).then((result) => {
-        assert.deepEqual(
-          result, {}
-        )
+        { tagKey: 'tagValue' }
+      ).then((result) => {
+        assert.deepEqual(result, {})
       })
     })
   })
