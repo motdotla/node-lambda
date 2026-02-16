@@ -219,7 +219,7 @@ describe('lib/main', function () {
   describe('_isFunctionDoesNotExist', () => {
     it('=== true', () => {
       const err = {
-        code: 'ResourceNotFoundException',
+        name: 'ResourceNotFoundException',
         message: 'Function not found: arn:aws:lambda:XXX'
       }
       assert.isTrue(lambda._isFunctionDoesNotExist(err))
@@ -227,7 +227,7 @@ describe('lib/main', function () {
 
     it('=== false', () => {
       const err = {
-        code: 'MissingRequiredParameter',
+        name: 'MissingRequiredParameter',
         message: 'Missing required key \'FunctionName\' in params'
       }
       assert.isFalse(lambda._isFunctionDoesNotExist(err))
