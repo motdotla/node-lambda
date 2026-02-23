@@ -85,7 +85,8 @@ const lambdaMockSettings = {
   },
   updateFunctionCode: {
     FunctionArn: 'Lambda.updateFunctionCode.mock.FunctionArn',
-    FunctionName: 'Lambda.updateFunctionCode.mock.FunctionName'
+    FunctionName: 'Lambda.updateFunctionCode.mock.FunctionName',
+    Version: '1'
   },
   updateFunctionConfiguration: {
     FunctionArn: 'Lambda.updateFunctionConfiguration.mock.FunctionArn',
@@ -107,7 +108,19 @@ const lambdaMockSettings = {
     Tags: { tag1: 'key1' }
   },
   untagResource: {},
-  tagResource: {}
+  tagResource: {},
+  getAlias: {
+    FunctionArn: 'Lambda.getAlias.mock.FunctionArn',
+    Name: 'mockAlias'
+  },
+  createAlias: {
+    FunctionArn: 'Lambda.createAlias.mock.FunctionArn',
+    Name: 'mockAlias'
+  },
+  updateAlias: {
+    FunctionArn: 'Lambda.updateAlias.mock.FunctionArn',
+    Name: 'mockAlias'
+  }
 }
 
 const _mockSetting = () => {
@@ -1575,7 +1588,27 @@ describe('lib/main', function () {
     it('simple test with mock', () => {
       const params = lambda._params(program, null)
       return lambda._uploadExisting(awsLambda, params).then((results) => {
-        assert.deepEqual(results, lambdaMockSettings.updateFunctionConfiguration)
+        assert.deepEqual(results, lambdaMockSettings.updateFunctionCode)
+      })
+    })
+  })
+
+  describe('_alias', () => {
+    it('updates alias when it already exists', () => {
+      return lambda._alias(awsLambda, 'myFunc', '1', 'mockAlias').then((results) => {
+        assert.deepEqual(results, lambdaMockSettings.updateAlias)
+      })
+    })
+
+    it('creates alias when it does not exist', () => {
+      const err = new Error('ResourceNotFoundException')
+      err.code = 'ResourceNotFoundException'
+      const mockLambda = {
+        getAlias: () => ({ promise: () => Promise.reject(err) }),
+        createAlias: () => ({ promise: () => Promise.resolve(lambdaMockSettings.createAlias) })
+      }
+      return lambda._alias(mockLambda, 'myFunc', '1', 'mockAlias').then((results) => {
+        assert.deepEqual(results, lambdaMockSettings.createAlias)
       })
     })
   })
@@ -1646,6 +1679,17 @@ describe('lib/main', function () {
             { retentionInDays: 30 }
           ]
         )
+      })
+    })
+
+    it('creates alias when publish and lambdaVersion are set', () => {
+      program.publish = true
+      program.lambdaVersion = 'v1'
+      const params = lambda._params(program, null)
+      params.Publish = true
+      return lambda._deployToRegion(program, params, 'us-east-1').then((result) => {
+        assert.equal(result.length, 4)
+        assert.deepEqual(result[3], lambdaMockSettings.updateAlias)
       })
     })
   })
