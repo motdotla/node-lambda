@@ -279,18 +279,18 @@ describe('lib/main', function () {
       assert.match(params.FunctionName, functionNamePattern)
     })
 
-    it('appends version to original functionName', () => {
+    it('does not append version to functionName', () => {
       program.lambdaVersion = '2015-02-01'
       const params = lambda._params(program)
-      assert.equal(params.FunctionName, '___node-lambda-development-2015-02-01')
+      assert.equal(params.FunctionName, '___node-lambda-development')
       assert.match(params.FunctionName, functionNamePattern)
     })
 
-    it('appends version to original functionName (value not allowed by AWS)', () => {
-      program.lambdaVersion = '2015.02.01'
+    it('sets Publish to true when lambdaVersion is set', () => {
+      program.lambdaVersion = 'v1'
+      program.publish = false
       const params = lambda._params(program)
-      assert.equal(params.FunctionName, '___node-lambda-development-2015_02_01')
-      assert.match(params.FunctionName, functionNamePattern)
+      assert.isTrue(params.Publish)
     })
 
     it('appends VpcConfig to params when vpc params set', () => {
@@ -1682,11 +1682,10 @@ describe('lib/main', function () {
       })
     })
 
-    it('creates alias when publish and lambdaVersion are set', () => {
-      program.publish = true
+    it('creates alias when lambdaVersion is set', () => {
       program.lambdaVersion = 'v1'
       const params = lambda._params(program, null)
-      params.Publish = true
+      assert.isTrue(params.Publish)
       return lambda._deployToRegion(program, params, 'us-east-1').then((result) => {
         assert.equal(result.length, 4)
         assert.deepEqual(result[3], lambdaMockSettings.updateAlias)
