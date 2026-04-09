@@ -10,10 +10,10 @@ const fs = require('fs-extra')
 const spawn = require('child_process').spawn
 const execSync = require('child_process').execSync
 const nodeLambdaPath = path.join(__dirname, '..', 'bin', 'node-lambda')
+const stripAnsi = require('strip-ansi')
 
 const removeDotenvLog = (str) => {
-  // eslint-disable-next-line no-control-regex
-  return str.replace(/^\u001b\[38;5;142m\[dotenvx@.+\]injectingenv\(.+\)from.env\u001b\[39m/, '')
+  return stripAnsi(str).replace(/^.*?injectingenv\(\d+\)from\.env(\u00B7dotenvx@[\d.]+)?/, '')
 }
 
 /* global before, after, describe, it */
