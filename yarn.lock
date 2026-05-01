@@ -761,10 +761,10 @@ define-properties@^1.2.0, define-properties@^1.2.1:
     has-property-descriptors "^1.0.0"
     object-keys "^1.1.1"
 
-degenerator@7.0.0:
-  version "7.0.0"
-  resolved "https://registry.yarnpkg.com/degenerator/-/degenerator-7.0.0.tgz#b269074f2c96d3f8239e1b9f9e992f52a067ef42"
-  integrity sha512-YIz9P5gRq4qThp4X5E7O0i/K3w4Jd9akZUt5wUPk6+6zZrSudknhi/IlDn4JJ281XcfSpcEz1lFD4C+tf0ymmQ==
+degenerator@7.0.1:
+  version "7.0.1"
+  resolved "https://registry.yarnpkg.com/degenerator/-/degenerator-7.0.1.tgz#9b057747a2e5d058b0ef8fd753faccc109957467"
+  integrity sha512-ABErK0IefDSyHjlPH7WUEenIAX2rPPnrDcDM+TS3z3+zu9TfyKKi07BQM+8rmxpdE2y1v5fjjdoAS/x4D2U60w==
   dependencies:
     ast-types "^0.13.4"
     escodegen "^2.1.0"
@@ -2397,26 +2397,26 @@ p-try@^2.0.0:
   resolved "https://registry.npmjs.org/p-try/-/p-try-2.2.0.tgz"
   integrity sha512-R4nPAVTAU0B9D35/Gk3uJf/7XYbQcyohSKdvAxIRSNghFl4e71hVoGnBNQz9cWaXxO2I10KTC+3jMdvvoKw6dQ==
 
-pac-proxy-agent@9.0.0:
-  version "9.0.0"
-  resolved "https://registry.yarnpkg.com/pac-proxy-agent/-/pac-proxy-agent-9.0.0.tgz#166b2c966544639e782b640f452e0992fc7bbb5b"
-  integrity sha512-/0mL/nYpzA1iT+QOzO/e7KAMaVPs2TqTcK9Hfl1nh+uwtFwSlODwM/Jie+ps22T4kkKWwOz1A+WvitB9yker2Q==
+pac-proxy-agent@9.0.1:
+  version "9.0.1"
+  resolved "https://registry.yarnpkg.com/pac-proxy-agent/-/pac-proxy-agent-9.0.1.tgz#9cee1f8b41b00c53418f10824a8a41b3e07587dd"
+  integrity sha512-3ZOSpLboOlpW4yp8Cuv21KlTULRqyJ5Uuad3wXpSKFrxdNgcHEyoa22GRaZ2UlgCVuR6z+5BiavtYVvbajL/Yw==
   dependencies:
     agent-base "9.0.0"
     debug "^4.3.4"
     get-uri "8.0.0"
     http-proxy-agent "9.0.0"
     https-proxy-agent "9.0.0"
-    pac-resolver "9.0.0"
-    quickjs-wasi "^0.0.1"
+    pac-resolver "9.0.1"
+    quickjs-wasi "^2.2.0"
     socks-proxy-agent "10.0.0"
 
-pac-resolver@9.0.0:
-  version "9.0.0"
-  resolved "https://registry.yarnpkg.com/pac-resolver/-/pac-resolver-9.0.0.tgz#b24daf47b6f414a7c3d1ad0c1a76a95276dcc956"
-  integrity sha512-7vnhwZvvnXgqOFy7sXt6yJh2KASD5xqW9SYt4yGsbTNNUDoF5ryL84itpoERN7a2dF6AXJsIiXwcZchazLS/vw==
+pac-resolver@9.0.1:
+  version "9.0.1"
+  resolved "https://registry.yarnpkg.com/pac-resolver/-/pac-resolver-9.0.1.tgz#a90b1518e4e832b3fcb197ada974d6f6ceaa7f8a"
+  integrity sha512-lJbS008tmkj08VhoM8Hzuv/VE5tK9MS0OIQ/7+s0lIF+BYhiQWFYzkSpML7lXs9iBu2jfmzBTLzhe9n6BX+dYw==
   dependencies:
-    degenerator "7.0.0"
+    degenerator "7.0.1"
     netmask "^2.0.2"
 
 package-json-from-dist@^1.0.0:
@@ -2530,16 +2530,16 @@ prop-types@^15.8.1:
     react-is "^16.13.1"
 
 proxy-agent@^8.0.0:
-  version "8.0.0"
-  resolved "https://registry.yarnpkg.com/proxy-agent/-/proxy-agent-8.0.0.tgz#55db68832ee79a56e24b0cdf0b4939bce026c770"
-  integrity sha512-VHE3bM8demARMgO9DCUvmaIoknpJUbfIanlIRvme+0fGAg7RC8NYRcOsuy31p1qyQhv4PFzipgL9FiwhCng/+w==
+  version "8.0.1"
+  resolved "https://registry.yarnpkg.com/proxy-agent/-/proxy-agent-8.0.1.tgz#4819c7b14637c6940424aeed840e9883a378a15d"
+  integrity sha512-kccqGBqHZXR8onQhY/ganJjoO8QIKKRiFBhPOzbTZK16attzSZ/0XSmp9H7jrRxPKHjhGyx1q32lMPrJ3uLFgA==
   dependencies:
     agent-base "9.0.0"
     debug "^4.3.4"
     http-proxy-agent "9.0.0"
     https-proxy-agent "9.0.0"
     lru-cache "^7.14.1"
-    pac-proxy-agent "9.0.0"
+    pac-proxy-agent "9.0.1"
     proxy-from-env "^2.0.0"
     socks-proxy-agent "10.0.0"
 
@@ -2573,10 +2573,10 @@ queue-tick@^1.0.1:
   resolved "https://registry.npmjs.org/queue-tick/-/queue-tick-1.0.1.tgz"
   integrity sha512-kJt5qhMxoszgU/62PLP1CJytzd2NKetjSRnyuj31fDd3Rlcz3fzlFdFLD1SItunPwyqEOkca6GbV612BWfaBag==
 
-quickjs-wasi@^0.0.1:
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/quickjs-wasi/-/quickjs-wasi-0.0.1.tgz#a2087b982a76ac0eb3bdcb93d7e51f178457d0fb"
-  integrity sha512-fBWNLTBkxkLAhe1AzF1hyXEvuA+N+vV1WMP2D6iiMUblvmOt8Pp5t8zUcgvz7aYA1ldUdxDlgUse15dmcKjkNg==
+quickjs-wasi@^2.2.0:
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/quickjs-wasi/-/quickjs-wasi-2.2.0.tgz#85d8984aa1b048546e5634c764165034c6e22d48"
+  integrity sha512-zQxXmQMrEoD3S+jQdYsloq4qAuaxKFHZj6hHqOYGwB2iQZH+q9e/lf5zQPXCKOk0WJuAjzRFbO4KwHIp2D05Iw==
 
 randombytes@^2.1.0:
   version "2.1.0"
