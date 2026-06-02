@@ -240,31 +240,20 @@ ansi-styles@^6.1.0:
   resolved "https://registry.npmjs.org/ansi-styles/-/ansi-styles-6.2.1.tgz"
   integrity sha512-bN798gFfQX+viw3R7yrGWRqnrN2oRkEkUjjl4JNn4E8GxxbjtG3FbrEIIY3l8/hrwUwIeCZvi4QuOTP4MErVug==
 
-archiver-utils@^5.0.0, archiver-utils@^5.0.2:
-  version "5.0.2"
-  resolved "https://registry.npmjs.org/archiver-utils/-/archiver-utils-5.0.2.tgz"
-  integrity sha512-wuLJMmIBQYCsGZgYLTy5FIB2pF6Lfb6cXMSF8Qywwk3t20zWnAi7zLcQFdKQmIB8wyZpY5ER38x08GbwtR2cLA==
+archiver@^8.0.0:
+  version "8.0.0"
+  resolved "https://registry.yarnpkg.com/archiver/-/archiver-8.0.0.tgz#b02b8d0b978488e6dbebf1e0ebbc4103f5ffae3b"
+  integrity sha512-fV1orZfsnPn9BaSByR/qE67rJCLJEy2Ox5bq7nJh+jquWaNh6Sfec75kJ2T6PtdGUbPQlrVoSVCEOa5SdiTQ1g==
   dependencies:
-    glob "^10.0.0"
-    graceful-fs "^4.2.0"
-    is-stream "^2.0.1"
-    lazystream "^1.0.0"
-    lodash "^4.17.15"
-    normalize-path "^3.0.0"
-    readable-stream "^4.0.0"
-
-archiver@^7.0.0:
-  version "7.0.1"
-  resolved "https://registry.npmjs.org/archiver/-/archiver-7.0.1.tgz"
-  integrity sha512-ZcbTaIqJOfCc03QwD468Unz/5Ir8ATtvAHsK+FdXbDIbGfihqh9mrvdcYunQzqn4HrvWWaFyaxJhGZagaJJpPQ==
-  dependencies:
-    archiver-utils "^5.0.2"
     async "^3.2.4"
     buffer-crc32 "^1.0.0"
+    is-stream "^4.0.0"
+    lazystream "^1.0.0"
+    normalize-path "^3.0.0"
     readable-stream "^4.0.0"
-    readdir-glob "^1.1.2"
+    readdir-glob "^3.0.0"
     tar-stream "^3.0.0"
-    zip-stream "^6.0.1"
+    zip-stream "^7.0.2"
 
 argparse@^2.0.1:
   version "2.0.1"
@@ -491,13 +480,6 @@ brace-expansion@^1.1.7:
     balanced-match "^1.0.0"
     concat-map "0.0.1"
 
-brace-expansion@^2.0.1:
-  version "2.0.3"
-  resolved "https://registry.yarnpkg.com/brace-expansion/-/brace-expansion-2.0.3.tgz#0493338bdd58e319b1039c67cf7ee439892c01d9"
-  integrity sha512-MCV/fYJEbqx68aE58kv2cA/kiky1G8vux3OR6/jbS+jIMe/6fJWa0DTzJU7dqijOWYwHi1t29FlfYI9uytqlpA==
-  dependencies:
-    balanced-match "^1.0.0"
-
 brace-expansion@^5.0.2, brace-expansion@^5.0.5:
   version "5.0.5"
   resolved "https://registry.yarnpkg.com/brace-expansion/-/brace-expansion-5.0.5.tgz#dcc3a37116b79f3e1b46db994ced5d570e930fdb"
@@ -628,14 +610,14 @@ commander@^14.0.0:
   resolved "https://registry.yarnpkg.com/commander/-/commander-14.0.3.tgz#425d79b48f9af82fcd9e4fc1ea8af6c5ec07bbc2"
   integrity sha512-H+y0Jo/T1RZ9qPP4Eh1pkcQcLRglraJaSLoyOtHxu6AapkjWVCy2Sit1QQ4x3Dng8qDlSsZEet7g5Pq06MvTgw==
 
-compress-commons@^6.0.2:
-  version "6.0.2"
-  resolved "https://registry.npmjs.org/compress-commons/-/compress-commons-6.0.2.tgz"
-  integrity sha512-6FqVXeETqWPoGcfzrXb37E50NP0LXT8kAMu5ooZayhWWdgEY4lBEEcbQNXtkuKQsGduxiIcI4gOTsxTmuq/bSg==
+compress-commons@^7.0.0:
+  version "7.0.1"
+  resolved "https://registry.yarnpkg.com/compress-commons/-/compress-commons-7.0.1.tgz#280665524f98e02d704b0df511842c2da19077fd"
+  integrity sha512-g0S8KAD8qf4+V//pr3BfB1aBnARLXNz2Gx+jmHU0LEriUuoQUOPOulVquHKTJ8+EAIIO7fhseNDr9wK5Q9FKBQ==
   dependencies:
     crc-32 "^1.2.0"
-    crc32-stream "^6.0.0"
-    is-stream "^2.0.1"
+    crc32-stream "^7.0.1"
+    is-stream "^4.0.0"
     normalize-path "^3.0.0"
     readable-stream "^4.0.0"
 
@@ -662,10 +644,10 @@ crc-32@^1.2.0:
   resolved "https://registry.npmjs.org/crc-32/-/crc-32-1.2.2.tgz"
   integrity sha512-ROmzCKrTnOwybPcJApAA6WBWij23HVfGVNKqqrZpuyZOHqK2CwHSvpGuyt/UNNvaIjEd8X5IFGp4Mh+Ie1IHJQ==
 
-crc32-stream@^6.0.0:
-  version "6.0.0"
-  resolved "https://registry.npmjs.org/crc32-stream/-/crc32-stream-6.0.0.tgz"
-  integrity sha512-piICUB6ei4IlTv1+653yq5+KoqfBYmj9bw6LqXoOneTMDXk5nM1qt12mFW1caG3LlJXEKW1Bp0WggEmIfQB34g==
+crc32-stream@^7.0.1:
+  version "7.0.1"
+  resolved "https://registry.yarnpkg.com/crc32-stream/-/crc32-stream-7.0.1.tgz#e573ff657b789e8b5a131cb298f731d7d12e0f42"
+  integrity sha512-IBWsY8xznyQrcHn8h4bC8/4ErNke5elzgG8GcqF4RFPw6aHkWWRc7Tgw6upjaTX/CT/yQgqYENkxYsTYN+hW2g==
   dependencies:
     crc-32 "^1.2.0"
     readable-stream "^4.0.0"
@@ -1484,7 +1466,7 @@ glob-parent@^6.0.2:
   dependencies:
     is-glob "^4.0.3"
 
-glob@^10.0.0, glob@^10.4.5:
+glob@^10.4.5:
   version "10.4.5"
   resolved "https://registry.yarnpkg.com/glob/-/glob-10.4.5.tgz#f4d9f0b90ffdbab09c9d77f5f29b4262517b0956"
   integrity sha512-7Bv8RF0k6xjo7d4A/PxYLbUCfb6c+Vpd2/mB2yRDlew7Jb5hEXiCD9ibfO7wpk8i4sevK6DFny9h7EYbM3/sHg==
@@ -1874,10 +1856,15 @@ is-shared-array-buffer@^1.0.3:
   dependencies:
     call-bind "^1.0.7"
 
-is-stream@^2.0.0, is-stream@^2.0.1:
+is-stream@^2.0.0:
   version "2.0.1"
   resolved "https://registry.npmjs.org/is-stream/-/is-stream-2.0.1.tgz"
   integrity sha512-hFoiJiTl63nn+kstHGBtewWSKnQLpyb155KHheA1l39uvtO9nWIop1p3udqPcUd/xbF1VLMO4n7OI6p7RbngDg==
+
+is-stream@^4.0.0:
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/is-stream/-/is-stream-4.0.1.tgz#375cf891e16d2e4baec250b85926cffc14720d9b"
+  integrity sha512-Dnz92NInDqYckGEUJv689RbRiTSEHCQ7wOVeALbkOz999YpqT46yMRIGtSNl2iCL1waAZSx40+h59NV/EwzV/A==
 
 is-string@^1.0.5, is-string@^1.0.7:
   version "1.0.7"
@@ -2095,11 +2082,6 @@ lodash.merge@^4.6.2:
   resolved "https://registry.npmjs.org/lodash.merge/-/lodash.merge-4.6.2.tgz"
   integrity sha512-0KpjqXRVvrYyCsX1swR/XTK0va6VQkQM6MNo7PqW77ByjAhoARA8EfrP1N4+KlKj8YS0ZUCtRT/YUuhyYDujIQ==
 
-lodash@^4.17.15:
-  version "4.18.1"
-  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.18.1.tgz#ff2b66c1f6326d59513de2407bf881439812771c"
-  integrity sha512-dMInicTPVE8d1e5otfwmmjlxkZoUpiVLwyeTdUsi/Caj/gfzzblBcCE5sRHV/AsjuCmxWrte2TNGSYuCeCq+0Q==
-
 log-symbols@^4.1.0:
   version "4.1.0"
   resolved "https://registry.npmjs.org/log-symbols/-/log-symbols-4.1.0.tgz"
@@ -2142,7 +2124,7 @@ mimic-fn@^2.1.0:
   resolved "https://registry.npmjs.org/mimic-fn/-/mimic-fn-2.1.0.tgz"
   integrity sha512-OqbOk5oEQeAZ8WXWydlu9HJjz9WVdEIvamMCcXmuqUYjTknH/sqsWvhQ3vgwKFRR1HpjvNBKQ37nbJgYzGqGcg==
 
-minimatch@^10.0.1:
+minimatch@^10.0.1, minimatch@^10.2.2:
   version "10.2.5"
   resolved "https://registry.yarnpkg.com/minimatch/-/minimatch-10.2.5.tgz#bd48687a0be38ed2961399105600f832095861d1"
   integrity sha512-MULkVLfKGYDFYejP07QOurDLLQpcjk7Fw+7jXS2R2czRQzR56yHRveU5NDJEOviH+hETZKSkIk5c+T23GjFUMg==
@@ -2155,13 +2137,6 @@ minimatch@^3.0.4, minimatch@^3.0.5, minimatch@^3.1.2:
   integrity sha512-twmL+S8+7yIsE9wsqgzU3E8/LumN3M3QELrBZ20OdmQ9jB2JvW5oZtBEmft84k/Gs5CG9mqtWc6Y9vW+JEzGxw==
   dependencies:
     brace-expansion "^1.1.7"
-
-minimatch@^5.1.0:
-  version "5.1.8"
-  resolved "https://registry.yarnpkg.com/minimatch/-/minimatch-5.1.8.tgz#32a16ebcccd6421c674430acb199b8806c68169b"
-  integrity sha512-7RN35vit8DeBclkofOVmBY0eDAZZQd1HzmukRdSyz95CRh8FT54eqnbj0krQr3mrHR6sfRyYkyhwBWjoV5uqlQ==
-  dependencies:
-    brace-expansion "^2.0.1"
 
 minimatch@^9.0.4, minimatch@^9.0.5:
   version "9.0.7"
@@ -2614,12 +2589,12 @@ readable-stream@^4.0.0:
     process "^0.11.10"
     string_decoder "^1.3.0"
 
-readdir-glob@^1.1.2:
-  version "1.1.3"
-  resolved "https://registry.npmjs.org/readdir-glob/-/readdir-glob-1.1.3.tgz"
-  integrity sha512-v05I2k7xN8zXvPD9N+z/uhXPaj0sUFCe2rcWZIpBsqxfP7xXFQ0tipAd/wjj1YxWyWtUS5IDJpOG82JKt2EAVA==
+readdir-glob@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/readdir-glob/-/readdir-glob-3.0.0.tgz#a3545e0cef84d88c30fe44118d1a7e20496e9245"
+  integrity sha512-AhNB2KgKeVJr16nK9LLZbJNWnYoT23ZrumNKFDebHBdkC8KHSqWo871JAUhoWC/RtjEVdqNMFpM6qrwRbaUqpw==
   dependencies:
-    minimatch "^5.1.0"
+    minimatch "^10.2.2"
 
 readdirp@^4.0.1:
   version "4.1.2"
@@ -3447,11 +3422,11 @@ yocto-queue@^0.1.0:
   resolved "https://registry.npmjs.org/yocto-queue/-/yocto-queue-0.1.0.tgz"
   integrity sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==
 
-zip-stream@^6.0.1:
-  version "6.0.1"
-  resolved "https://registry.npmjs.org/zip-stream/-/zip-stream-6.0.1.tgz"
-  integrity sha512-zK7YHHz4ZXpW89AHXUPbQVGKI7uvkd3hzusTdotCg1UxyaVtg0zFJSTfW/Dq5f7OBBVnq6cZIaC8Ti4hb6dtCA==
+zip-stream@^7.0.2:
+  version "7.0.5"
+  resolved "https://registry.yarnpkg.com/zip-stream/-/zip-stream-7.0.5.tgz#57b25db7c1be3cb4934ab480338dea490eb5ab8c"
+  integrity sha512-dSvYKdvLsAHCDqPOhIwk/q5CvuWtTB3Dgpoe0uVEFjTzIOAmsQpprX25InCvrvJsirEbu1OHyy67n/kAj1Sw/w==
   dependencies:
-    archiver-utils "^5.0.0"
-    compress-commons "^6.0.2"
+    compress-commons "^7.0.0"
+    normalize-path "^3.0.0"
     readable-stream "^4.0.0"
